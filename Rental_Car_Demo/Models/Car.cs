@@ -21,7 +21,7 @@ public partial class Car
 
     public int ColorId { get; set; }
 
-    public string FrontbackImage { get; set; } = null!;
+    public string FrontImage { get; set; } = null!;
 
     public string BackImage { get; set; } = null!;
 

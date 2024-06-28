@@ -9,43 +9,43 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Rental_Car_Demo
 build_property.RootNamespace = Rental_Car_Demo
-build_property.ProjectDir = D:\Rental_Car_Demo (1)\Rental_Car_Demo (1)\Rental_Car_Demo\Rental_Car_Demo\Rental_Car_Demo\
+build_property.ProjectDir = D:\rental-car\Rental_Car_Demo\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Rental_Car_Demo (1)\Rental_Car_Demo (1)\Rental_Car_Demo\Rental_Car_Demo\Rental_Car_Demo
+build_property.MSBuildProjectDirectory = D:\rental-car\Rental_Car_Demo
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Car/AddACar.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Car/AddACar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Home/Index.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Home/Privacy.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Shared/Error.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/_ViewImports.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/_ViewStart.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Rental_Car_Demo (1)/Rental_Car_Demo (1)/Rental_Car_Demo/Rental_Car_Demo/Rental_Car_Demo/Views/Shared/_Layout.cshtml]
+[D:/rental-car/Rental_Car_Demo/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-xeyxruoj3r

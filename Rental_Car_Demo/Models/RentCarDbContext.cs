@@ -142,9 +142,9 @@ public partial class RentCarDbContext : DbContext
                 .HasColumnName("deposit");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.DocumentId).HasColumnName("documentId");
-            entity.Property(e => e.FrontbackImage)
+            entity.Property(e => e.FrontImage)
                 .HasMaxLength(100)
-                .HasColumnName("frontbackImage");
+                .HasColumnName("frontImage");
             entity.Property(e => e.FucntionId).HasColumnName("fucntionId");
             entity.Property(e => e.FuelConsumption).HasColumnName("fuelConsumption");
             entity.Property(e => e.FuelType).HasColumnName("fuelType");
