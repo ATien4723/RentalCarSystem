@@ -101,7 +101,7 @@ namespace Rental_Car_Demo.Controllers
                 {
                     await front.CopyToAsync(stream);
                 }
-                car.FrontbackImage = fileNameFront;
+                car.FrontImage = fileNameFront;
             }
 
 

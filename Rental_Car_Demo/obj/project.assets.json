@@ -4415,11 +4415,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Rental_Car_Demo (1)\\Rental_Car_Demo (1)\\Rental_Car_Demo\\Rental_Car_Demo\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+      "projectUniqueName": "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
       "projectName": "Rental_Car_Demo",
-      "projectPath": "D:\\Rental_Car_Demo (1)\\Rental_Car_Demo (1)\\Rental_Car_Demo\\Rental_Car_Demo\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+      "projectPath": "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
       "packagesPath": "C:\\Users\\FPT SHOP\\.nuget\\packages\\",
-      "outputPath": "D:\\Rental_Car_Demo (1)\\Rental_Car_Demo (1)\\Rental_Car_Demo\\Rental_Car_Demo\\Rental_Car_Demo\\obj\\",
+      "outputPath": "D:\\rental-car\\Rental_Car_Demo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\FPT SHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
