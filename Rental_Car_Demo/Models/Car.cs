@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rental_Car_Demo.Models;
 
@@ -10,12 +11,14 @@ public partial class Car
     public int? UserId { get; set; }
 
     public string Name { get; set; } = null!;
-
+    [Required(ErrorMessage = "LicensePlate is not empty!")]
+    [RegularExpression(@"^(1[1-9]|[2-9][0-9])[A-Z](-\d{3}\.\d{2}|-\d{4})$", ErrorMessage = "Must follow format, e.g., 50F-567.89 or 50F-5678")]
     public string LicensePlate { get; set; } = null!;
-
+    
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
+    [Range(1, 49, ErrorMessage = "Seats must be a integer in range 1-49")]
 
     public int Seats { get; set; }
 
@@ -35,16 +38,21 @@ public partial class Car
 
     public bool FuelType { get; set; }
 
+    [Range(0, double.MaxValue, ErrorMessage = "Mileage can not less than 0")]
     public double Mileage { get; set; }
 
+    [Range(0, double.MaxValue, ErrorMessage = "FuelConsumption must be greater than 0!")]
     public double FuelConsumption { get; set; }
 
+    [Range(0, double.MaxValue, ErrorMessage = "BasePrice must be greater than 0.")]
     public decimal BasePrice { get; set; }
 
+    [Range(0, double.MaxValue, ErrorMessage = "Deposit must be a positive number.")]
     public decimal Deposit { get; set; }
 
     public int AddressId { get; set; }
 
+    [Required(ErrorMessage = "Description is not empty!")]
     public string? Description { get; set; }
 
     public int DocumentId { get; set; }
