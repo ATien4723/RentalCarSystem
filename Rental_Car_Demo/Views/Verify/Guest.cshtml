@@ -375,13 +375,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
     <script>
+        const basePath = '@Url.Content("~/img/")';
         const images = [
-            'img/lookcar.jpg',
-            'img/sieuxe1.jpeg',
-            'img/rentcar1.jpg',
-            'img/sieuxe4.jpg',
-            'img/xechay3.jpg'
-
+            `${basePath}sieuxe1.jpeg`,
+            `${basePath}rentcar1.jpg`,
+            `${basePath}sieuxe4.jpg`,
+            `${basePath}xechay3.jpg`,
+            `${basePath}lookcar.jpg`
         ];
         let currentIndex = 0;
 
@@ -394,6 +394,7 @@
         setInterval(changeBackgroundImage, 3000);
         changeBackgroundImage(); // goi ptu dau tien
     </script>
+
 
 </body>
 
