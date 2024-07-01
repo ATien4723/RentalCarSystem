@@ -1,0 +1,27 @@
+.navbar-custom {
+    background-color: #4a4a4a;
+    color: white;
+    border-bottom: 2px solid #ccc;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: white;
+}
+
+
+.navbar-custom .navbar-nav .nav-item {
+    position: relative;
+}
+.navbar-custom .navbar-nav .nav-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 20px;
+    background-color: white;
+}
+.navbar-custom .navbar-nav .nav-item:last-child::after {
+    display: none;
+}
