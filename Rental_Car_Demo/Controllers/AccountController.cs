@@ -81,11 +81,7 @@ namespace Rental_Car_Demo.Controllers
 
 
 
-        [HttpPost]
-        public IActionResult Login()
-        {
-            return View("Login");
-        }
+  
 
         public IActionResult ResetPassword()
         {

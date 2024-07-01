@@ -47,4 +47,41 @@ document.addEventListener('DOMContentLoaded', function () {
             carOwner.checked = true;
         }
     });
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        let valid = true;
+
+        const email = document.getElementById('loginEmail');
+        const password = document.getElementById('loginPassword');
+
+        const emailError = document.getElementById('loginEmailError');
+        const passwordError = document.getElementById('loginPasswordError');
+        const serverError = document.getElementById('serverError');
+
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        if (email.value.trim() === '') {
+            emailError.textContent = 'This field is required';
+            valid = false;
+        } else {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                emailError.textContent = 'Please enter a valid email address';
+                valid = false;
+            }
+        }
+
+        if (password.value.trim() === '') {
+            passwordError.textContent = 'This field is required';
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent form submission
+            if (serverError) {
+                serverError.textContent = ''; // Clear server error message if any
+            }
+        }
+    });
 });

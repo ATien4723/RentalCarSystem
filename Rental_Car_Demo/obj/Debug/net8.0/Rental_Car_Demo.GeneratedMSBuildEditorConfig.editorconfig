@@ -38,14 +38,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Account/ResetPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Account/ResetPassword2.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkMi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Car/AddACar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -92,6 +84,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Verify/LoginOwn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luT3duLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Verify/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XFJlc2V0UGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/Verify/ResetPassword2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XFJlc2V0UGFzc3dvcmQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FSOFTASSignment/Project_RentalCar/rental-car/Rental_Car_Demo/Views/_ViewImports.cshtml]

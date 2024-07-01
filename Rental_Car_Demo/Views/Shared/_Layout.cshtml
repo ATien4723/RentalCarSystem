@@ -10,11 +10,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
             <div class="container-fluid">
-                <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;">
-                    <i class='bx bxs-car'></i> Rent a car today!
-                </a>
+                <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;"> <i class='bx bxs-car'></i> Rent a car today!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,20 +22,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">ABOUT US</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Welcome, Anh Tien
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">My Profile</a></li>
-                                <li><a class="dropdown-item" href="#">My Bookings</a></li>
-                                <li><a class="dropdown-item" href="#">My Wallet</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-car-front-fill fa-solid fa-car"></i> MY BOOKINGS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Verify" asp-action="Login"><i class="bi bi-person-plus-fill far fa-user-circle"></i> SIGN UP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Verify" asp-action="Login">LOG IN</a>
                         </li>
                     </ul>
                 </div>
@@ -76,7 +68,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
