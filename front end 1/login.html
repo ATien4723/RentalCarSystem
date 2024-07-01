@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        .register{
+            color: black;
+        }
+
+    </style>
+<body>
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <div class="container-fluid">
+                <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;"> <i class='bx bxs-car'></i> Rent a car today!</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ABOUT US</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-car-front-fill fa-solid fa-car"></i> MY BOOKINGS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-person-plus-fill far fa-user-circle"></i> SIGN UP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">LOG IN</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <div class="container-custom">
+                <div class="close-btn"></div>
+                <div class="row">
+                    <div class="col-md-6 text-black">
+                        <h4>LOG IN USING YOUR ACCOUNT</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Your email address</label>
+                                <input type="email" class="form-control" id="loginEmail"
+                                    placeholder="Your email address">
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                                <i class='bx bx-low-vision toggle-password' id="toggleLoginPassword"></i>
+                            </div>
+                           
+                            <div class="mb-3">
+                                <a href="#" class="text-decoration-none">Forgot your password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-custom w-100 far fa-user"> LOG IN</button>
+                        </form>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                        <div class="dividers"></div>
+                    </div>
+                    <div class="col-md-5 register">
+                        <h4>NOT A MEMBER YET?</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="signupName" class="form-label">Your name</label>
+                                <input type="text" class="form-control" id="signupName" placeholder="Your name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="signupEmail" class="form-label">Your email address</label>
+                                <input type="email" class="form-control" id="signupEmail"
+                                    placeholder="Your email address">
+                            </div>
+                            <div class="mb-3">
+                                <label for="signupPhone" class="form-label">Your phone number</label>
+                                <input type="text" class="form-control" id="signupPhone"
+                                    placeholder="Your phone number">
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <label for="signupPassword" class="form-label">Pick a password</label>
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Pick a password">
+                                <i class='bx bx-low-vision toggle-password2' id="toggleSignupPassword"></i>
+                                <small class="form-text text-muted ">Use at least one letter, one number, and seven characters.</small>
+                            </div>
+                            
+                            <div class="mb-3 position-relative">
+                                <label for="signupConfirmPassword" class="form-label">Confirm password</label>
+                                <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm password">
+                                <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" id="rentCar">
+                                    <label class="form-check-label" for="rentCar">
+                                        I want to rent a car
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3 ps-5">
+                                    <input class="form-check-input" type="radio" id="carOwner">
+                                    <label class="form-check-label" for="carOwner">
+                                        I am a car owner
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-check-input" type="checkbox" id="terms">
+                                <label class="form-check-label" for="terms">
+                                    I have read and agree with the <a href="#" class="text-decoration-none ps-3"> <u>Terms and
+                                        Conditions</u></a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-custom w-100  far fa-user fa-plus"> SIGN UP</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('toggleLoginPassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('loginPassword');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('bx-show');
+        });
+
+        document.getElementById('toggleSignupPassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('signupPassword');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('bx-show');
+        });
+
+        document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('signupConfirmPassword');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('bx-show');
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            let lastChecked = null;
+            
+            const rentCar = document.getElementById('rentCar');
+            const carOwner = document.getElementById('carOwner');
+
+            rentCar.addEventListener('click', function () {
+                if (lastChecked === rentCar) {
+                    rentCar.checked = false;
+                    lastChecked = null;
+                } else {
+                    if (lastChecked) lastChecked.checked = false;
+                    lastChecked = rentCar;
+                    rentCar.checked = true;
+                }
+            });
+
+            carOwner.addEventListener('click', function () {
+                if (lastChecked === carOwner) {
+                    carOwner.checked = false;
+                    lastChecked = null;
+                } else {
+                    if (lastChecked) lastChecked.checked = false;
+                    lastChecked = carOwner;
+                    carOwner.checked = true;
+                }
+            });
+        });
+   
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
