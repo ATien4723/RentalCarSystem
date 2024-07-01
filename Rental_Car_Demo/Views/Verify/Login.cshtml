@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Rental_Car_Demo.ViewModel.RegisterViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 @model User
@@ -56,63 +57,98 @@
                     <div class="col-md-1 d-flex align-items-center justify-content-center">
                         <div class="divider"></div>
                     </div>
-                    <div class="col-md-5">
-                        <h4>NOT A MEMBER YET?</h4>
-                        <form action="">
-                            <div class="mb-3">
-                                <label for="signupName" class="form-label">Your name</label>
-                                <input type="text" class="form-control" id="signupName" placeholder="Your name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="signupEmail" class="form-label">Your email address</label>
-                                <input type="email" class="form-control" id="signupEmail"
-                                       placeholder="Your email address">
-                            </div>
-                            <div class="mb-3">
-                                <label for="signupPhone" class="form-label">Your phone number</label>
-                                <input type="text" class="form-control" id="signupPhone"
-                                       placeholder="Your phone number">
-                            </div>
-                            <div class="mb-3 position-relative">
-                                <label for="signupPassword" class="form-label">Pick a password</label>
-                                <input type="password" class="form-control" id="signupPassword" placeholder="Pick a password">
+                <div class="col-md-5">
+                    <h4>NOT A MEMBER YET?</h4>
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Your name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Your email address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label asp-for="Password" class="form-label"></label>
+
+                            <div class="abccc" style="position:relative;">
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Your password" />
                                 <i class='bx bx-low-vision toggle-password2' id="toggleSignupPassword"></i>
+                            </div>
+                            <div>
                                 <small class="form-text text-muted ">Use at least one letter, one number, and seven characters.</small>
                             </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
 
-                            <div class="mb-3 position-relative">
-                                <label for="signupConfirmPassword" class="form-label">Confirm password</label>
-                                <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm password">
+
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label asp-for="ConfirmPassword" class="form-label">Confirm password</label>
+
+                            <div class="abccc" style="position:relative;">
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm password">
                                 <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" id="rentCar">
-                                    <label class="form-check-label" for="rentCar">
-                                        I want to rent a car
-                                    </label>
-                                </div>
-                                <div class="form-check mb-3 ps-5">
-                                    <input class="form-check-input" type="radio" id="carOwner">
-                                    <label class="form-check-label" for="carOwner">
-                                        I am a car owner
-                                    </label>
-                                </div>
+
+                            <div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
-                                <input class="form-check-input" type="checkbox" id="terms">
-                                <label class="form-check-label" for="terms">
-                                    I have read and agree with the <a href="#" class="text-decoration-none ps-3">
-                                        <u>
-                                            Terms and
-                                            Conditions
-                                        </u>
-                                    </a>
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" placeholder="Your phone number" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <div class="form-check mb-3">
+                                <input asp-for="Role" class="form-check-input" type="radio" value="rentCar">
+                                <label class="form-check-label" for="rentCar">
+                                    I want to rent a car
                                 </label>
                             </div>
+                            <div class="form-check mb-3 ps-5">
+                                <input asp-for="Role" class="form-check-input" type="radio" value="carOwner">
+                                <label class="form-check-label" for="carOwner">
+                                    I am a car owner
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input asp-for="AgreeToTerms" class="form-check-input" type="checkbox" id="terms" />
+                            <label asp-for="AgreeToTerms" class="form-check-label" for="terms">
+                                I have read and agree with the <a href="#" class="text-decoration-none ps-3">
+                                    <u>Terms and Conditions</u>
+                                </a>
+                            </label>
+                            <span asp-validation-for="AgreeToTerms" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
                             <button type="submit" class="btn btn-custom w-100  far fa-user fa-plus"> SIGN UP</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+                </div>
                 </div>
             </div>
         </div>

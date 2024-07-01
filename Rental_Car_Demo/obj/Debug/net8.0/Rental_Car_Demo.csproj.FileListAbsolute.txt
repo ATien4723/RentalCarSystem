@@ -1337,3 +1337,14 @@ D:\FSOFTASSignment\Project_RentalCar\backup\Rental_Car_Demo\obj\Debug\net8.0\ref
 D:\FSOFTASSignment\Project_RentalCar\backup\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.pdb
 D:\FSOFTASSignment\Project_RentalCar\backup\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.genruntimeconfig.cache
 D:\FSOFTASSignment\Project_RentalCar\backup\Rental_Car_Demo\obj\Debug\net8.0\ref\Rental_Car_Demo.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Components.QuickGrid.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\Microsoft.JSInterop.dll

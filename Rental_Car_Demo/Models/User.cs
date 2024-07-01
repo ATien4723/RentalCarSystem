@@ -11,7 +11,7 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
-    public bool? RememberMe { get; set; }
+    public bool RememberMe { get; set; }
 
     public bool? Role { get; set; }
 
