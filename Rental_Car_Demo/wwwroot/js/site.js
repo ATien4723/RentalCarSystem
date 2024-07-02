@@ -1,26 +1,27 @@
-﻿document.getElementById('toggleLoginPassword').addEventListener('click', function () {
-    const passwordField = document.getElementById('loginPassword');
-    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordField.setAttribute('type', type);
-    this.classList.toggle('bx-show');
-});
+﻿document.addEventListener('DOMContentLoaded', function () {
+    // Toggle password visibility
+    document.getElementById('toggleLoginPassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('loginPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('bx-show');
+    });
 
-document.getElementById('toggleSignupPassword').addEventListener('click', function () {
-    const passwordField = document.getElementById('Password');
-    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordField.setAttribute('type', type);
-    this.classList.toggle('bx-show');
-});
+    document.getElementById('toggleSignupPassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('signupPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('bx-show');
+    });
 
-document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function () {
-    const passwordField = document.getElementById('signupConfirmPassword');
-    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordField.setAttribute('type', type);
-    this.classList.toggle('bx-show');
-});
+    document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('signupConfirmPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('bx-show');
+    });
 
-
-document.addEventListener('DOMContentLoaded', function () {
+    // Only one radio button should be checked at a time
     let lastChecked = null;
 
     const rentCar = document.getElementById('rentCar');
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Form validation
     document.querySelector('form').addEventListener('submit', function (event) {
         let valid = true;
 
