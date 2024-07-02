@@ -133,6 +133,14 @@
       "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
     },
     {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
+      "PackagePath": "staticwebassets\\img\\batteryDetail.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
+      "PackagePath": "staticwebassets\\img\\conservation mode.png"
+    },
+    {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
       "PackagePath": "staticwebassets\\img\\convinent.png"
     },

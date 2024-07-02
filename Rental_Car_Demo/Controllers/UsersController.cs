@@ -126,7 +126,7 @@ namespace Rental_Car_Demo.Controllers
                 else if (ModelState.IsValid)
                 {
                     userDAO.Edit(user);
-                    return RedirectToAction(nameof(Index));
+                    return View();
                 }
                 return View(user);
             }
@@ -189,7 +189,7 @@ namespace Rental_Car_Demo.Controllers
             if (file != null && file.Length > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
 
                 if (System.IO.File.Exists(filePath))
                 {
