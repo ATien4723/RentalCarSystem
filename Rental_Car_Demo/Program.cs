@@ -1,8 +1,20 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Rental_Car_Demo.Validation;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    options.SlidingExpiration = true;
+                }
+                );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,10 +30,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Car}/{action=AddACar}/{id?}");
+    pattern: "{controller=Verify}/{action=Login}/{id?}");
 
 app.Run();
