@@ -23,21 +23,21 @@
             <div class="container-custom">
                 <a class="close-btn text-decoration-none"></a>
                 <div class="row">
-                    <div class="col-md-6">
-                        <h4>LOG IN USING YOUR ACCOUNT</h4>
-                        @using (Html.BeginForm("Login", "Verify", FormMethod.Post))
-				        {
-                            <div class="mb-3">
-                                <label for="loginEmail" class="form-label">Your email address</label>
-                            @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail"})
+                <div class="col-md-6">
+                    <h4>LOG IN USING YOUR ACCOUNT</h4>
+                    @using (Html.BeginForm("Login", "Verify", FormMethod.Post))
+                    {
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Your email address</label>
+                            @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
                             <span class="text-danger" id="loginEmailError"></span>
-                            </div>
-                            <div class="mb-3 position-relative">
-                                <label for="loginPassword" class="form-label">Password</label>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="loginPassword" class="form-label">Password</label>
                             @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
                             <span class="text-danger" id="loginPasswordError"></span>
-                                <i class="bx bx-low-vision toggle-password" id="toggleLoginPassword"></i>
-                            </div>
+                            <i class="bx bx-low-vision toggle-password" id="toggleLoginPassword"></i>
+                        </div>
                         @if (!string.IsNullOrEmpty(ViewBag.Error))
                         {
                             <div class="text-danger" id="serverError">@ViewBag.Error</div>
@@ -50,10 +50,10 @@
 
                         <div class="mb-3 d-flex justify-content-center">
                             <a asp-controller="Verify" asp-action="ResetPassword" class="text-decoration-none"><u>Forgot your password?</u></a>
-                            </div>
-                            <button type="submit" class="btn btn-custom w-100 far fa-user"> LOG IN</button>
-                        }
-                    </div>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100 far fa-user"> LOG IN</button>
+                    }
+                </div>
                     <div class="col-md-1 d-flex align-items-center justify-content-center">
                         <div class="divider"></div>
                     </div>

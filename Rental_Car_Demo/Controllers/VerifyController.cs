@@ -191,28 +191,24 @@ namespace Rental_Car_Demo.Controllers
             return View("Fail");
         }
 
-
-
-
-
         public IActionResult ResetPassword()
         {
             return View();
         }
-
-
-
 
         [HttpPost]
         public IActionResult ResetPassword(ResetPasswordViewModel model)
         {
             string tokenValue = tokenGenerator.GenerateToken(32);
             DateTime exTime = tokenGenerator.GetExpirationTime();
+            string em = "";
+            em = model.Email;
 
             var token = new TokenInfor()
             {
                 Token = tokenValue,
                 UserId = customerContext.getCustomerIdByEmail(model.Email),
+                //UserId = 1,
                 ExpirationTime = exTime,
                 IsLocked = false
             };
@@ -222,9 +218,8 @@ namespace Rental_Car_Demo.Controllers
 
             int? customerId = token.UserId;
 
-            string resetLink = Url.Action("ResetPassword2", "Account", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
+            string resetLink = Url.Action("ResetPassword2", "Verify", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
             string subject = "Link Reset Password";
-
             _emailService.SendEmail(model.Email, subject, resetLink);
 
             return View();
