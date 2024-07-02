@@ -1,0 +1,210 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Rental_Car_Demo.Models;
+using Rental_Car_Demo.Repository.UserRepository;
+
+namespace Rental_Car_Demo.Controllers
+{
+    public class UsersController : Controller
+    {
+        UserDAO userDAO = null;
+        public UsersController() => userDAO = new UserDAO();
+
+        // GET: UsersController
+        public ActionResult Index()
+        {
+            var userList = userDAO.GetUserList();
+            return View(userList);
+        }
+
+        // GET: UsersController/Details/5
+        public ActionResult Details(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = userDAO.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // GET: UsersController/Create
+        public ActionResult Create()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View();
+            }
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    userDAO.Create(user);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(user);
+            }
+        }
+
+        // GET: UsersController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var user = userDAO.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var address = userDAO.GetAddressById(user.AddressId);
+
+            if (address == null)
+            {
+                ViewBag.Cities = new SelectList(userDAO.GetCityList(), "CityId", "CityProvince");
+                ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
+                ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
+            }
+            else
+            {
+                var city = userDAO.GetCityList();
+                var district = userDAO.GetDistrictListByCity(address.CityId);
+                var ward = userDAO.GetWardListByDistrict(address.DistrictId);
+
+                ViewBag.Cities = new SelectList(city, "CityId", "CityProvince", address.CityId);
+                ViewBag.Districts = new SelectList(district, "DistrictId", "DistrictName", address.DistrictId);
+                ViewBag.Wards = new SelectList(ward, "WardId", "WardName", address.WardId);
+                ViewBag.Addresses = new SelectList(userDAO.GetAddress(), "AddressId", "HouseNumberStreet", user.AddressId);
+            }
+
+            return View(user);
+        }
+
+        // POST: UsersController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, User user)
+        {
+            try
+            {
+                if (id != user.UserId)
+                {
+                    return NotFound();
+                }
+                string errorMessage = userDAO.Edit(user);
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    if (errorMessage.Contains("Email"))
+                    {
+                        ModelState.AddModelError("Email", errorMessage);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", errorMessage);
+                    }
+                    return View(user);
+                }
+                else if (ModelState.IsValid)
+                {
+                    userDAO.Edit(user);
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(user);
+            }
+        }
+
+        // GET: UsersController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = userDAO.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                userDAO.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetDistricts(int cityId)
+        {
+            var districts = userDAO.GetDistrictListByCity(cityId);
+            return Json(districts);
+        }
+
+        [HttpGet]
+        public JsonResult GetWards(int districtId)
+        {
+            var wards = userDAO.GetWardListByDistrict(districtId);
+            return Json(wards);
+        }
+
+        [HttpPost]
+        public IActionResult UploadImage(IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    return Json(new { success = false, message = "File already exists" });
+                }
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, message = "Invalid file" });
+        }
+    }
+}

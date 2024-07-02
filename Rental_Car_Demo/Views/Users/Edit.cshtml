@@ -1,0 +1,391 @@
+﻿@model Rental_Car_Demo.Models.User
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .text-myfont {
+        font-weight: 500;
+    }
+</style>
+
+<div class="mt-2">
+    <a asp-controller="Car" asp-action="AddACar">Home</a> > My Profile
+</div>
+
+<h1 class="mt-2">My Profile</h1>
+
+@* <hr /> *@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="true">Personal Information</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="UserId" />
+                    <div class="row text-myfont mt-2 pt-2">
+                        <div class="col-md-6">
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="Name" class="control-label">Full Name:</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="Phone" class="control-label">
+                                    Phone number: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="NationalId" class="control-label">
+                                    National ID No: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="NationalId" class="form-control" required/>
+                                <span asp-validation-for="NationalId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="Dob" class="control-label">Date of birth:</label>
+                                <input asp-for="Dob" class="form-control" type="date"/>
+                                <span asp-validation-for="Dob" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <label asp-for="Email" class="control-label">
+                                    Email address: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+
+
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="DrivingLicense" class="control-label">Driving license:</label>
+                                <div class="input-group">
+                                    <input asp-for="DrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
+                                    <input asp-for="DrivingLicense" type="text" id="fileName" class="form-control" readonly />
+                                    <div class="input-group-append">
+                                        <button asp-for="DrivingLicense" type="button" id="chooseFileBtn" class="btn btn-outline-secondary">Upload</button>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="DrivingLicense" class="text-danger"></span>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <!-- Add modal-lg class -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="imageModalLabel">Driving Lience</h5>
+                                            <button type="button" class="close" id="closeModalBtn" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img id="modalImage" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        <label asp-for="Address.CityId" class="control-label mb-1">Address:</label>
+                        <select asp-for="Address.CityId" class="form-control form-select" asp-items="ViewBag.Cities">
+                            <option value="">-- Select City --</option>
+                        </select>
+                        <span asp-validation-for="Address.CityId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        @* <label asp-for="Address.DistrictId" class="control-label"></label> *@
+                        <select asp-for="Address.DistrictId" class="form-control form-select" asp-items="ViewBag.Districts">
+                            <option value="">-- Select District --</option>
+                        </select>
+                        <span asp-validation-for="Address.DistrictId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        @* <label asp-for="Address.WardId" class="control-label"></label> *@
+                        <select asp-for="Address.WardId" class="form-control form-select" asp-items="ViewBag.Wards">
+                            <option value="">-- Select Ward --</option>
+                        </select>
+                        <span asp-validation-for="Address.WardId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        @* <label asp-for="Address.HouseNumberStreet" class="control-label"></label> *@
+                        <input asp-for="Address.HouseNumberStreet" class="form-control" placeholder="House number, Street"/>
+                        <span asp-validation-for="Address.HouseNumberStreet" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2 row justify-content-center">
+                        <div class="col-md-6 text-center">
+                            <a asp-action="Index" class="btn btn-secondary">Discard</a>
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade text-myfont col-md-12" id="security" role="tabpanel" aria-labelledby="security-tab">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="UserId" />
+                    <div class="mb-5" style="padding-left: 1rem;">
+                        <p class="text-myfont">Change password</p>
+                    </div>
+                    @* <div class="form-group col-md-4 mb-3">
+                        <label class="control-label">
+                            Current Password <span style="color: red;">*</span>
+                        </label>
+                        <input asp-for="Password" type="password" id="CurrentPassword" class="form-control" value="@Model.Password"/>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div> *@
+                    <input asp-for="Password" type="hidden" id="CurrentPassword" class="form-control" value="@Model.Password" />
+                    <div class="form-group col-md-4 mb-3">
+                        <label class="control-label">
+                            New Password <span style="color: red;">*</span>
+                        </label>
+                        <input type="password" id="NewPassword" class="form-control" />
+                        <span id="NewPasswordError" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 mb-3">
+                        <label class="control-label">
+                            Confirm Password <span style="color: red;">*</span>
+                        </label>
+                        <input type="password" id="ConfirmPassword" class="form-control" />
+                        <span id="confirmPasswordError" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-2 row justify-content-center">
+                        <div class="col-md-6 text-center">
+                            <a asp-action="Index" class="btn btn-secondary">Discard</a>
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Function to toggle visibility of personal info fields
+            function togglePersonalInfoFields(visible) {
+                $('#personal-info').find('.form-group').each(function () {
+                    $(this).toggle(visible);
+                });
+            }
+
+            function toggleSecurity(visible) {
+                $('#security').find('.form-group').each(function () {
+                    $(this).toggle(visible);
+                });
+            }
+
+            // Initial setup
+            togglePersonalInfoFields(true); // Show personal info fields initially
+            toggleSecurity(false);
+
+            // Tab click handlers
+            $('#personal-info-tab').on('click', function (e) {
+                e.preventDefault();
+                $('#myTab a[href="#personal-info"]').tab('show');
+                togglePersonalInfoFields(true); // Show personal info fields
+                toggleSecurity(false);
+            });
+
+            $('#security-tab').on('click', function (e) {
+                e.preventDefault();
+                $('#myTab a[href="#security"]').tab('show');
+                togglePersonalInfoFields(false); // Hide personal info fields
+                toggleSecurity(true);
+            });
+
+            // Form submission handler
+            $('form').submit(function () {
+                // Check if the current tab is security
+                if ($('#security-tab').hasClass('active')) {
+                    var newPassword = $('#NewPassword').val();
+                    var confirmPassword = $('#ConfirmPassword').val();
+
+                    var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
+
+                    // Check if passwords match
+                    if (newPassword !== confirmPassword) {
+                        $('#confirmPasswordError').text('Passwords do not match');
+                        return false; // Prevent form submission
+                    } else if (newPassword == "" && confirmPassword == "") {
+                        $('#NewPasswordError').text("Please enter new password");
+                        return false;
+                    } else if (!passwordRegex.test(newPassword)) {
+                        $('#NewPasswordError').text("Password must contain at least one letter, one numeral, and be at least seven characters long.");
+                        return false;
+                    } else {
+                        $('#confirmPasswordError').text(''); // Clear previous error message
+                        $('#CurrentPassword').val(newPassword); // Set the CurrentPassword field to the new password
+                    }
+                }
+                return true;
+            });
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Fetch and populate districts when a city is selected
+        $('#Address_CityId').change(function () {
+            var cityId = $(this).val();
+            var districtSelect = $('#Address_DistrictId');
+            var wardSelect = $('#Address_WardId');
+
+            districtSelect.empty();
+            wardSelect.empty();
+            
+            if (cityId) {
+                $.getJSON('/Users/GetDistricts', { cityId: cityId }, function (data) {
+                    districtSelect.append('<option value="">-- Select District --</option>');
+                    $.each(data, function (index, district) {
+                        districtSelect.append('<option value="' + district.districtId + '">' + district.districtName + '</option>');
+                    });
+                });
+            } else {
+                districtSelect.append('<option value="">-- Select District --</option>');
+            }
+            wardSelect.append('<option value="">-- Select Ward --</option>');
+        });
+
+        // Fetch and populate wards when a district is selected
+        $('#Address_DistrictId').change(function () {
+            var districtId = $(this).val();
+            var wardSelect = $('#Address_WardId');
+            wardSelect.empty();
+
+            if (districtId) {
+                $.getJSON('/Users/GetWards', { districtId: districtId }, function (data) {
+                    wardSelect.append('<option value="">-- Select Ward --</option>');
+                    $.each(data, function (index, ward) {
+                        wardSelect.append('<option value="' + ward.wardId + '">' + ward.wardName + '</option>');
+                    });
+                });
+            } else {
+                wardSelect.append('<option value="">-- Select Ward --</option>');
+            }
+        });
+    });
+</script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const chooseFileBtn = document.getElementById('chooseFileBtn');
+    const fileInput = document.getElementById('fileInput');
+    const fileNameInput = document.getElementById('fileName');
+    const modalImage = document.getElementById('modalImage');
+    const defaultImage = '@Url.Content("~/images/" + Model.DrivingLicense)'; // Ensure correct path
+
+    chooseFileBtn.addEventListener('click', function () {
+        fileInput.click(); // Simulate click on file input
+    });
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            fileNameInput.value = file.name; // Display file name
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            fileNameInput.value = ''; // Clear file name if no file selected
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    fileNameInput.addEventListener('click', function () {
+        const file = fileInput.files[0];
+        if (file) {
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    function showImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            modalImage.src = reader.result;
+            $('#imageModal').modal('show'); // Show the modal with the image
+        };
+        reader.readAsDataURL(file);
+    }
+
+    const closeModalBtn = document.getElementById('closeModalBtn'); // Get the close button element
+    closeModalBtn.addEventListener('click', function () {
+        $('#imageModal').modal('hide'); // Hide the modal
+    });
+
+    // Conditionally define the showDefaultImage function
+    @if (Model.DrivingLicense != null) {
+        <text>
+        function showDefaultImage() {
+            modalImage.src = defaultImage;
+            $('#imageModal').modal('show'); // Show the modal with the default image
+        }
+        </text>
+    } else {
+        <text>
+        function showDefaultImage() {
+            // No action if there's no default image
+        }
+        </text>
+    }
+});
+</script>
+<script>
+    $(document).ready(function () {
+    const fileInput = document.getElementById('fileInput');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            uploadFile(file); // Call function to upload file
+        }
+    });
+
+    function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/Users/UploadImage', // Replace with your controller method to handle file upload
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log('File uploaded successfully');
+                // Optionally update UI or handle success
+            },
+            error: function () {
+                console.log('Error uploading file');
+                // Handle error if needed
+            }
+        });
+    }
+});
+</script>
+}
