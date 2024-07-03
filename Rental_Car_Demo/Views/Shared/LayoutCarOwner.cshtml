@@ -65,10 +65,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Hello, @user.Name
+                            Hello, @user?.Name
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">My Profile</a></li>
+                            <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" href="#">My Cars</a></li>
                             <li><a class="dropdown-item" href="#">My Wallet</a></li>
                             <li><a class="dropdown-item" href="#">My Reports</a></li>
