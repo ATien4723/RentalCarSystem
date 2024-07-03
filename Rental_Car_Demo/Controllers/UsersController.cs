@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
 using System.Security.Cryptography;
@@ -115,20 +116,6 @@ namespace Rental_Car_Demo.Controllers
 
                 if (!string.IsNullOrEmpty(NewPassword))
                 {
-                    //string hashedCurrentPassword = HashPassword(CurrentPassword);
-
-                    //// Compare hashedCurrentPassword with existingUser.Password
-                    //if (hashedCurrentPassword != userDAO.GetUserById(user.UserId).Password)
-                    //{
-                    //    ModelState.AddModelError("CurrentPasswordError", "The current password is incorrect.");
-                    //    return View(user);
-                    //}
-                    //if (NewPassword != ConfirmPassword)
-                    //{
-                    //    ModelState.AddModelError("confirmPasswordError", "The new password and confirmation password do not match.");
-                    //    return View(user);
-                    //}
-
                     user.Password = HashPassword(NewPassword);
                 }
                 else
@@ -155,6 +142,11 @@ namespace Rental_Car_Demo.Controllers
                 //    userDAO.Edit(user);
                 //    return RedirectToAction("LoginCus", "Verify");
                 //}
+
+                var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                currentUser.Name = user.Name; // Assuming UserName is the property you want to update
+                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
+
                 return RedirectToAction("LoginCus", "Verify");
             }
             catch (Exception ex)

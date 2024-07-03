@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "View";
-    Layout = "~/Views/Shared/LayoutCarOwner.cshtml";
+    Layout = "~/Views/Shared/_LayoutCarOwner.cshtml";
 }
 
 <!DOCTYPE html>
@@ -179,7 +179,7 @@
 
     <div class="container benefit-button mt-5">
         <h2 class="text-car">Make money on your car right away</h2>
-        <button class="btn btn-primary btn-lg">List Your Car Today</button>
+        <button class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("AddACar", "Car")'">List Your Car Today</button>
     </div>
 
 
