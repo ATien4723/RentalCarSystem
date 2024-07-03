@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -102,7 +104,7 @@ namespace Rental_Car_Demo.Controllers
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, User user)
+        public ActionResult Edit(int id, User user, string CurrentPassword, string NewPassword, string ConfirmPassword)
         {
             try
             {
@@ -110,6 +112,30 @@ namespace Rental_Car_Demo.Controllers
                 {
                     return NotFound();
                 }
+
+                if (!string.IsNullOrEmpty(NewPassword))
+                {
+                    //string hashedCurrentPassword = HashPassword(CurrentPassword);
+
+                    //// Compare hashedCurrentPassword with existingUser.Password
+                    //if (hashedCurrentPassword != userDAO.GetUserById(user.UserId).Password)
+                    //{
+                    //    ModelState.AddModelError("CurrentPasswordError", "The current password is incorrect.");
+                    //    return View(user);
+                    //}
+                    //if (NewPassword != ConfirmPassword)
+                    //{
+                    //    ModelState.AddModelError("confirmPasswordError", "The new password and confirmation password do not match.");
+                    //    return View(user);
+                    //}
+
+                    user.Password = HashPassword(NewPassword);
+                }
+                else
+                {
+                    user.Password = userDAO.GetUserById(user.UserId).Password;
+                }
+
                 string errorMessage = userDAO.Edit(user);
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
@@ -123,12 +149,13 @@ namespace Rental_Car_Demo.Controllers
                     }
                     return View(user);
                 }
-                else if (ModelState.IsValid)
-                {
-                    userDAO.Edit(user);
-                    return View();
-                }
-                return View(user);
+
+                //if (ModelState.IsValid)
+                //{
+                //    userDAO.Edit(user);
+                //    return RedirectToAction("LoginCus", "Verify");
+                //}
+                return RedirectToAction("LoginCus", "Verify");
             }
             catch (Exception ex)
             {
@@ -136,6 +163,7 @@ namespace Rental_Car_Demo.Controllers
                 return View(user);
             }
         }
+
 
         // GET: UsersController/Delete/5
         public ActionResult Delete(int id)
@@ -205,6 +233,20 @@ namespace Rental_Car_Demo.Controllers
             }
 
             return Json(new { success = false, message = "Invalid file" });
+        }
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

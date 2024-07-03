@@ -281,7 +281,7 @@
                         <label class="col-md-2 fw-bold">Address:</label><br>
                         <input class="mt-3" type="text" style="width: 400px; margin-left: 3%;" readonly
                                placeholder="Search for an address">
-                        <select onchange="filterDistrict()" class="form-select mt-3" style="width: 400px; margin-left: 3%;" name="city" id="city"
+                        <select onchange="filterDistrict();filterWard();" class="form-select mt-3" style="width: 400px; margin-left: 3%;" name="city" id="city"
                                 required>
                             @foreach (var c in ViewBag.City)
                             {
