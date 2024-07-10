@@ -180,5 +180,50 @@ namespace Rental_Car_Demo.Controllers
             }
             else return RedirectToAction("Fail", "Verify");
         }
+
+        [HttpGet]
+        public ActionResult ViewMyCars()
+        {
+            var context = new RentCarDbContext();
+            ViewBag.Cars = context.Cars
+                                    .OrderByDescending(c => c.CarId)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+            ViewBag.SortOrder = "newest"; // Default sort order
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ViewMyCars(string sortOrder)
+        {
+            var context = new RentCarDbContext();
+
+            if (sortOrder == "latest")
+            {
+                ViewBag.Cars = context.Cars
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+                ViewBag.SortOrder = "latest";
+            }
+            else
+            {
+                ViewBag.Cars = context.Cars
+                                    .OrderByDescending(c => c.CarId)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+                ViewBag.SortOrder = "newest";
+            }
+
+            return View();
+        }
     }
 }
