@@ -54,6 +54,8 @@ public partial class RentCarDbContext : DbContext
                                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

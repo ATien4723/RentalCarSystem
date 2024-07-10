@@ -4,5 +4,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
     public interface ICarRepository
     {
         public void AddCar(Car car);
+        IEnumerable<Car> GetAllCars();
+
     }
 }

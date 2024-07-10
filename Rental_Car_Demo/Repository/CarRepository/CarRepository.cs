@@ -5,5 +5,8 @@ namespace Rental_Car_Demo.Repository.CarRepository
     public class CarRepository : ICarRepository
     {
         public void AddCar(Car car) => CarDAO.Instance.CreateCar(car);
+
+        public IEnumerable<Car> GetAllCars() => CarDAO.Instance.GetAllCars();
+
     }
 }

@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Car>
+@{
+    ViewData["Title"] = "SearchCar";
+    Layout = "_LayoutSearchCar";
+}
+<div class="main-content mt-3">
+
+    <div class="container my-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="homeCustomer.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar mt-3">
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#carTypeOptions" aria-expanded="false" aria-controls="carTypeOptions">
+                        Car Brands
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div class="collapse" id="carTypeOptions">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="superCars">
+                            <p class="form-check-label" for="superCars">BMW</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="suvs" checked>
+                            <p class="form-check-label" for="suvs">Honda</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="coupes">
+                            <p class="form-check-label" for="coupes">KIA</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="convertibles">
+                            <p class="form-check-label" for="convertibles">Toyota</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="luxurySedans">
+                            <p class="form-check-label" for="luxurySedans">Mazda</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="hatchbacks">
+                            <p class="form-check-label" for="hatchbacks">Lamborghini</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#seatingCapacityOptions" aria-expanded="false"
+                           aria-controls="seatingCapacityOptions">
+                        Seating Capacity
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div class="collapse" id="seatingCapacityOptions">
+                        <!-- Add Seating Capacity options here -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fourSeater">
+                            <p class="form-check-label" for="fourSeater">4 Seater</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fiveSeater">
+                            <p class="form-check-label" for="fiveSeater">5 Seater</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sevenSeater">
+                            <p class="form-check-label" for="sevenSeater">7 Seater</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#gearTransmissionOptions" aria-expanded="false"
+                           aria-controls="gearTransmissionOptions">
+                        Gear Transmission
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div class="collapse" id="gearTransmissionOptions">
+                        <!-- Add Gear Transmission options here -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="automatic">
+                            <p class="form-check-label" for="automatic">Automatic</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="manual">
+                            <p class="form-check-label" for="manual">Manual</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#priceRangeOptions" aria-expanded="false" aria-controls="priceRangeOptions">
+                        Price Range
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div class="collapse" id="priceRangeOptions">
+                        <!-- Add Price Range options here -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="lowRange">
+                            <p class="form-check-label" for="lowRange">$0 - $100</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="midRange">
+                            <p class="form-check-label" for="midRange">$100 - $300</p>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="highRange">
+                            <p class="form-check-label" for="highRange">$300 - $500</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Other filters can be added here -->
+            </div>
+            <div class="col-md-9">
+                <div class="mb-4">
+                    <h5 class="mb-3 details-label">Pickup Details</h5>
+                    <div class="d-flex mb-3 details-item">
+                        <input type="text" class="form-control me-2 details-input" placeholder="Location">
+                        <input type="date" class="form-control me-2 details-input" id="myDateInput">
+                        <input type="time" class="form-control details-input" id="myTimeInput">
+                    </div>
+                    <h5 class="mb-3 details-label">Drop off Details</h5>
+                    <div class="d-flex mb-3 details-item">
+                        <input type="text" class="form-control me-2 details-input" placeholder="Drop Location">
+                        <input type="date" class="form-control me-2 details-input" id="dropDateInput">
+                        <input type="time" class="form-control details-input" id="dropTimeInput">
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach ( var car in Model ) {
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="~/img/sieuxe1.jpeg" class="card-img-top" alt="@car.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@car.Name</h5>
+                                    <div class="details">
+                                        <p class="card-text">
+                                            <i class="fa-solid fa-location-dot icon"></i> @car.Address.City
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="card-text">
+                                                    <i class="fa-solid fa-person-seat icon"></i> @car.Seats
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="card-text">
+                                                    <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="card-text">
+                                            <i class="fa-sharp fa-regular fa-calendar-days icon"></i> @car.ProductionYear
+                                        </p>
+                                    </div>
+                                    <p class="price">@car.BasePrice $</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
