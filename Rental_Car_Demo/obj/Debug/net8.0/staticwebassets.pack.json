@@ -1,603 +1,559 @@
 {
   "Files": [
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Rental_Car_Demo.bundle.scp.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Rental_Car_Demo.bundle.scp.css",
       "PackagePath": "staticwebassets\\Rental_Car_Demo.bundle.scp.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\style.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\style.css",
       "PackagePath": "staticwebassets\\css\\style.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\stylehome.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\stylehome.css",
       "PackagePath": "staticwebassets\\css\\stylehome.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\favicon.ico",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\1.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\1.png",
       "PackagePath": "staticwebassets\\img\\1.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\10.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\10.png",
       "PackagePath": "staticwebassets\\img\\10.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\11.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\11.png",
       "PackagePath": "staticwebassets\\img\\11.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\12.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\12.png",
       "PackagePath": "staticwebassets\\img\\12.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\13.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\13.png",
       "PackagePath": "staticwebassets\\img\\13.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\2.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\2.png",
       "PackagePath": "staticwebassets\\img\\2.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\3.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\3.png",
       "PackagePath": "staticwebassets\\img\\3.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
       "PackagePath": "staticwebassets\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\4.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\4.png",
       "PackagePath": "staticwebassets\\img\\4.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\5.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\5.png",
       "PackagePath": "staticwebassets\\img\\5.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\6.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\6.png",
       "PackagePath": "staticwebassets\\img\\6.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\69305547_412286172731576_1974067415641751552_n.jpg",
-      "PackagePath": "staticwebassets\\img\\69305547_412286172731576_1974067415641751552_n.jpg"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\7.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\7.png",
       "PackagePath": "staticwebassets\\img\\7.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\8.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\8.png",
       "PackagePath": "staticwebassets\\img\\8.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\9.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\9.png",
       "PackagePath": "staticwebassets\\img\\9.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\DJI_0550-HDR-Pano.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\DJI_0550-HDR-Pano.jpg",
       "PackagePath": "staticwebassets\\img\\DJI_0550-HDR-Pano.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\IMG_0185.png",
-      "PackagePath": "staticwebassets\\img\\IMG_0185.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Introduce to Internet of things.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Introduce to Internet of things.png",
       "PackagePath": "staticwebassets\\img\\Introduce to Internet of things.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-09-29 155720.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-09-29 155720.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-09-29 155720.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 140917.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 140917.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 140917.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 150501.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 150501.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 150501.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-09 154528.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-09 154528.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-09 154528.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171135.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171135.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171135.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171551.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171551.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171551.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171611.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171611.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171611.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-03 142857.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-03 142857.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-03 142857.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-05 201141.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-05 201141.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-05 201141.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-26 093359.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-26 093359.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-26 093359.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-23 210900.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-23 210900.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-02-23 210900.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 123406.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 123406.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-16 172919.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-16 172919.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-04-12 005142.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-04-12 005142.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
       "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
       "PackagePath": "staticwebassets\\img\\batteryDetail.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
       "PackagePath": "staticwebassets\\img\\conservation mode.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
       "PackagePath": "staticwebassets\\img\\convinent.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da lat.jpeg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da lat.jpeg",
       "PackagePath": "staticwebassets\\img\\da lat.jpeg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da nang hoi an.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da nang hoi an.jpg",
       "PackagePath": "staticwebassets\\img\\da nang hoi an.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\elonmusk.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\elonmusk.jpg",
       "PackagePath": "staticwebassets\\img\\elonmusk.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\filetest.png",
-      "PackagePath": "staticwebassets\\img\\filetest.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\hanoi.jpeg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\hanoi.jpeg",
       "PackagePath": "staticwebassets\\img\\hanoi.jpeg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\headphone.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\headphone.png",
       "PackagePath": "staticwebassets\\img\\headphone.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbezoa.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbezoa.jpg",
       "PackagePath": "staticwebassets\\img\\jeffbezoa.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbz2.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbz2.jpg",
       "PackagePath": "staticwebassets\\img\\jeffbz2.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\legal.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\legal.png",
       "PackagePath": "staticwebassets\\img\\legal.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar.jpg",
       "PackagePath": "staticwebassets\\img\\lookcar.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar2.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar2.jpg",
       "PackagePath": "staticwebassets\\img\\lookcar2.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\markzuck.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\markzuck.jpg",
       "PackagePath": "staticwebassets\\img\\markzuck.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\nha trang.jpeg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\nha trang.jpeg",
       "PackagePath": "staticwebassets\\img\\nha trang.jpeg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\quang ninh.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\quang ninh.jpg",
       "PackagePath": "staticwebassets\\img\\quang ninh.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\rentcar1.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\rentcar1.jpg",
       "PackagePath": "staticwebassets\\img\\rentcar1.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe1.jpeg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe1.jpeg",
       "PackagePath": "staticwebassets\\img\\sieuxe1.jpeg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe2.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe2.jpg",
       "PackagePath": "staticwebassets\\img\\sieuxe2.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe3.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe3.jpg",
       "PackagePath": "staticwebassets\\img\\sieuxe3.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe4.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe4.jpg",
       "PackagePath": "staticwebassets\\img\\sieuxe4.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe5.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe5.jpg",
       "PackagePath": "staticwebassets\\img\\sieuxe5.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe6.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe6.png",
       "PackagePath": "staticwebassets\\img\\sieuxe6.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\tet man hinh1.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\tet man hinh1.png",
       "PackagePath": "staticwebassets\\img\\tet man hinh1.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook.jpg",
       "PackagePath": "staticwebassets\\img\\timcook.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook2.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook2.jpg",
       "PackagePath": "staticwebassets\\img\\timcook2.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook3.jpeg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook3.jpeg",
       "PackagePath": "staticwebassets\\img\\timcook3.jpeg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook4.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook4.jpg",
       "PackagePath": "staticwebassets\\img\\timcook4.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay1.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay1.jpg",
       "PackagePath": "staticwebassets\\img\\xechay1.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay2.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay2.jpg",
       "PackagePath": "staticwebassets\\img\\xechay2.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay3.jpg",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay3.jpg",
       "PackagePath": "staticwebassets\\img\\xechay3.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 141854.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 141854.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 141854.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 143012.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 143012.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 143012.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155036.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155036.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155036.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155425.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155425.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155425.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075144.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075144.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075144.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075345.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075345.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075345.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 080919.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 080919.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 080919.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 091518.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 091518.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 091518.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 092227.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 092227.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 092227.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 094308.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 094308.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 094308.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095550.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095550.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095550.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095650.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095650.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095650.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 193247.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 193247.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 193247.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 232848.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 232848.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 232848.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-19 104848.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-19 104848.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-19 104848.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-27 102003.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-27 102003.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-27 102003.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-28 103654.png",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-28 103654.png",
       "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-28 103654.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\script.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\script.js",
       "PackagePath": "staticwebassets\\js\\script.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\site.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map",
-      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {

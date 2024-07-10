@@ -16,11 +16,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - abcd</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/stylehome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>@ViewData["Title"] - Rental_Car_Demo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/stylehome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rental_Car_Demo.styles.css" asp-append-version="true" />
     <style>
         .modal-header-center {
@@ -43,6 +51,94 @@
         .modal-header-center .btn-close {
             position: absolute;
             right: 10px;
+        }
+
+        .benefit-content {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .benefits-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .col-md-4 {
+            flex: 1 1 calc(33.333% - 20px);
+            box-sizing: border-box;
+        }
+
+        .benefit-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .benefit-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+            .benefit-header i {
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+        .benefit-box h5 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .benefit-box p {
+            margin: 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .benefit-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .benefit-button .btn {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+                .benefit-button .btn:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+        .text-car {
+            text-align: left;
+            margin-bottom: 20px;
         }
 
     </style>
@@ -68,7 +164,7 @@
                             Hello, @user.Name
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                            <li><a class="dropdown-item" href="#">My Profile</a></li>
                             <li><a class="dropdown-item" href="#">My Cars</a></li>
                             <li><a class="dropdown-item" href="#">My Wallet</a></li>
                             <li><a class="dropdown-item" href="#">My Reports</a></li>
@@ -82,9 +178,9 @@
             </div>
         </div>
     </nav>
-    <div class="">
+    <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody();
+            @RenderBody()
         </main>
     </div>
     <footer class=" footer-guest py-4">
@@ -108,7 +204,7 @@
             </div>
         </div>
     </footer>
-    <form id="logoutForm" asp-controller="Verify" asp-action="Logout" method="post" style="display: none;">
+    <form id="logoutForm" asp-controller="Users" asp-action="Logout" method="post" style="display: none;">
         <input type="hidden" name="returnUrl" value="~/">
     </form>
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -133,8 +229,6 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
         function submitLogout() {
             document.getElementById('logoutForm').submit();
