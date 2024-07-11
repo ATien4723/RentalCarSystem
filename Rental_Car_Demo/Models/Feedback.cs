@@ -9,7 +9,7 @@ public partial class Feedback
 
     public int? BookingNo { get; set; }
 
-    public int Ratings { get; set; }
+    public double Ratings { get; set; }
 
     public string? Content { get; set; }
 
