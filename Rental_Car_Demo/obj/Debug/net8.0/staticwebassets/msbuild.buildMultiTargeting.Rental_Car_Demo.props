@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Rental_Car_Demo.props" />
+</Project>
