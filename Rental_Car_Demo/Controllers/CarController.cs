@@ -155,7 +155,7 @@ namespace Rental_Car_Demo.Controllers
             car.FucntionId=additionalFunction.FucntionId;
 
             car.Status = 1;
-
+            car.NoOfRide = 0;
             var termsOfUse = new TermOfUse();
             
             termsOfUse.NoSmoking = smoking;

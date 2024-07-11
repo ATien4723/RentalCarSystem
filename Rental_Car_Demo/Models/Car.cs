@@ -63,6 +63,8 @@ public partial class Car
 
     public int Status { get; set; }
 
+    public int NoOfRide { get; set; }
+
     public virtual Address Address { get; set; } = null!;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
