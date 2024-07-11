@@ -254,6 +254,10 @@ namespace Rental_Car_Demo.Controllers
             var city = _db.Cities.FirstOrDefault(x => x.CityId == address.CityId);
             var term = _db.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
             var function = _db.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+            var listCity = _db.Cities.ToList();
+            var listDistrict = _db.Districts.ToList();
+            var listWard = _db.Wards.ToList();
+
             ViewBag.car = car;
             ViewBag.brand = brand;
             ViewBag.model = model;
@@ -266,15 +270,17 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.term = term;
             ViewBag.function = function;
             ViewBag.checkRent = checkRent;
+            ViewBag.listCity = listCity;
+            ViewBag.listDistrict = listDistrict;
+            ViewBag.listWard = listWard;
+
+
+
             return View();
         }
 
 
-        [HttpPost]
-        public IActionResult ChangeCarDetailByOwner(int carId)
-        {
-
-        }
+      
 
 
     }
