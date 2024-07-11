@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutProfile.cshtml";
 }
 
 <style>
@@ -39,6 +39,11 @@
                                 <label asp-for="Name" class="control-label">Full Name:</label>
                                 <input asp-for="Name" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8 mb-3" readonly hidden>
+                                <label asp-for="Role" class="control-label">Role</label>
+                                <input asp-for="Role" class="form-control" />
+                                <span asp-validation-for="Role" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3">
                                 <label asp-for="Phone" class="control-label">
@@ -135,7 +140,7 @@
                     </div>
                     <div class="form-group mt-2 row justify-content-center">
                         <div class="col-md-6 text-center">
-                            <a asp-action="Index" class="btn btn-secondary">Discard</a>
+                            <a asp-controller="verify" asp-action="LoginCus" class="btn btn-secondary">Discard</a>
                             <input type="submit" value="Save" class="btn btn-primary" />
                         </div>
                     </div>
@@ -153,25 +158,31 @@
                         <input asp-for="Password" type="password" id="CurrentPassword" class="form-control" value="@Model.Password"/>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div> *@
-                    <input asp-for="Password" type="hidden" id="CurrentPassword" class="form-control" value="@Model.Password" />
+                    @* <input asp-for="Password" id="CurrentPassword" class="form-control" value="@Model.Password" /> *@
+                    <div class="form-group col-md-4 mb-3">
+                        <label class="control-label" hidden>
+                            Current Password
+                        </label>
+                        <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" hidden/>
+                        <span id="CurrentPasswordError" class="text-danger"></span>
+                    </div>
                     <div class="form-group col-md-4 mb-3">
                         <label class="control-label">
-                            New Password <span style="color: red;">*</span>
+                            New Password
                         </label>
-                        <input type="password" id="NewPassword" class="form-control" />
+                        <input type="password" id="NewPassword" name="NewPassword" class="form-control" />
                         <span id="NewPasswordError" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-4 mb-3">
                         <label class="control-label">
-                            Confirm Password <span style="color: red;">*</span>
+                            Confirm New Password
                         </label>
-                        <input type="password" id="ConfirmPassword" class="form-control" />
+                        <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
                         <span id="confirmPasswordError" class="text-danger"></span>
                     </div>
-
                     <div class="form-group mt-2 row justify-content-center">
                         <div class="col-md-6 text-center">
-                            <a asp-action="Index" class="btn btn-secondary">Discard</a>
+                            <a asp-controller="verify" asp-action="LoginCus" class="btn btn-secondary">Discard</a>
                             <input type="submit" value="Save" class="btn btn-primary" />
                         </div>
                     </div>
@@ -222,23 +233,27 @@
 
             // Form submission handler
             $('form').submit(function () {
-                // Check if the current tab is security
                 if ($('#security-tab').hasClass('active')) {
-                    var newPassword = $('#NewPassword').val();
-                    var confirmPassword = $('#ConfirmPassword').val();
+                var currentPassword = $('#CurrentPassword').val();
+                var newPassword = $('#NewPassword').val();
+                var confirmPassword = $('#ConfirmPassword').val();
+                
+                var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-                    var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-
-                    // Check if passwords match
-                    if (newPassword !== confirmPassword) {
-                        $('#confirmPasswordError').text('Passwords do not match');
-                        return false; // Prevent form submission
-                    } else if (newPassword == "" && confirmPassword == "") {
+            
+                    // if (currentPassword == "") {
+                    //     $('#CurrentPasswordError').text('Please enter your current password');
+                    //     return false; // Prevent form submission
+                    // } else 
+                    if (newPassword == "" && confirmPassword == "") {
                         $('#NewPasswordError').text("Please enter new password");
                         return false;
                     } else if (!passwordRegex.test(newPassword)) {
                         $('#NewPasswordError').text("Password must contain at least one letter, one numeral, and be at least seven characters long.");
                         return false;
+                    } else if (newPassword !== confirmPassword) {
+                        $('#confirmPasswordError').text('Passwords do not match');
+                        return false; // Prevent form submission
                     } else {
                         $('#confirmPasswordError').text(''); // Clear previous error message
                         $('#CurrentPassword').val(newPassword); // Set the CurrentPassword field to the new password
@@ -298,7 +313,7 @@
     const fileInput = document.getElementById('fileInput');
     const fileNameInput = document.getElementById('fileName');
     const modalImage = document.getElementById('modalImage');
-    const defaultImage = '@Url.Content("~/images/" + Model.DrivingLicense)'; // Ensure correct path
+    const defaultImage = '@Url.Content("~/img/" + Model.DrivingLicense)'; // Ensure correct path
 
     chooseFileBtn.addEventListener('click', function () {
         fileInput.click(); // Simulate click on file input

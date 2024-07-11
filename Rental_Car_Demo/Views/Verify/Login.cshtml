@@ -1,0 +1,158 @@
+﻿@model Rental_Car_Demo.ViewModel.RegisterAndLoginViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent a Car</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>     
+        <div class="container mt-5">
+            <div class="container-custom">
+                <a class="close-btn text-decoration-none"></a>
+                <div class="row">
+                <div class="col-md-6">
+                    <h4>LOG IN USING YOUR ACCOUNT</h4>
+                    @using (Html.BeginForm("Login", "Verify", FormMethod.Post))
+                    {
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Your email address</label>
+                            @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
+                            <span class="text-danger" id="loginEmailError"></span>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
+                            <span class="text-danger" id="loginPasswordError"></span>
+                            <i class="bx bx-low-vision toggle-password" id="toggleLoginPassword"></i>
+                        </div>
+                        @if (!string.IsNullOrEmpty(ViewBag.Error))
+                        {
+                            <div class="text-danger" id="serverError">@ViewBag.Error</div>
+                        }
+                        <div class="mb-1 form-check">
+                            <label class="form-check-label">
+                                @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input" }) @Html.DisplayNameFor(x => x.User.RememberMe)
+                            </label>
+                        </div>
+
+                        <div class="mb-3 d-flex justify-content-center">
+                            <a asp-controller="Verify" asp-action="ResetPassword" class="text-decoration-none"><u>Forgot your password?</u></a>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100 far fa-user"> LOG IN</button>
+                    }
+                </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                        <div class="divider"></div>
+                    </div>
+                <div class="col-md-5">
+                    <h4>NOT A MEMBER YET?</h4>
+                    <form asp-controller="Verify" asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Register.Name" class="form-label"></label>
+                            <input asp-for="Register.Name" class="form-control" placeholder="Your name" />
+                            <span asp-validation-for="Register.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Register.Email" class="form-label"></label>
+                            <input asp-for="Register.Email" class="form-control" placeholder="Your email address" />
+                            <span asp-validation-for="Register.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label asp-for="Register.Password" class="form-label"></label>
+
+                            <div class="abccc" style="position:relative;">
+                                <input asp-for="Register.Password" type="password" class="form-control" id="signupPassword" placeholder="Your password" />
+                                <i class='bx bx-low-vision toggle-password2' id="toggleSignupPassword"></i>
+                            </div>
+                            <div>
+                                <small class="form-text text-muted ">Use at least one letter, one number, and seven characters.</small>
+                            </div>
+                            <span asp-validation-for="Register.Password" class="text-danger"></span>
+
+
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label asp-for="Register.ConfirmPassword" class="form-label">Confirm password</label>
+
+                            <div class="abccc" style="position:relative;">
+                                <input asp-for="Register.ConfirmPassword" type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm password">
+                                <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
+                            </div>
+
+                            <div>
+                                <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label asp-for="Register.Phone" class="form-label"></label>
+                            <input asp-for="Register.Phone" class="form-control" placeholder="Your phone number" />
+                            <span asp-validation-for="Register.Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <div class="form-check mb-3">
+                                <input asp-for="Register.Role" class="form-check-input" type="radio" value="rentCar">
+                                <label class="form-check-label" for="rentCar">
+                                    I want to rent a car
+                                </label>
+                            </div>
+                            <div class="form-check mb-3 ps-5">
+                                <input asp-for="Register.Role" class="form-check-input" type="radio" value="carOwner">
+                                <label class="form-check-label" for="carOwner">
+                                    I am a car owner
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <span asp-validation-for="Register.Role" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <input asp-for="Register.AgreeToTerms" class="form-check-input" type="checkbox" id="terms" />
+                            <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
+                                I have read and agree with the <a href="#" class="text-decoration-none ps-3">
+                                    <u>Terms and Conditions</u>
+                                </a>
+                            </label>
+                            <span asp-validation-for="Register.AgreeToTerms" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-custom w-100  far fa-user fa-plus"> SIGN UP</button>
+                        </div>
+                    </form>
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+     <script src="~/js/site.js" asp-append-version="true"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

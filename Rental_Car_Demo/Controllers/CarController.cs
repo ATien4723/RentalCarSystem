@@ -13,14 +13,7 @@ namespace Rental_Car_Demo.Controllers
         RentCarDbContext _db = new RentCarDbContext();
         public CarController() => carRepository = new CarRepository();
 
-
-        public IActionResult GetModelsByBrand(int brandId)
-        {
-            var context = new RentCarDbContext();
-            var models = context.CarModels.Where(m => m.BrandId == brandId).ToList();
-            return Json(models);
-        }
-        public IActionResult AddACar()
+        public ActionResult AddACar()
         {
             var context = new RentCarDbContext();
             List<int> year = new List<int>();
@@ -170,14 +163,67 @@ namespace Rental_Car_Demo.Controllers
             _db.SaveChanges();
             car.TermId = termsOfUse.TermId;
 
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            car.UserId = user.UserId;
+
             car.Name = _db.CarBrands.FirstOrDefault( x=>x.BrandId==car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName  + " " + car.ProductionYear;
             if (car != null)
             {
                 _db.Cars.Add(car);
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("LoginOwn", "Verify");
             }
-            else return RedirectToAction("Privacy", "Home");
+            else return RedirectToAction("Fail", "Verify");
+        }
+
+        [HttpGet]
+        public ActionResult ViewMyCars()
+        {
+            var context = new RentCarDbContext();
+            ViewBag.Cars = context.Cars
+                                    .OrderByDescending(c => c.CarId)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+            ViewBag.SortOrder = "newest";
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ViewMyCars(string sortOrder)
+        {
+            var context = new RentCarDbContext();
+
+            if (sortOrder == "latest")
+            {
+                ViewBag.Cars = context.Cars
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+                ViewBag.SortOrder = "latest";
+            }
+            else
+            {
+                ViewBag.Cars = context.Cars
+                                    .OrderByDescending(c => c.CarId)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.District)
+                                    .Include(c => c.Address)
+                                        .ThenInclude(a => a.City)
+                                    .ToList();
+                ViewBag.SortOrder = "newest";
+            }
+
+            return View();
         }
         public IActionResult ViewCarDetailsByCustomer(int CarId)
         {
