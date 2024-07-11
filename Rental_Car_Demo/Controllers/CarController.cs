@@ -192,7 +192,7 @@ namespace Rental_Car_Demo.Controllers
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.City)
                                     .ToList();
-            ViewBag.SortOrder = "newest"; // Default sort order
+            ViewBag.SortOrder = "newest";
             return View();
         }
 
