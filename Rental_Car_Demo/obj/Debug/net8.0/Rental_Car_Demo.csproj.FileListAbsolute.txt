@@ -1480,3 +1480,5 @@ E:\Learn\VS\rental-car.git\Rental_Car_Demo\obj\Debug\net8.0\refint\Rental_Car_De
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.pdb
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.genruntimeconfig.cache
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\obj\Debug\net8.0\ref\Rental_Car_Demo.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Debug\net8.0\bundleconfig.json
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\scopedcss\Views\Shared\_LayoutProfile.cshtml.rz.scp.css

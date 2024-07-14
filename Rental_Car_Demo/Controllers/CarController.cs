@@ -35,7 +35,7 @@ namespace Rental_Car_Demo.Controllers
         public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
             bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            bool smoking, bool food, bool pet, string specify,int city,int district,int ward,string street)
+            bool smoking, bool food, bool pet, string specify, int city, int district, int ward, string street)
         {
 
             var document = new CarDocument();
@@ -81,7 +81,7 @@ namespace Rental_Car_Demo.Controllers
             address.CityId = city;
             address.DistrictId = district;
             address.WardId = ward;
-            address.HouseNumberStreet=street;
+            address.HouseNumberStreet = street;
 
             _db.Addresses.Add(address);
             _db.SaveChanges();
@@ -134,7 +134,7 @@ namespace Rental_Car_Demo.Controllers
             }
 
             var additionalFunction = new AdditionalFunction();
-            
+
             additionalFunction.Bluetooth = Bluetooth;
             additionalFunction.Gps = GPS;
             additionalFunction.Camera = Camera;
@@ -146,12 +146,12 @@ namespace Rental_Car_Demo.Controllers
 
             _db.AdditionalFunctions.Add(additionalFunction);
             _db.SaveChanges();
-            car.FucntionId=additionalFunction.FucntionId;
+            car.FucntionId = additionalFunction.FucntionId;
 
             car.Status = 1;
             car.NoOfRide = 0;
             var termsOfUse = new TermOfUse();
-            
+
             termsOfUse.NoSmoking = smoking;
             termsOfUse.NoFoodInCar = food;
             termsOfUse.NoPet = pet;
@@ -171,14 +171,14 @@ namespace Rental_Car_Demo.Controllers
             }
             car.UserId = user.UserId;
 
-            car.Name = _db.CarBrands.FirstOrDefault( x=>x.BrandId==car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName  + " " + car.ProductionYear;
+            car.Name = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
             if (car != null)
             {
                 _db.Cars.Add(car);
                 _db.SaveChanges();
-                return RedirectToAction("LoginOwn", "Verify");
+                return RedirectToAction("LoginOwn", "Users");
             }
-            else return RedirectToAction("Fail", "Verify");
+            else return RedirectToAction("Fail", "Users");
         }
 
         [HttpGet]
@@ -304,6 +304,8 @@ namespace Rental_Car_Demo.Controllers
             var listDistrict = _db.Districts.ToList();
             var listWard = _db.Wards.ToList();
 
+
+
             ViewBag.car = car;
             ViewBag.brand = brand;
             ViewBag.model = model;
@@ -322,12 +324,134 @@ namespace Rental_Car_Demo.Controllers
 
 
 
-            return View();
+            return View(car);
         }
 
 
-      
+        [HttpPost]
+        public IActionResult ChangeCarDetailsByOwner(Car car,
+            IFormFile front, IFormFile back, IFormFile left, IFormFile right,
+            bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
+            int city, int district, int ward, string street)
+        {
+            var carId = car.CarId;
+            var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
+
+            var address = _db.Addresses.FirstOrDefault(a => a.AddressId == carrrr.AddressId);
+
+            address.CityId = city;
+            address.DistrictId = district;
+            address.WardId = ward;
+            address.HouseNumberStreet = street;
+
+            _db.Addresses.Update(address);
+            _db.SaveChanges();
+
+            carrrr.Mileage = car.Mileage;
+            carrrr.FuelConsumption = car.FuelConsumption;
+            carrrr.Description = car.Description;
+            _db.Cars.Update(carrrr);
+            _db.SaveChanges();
 
 
+
+            if (front != null)
+            {
+                var fileNameFront = Path.GetFileName(front.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameFront);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    front.CopyToAsync(stream);
+                }
+                carrrr.FrontImage = fileNameFront;
+            }
+
+
+
+            if (back != null)
+            {
+                var fileNameBack = Path.GetFileName(back.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameBack);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    back.CopyToAsync(stream);
+                }
+                carrrr.BackImage = fileNameBack;
+            }
+
+            if (left != null)
+            {
+                var fileNameLeft = Path.GetFileName(left.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameLeft);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    left.CopyToAsync(stream);
+                }
+                carrrr.LeftImage = fileNameLeft;
+            }
+
+            if (right != null)
+            {
+                var fileNameRight = Path.GetFileName(right.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameRight);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    right.CopyToAsync(stream);
+                }
+                carrrr.RightImage = fileNameRight;
+            }
+
+            _db.Cars.Update(carrrr);
+            _db.SaveChanges();
+
+            var additionalFunction = _db.AdditionalFunctions.FirstOrDefault(fnc => fnc.FucntionId == carrrr.FucntionId);
+
+            additionalFunction.Bluetooth = Bluetooth;
+            additionalFunction.Gps = GPS;
+            additionalFunction.Camera = Camera;
+            additionalFunction.SunRoof = Sunroof;
+            additionalFunction.ChildLock = Childlock;
+            additionalFunction.ChildSeat = Childseat;
+            additionalFunction.Dvd = DVD;
+            additionalFunction.Usb = USB;
+
+            _db.AdditionalFunctions.Update(additionalFunction);
+            _db.SaveChanges();
+
+            return RedirectToAction("LoginOwn", "Users");
+        }
+
+
+
+        [HttpPost]
+        public IActionResult ChangeCarTermsByOwner(Car car,
+           bool smoking, bool food, bool pet, string specify)
+        {
+            var carId = car.CarId;
+            var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
+
+       
+            carrrr.BasePrice = car.BasePrice;
+            carrrr.Deposit = car.Deposit;
+            _db.Update(carrrr);
+            _db.SaveChanges();
+
+
+            var termsOfUse = _db.TermOfUses.FirstOrDefault(terms => terms.TermId == carrrr.TermId);
+
+            termsOfUse.NoSmoking = smoking;
+            termsOfUse.NoFoodInCar = food;
+            termsOfUse.NoPet = pet;
+            if (specify != null)
+            {
+                termsOfUse.Specify = specify;
+            }
+
+            _db.Update(termsOfUse);
+            _db.SaveChanges();
+
+
+            return RedirectToAction("LoginOwn", "Users");
+        }
     }
 }

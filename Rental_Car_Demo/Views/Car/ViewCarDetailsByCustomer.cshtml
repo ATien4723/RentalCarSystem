@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "ViewCarDetailsByCustomer";
-    Layout = "_LayoutCarOwner";
+    Layout = "_LayoutCus";
 }
 
 <!DOCTYPE html>
@@ -259,6 +259,7 @@
                         <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
                     </div>
                 </div>
+
                 <div id="menu1" class="row container tab-pane fade">
                     <br>
                     <div class="row">
@@ -291,6 +292,8 @@
                         <span class="col-10">@ViewBag.car.Description</span>
                     </div>
                     <div class="row mt-3">
+
+
                         <label class="fw-bold">Additional functions:</label><br />
                         <table class="col-md-2 bg-white ms-5 mt-3">
                             <tr class="row flex items-center">
