@@ -24,6 +24,7 @@
     </div>
 
     <div id="listingContainer">
+
         @foreach (var c in ViewBag.Cars)
         {
             <div class="listingItem container mt-3 p-5">
@@ -129,7 +130,7 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <button class="btn btn-primary w-100">View details</button>
+                        <a href="@Url.Action("ChangeCarDetailsByOwner", "Car", new { CarId = c.CarId })" class="btn btn-primary w-100">View details</a>
                         <button class="btn btn-primary mt-2 w-100">Confirm deposit</button>
                     </div>
                 </div>

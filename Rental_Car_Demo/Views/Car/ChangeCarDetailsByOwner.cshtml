@@ -427,7 +427,7 @@
                                         <p>OR</p>
                                         <a id="selectfile4" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4" required />
+                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4"  />
                                         <img src="~/img/@ViewBag.car.FrontImage"></img>
                                     </div>
                                 </div>
@@ -446,11 +446,12 @@
                                         <p>OR</p>
                                         <a id="selectfile5" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5" required />
+                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5"  />
                                         <img src="~/img/@ViewBag.car.BackImage"></img>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <label class="fw-bold mt-2">Left</label>
@@ -465,7 +466,7 @@
                                         <p>OR</p>
                                         <a id="selectfile6" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6" required />
+                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6"  />
                                         <img src="~/img/@ViewBag.car.LeftImage"></img>
                                     </div>
 
@@ -485,7 +486,7 @@
                                         <p>OR</p>
                                         <a id="selectfile7" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7" required />
+                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7"  />
                                         <img src="~/img/@ViewBag.car.RightImage"></img>
                                     </div>
                                 </div>

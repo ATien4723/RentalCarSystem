@@ -418,7 +418,7 @@ namespace Rental_Car_Demo.Controllers
             _db.AdditionalFunctions.Update(additionalFunction);
             _db.SaveChanges();
 
-            return RedirectToAction("LoginOwn", "Users");
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
 
 
@@ -451,7 +451,7 @@ namespace Rental_Car_Demo.Controllers
             _db.SaveChanges();
 
 
-            return RedirectToAction("LoginOwn", "Users");
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId});
         }
     }
 }

@@ -17,6 +17,26 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\BookingManagement (Interaction Design).drawio.png",
+      "PackagePath": "staticwebassets\\images\\BookingManagement (Interaction Design).drawio.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Edit).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Edit).drawio.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Register).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Register).drawio.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\images\\StateDiagram.drawio.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\.net.png",
+      "PackagePath": "staticwebassets\\img\\.net.png"
+    },
+    {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\1.png",
       "PackagePath": "staticwebassets\\img\\1.png"
     },
@@ -85,6 +105,14 @@
       "PackagePath": "staticwebassets\\img\\Biểu đồ không có tiêu đề-BookingManagement (Algorithm Design).drawio.png"
     },
     {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingInfomation.png",
+      "PackagePath": "staticwebassets\\img\\BookingInfomation.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingManagement (Dynamic Design).drawio (1).png",
+      "PackagePath": "staticwebassets\\img\\BookingManagement (Dynamic Design).drawio (1).png"
+    },
+    {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingManagement (Interaction Design).drawio.png",
       "PackagePath": "staticwebassets\\img\\BookingManagement (Interaction Design).drawio.png"
     },
@@ -119,6 +147,10 @@
     {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\InteractionDesign(Edit).drawio.png",
       "PackagePath": "staticwebassets\\img\\InteractionDesign(Edit).drawio.png"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\InteractionDesign(ForgotPass).drawio.png",
+      "PackagePath": "staticwebassets\\img\\InteractionDesign(ForgotPass).drawio.png"
     },
     {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\InteractionDesign(Login).drawio.png",
@@ -201,6 +233,10 @@
       "PackagePath": "staticwebassets\\img\\StateDiagram.drawio.png"
     },
     {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\StateDiagram2.drawio.png",
+      "PackagePath": "staticwebassets\\img\\StateDiagram2.drawio.png"
+    },
+    {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
       "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
     },
@@ -223,6 +259,10 @@
     {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\blue4.jpg",
       "PackagePath": "staticwebassets\\img\\blue4.jpg"
+    },
+    {
+      "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\cartesianProduct.png",
+      "PackagePath": "staticwebassets\\img\\cartesianProduct.png"
     },
     {
       "Id": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
