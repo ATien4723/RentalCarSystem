@@ -19,6 +19,7 @@ public partial class Car
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
+    [Range(1, 49, ErrorMessage = "Seats must be a integer in range 1-49")]
 
     public int Seats { get; set; }
 
