@@ -249,10 +249,10 @@ namespace Rental_Car_Demo.Controllers
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
-                List<Booking> lBooking = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
-                foreach (Booking booking in lBooking)
+                List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
+                foreach (Booking booking in lBook)
                 {
-                    if (booking.Status == 3)
+                    if (booking.Status == 3|| booking.Status == 4)
                     {
                         checkRent = true;
                         break;
@@ -260,7 +260,29 @@ namespace Rental_Car_Demo.Controllers
                 }
 
             }
+            var lBooking = _db.Bookings.Where(x => x.CarId == CarId).ToList();
 
+            var matchedFeedback = (from feedback in _db.Feedbacks.ToList()
+                                   join booking in lBooking on feedback.BookingNo equals booking.BookingNo
+                                   select feedback).ToList();
+
+            double rating = 0, nor = 0;
+            foreach (Feedback o in matchedFeedback)
+            {
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2) )/ 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+            ViewBag.Rating = rating;
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
             var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
