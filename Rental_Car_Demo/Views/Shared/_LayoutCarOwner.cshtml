@@ -366,7 +366,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
-                            <li><a class="dropdown-item" href="#">My Wallet</a></li>
+                            <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
                             <li><a class="dropdown-item" href="#">My Reports</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -378,7 +378,7 @@
             </div>
         </div>
     </nav>
-    <div class="">
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -444,8 +444,5 @@
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
-      
-
-
 </body>
 </html>
