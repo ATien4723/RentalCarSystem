@@ -20,7 +20,6 @@ public partial class User
 
     public string? NationalId { get; set; }
 
-
     [RegularExpression(@"^0[35789]\d{8}$", ErrorMessage = "Phone number is not valid.")]
     public string Phone { get; set; } = null!;
 
@@ -30,7 +29,7 @@ public partial class User
 
     public decimal? Wallet { get; set; }
 
-    public bool RememberMe { get; set; }
+    public bool RememberMe { get; set; } = false;
 
     public virtual Address? Address { get; set; }
 

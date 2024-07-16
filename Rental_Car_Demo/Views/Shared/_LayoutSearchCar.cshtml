@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@{
+    var userString = Context.Session.GetString("User");
+    User user = null;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        user = JsonConvert.DeserializeObject<User>(userString);
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -249,12 +260,12 @@
                 <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
                    id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
-                    Welcome, Anh Tien
+                    Welcome, @user?.Name
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
-                    <li><a class="dropdown-item" href="#">My Profile</a></li>
+                    <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                     <li><a class="dropdown-item" href="#">My Bookings</a></li>
-                    <li><a class="dropdown-item" href="#">My Wallet</a></li>
+                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
