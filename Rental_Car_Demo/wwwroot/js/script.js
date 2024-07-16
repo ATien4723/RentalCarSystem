@@ -96,3 +96,4 @@ areas.forEach(area => {
         }
     });
 });
+
