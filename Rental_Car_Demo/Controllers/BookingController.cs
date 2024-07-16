@@ -236,7 +236,9 @@ namespace Rental_Car_Demo.Controllers
                         _user.Wallet -= car.Deposit;
                         _context.SaveChanges();
                     }
-                    
+                    car.Status = 2;
+                    _context.SaveChanges();
+
                     var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
