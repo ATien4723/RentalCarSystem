@@ -11,14 +11,14 @@ public partial class Car
     public int? UserId { get; set; }
 
     public string Name { get; set; } = null!;
+
     [Required(ErrorMessage = "LicensePlate is not empty!")]
     [RegularExpression(@"^(1[1-9]|[2-9][0-9])[A-Z](-\d{3}\.\d{2}|-\d{4})$", ErrorMessage = "Must follow format, e.g., 50F-567.89 or 50F-5678")]
     public string LicensePlate { get; set; } = null!;
-    
+
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
-    [Range(1, 49, ErrorMessage = "Seats must be a integer in range 1-49")]
 
     public int Seats { get; set; }
 

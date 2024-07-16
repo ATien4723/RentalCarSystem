@@ -29,7 +29,7 @@ public partial class User
 
     public decimal? Wallet { get; set; }
 
-    public bool RememberMe { get; set; }
+    public bool RememberMe { get; set; } = false;
 
     public virtual Address? Address { get; set; }
 

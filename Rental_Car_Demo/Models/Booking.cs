@@ -11,19 +11,19 @@ public partial class Booking
 
     public int? CarId { get; set; }
 
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public DateOnly EndDate { get; set; }
-
-    public int? DriverId { get; set; }
+    public DateTime EndDate { get; set; }
 
     public int? PaymentMethod { get; set; }
 
     public int? Status { get; set; }
 
-    public virtual Car? Car { get; set; }
+    public int? BookingInfoId { get; set; }
 
-    public virtual Driver? Driver { get; set; }
+    public virtual BookingInfo? BookingInfo { get; set; }
+
+    public virtual Car? Car { get; set; }
 
     public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 

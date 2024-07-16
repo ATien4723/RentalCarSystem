@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@using Newtonsoft.Json
+﻿@using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
     var userString = Context.Session.GetString("User");
@@ -77,11 +72,10 @@
         .row {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
         }
 
         .col-md-4 {
-            flex: 1 1 calc(33.333% - 20px);
+            flex: 1 1 33.333%;
             box-sizing: border-box;
         }
 
@@ -141,6 +135,211 @@
             margin-bottom: 20px;
         }
 
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item {
+            height: 320px;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+       
+
+      
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item {
+            height: 320px;
+        }
+
+   
+
+        .custom-drag-area {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            width: 250px; /* Equivalent to w-88 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+            height: 250px;
+        }
+
+        .custom-drag-area1 {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+        }
+
+        #drag-area4 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area4 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area5 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area5 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area6 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area6 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area7 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area7 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+
+    </style>
+
+    <!-- css My Car -->
+    <style>
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item {
+            height: 350px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" fill="%23000000" viewBox="0 0 16 16"%3e%3cpath d="M11.354 1.354a.5.5 0 0 1 0 .707L6.207 7.5l5.147 5.146a.5.5 0 0 1-.708.708l-5.5-5.5a.5.5 0 0 1 0-.708l5.5-5.5a.5.5 0 0 1 .708 0z"/%3e%3c/svg%3e');
+        }
+
+        .pagination-num.current {
+            background-color: blue;
+            color: white; /* Optional: Makes the text color white for better contrast */
+            border: none; /* Optional: Removes the border if you want a cleaner look */
+            padding: 9px 14px; /* Optional: Adjust padding for better spacing */
+            cursor: pointer; /* Optional: Changes the cursor to a pointer to indicate it's clickable */
+        }
+        .pagination-controls button,
+        .pagination-controls select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .pagination-controls button:hover,
+            .pagination-controls select:hover {
+                background-color: #e0e0e0;
+            }
     </style>
 </head>
 <body>
@@ -160,13 +359,13 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                           data-bs-toggle="dropdown">
                             Hello, @user.Name
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">My Profile</a></li>
-                            <li><a class="dropdown-item" href="#">My Cars</a></li>
-                            <li><a class="dropdown-item" href="#">My Wallet</a></li>
+                            <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                            <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
+                            <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
                             <li><a class="dropdown-item" href="#">My Reports</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -227,8 +426,17 @@
             </div>
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/editcar.js" asp-append-version="true"></script>
+
+
+
+
     <script>
         function submitLogout() {
             document.getElementById('logoutForm').submit();

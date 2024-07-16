@@ -13,7 +13,7 @@ public partial class Feedback
 
     public string? Content { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     public virtual Booking? BookingNoNavigation { get; set; }
 }

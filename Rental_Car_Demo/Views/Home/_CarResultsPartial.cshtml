@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Rental_Car_Demo.Models.Car>
+
+@foreach (var car in Model)
+{
+    <div class="col-md-4 mb-4 car-item">
+        <div class="card">
+            <img src="~/img/sieuxe1.jpeg" class="card-img-top" alt="@car.Name">
+            <div class="card-body">
+                <h5 class="card-title">@car.Name</h5>
+                <div class="details">
+                    <p class="card-text">
+                        <i class="fa-sharp fa-solid fa-location-smile"></i>
+                        <span>
+                            @car.Address.District?.DistrictName, @car.Address.City?.CityProvince
+                        </span>
+                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="card-text">
+                                <i class="fa-solid fa-person-seat icon"></i> @car.Seats
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <p class="card-text">
+                                <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
+                            </p>
+                        </div>
+                    </div>
+                    <p class="card-text">
+                        <i class="fa-sharp fa-regular fa-calendar-days icon"></i> @car.ProductionYear
+                    </p>
+                </div>
+                <p class="price">@car.BasePrice.ToString("N0")VND</p>
+            </div>
+        </div>
+    </div>
+}

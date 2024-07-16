@@ -79,17 +79,39 @@ namespace Rental_Car_Demo.Repository.UserRepository
             try
             {
                 using var context = new RentCarDbContext();
-                User _user = GetUserById(user.UserId);
+                User _user = context.Users.Find(user.UserId);
                 if (_user == null)
                 {
                     return "This user does not already exist.";
                 }
+
                 bool emailExists = context.Users.Any(u => u.Email == user.Email && u.UserId != user.UserId);
                 if (emailExists)
                 {
                     return "Email already existed. Please try another email.";
                 }
-                context.Update(user);
+
+                // Cập nhật các thuộc tính khác ngoại trừ Password
+                _user.Email = user.Email;
+                _user.RememberMe = user.RememberMe;
+                _user.Role = user.Role;
+                _user.Name = user.Name;
+                _user.Dob = user.Dob;
+                _user.NationalId = user.NationalId;
+                _user.Phone = user.Phone;
+                _user.AddressId = user.AddressId;
+                _user.DrivingLicense = user.DrivingLicense;
+                _user.Wallet = user.Wallet;
+                _user.Address = user.Address;
+                _user.Bookings = user.Bookings;
+                _user.Cars = user.Cars;
+
+                // Chỉ cập nhật mật khẩu nếu có mật khẩu mới
+                if (!string.IsNullOrEmpty(user.Password))
+                {
+                    _user.Password = user.Password;
+                }
+
                 context.SaveChanges();
                 return null;
             }
@@ -98,6 +120,7 @@ namespace Rental_Car_Demo.Repository.UserRepository
                 throw new Exception(ex.Message);
             }
         }
+
 
         public void Delete(int userId)
         {
