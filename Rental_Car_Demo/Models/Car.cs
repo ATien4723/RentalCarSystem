@@ -14,7 +14,7 @@ public partial class Car
     [Required(ErrorMessage = "LicensePlate is not empty!")]
     [RegularExpression(@"^(1[1-9]|[2-9][0-9])[A-Z](-\d{3}\.\d{2}|-\d{4})$", ErrorMessage = "Must follow format, e.g., 50F-567.89 or 50F-5678")]
     public string LicensePlate { get; set; } = null!;
-    
+
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
@@ -62,6 +62,8 @@ public partial class Car
     public int FucntionId { get; set; }
 
     public int Status { get; set; }
+
+    public int NoOfRide { get; set; }
 
     public virtual Address Address { get; set; } = null!;
 

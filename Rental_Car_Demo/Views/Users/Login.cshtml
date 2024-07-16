@@ -19,10 +19,12 @@
                         <span class="text-danger" id="loginEmailError"></span>
                     </div>
                     <div class="mb-3 position-relative">
-                        <label for="loginPassword" class="form-label">Password</label>
-                        @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
-                        <span class="text-danger" id="loginPasswordError"></span>
-                        <i class="bx bx-low-vision toggle-password3" id="toggleLoginPassword"></i>
+                        <div class="abccc" style="position:relative;">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
+                            <span class="text-danger" id="loginPasswordError"></span>
+                            <i class="bx bx-low-vision toggle-password3" id="toggleLoginPassword"></i>
+                        </div>
                     </div>
                     @if (!string.IsNullOrEmpty(ViewBag.Error))
                     {
