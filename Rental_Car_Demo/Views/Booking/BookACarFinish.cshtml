@@ -123,7 +123,7 @@
     <div class="cont" id="step3" style="margin-left: 44px; font-size: 1.3em;">
         <!-- Step 3 content -->
         <strong class="mb-2">
-            You've successfully booked @ViewBag.CarName from @ViewBag.StartDate to @ViewBag.EndDate.
+            You've successfully booked @ViewBag.CarName from @ViewBag.StartDate.ToString("dd/MM/yyyy - HH:mm tt") to @ViewBag.EndDate.ToString("dd/MM/yyyy - HH:mm tt").
         </strong><br />
         <strong class="mb-2">
             Your booking number is: @ViewBag.BookingNo
@@ -136,11 +136,11 @@
     </div>
     <div class="form-group mt-2 row justify-content-center">
         <div class="d-flex justify-content-center align-items-center mt-3">
-            <a href="/Verify/LoginCus" class="btn btn-outline-secondary" style="padding: 0; text-decoration: underline; border: none;">
+            <a href="/Users/LoginCus" class="btn btn-outline-secondary" style="padding: 0; text-decoration: underline; border: none;">
                 Go to homepage
             </a>
-            <a href="/Booking/BookACar" class="btn btn-secondary ms-5">Book another car</a>
-            <a href="/Booking/ViewBooking/" class="btn btn-primary ms-5">View Booking</a>
+            <a href="/Users/LoginCus" class="btn btn-secondary ms-5">Book another car</a>
+            <a href="#" class="btn btn-primary ms-5">View Booking</a>
         </div>
     </div>
 </div>

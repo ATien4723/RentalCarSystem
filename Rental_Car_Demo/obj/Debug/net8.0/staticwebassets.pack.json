@@ -5,10 +5,6 @@
       "PackagePath": "staticwebassets\\Rental_Car_Demo.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
-    },
-    {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\css\\style.css",
       "PackagePath": "staticwebassets\\css\\style.css"
     },
@@ -21,132 +17,84 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\1.png",
-      "PackagePath": "staticwebassets\\img\\1.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\BookingManagement (Interaction Design).drawio.png",
+      "PackagePath": "staticwebassets\\images\\BookingManagement (Interaction Design).drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\10.png",
-      "PackagePath": "staticwebassets\\img\\10.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Edit).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Edit).drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\11.png",
-      "PackagePath": "staticwebassets\\img\\11.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Register).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Register).drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\12.png",
-      "PackagePath": "staticwebassets\\img\\12.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\images\\StateDiagram.drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\13.png",
-      "PackagePath": "staticwebassets\\img\\13.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\2.png",
-      "PackagePath": "staticwebassets\\img\\2.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\3.png",
-      "PackagePath": "staticwebassets\\img\\3.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
-      "PackagePath": "staticwebassets\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\4.png",
-      "PackagePath": "staticwebassets\\img\\4.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\5.png",
-      "PackagePath": "staticwebassets\\img\\5.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\6.png",
-      "PackagePath": "staticwebassets\\img\\6.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\69305547_412286172731576_1974067415641751552_n.jpg",
-      "PackagePath": "staticwebassets\\img\\69305547_412286172731576_1974067415641751552_n.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\7.png",
-      "PackagePath": "staticwebassets\\img\\7.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\8.png",
-      "PackagePath": "staticwebassets\\img\\8.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\.net.png",
+      "PackagePath": "staticwebassets\\img\\.net.png"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\9.png",
       "PackagePath": "staticwebassets\\img\\9.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\DJI_0550-HDR-Pano.jpg",
-      "PackagePath": "staticwebassets\\img\\DJI_0550-HDR-Pano.jpg"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingInfomation.png",
+      "PackagePath": "staticwebassets\\img\\BookingInfomation.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Introduce to Internet of things.png",
-      "PackagePath": "staticwebassets\\img\\Introduce to Internet of things.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingManagement (Dynamic Design).drawio.png",
+      "PackagePath": "staticwebassets\\img\\BookingManagement (Dynamic Design).drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-09-29 155720.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-09-29 155720.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Buicklg.png",
+      "PackagePath": "staticwebassets\\img\\Buicklg.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 140917.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 140917.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\ClassUserManager.drawio.png",
+      "PackagePath": "staticwebassets\\img\\ClassUserManager.drawio.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 150501.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 150501.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 072957.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 072957.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-09 154528.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-09 154528.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073020.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073020.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171135.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171135.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073122.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073122.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171551.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171551.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 075227.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 075227.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171611.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171611.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102455.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102455.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-03 142857.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-03 142857.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102625.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102625.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-05 201141.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-05 201141.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102746.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102746.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-26 093359.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-26 093359.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-23 210900.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-02-23 210900.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 103754.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 103754.png"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 074812.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 074812.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 123406.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 123406.png"
-    },
-    {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 123725.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 123725.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-16 172919.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-16 172919.png"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 073652.png",
@@ -185,10 +133,6 @@
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-26 063624.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-04-12 005142.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-04-12 005142.png"
-    },
-    {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-07-09 095802.png",
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-07-09 095802.png"
     },
@@ -197,212 +141,52 @@
       "PackagePath": "staticwebassets\\img\\Screenshot 2024-07-12 070136.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
-      "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\img\\StateDiagram.drawio.png"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\acuralg.png",
+      "PackagePath": "staticwebassets\\img\\acuralg.png"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\battery.png",
+      "PackagePath": "staticwebassets\\img\\battery.png"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
       "PackagePath": "staticwebassets\\img\\batteryDetail.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
-      "PackagePath": "staticwebassets\\img\\conservation mode.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
-      "PackagePath": "staticwebassets\\img\\convinent.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da lat.jpeg",
-      "PackagePath": "staticwebassets\\img\\da lat.jpeg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\da nang hoi an.jpg",
-      "PackagePath": "staticwebassets\\img\\da nang hoi an.jpg"
-    },
-    {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\download.png",
       "PackagePath": "staticwebassets\\img\\download.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\elonmusk.jpg",
-      "PackagePath": "staticwebassets\\img\\elonmusk.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\filetest.png",
-      "PackagePath": "staticwebassets\\img\\filetest.png"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\giay-phep-lai-xe.jpg",
       "PackagePath": "staticwebassets\\img\\giay-phep-lai-xe.jpg"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\hanoi.jpeg",
-      "PackagePath": "staticwebassets\\img\\hanoi.jpeg"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jagulg.png",
+      "PackagePath": "staticwebassets\\img\\jagulg.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\headphone.png",
-      "PackagePath": "staticwebassets\\img\\headphone.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\nissanlg.png",
+      "PackagePath": "staticwebassets\\img\\nissanlg.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbezoa.jpg",
-      "PackagePath": "staticwebassets\\img\\jeffbezoa.jpg"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\pexels-a2pro-3422964.jpg",
+      "PackagePath": "staticwebassets\\img\\pexels-a2pro-3422964.jpg"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\jeffbz2.jpg",
-      "PackagePath": "staticwebassets\\img\\jeffbz2.jpg"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\pexels-aidanj-687653.jpg",
+      "PackagePath": "staticwebassets\\img\\pexels-aidanj-687653.jpg"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\legal.png",
-      "PackagePath": "staticwebassets\\img\\legal.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\subarulg.png",
+      "PackagePath": "staticwebassets\\img\\subarulg.png"
     },
     {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar.jpg",
-      "PackagePath": "staticwebassets\\img\\lookcar.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\lookcar2.jpg",
-      "PackagePath": "staticwebassets\\img\\lookcar2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\markzuck.jpg",
-      "PackagePath": "staticwebassets\\img\\markzuck.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\nha trang.jpeg",
-      "PackagePath": "staticwebassets\\img\\nha trang.jpeg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\quang ninh.jpg",
-      "PackagePath": "staticwebassets\\img\\quang ninh.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\rentcar1.jpg",
-      "PackagePath": "staticwebassets\\img\\rentcar1.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe1.jpeg",
-      "PackagePath": "staticwebassets\\img\\sieuxe1.jpeg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe2.jpg",
-      "PackagePath": "staticwebassets\\img\\sieuxe2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe3.jpg",
-      "PackagePath": "staticwebassets\\img\\sieuxe3.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe4.jpg",
-      "PackagePath": "staticwebassets\\img\\sieuxe4.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe5.jpg",
-      "PackagePath": "staticwebassets\\img\\sieuxe5.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\sieuxe6.png",
-      "PackagePath": "staticwebassets\\img\\sieuxe6.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\tet man hinh1.png",
-      "PackagePath": "staticwebassets\\img\\tet man hinh1.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook.jpg",
-      "PackagePath": "staticwebassets\\img\\timcook.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook2.jpg",
-      "PackagePath": "staticwebassets\\img\\timcook2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook3.jpeg",
-      "PackagePath": "staticwebassets\\img\\timcook3.jpeg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\timcook4.jpg",
-      "PackagePath": "staticwebassets\\img\\timcook4.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay1.jpg",
-      "PackagePath": "staticwebassets\\img\\xechay1.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay2.jpg",
-      "PackagePath": "staticwebassets\\img\\xechay2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\xechay3.jpg",
-      "PackagePath": "staticwebassets\\img\\xechay3.jpg"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 141854.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 141854.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 143012.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 143012.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155036.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155036.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155425.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155425.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075144.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075144.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075345.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075345.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 080919.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 080919.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 091518.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 091518.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 092227.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 092227.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 094308.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 094308.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095550.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095550.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095650.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095650.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 193247.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 193247.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 232848.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 232848.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-19 104848.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-19 104848.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-27 102003.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-27 102003.png"
-    },
-    {
-      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-28 103654.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-28 103654.png"
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\editcar.js",
+      "PackagePath": "staticwebassets\\js\\editcar.js"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\script.js",
@@ -479,6 +263,22 @@
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css"
+    },
+    {
+      "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map"
     },
     {
       "Id": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",

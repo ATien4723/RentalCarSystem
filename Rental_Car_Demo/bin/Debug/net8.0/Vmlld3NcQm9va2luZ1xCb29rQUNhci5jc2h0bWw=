@@ -107,7 +107,7 @@
 
 
 <div class="mt-2 mb-2">
-    <a asp-controller="Verify" asp-action="LoginCus">Home</a> > Book car
+    <a asp-controller="Users" asp-action="LoginCus">Home</a> > Book car
 </div>
 
 <div class="row">
@@ -174,7 +174,7 @@
 
     <div class="progress-container">
         <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
-        <div class="step" onclick="navigateTo(1)">Step 2: Payment</div>
+        <div class="step">Step 2: Payment</div>
         <div class="step">Step 3: Finish</div>
     </div>
 
@@ -467,7 +467,7 @@
                     <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
                 </div>
                 <div class="d-flex justify-content-center align-items-center mt-3">
-                    <a asp-controller="Verify" asp-action="LoginCus" type="button" class="btn btn-outline-secondary"
+                    <a asp-controller="Users" asp-action="LoginCus" type="button" class="btn btn-outline-secondary"
                         style="padding: 0;text-decoration: underline;border: none;">
                         Cancel
                     </a>

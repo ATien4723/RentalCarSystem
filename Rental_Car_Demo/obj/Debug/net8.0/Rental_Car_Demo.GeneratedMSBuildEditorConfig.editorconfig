@@ -26,14 +26,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\decid\OneDrive\Desktop\PojectFsoft\rental-car\Rental_Car_Demo
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Account/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Booking/BookACar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29rQUNhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,6 +38,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Car/ChangeCarDetailsByOwner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXENoYW5nZUNhckRldGFpbHNCeU93bmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Car/ViewCarDetailsByCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdDYXJEZXRhaWxzQnlDdXN0b21lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Car/ViewMyCars.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdNeUNhcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -54,20 +58,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Home/SearchCarForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWFyY2hDYXJGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Home/_CarResultsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfQ2FyUmVzdWx0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Payment/MyWallet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxNeVdhbGxldC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/LayoutCarOwner.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dENhck93bmVyLmNzaHRtbA==
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_LayoutCarOwner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDYXJPd25lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/LayoutCus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dEN1cy5jc2h0bWw=
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_LayoutCus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDdXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_LayoutRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_LayoutSearchCar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRTZWFyY2hDYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_LayoutWallet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRXYWxsZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Shared/_ValidationScriptsPartial.cshtml]
@@ -78,32 +102,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/Fail.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XEZhaWwuY3NodG1s
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/Fail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRmFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/Guest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XEd1ZXN0LmNzaHRtbA==
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/Guest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcR3Vlc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/LoginCus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcTG9naW5DdXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/LoginOwn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcTG9naW5Pd24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVzZXRQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Users/ResetPassword2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVzZXRQYXNzd29yZDIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/LoginCus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luQ3VzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/LoginOwn.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luT3duLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/ResetPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XFJlc2V0UGFzc3dvcmQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/Verify/ResetPassword2.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XFJlc2V0UGFzc3dvcmQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/decid/OneDrive/Desktop/PojectFsoft/rental-car/Rental_Car_Demo/Views/_ViewImports.cshtml]

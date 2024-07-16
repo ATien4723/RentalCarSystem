@@ -439,7 +439,7 @@ namespace Rental_Car_Demo.Controllers
                 currentUser.Name = user.Name; // Assuming UserName is the property you want to update
                 HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
 
-                return RedirectToAction("LoginCus", "Verify");
+                return RedirectToAction("LoginCus", "Users");
             }
             catch (Exception ex)
             {
