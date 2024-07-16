@@ -453,5 +453,18 @@ namespace Rental_Car_Demo.Controllers
 
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId});
         }
+
+        [HttpPost]
+        public IActionResult ChangeCarStatus(Car car)
+        {
+            var carId = car.CarId;
+            var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
+
+            carrrr.Status = car.Status;
+            _db.Update(carrrr);
+            _db.SaveChanges();
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
+
+        }
     }
 }

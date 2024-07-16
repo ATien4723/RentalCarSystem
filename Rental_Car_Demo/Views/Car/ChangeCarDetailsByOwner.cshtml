@@ -89,18 +89,19 @@
 
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Status:</label>
-                    @if (@ViewBag.car.Status == 1)
-                    {
-                        <label class="col-5 fw-bold text-success">Available</label>
-                    }
-                    else if (@ViewBag.car.Status == 2)
-                    {
-                        <label class="col-5 fw-bold text-primary">Booked</label>
-                    }
-                    else
-                    {
-                        <label class="col-5 fw-bold text-danger">Stopped</label>
-                    }
+                    <div class="col-5">
+                        <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
+                            <select id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
+                            {
+                                new { Value = "1", Text = "Available" },
+                                new { Value = "2", Text = "Booked" },
+                                new { Value = "3", Text = "Stopped" }
+                            }, "Value", "Text", @ViewBag.car.Status))">
+                            </select>
+                            <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
+                            <input type="hidden" asp-for="CarId" value="@Model.CarId" />
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -224,7 +225,7 @@
 
 
                 @* <form asp-action="ChangeCarDetailsByOwner" asp-controller="Car" method="post" > *@
-                
+
 
                 <div id="menu1" class="row container-fluid tab-pane fade">
                     <br>
@@ -427,7 +428,7 @@
                                         <p>OR</p>
                                         <a id="selectfile4" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4"  />
+                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4" />
                                         <img src="~/img/@ViewBag.car.FrontImage"></img>
                                     </div>
                                 </div>
@@ -446,7 +447,7 @@
                                         <p>OR</p>
                                         <a id="selectfile5" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5"  />
+                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5" />
                                         <img src="~/img/@ViewBag.car.BackImage"></img>
                                     </div>
                                 </div>
@@ -466,7 +467,7 @@
                                         <p>OR</p>
                                         <a id="selectfile6" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6"  />
+                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6" />
                                         <img src="~/img/@ViewBag.car.LeftImage"></img>
                                     </div>
 
@@ -486,7 +487,7 @@
                                         <p>OR</p>
                                         <a id="selectfile7" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7"  />
+                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7" />
                                         <img src="~/img/@ViewBag.car.RightImage"></img>
                                     </div>
                                 </div>
@@ -731,5 +732,37 @@
             });
         });
     </script>
+
+
+    <!--  show change status diaglog  -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusDropdown = document.getElementById('statusDropdown');
+            const previousStatusInput = document.getElementById('previousStatus');
+            const statusForm = document.getElementById('statusForm');
+
+            statusDropdown.addEventListener('change', function () {
+                const newStatus = statusDropdown.value;
+                const previousStatus = previousStatusInput.value;
+
+                if (previousStatus == "2") {
+                    // If the status is "Booked", show a message and revert the change
+                    alert("Cannot change status!");
+                    statusDropdown.value = previousStatus;
+                } else {
+                    if (confirm("Are you sure you want to change the status?")) {
+                        // User confirmed the change, update the hidden input
+                        previousStatusInput.value = newStatus;
+                        // Submit the form
+                        statusForm.submit();
+                    } else {
+                        // User canceled the change, revert the dropdown to the previous status
+                        statusDropdown.value = previousStatus;
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 

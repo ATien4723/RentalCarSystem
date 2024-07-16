@@ -15,6 +15,10 @@ public partial class Address
 
     public string? HouseNumberStreet { get; set; }
 
+    public virtual ICollection<BookingInfo> BookingInfoDriverAddresses { get; set; } = new List<BookingInfo>();
+
+    public virtual ICollection<BookingInfo> BookingInfoRenterAddresses { get; set; } = new List<BookingInfo>();
+
     public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
 
     public virtual City? City { get; set; }

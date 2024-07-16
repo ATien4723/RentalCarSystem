@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Rental_Car_Demo.Models;
 
@@ -8,11 +7,9 @@ public partial class User
 {
     public int UserId { get; set; }
 
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    public string Password { get; set; }
-
-    public bool RememberMe { get; set; }
+    public string Password { get; set; } = null!;
 
     public bool? Role { get; set; }
 
@@ -22,7 +19,6 @@ public partial class User
 
     public string? NationalId { get; set; }
 
-    [RegularExpression(@"^0[35789]\d{8}$", ErrorMessage = "Phone number is not valid.")]
     public string Phone { get; set; } = null!;
 
     public int? AddressId { get; set; }
@@ -30,6 +26,8 @@ public partial class User
     public string? DrivingLicense { get; set; }
 
     public decimal? Wallet { get; set; }
+
+    public bool RememberMe { get; set; }
 
     public virtual Address? Address { get; set; }
 
