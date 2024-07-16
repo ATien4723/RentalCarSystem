@@ -1,7 +1,4 @@
 ﻿
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     // Toggle password visibility
@@ -93,18 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    let currentDate = new Date();
 
 
-    let formattedDate = currentDate.toISOString().slice(0, 10);
-    let formattedTime = currentDate.toTimeString().slice(0, 5);
 
-
-    document.getElementById("myDateInput").value = formattedDate;
-    document.getElementById("myTimeInput").value = formattedTime;
-    document.getElementById("dropDateInput").value = formattedDate;
-    document.getElementById("dropTimeInput").value = formattedTime;
-});
 

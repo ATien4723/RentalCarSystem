@@ -80,4 +80,6 @@ public partial class Car
     public virtual TermOfUse Term { get; set; } = null!;
 
     public virtual User? User { get; set; }
+
+
 }

@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<Car>
+
 @{
-    ViewData["Title"] = "SearchCar";
+    ViewData["Title"] = "SearchCarForm";
     Layout = "_LayoutSearchCar";
 }
-<div class="main-content mt-3">
+<div id="carResultss" class="main-content mt-3">
 
     <div class="container my-1">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="homeCustomer.html">Home</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Users" asp-action="LoginCus">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Search Results</li>
             </ol>
         </nav>
@@ -23,32 +24,15 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div class="collapse" id="carTypeOptions">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="superCars">
-                            <p class="form-check-label" for="superCars">BMW</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="suvs" checked>
-                            <p class="form-check-label" for="suvs">Honda</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="coupes">
-                            <p class="form-check-label" for="coupes">KIA</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="convertibles">
-                            <p class="form-check-label" for="convertibles">Toyota</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="luxurySedans">
-                            <p class="form-check-label" for="luxurySedans">Mazda</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="hatchbacks">
-                            <p class="form-check-label" for="hatchbacks">Lamborghini</p>
-                        </div>
+                        @foreach ( var car in Model.Select (c => c.Brand.BrandName).Distinct () ) {
+                            <div class="form-check">
+                                <input class="form-check-input brandNameCheckbox" type="checkbox" name="brandName" value="@car">
+                                <p class="form-check-label">@car</p>
+                            </div>
+                        }
                     </div>
                 </div>
+
                 <div class="filters mb-3">
                     <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                            data-bs-target="#seatingCapacityOptions" aria-expanded="false"
@@ -57,19 +41,13 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div class="collapse" id="seatingCapacityOptions">
-                        <!-- Add Seating Capacity options here -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="fourSeater">
-                            <p class="form-check-label" for="fourSeater">4 Seater</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="fiveSeater">
-                            <p class="form-check-label" for="fiveSeater">5 Seater</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sevenSeater">
-                            <p class="form-check-label" for="sevenSeater">7 Seater</p>
-                        </div>
+                        @foreach ( var car in Model.Select (c => c.Seats).Distinct () ) {
+                            <!-- Add Seating Capacity options here -->
+                            <div class="form-check">
+                                <input class="form-check-input seatsCheckbox" type="checkbox" id="seats-@car" value="@car">
+                                <p class="form-check-label" for="seats-@car">@car</p>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="filters mb-3">
@@ -81,14 +59,12 @@
                     </label>
                     <div class="collapse" id="gearTransmissionOptions">
                         <!-- Add Gear Transmission options here -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="automatic">
-                            <p class="form-check-label" for="automatic">Automatic</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="manual">
-                            <p class="form-check-label" for="manual">Manual</p>
-                        </div>
+                        @foreach ( var car in Model.Select (c => c.TransmissionType).Distinct () ) {
+                            <div class="form-check">
+                                <input class="form-check-input transmissionCheckbox" type="checkbox" id="transmission-@car" value="@car">
+                                <p class="form-check-label" for="transmission-@car">@(car ? "Automatic" : "Manual")</p>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="filters mb-3">
@@ -98,19 +74,33 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div class="collapse" id="priceRangeOptions">
-                        <!-- Add Price Range options here -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="lowRange">
-                            <p class="form-check-label" for="lowRange">$0 - $100</p>
+                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="lowRange" value="0-100">
+                            <p class="form-check-label" for="lowRange">0 - 100VND</p>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="midRange">
-                            <p class="form-check-label" for="midRange">$100 - $300</p>
+                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="midRange" value="100-1300">
+                            <p class="form-check-label" for="midRange">100 - 1000VND</p>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="highRange">
-                            <p class="form-check-label" for="highRange">$300 - $500</p>
+                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="highRange" value="1300-2500">
+                            <p class="form-check-label" for="highRange">1300 - 2500VND</p>
                         </div>
+                    </div>
+                </div>
+
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#brandsOptions" aria-expanded="false" aria-controls="brandsOptions">
+                        Brands
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div id="brandsOptions" class="collapse">
+                        @foreach ( var brand in Model.Select (c => c.Brand).Distinct () ) {
+                            <div class="brand-item form-check" onclick="performBrandSearch('@brand.BrandName')">
+                                <img src="@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
+                            </div>
+                        }
                     </div>
                 </div>
                 <!-- Other filters can be added here -->
@@ -119,18 +109,24 @@
                 <div class="mb-4">
                     <h5 class="mb-3 details-label">Pickup Details</h5>
                     <div class="d-flex mb-3 details-item">
-                        <input type="text" class="form-control me-2 details-input" placeholder="Location">
-                        <input type="date" class="form-control me-2 details-input" id="myDateInput">
-                        <input type="time" class="form-control details-input" id="myTimeInput">
+                        <input type="text" class="form-control me-2 details-input" id="pickupLocation" name="pickupLocation" placeholder="Location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
+                        <datalist id="pickupLocationSuggestions"></datalist>
+                        <input type="date" class="form-control me-2 details-input" id="pickupDateInput">
+                        <input type="time" class="form-control details-input" id="pickupTimeInput">
+                        <button type="button" class="btn btn-secondary" onclick="resetLocationInput('pickupLocation')">Clear</button>
                     </div>
                     <h5 class="mb-3 details-label">Drop off Details</h5>
                     <div class="d-flex mb-3 details-item">
-                        <input type="text" class="form-control me-2 details-input" placeholder="Drop Location">
+                        <input type="text" class="form-control me-2 details-input" id="dropLocation" name="dropLocation" placeholder="Drop Location" onkeyup="fetchSuggestions(this.value, 'dropLocation')" list="dropLocationSuggestions" onchange="handleSelection(event)">
+                        <datalist id="dropLocationSuggestions"></datalist>
                         <input type="date" class="form-control me-2 details-input" id="dropDateInput">
                         <input type="time" class="form-control details-input" id="dropTimeInput">
+                        <button type="button" class="btn btn-secondary" onclick="resetLocationInput('dropLocation')">Clear</button>
                     </div>
                 </div>
-                <div class="row">
+
+
+                <div id="carResults" class="row">
                     @foreach ( var car in Model ) {
                         <div class="col-md-4 mb-4">
                             <div class="card">
@@ -139,7 +135,10 @@
                                     <h5 class="card-title">@car.Name</h5>
                                     <div class="details">
                                         <p class="card-text">
-                                            <i class="fa-solid fa-location-dot icon"></i> @car.Address.City
+                                            <i class="fa-sharp fa-solid fa-location-smile"></i>
+                                            <span>
+                                                @car.Address.District?.DistrictName, @car.Address.City?.CityProvince
+                                            </span>
                                         </p>
                                         <div class="row">
                                             <div class="col-6">
@@ -165,7 +164,7 @@
                                             <i class="fa-sharp fa-regular fa-calendar-days icon"></i> @car.ProductionYear
                                         </p>
                                     </div>
-                                    <p class="price">@car.BasePrice $</p>
+                                    <p class="price">@car.BasePrice.ToString("N0")VND</p>
                                 </div>
                             </div>
                         </div>
@@ -175,6 +174,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 

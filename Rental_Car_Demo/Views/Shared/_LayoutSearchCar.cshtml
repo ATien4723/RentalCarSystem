@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/style.css">
-    <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -166,9 +165,9 @@
             border-radius: 5px;
         }
 
-            .details-item .form-control:focus {
+        .details-item .form-control:focus {
                 box-shadow: none;
-            }
+        }
 
         .card .btn {
             position: absolute;
@@ -194,6 +193,45 @@
         .icon {
             font-size: 20px;
         }
+
+        .form-check {
+            margin-right: 10px;
+        }
+
+            .form-check img {
+                cursor: pointer;
+            }
+
+        .brand-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .brand-item {
+            cursor: pointer;
+            text-align: center;
+        }
+
+            .brand-item img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                border: 2px solid transparent;
+                transition: border-color 0.3s ease;
+            }
+
+        .brand-label {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .brand-item.selected img{
+            border-color: blue;
+        }
+        
     </style>
 </head>
 
@@ -213,7 +251,7 @@
                     <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
                     Welcome, Anh Tien
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
                     <li><a class="dropdown-item" href="#">My Profile</a></li>
                     <li><a class="dropdown-item" href="#">My Bookings</a></li>
                     <li><a class="dropdown-item" href="#">My Wallet</a></li>
@@ -225,14 +263,209 @@
             </div>
         </div>
     </header>
-    <div class="container">
+    <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   @*  <script src="~/js/site.js" asp-append-version="true"></script> *@
+
+    <script>
+        $(document).ready(function () {
+            function performSearch() {
+                var selectedBrands = [];
+                $(".brandNameCheckbox:checked").each(function () {
+                    selectedBrands.push($(this).val());
+                });
+
+                var selectedSeats = [];
+                $(".seatsCheckbox:checked").each(function () {
+                    selectedSeats.push($(this).val());
+                });
+
+                var selectedTransmissions = [];
+                $(".transmissionCheckbox:checked").each(function () {
+                    var transmissionValue = ($(this).val() === "true");
+                    selectedTransmissions.push(transmissionValue);
+                });
+
+                var selectedBrandLogos = [];
+                $(".brandLogoCheckbox:checked").each(function () {
+                    selectedBrandLogos.push($(this).val());
+                });
+
+                $.ajax({
+                    url: "/Home/SearchCar",
+                    type: "GET",
+                    traditional: true,
+                    data: {
+                        brandName: selectedBrands,
+                        seats: selectedSeats,
+                        transmissionType: selectedTransmissions
+                    },
+                    success: function (data) {
+                        $("#carResults").html(data);
+                    },
+                    error: function (error) {
+                        console.log("Error performing search: " + error);
+                    }
+                });
+            }
+
+            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox").change(function (event) {
+                event.preventDefault();
+                performSearch();
+            });
+        });
+
+        function performBrandSearch(brandName) {
+            $.ajax({
+                url: "/Home/SearchCar",
+                type: "GET",
+                traditional: true,
+                data: {
+                    brandName: brandName
+                },
+                success: function (data) {
+                    $("#carResults").html(data);
+                },
+                error: function (error) {
+                    console.log("Error performing search: " + error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(".brand-item img").click(function () {
+                var brandName = $(this).attr("alt");
+                performBrandSearch(brandName);
+            });
+        });
+
+
+         function performPriceRangeSearch() {
+                var selectedPriceRanges = [];
+                $(".priceRangeCheckbox:checked").each(function () {
+                    selectedPriceRanges.push($(this).val());
+                });
+
+                var minPrice = null;
+                var maxPrice = null;
+
+                selectedPriceRanges.forEach(function (range) {
+                    var bounds = range.split('-');
+                    var lowerBound = parseFloat(bounds[0]);
+                    var upperBound = parseFloat(bounds[1]);
+
+                    if (minPrice === null || lowerBound < minPrice) {
+                        minPrice = lowerBound;
+                    }
+                    if (maxPrice === null || upperBound > maxPrice) {
+                        maxPrice = upperBound;
+                    }
+                });
+
+                $.ajax({
+                    url: "/Home/SearchCar",
+                    type: "GET",
+                    data: {
+                        minPrice: minPrice,
+                        maxPrice: maxPrice
+                    },
+                    success: function (data) {
+                        $("#carResults").html(data);
+                    },
+                    error: function (error) {
+                        console.log("Error performing search: " + error);
+                    }
+                });
+            }
+
+        $(document).ready(function () {
+            $(".priceRangeCheckbox").change(function () {
+                performPriceRangeSearch();
+            });
+        });
+
+
+        function fetchSuggestions(query, inputId) {
+            if (query.length < 2) return; // Only fetch suggestions if the query is at least 2 characters long
+
+            fetch('/Home/GetSuggestions?query=' + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                    let suggestions = data.map(item => `<option value="${item}">`).join('');
+                    document.getElementById(inputId + "Suggestions").innerHTML = suggestions;
+                })
+                .catch(error => console.error('Error fetching suggestions:', error));
+        }
+
+        function handleSelection(event) {
+            let selectedAddress = event.target.value;
+            if (selectedAddress.trim() === "") {
+                resetCarList();
+            } else {
+                searchCars(selectedAddress);
+            }
+        }
+
+        function resetLocationInput(inputId) {
+            document.getElementById(inputId).value = ''; 
+            document.getElementById(inputId + "Suggestions").innerHTML = ''; 
+            searchAllCars(); 
+        }
+
+        function resetCarList() {
+            document.getElementById('carResults').innerHTML = ''; 
+        }
+
+        function searchAllCars() {
+            fetch('/Home/SearchCar')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('carResults').innerHTML = html;
+                })
+                .catch(error => console.error('Error searching all cars:', error));
+        }
+
+        function searchCars(address) {
+            fetch('/Home/SearchCar?address=' + encodeURIComponent(address))
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('carResults').innerHTML = html;
+                })
+                .catch(error => console.error('Error searching cars:', error));
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let currentDate = new Date();
+
+
+            let formattedDate = currentDate.toISOString().slice(0, 10);
+            let formattedTime = currentDate.toTimeString().slice(0, 5);
+
+
+            document.getElementById("pickupDateInput").value = formattedDate;
+            document.getElementById("pickupTimeInput").value = formattedTime;
+            document.getElementById("dropDateInput").value = formattedDate;
+            document.getElementById("dropTimeInput").value = formattedTime;
+        });
+
+        function toggleSelection(element) {
+            element.classList.toggle('selected');
+        }
+
+
+
+
+    </script>
+
+
 </body>
 
 

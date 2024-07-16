@@ -4,6 +4,7 @@ using Rental_Car_Demo.Repository.CarRepository;
 using Rental_Car_Demo.Validation;
 using Rental_Car_Demo.Models;
 using Microsoft.EntityFrameworkCore;
+using Rental_Car_Demo.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IEmailService, EmailService>();
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<RentCarDbContext>(options
 
 builder.Services.AddSession();
 builder.Services.AddScoped<ICarRepository, CarRepository> ();
+builder.Services.AddScoped<AddressRepository> ();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
