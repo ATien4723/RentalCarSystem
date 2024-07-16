@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Rental_Car_Demo.Validation;
 
 var builder = WebApplication.CreateBuilder(args);

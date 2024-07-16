@@ -6,7 +6,6 @@ using Rental_Car_Demo.Repository.UserRepository;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -85,8 +84,8 @@ namespace Rental_Car_Demo.Controllers
             if (address == null)
             {
                 ViewBag.Cities = new SelectList(userDAO.GetCityList(), "CityId", "CityProvince");
-                ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
-                ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
+                //ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
+                //ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
             }
             else
             {
@@ -122,6 +121,33 @@ namespace Rental_Car_Demo.Controllers
                 else
                 {
                     user.Password = userDAO.GetUserById(user.UserId).Password;
+                }
+
+                var userString = HttpContext.Session.GetString("User");
+                User _user = null;
+                if (!string.IsNullOrEmpty(userString))
+                {
+                    _user = JsonConvert.DeserializeObject<User>(userString);
+                }
+
+                var address = userDAO.GetAddressById(_user.AddressId);
+
+                if (address == null)
+                {
+                    ViewBag.Cities = new SelectList(userDAO.GetCityList(), "CityId", "CityProvince");
+                    ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
+                    ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
+                }
+                else
+                {
+                    var city = userDAO.GetCityList();
+                    var district = userDAO.GetDistrictListByCity(address.CityId);
+                    var ward = userDAO.GetWardListByDistrict(address.DistrictId);
+
+                    ViewBag.Cities = new SelectList(city, "CityId", "CityProvince", address.CityId);
+                    ViewBag.Districts = new SelectList(district, "DistrictId", "DistrictName", address.DistrictId);
+                    ViewBag.Wards = new SelectList(ward, "WardId", "WardName", address.WardId);
+                    ViewBag.Addresses = new SelectList(userDAO.GetAddress(), "AddressId", "HouseNumberStreet", user.AddressId);
                 }
 
                 string errorMessage = userDAO.Edit(user);
