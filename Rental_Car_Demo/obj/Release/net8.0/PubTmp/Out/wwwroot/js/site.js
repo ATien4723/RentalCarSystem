@@ -1,4 +1,6 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
+﻿
+
+document.addEventListener('DOMContentLoaded', function () {
     // Toggle password visibility
     document.getElementById('toggleLoginPassword').addEventListener('click', function () {
         const passwordField = document.getElementById('loginPassword');
@@ -87,3 +89,8 @@
         }
     });
 });
+
+
+
+
+

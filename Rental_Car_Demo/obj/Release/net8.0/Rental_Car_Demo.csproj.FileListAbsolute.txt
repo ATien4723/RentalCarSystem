@@ -266,3 +266,6 @@ D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\ref\Rental_Car_Demo.dll
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Release\net8.0\bundleconfig.json
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\scopedcss\Views\Shared\_LayoutProfile.cshtml.rz.scp.css
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Release\net8.0\Views\Booking\BookACar.cshtml
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Release\net8.0\Controllers\BookingController.cs
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\scopedcss\Views\Shared\_LayoutRentCar.cshtml.rz.scp.css
