@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@using Newtonsoft.Json
+﻿@using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
     var userString = Context.Session.GetString("User");
@@ -21,7 +16,6 @@
     <title>@ViewData["Title"] - abcd</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/css/stylehome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -51,6 +45,250 @@
             position: absolute;
             right: 10px;
         }
+
+        .benefit-content {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .benefits-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-md-4 {
+            flex: 1 1 33.333%;
+            box-sizing: border-box;
+        }
+
+        .benefit-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .benefit-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+            .benefit-header i {
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+        .benefit-box h5 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .benefit-box p {
+            margin: 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .benefit-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .benefit-button .btn {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+                .benefit-button .btn:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+        .text-car {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item {
+            height: 320px;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+       
+
+      
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item {
+            height: 320px;
+        }
+
+   
+
+        .custom-drag-area {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            width: 250px; /* Equivalent to w-88 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+            height: 250px;
+        }
+
+        .custom-drag-area1 {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+        }
+
+        #drag-area4 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area4 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area5 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area5 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area6 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area6 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area7 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area7 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
 
     </style>
 
@@ -125,7 +363,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
-                            <li><a class="dropdown-item" href="#">My Wallet</a></li>
+                            <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
                             <li><a class="dropdown-item" href="#">My Reports</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -137,7 +375,7 @@
             </div>
         </div>
     </nav>
-    <div class="">
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -163,7 +401,7 @@
             </div>
         </div>
     </footer>
-    <form id="logoutForm" asp-controller="Verify" asp-action="Logout" method="post" style="display: none;">
+    <form id="logoutForm" asp-controller="Users" asp-action="Logout" method="post" style="display: none;">
         <input type="hidden" name="returnUrl" value="~/">
     </form>
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
@@ -186,10 +424,17 @@
             </div>
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/editcar.js" asp-append-version="true"></script>
+
+
+
+
     <script>
         function submitLogout() {
             document.getElementById('logoutForm').submit();

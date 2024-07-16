@@ -8,11 +8,9 @@ public partial class User
 {
     public int UserId { get; set; }
 
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    public string Password { get; set; }
-
-    public bool RememberMe { get; set; }
+    public string Password { get; set; } = null!;
 
     public bool? Role { get; set; }
 
@@ -30,6 +28,8 @@ public partial class User
     public string? DrivingLicense { get; set; }
 
     public decimal? Wallet { get; set; }
+
+    public bool RememberMe { get; set; } = false;
 
     public virtual Address? Address { get; set; }
 

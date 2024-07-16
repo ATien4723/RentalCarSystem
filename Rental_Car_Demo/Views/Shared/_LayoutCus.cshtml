@@ -1,0 +1,333 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@{
+    var userString = Context.Session.GetString("User");
+    User user = null;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        user = JsonConvert.DeserializeObject<User>(userString);
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/stylehome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>@ViewData["Title"] - Rental_Car_Demo</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Rental_Car_Demo.styles.css" asp-append-version="true" />
+    <style>
+        .modal-header-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-body-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-header-center .modal-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .modal-header-center .btn-close {
+            position: absolute;
+            right: 10px;
+        }
+        .main-content {
+            background: url('https://www.nerdwallet.com/assets/blog/wp-content/uploads/2021/11/GettyImages-1065238506-1920x1152.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100%;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+        }
+
+
+
+        .card-time {
+            background-color: #464141;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+            .card-time h4 {
+                margin-bottom: 20px;
+                color: white;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            background-color: white;
+            color: black;
+            border: 1px solid #555;
+            margin-right: 10px;
+        }
+
+            .form-control::placeholder {
+                color: #bbb;
+            }
+
+        .input-group .form-control {
+            border-radius: 0;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+            .navbar-dark .navbar-nav .nav-link:hover,
+            .navbar-dark .navbar-nav .nav-link:focus {
+                color: rgba(255, 255, 255, 1);
+            }
+
+        .dropdown-menu {
+            background-color: white;
+        }
+
+            .dropdown-menu .dropdown-item {
+                color: #4a4a4a;
+            }
+
+        .form-group {
+            color: white;
+        }
+
+        .dropdown-divider {
+            color: white;
+        }
+
+        /* .dropdown-menu .dropdown-item:hover,
+                .dropdown-menu .dropdown-item:focus {
+                    background-color: #729aea;
+                } */
+
+
+        #suggestions {
+            position: absolute;
+            z-index: 1000;
+            width: 100%;
+            background-color: white;
+            color: black;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+            .suggestion-item:hover {
+                background-color: #ddd;
+            }
+
+        .media img {
+            width: 75px;
+            height: 65px;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <div>
+        <div class="main-content">
+
+            <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
+                <div class="container-fluid">
+                    <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">ABOUT US</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Welcome, @user?.Name
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">My Bookings</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            </nav>
+            <div class="container mt-5 looking">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h1 class="text-white">Looking for a vehicle?<br>You're at the right place.</h1>
+                        <p class="text-white">
+                            We have a large selection of locally owned cars available for you to choose
+                            from. Rental plans
+                            are
+                            customised to suit your needs.
+                        </p>
+                        <p class="text-white">With over 300 cars located nationwide we will have something for you.</p>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-time p-4">
+                            <h4 class="">Find the ideal car rental for your trip</h4>
+                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="post">
+                                <div class="form-group">
+                                    <label for="pickupLocation">PICK-UP LOCATION</label>
+                                    <input type="text" class="form-control" id="pickupLocation" name="address" placeholder="Location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
+                                    <datalist id="pickupLocationSuggestions"></datalist>
+                                    <div id="suggestions" class="list-group"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pickupDate">PICK-UP DATE AND TIME</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" id="pickupDate" placeholder="DD / MM / YYYY">
+                                        <input type="time" class="form-control" id="pickupTime" placeholder="HH:MM">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dropoffDate">DROP-OFF DATE AND TIME</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" id="dropoffDate" placeholder="DD / MM / YYYY">
+                                        <input type="time" class="form-control" id="dropoffTime" placeholder="HH:MM">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">SEARCH</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <footer class=" footer-guest py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Rent Cars</h3>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">Search Cars and Rates</a>
+                    </div>
+                    <div class="col-md-3 ">
+                        <h3>Customer Access</h3>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">Manage My Booking</a>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">My Wallet</a>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">My Car</a>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">Log In</a>
+                    </div>
+                    <div class="col-md-3">
+                        <h3>Join Us</h3>
+                        <a style="text-decoration: none" href="#" class="text-black d-block">New User Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <form id="logoutForm" asp-controller="Users" asp-action="Logout" method="post" style="display: none;">
+            <input type="hidden" name="returnUrl" value="~/">
+        </form>
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-center">
+                        <h5 class="modal-title" id="logoutModalLabel">Log Out</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-body-center">
+                        Are you sure you want to log out?
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex w-100 justify-content-center align-items-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <div class="vr mx-3"></div>
+                            <button type="button" class="btn btn-primary" onclick="submitLogout()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
+        </script>
+        @await RenderSectionAsync("Scripts", required: false)
+
+        <script>
+            function fetchSuggestions(query, inputId) {
+                if (query.length < 2) return; 
+
+                fetch('/Home/GetSuggestions?query=' + encodeURIComponent(query))
+                    .then(response => response.json())
+                    .then(data => {
+                        let suggestions = data.map(item => `<option value="${item}">`).join('');
+                        document.getElementById(inputId + "Suggestions").innerHTML = suggestions;
+                    })
+                    .catch(error => console.error('Error fetching suggestions:', error));
+            }
+
+            function searchCars(address) {
+                fetch('/Home/SearchCarForm?address=' + encodeURIComponent(address))
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('carResultss').innerHTML = html;
+                    })
+                    .catch(error => console.error('Error searching cars:', error));
+            }
+
+            
+
+        </script>
+
+
+</body>
+</html>

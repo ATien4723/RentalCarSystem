@@ -9,6 +9,8 @@ public partial class CarBrand
 
     public string? BrandName { get; set; }
 
+    public string? BrandLogo { get; set; }
+
     public virtual ICollection<CarModel> CarModels { get; set; } = new List<CarModel>();
 
     public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
