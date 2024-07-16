@@ -185,7 +185,15 @@ namespace Rental_Car_Demo.Controllers
         public ActionResult ViewMyCars()
         {
             var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
             ViewBag.Cars = context.Cars
+                .Where(c => c.UserId == userId)
                                     .OrderByDescending(c => c.CarId)
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.District)
@@ -200,10 +208,17 @@ namespace Rental_Car_Demo.Controllers
         public ActionResult ViewMyCars(string sortOrder)
         {
             var context = new RentCarDbContext();
-
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
             if (sortOrder == "latest")
             {
                 ViewBag.Cars = context.Cars
+                    .Where(c => c.UserId == userId)
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.District)
                                     .Include(c => c.Address)
@@ -214,6 +229,7 @@ namespace Rental_Car_Demo.Controllers
             else
             {
                 ViewBag.Cars = context.Cars
+                    .Where(c => c.UserId == userId)
                                     .OrderByDescending(c => c.CarId)
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.District)
