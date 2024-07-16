@@ -264,3 +264,5 @@ D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\Rental_Car_Demo.pdb
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\Rental_Car_Demo.genruntimeconfig.cache
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\ref\Rental_Car_Demo.dll
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\bin\Release\net8.0\bundleconfig.json
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\scopedcss\Views\Shared\_LayoutProfile.cshtml.rz.scp.css

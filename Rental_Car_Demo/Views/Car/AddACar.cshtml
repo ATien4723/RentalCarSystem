@@ -132,10 +132,10 @@
 
     <div class="container p-5" style="background-color: rgb(220, 234, 234);">
         <div class="progress-container">
-            <div class="step active" onclick="navigateTo(0)">Step 1: Basic</div>
-            <div class="step" onclick="navigateTo(1)">Step 2: Details</div>
-            <div class="step" onclick="navigateTo(2)">Step 3: Pricing</div>
-            <div class="step" onclick="navigateTo(3)">Step 4: Finish</div>
+            <div class="step active">Step 1: Basic</div>
+            <div class="step">Step 2: Details</div>
+            <div class="step">Step 3: Pricing</div>
+            <div class="step">Step 4: Finish</div>
         </div>
         <form asp-action="AddACar" asp-controller="Car" method="post" enctype="multipart/form-data">
 
@@ -948,17 +948,6 @@
         });
     </script>
 
-    <!-- PreviewImage function
-    <script>
-        function previewImage(event, imgId) {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                const imgElement = document.getElementById(imgId);
-                imgElement.src = url;
-            }
-        }
-    </script> -->
     <!-- PreviewCarDetails function -->
 
     <script>

@@ -1,6 +1,7 @@
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\Rental_Car_Demo.exe
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\appsettings.json
+D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\bundleconfig.json
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\Rental_Car_Demo.dll
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\Rental_Car_Demo.runtimeconfig.json
 D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Release\net8.0\PubTmp\Out\Rental_Car_Demo.pdb

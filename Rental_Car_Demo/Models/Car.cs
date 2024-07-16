@@ -11,10 +11,11 @@ public partial class Car
     public int? UserId { get; set; }
 
     public string Name { get; set; } = null!;
+
     [Required(ErrorMessage = "LicensePlate is not empty!")]
     [RegularExpression(@"^(1[1-9]|[2-9][0-9])[A-Z](-\d{3}\.\d{2}|-\d{4})$", ErrorMessage = "Must follow format, e.g., 50F-567.89 or 50F-5678")]
     public string LicensePlate { get; set; } = null!;
-    
+
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
@@ -63,6 +64,8 @@ public partial class Car
 
     public int Status { get; set; }
 
+    public int NoOfRide { get; set; }
+
     public virtual Address Address { get; set; } = null!;
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
@@ -80,6 +83,4 @@ public partial class Car
     public virtual TermOfUse Term { get; set; } = null!;
 
     public virtual User? User { get; set; }
-
-
 }
