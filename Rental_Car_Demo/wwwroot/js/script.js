@@ -19,7 +19,7 @@ function previewImage(event, imgId) {
     }
 }
 
-function showFile(dropArea, file, inputName, imgId) {
+function showFile(dropArea, file, inputName, imgId, ahref) {
     if (validExtensions.includes(file.type)) {
         const fileReader = new FileReader();
         fileReader.onload = () => {
@@ -31,19 +31,30 @@ function showFile(dropArea, file, inputName, imgId) {
             } else {
                 imgTag = `<p>Selected file: ${file.name}</p>`;
             }
-
+            const ahreff = document.createElement('a');
+            ahreff.id = ahref;
+            ahreff.href = '#';
+            ahreff.textContent = 'Choose another file';
+            ahreff.addEventListener('click', (event) => {
+                event.preventDefault();
+                hiddenInput.click();
+            });
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'file';
             hiddenInput.name = inputName;
             hiddenInput.style.display = 'none';
             hiddenInput.files = fileListWithFile(file);
+            hiddenInput.id = imgId;
+            hiddenInput.addEventListener('change', (event) => {
+                const filee = event.target.files[0];
 
+                if (filee) {
+                    showFile(dropArea, filee, inputName, imgId, ahref);
+                }
+            });
             dropArea.innerHTML = imgTag;
+            dropArea.appendChild(ahreff);
             dropArea.appendChild(hiddenInput);
-
-            if (imgId) {
-                previewImage({ target: { files: [file] } }, imgId);
-            }
         }
         fileReader.readAsDataURL(file);
     } else {
@@ -73,7 +84,7 @@ areas.forEach(area => {
         const file = event.target.files[0];
 
         if (file) {
-            showFile(dropArea, file, area.inputName, imgId);
+            showFile(dropArea, file, area.inputName, imgId, ahref);
         }
     });
 
@@ -92,7 +103,7 @@ areas.forEach(area => {
         dragdrop.textContent = "Drag and Drop";
         const file = event.dataTransfer.files[0];
         if (file) {
-            showFile(dropArea, file, area.inputName, imgId);
+            showFile(dropArea, file, area.inputName, imgId, ahref);
         }
     });
 });
