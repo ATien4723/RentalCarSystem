@@ -96,11 +96,13 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div id="brandsOptions" class="collapse">
+                        <div class="brand-list">
                         @foreach ( var brand in Model.Select (c => c.Brand).Distinct () ) {
-                            <div class="brand-item form-check" onclick="performBrandSearch('@brand.BrandName')">
-                                <img src="@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
+                            <div class="brand-item form-check" onclick="toggleSelection(this)">
+                                <img src="~/img/@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
                             </div>
                         }
+                        </div>
                     </div>
                 </div>
                 <!-- Other filters can be added here -->
@@ -130,7 +132,8 @@
                     @foreach ( var car in Model ) {
                         <div class="col-md-4 mb-4">
                             <div class="card">
-                                <img src="~/img/sieuxe1.jpeg" class="card-img-top" alt="@car.Name">
+
+                                <img src="~/img/@car.FrontImage" class="card-img-top" alt="@car.Name">
                                 <div class="card-body">
                                     <h5 class="card-title">@car.Name</h5>
                                     <div class="details">

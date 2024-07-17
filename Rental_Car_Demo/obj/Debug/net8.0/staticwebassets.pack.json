@@ -17,6 +17,26 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\BookingManagement (Interaction Design).drawio.png",
+      "PackagePath": "staticwebassets\\images\\BookingManagement (Interaction Design).drawio.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Edit).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Edit).drawio.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Register).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Register).drawio.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\images\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\images\\StateDiagram.drawio.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\.net.png",
+      "PackagePath": "staticwebassets\\img\\.net.png"
+    },
+    {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\1.png",
       "PackagePath": "staticwebassets\\img\\1.png"
     },
@@ -31,10 +51,6 @@
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\12.png",
       "PackagePath": "staticwebassets\\img\\12.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\13.png",
-      "PackagePath": "staticwebassets\\img\\13.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\2.png",
@@ -61,10 +77,6 @@
       "PackagePath": "staticwebassets\\img\\6.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\69305547_412286172731576_1974067415641751552_n.jpg",
-      "PackagePath": "staticwebassets\\img\\69305547_412286172731576_1974067415641751552_n.jpg"
-    },
-    {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\7.png",
       "PackagePath": "staticwebassets\\img\\7.png"
     },
@@ -77,92 +89,76 @@
       "PackagePath": "staticwebassets\\img\\9.png"
     },
     {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingInfomation.png",
+      "PackagePath": "staticwebassets\\img\\BookingInfomation.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\BookingManagement (Dynamic Design).drawio.png",
+      "PackagePath": "staticwebassets\\img\\BookingManagement (Dynamic Design).drawio.png"
+    },
+    {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Buicklg.png",
       "PackagePath": "staticwebassets\\img\\Buicklg.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\ClassUserManager.drawio.png",
+      "PackagePath": "staticwebassets\\img\\ClassUserManager.drawio.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\DJI_0550-HDR-Pano.jpg",
       "PackagePath": "staticwebassets\\img\\DJI_0550-HDR-Pano.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\IMG_0185.png",
-      "PackagePath": "staticwebassets\\img\\IMG_0185.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 072957.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 072957.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Introduce to Internet of things.png",
-      "PackagePath": "staticwebassets\\img\\Introduce to Internet of things.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073020.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073020.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-09-29 155720.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-09-29 155720.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073122.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073122.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 140917.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 140917.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 075227.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 075227.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-03 150501.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-03 150501.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102455.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102455.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-10-09 154528.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-10-09 154528.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102625.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102625.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171135.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171135.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102746.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102746.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171551.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171551.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 103754.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 103754.png"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-01 171611.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-01 171611.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-11-03 142857.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2023-11-03 142857.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-05 201141.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-05 201141.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-01-26 093359.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-01-26 093359.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-23 210900.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-02-23 210900.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 123406.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 123406.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-16 172919.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-16 172919.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-04-12 005142.png",
-      "PackagePath": "staticwebassets\\img\\Screenshot 2024-04-12 005142.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\img\\StateDiagram.drawio.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
       "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\acuralg.png",
-      "PackagePath": "staticwebassets\\img\\acuralg.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\acura.png",
+      "PackagePath": "staticwebassets\\img\\acura.png"
+    },
+    {
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\battery.png",
+      "PackagePath": "staticwebassets\\img\\battery.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
       "PackagePath": "staticwebassets\\img\\batteryDetail.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
-      "PackagePath": "staticwebassets\\img\\conservation mode.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
@@ -179,10 +175,6 @@
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\elonmusk.jpg",
       "PackagePath": "staticwebassets\\img\\elonmusk.jpg"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\filetest.png",
-      "PackagePath": "staticwebassets\\img\\filetest.png"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\hanoi.jpeg",
@@ -305,72 +297,8 @@
       "PackagePath": "staticwebassets\\img\\xechay3.jpg"
     },
     {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 141854.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 141854.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 143012.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 143012.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155036.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155036.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 155425.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 155425.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075144.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075144.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075345.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075345.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 080919.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 080919.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 091518.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 091518.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 092227.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 092227.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 094308.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 094308.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095550.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095550.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095650.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095650.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 193247.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 193247.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 232848.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 232848.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-19 104848.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-19 104848.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-27 102003.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-27 102003.png"
-    },
-    {
-      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-06-28 103654.png",
-      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-06-28 103654.png"
+      "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\editcar.js",
+      "PackagePath": "staticwebassets\\js\\editcar.js"
     },
     {
       "Id": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\js\\script.js",

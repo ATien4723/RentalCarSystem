@@ -30,6 +30,18 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ChangeCarDetailsByOwner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXENoYW5nZUNhckRldGFpbHNCeU93bmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ViewCarDetailsByCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdDYXJEZXRhaWxzQnlDdXN0b21lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ViewMyCars.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdNeUNhcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -44,6 +56,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Home/_CarResultsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfQ2FyUmVzdWx0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Payment/MyWallet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxNeVdhbGxldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/Error.cshtml]
@@ -66,12 +82,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRTZWFyY2hDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutWallet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRXYWxsZXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Users/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Users/Fail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRmFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Users/Guest.cshtml]
@@ -96,6 +120,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Users/ResetPassword2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVzZXRQYXNzd29yZDIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Verify/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/_ViewImports.cshtml]
