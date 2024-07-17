@@ -260,13 +260,14 @@ namespace Rental_Car_Demo.Controllers
             if (ModelState.IsValid)
             {
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
+
                 var hashPass = HashPassword(customer.Password);
                 customer.Password = hashPass;
                 context.Update(customer);
                 context.SaveChanges();
 
 
-                return View("Register");
+                return View("Login");
             }
             return View("Fail");
 

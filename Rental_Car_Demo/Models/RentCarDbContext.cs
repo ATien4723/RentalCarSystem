@@ -53,18 +53,17 @@ public partial class RentCarDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var builder = new ConfigurationBuilder()
-                                      .SetBasePath(Directory.GetCurrentDirectory())
-                                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
     }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AdditionalFunction>(entity =>
         {
-            entity.HasKey(e => e.FucntionId).HasName("PK__Addition__1A8C7CAFF6EF2609");
+            entity.HasKey(e => e.FucntionId).HasName("PK__Addition__1A8C7CAFDADED689");
 
             entity.Property(e => e.FucntionId).HasColumnName("fucntionId");
             entity.Property(e => e.Bluetooth).HasColumnName("bluetooth");
@@ -79,7 +78,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.AddressId).HasName("PK__Address__26A111AD3256E146");
+            entity.HasKey(e => e.AddressId).HasName("PK__Address__26A111ADD1C55C0F");
 
             entity.ToTable("Address");
 
@@ -91,20 +90,20 @@ public partial class RentCarDbContext : DbContext
 
             entity.HasOne(d => d.City).WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.CityId)
-                .HasConstraintName("FK__Address__cityId__5812160E");
+                .HasConstraintName("FK__Address__cityId__5BE2A6F2");
 
             entity.HasOne(d => d.District).WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.DistrictId)
-                .HasConstraintName("FK__Address__distric__59063A47");
+                .HasConstraintName("FK__Address__distric__5CD6CB2B");
 
             entity.HasOne(d => d.Ward).WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.WardId)
-                .HasConstraintName("FK__Address__wardId__59FA5E80");
+                .HasConstraintName("FK__Address__wardId__5DCAEF64");
         });
 
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.BookingNo).HasName("PK__Booking__C6D062669DF1778A");
+            entity.HasKey(e => e.BookingNo).HasName("PK__Booking__C6D062664D5C5E12");
 
             entity.ToTable("Booking");
 
@@ -127,16 +126,16 @@ public partial class RentCarDbContext : DbContext
 
             entity.HasOne(d => d.Car).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.CarId)
-                .HasConstraintName("FK__Booking__carId__5AEE82B9");
+                .HasConstraintName("FK__Booking__carId__5EBF139D");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Booking__userId__5CD6CB2B");
+                .HasConstraintName("FK__Booking__userId__5FB337D6");
         });
 
         modelBuilder.Entity<BookingInfo>(entity =>
         {
-            entity.HasKey(e => e.BookingInfoId).HasName("PK__BookingI__1460802B02216970");
+            entity.HasKey(e => e.BookingInfoId).HasName("PK__BookingI__1460802B228FBD92");
 
             entity.ToTable("BookingInfo");
 
@@ -188,7 +187,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<Car>(entity =>
         {
-            entity.HasKey(e => e.CarId).HasName("PK__Car__1436F17450E9A4A3");
+            entity.HasKey(e => e.CarId).HasName("PK__Car__1436F17478C9ABC7");
 
             entity.ToTable("Car");
 
@@ -239,41 +238,41 @@ public partial class RentCarDbContext : DbContext
             entity.HasOne(d => d.Address).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.AddressId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__addressId__5DCAEF64");
+                .HasConstraintName("FK__Car__addressId__6383C8BA");
 
             entity.HasOne(d => d.Brand).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.BrandId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__brandId__5EBF139D");
+                .HasConstraintName("FK__Car__brandId__6477ECF3");
 
             entity.HasOne(d => d.Color).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.ColorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__colorId__5FB337D6");
+                .HasConstraintName("FK__Car__colorId__656C112C");
 
             entity.HasOne(d => d.Document).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.DocumentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__documentId__60A75C0F");
+                .HasConstraintName("FK__Car__documentId__66603565");
 
             entity.HasOne(d => d.Fucntion).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.FucntionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__fucntionId__619B8048");
+                .HasConstraintName("FK__Car__fucntionId__6754599E");
 
             entity.HasOne(d => d.Model).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.ModelId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__modelId__628FA481");
+                .HasConstraintName("FK__Car__modelId__68487DD7");
 
             entity.HasOne(d => d.Term).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.TermId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Car__termId__6383C8BA");
+                .HasConstraintName("FK__Car__termId__693CA210");
 
             entity.HasOne(d => d.User).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Car__userId__6477ECF3");
+                .HasConstraintName("FK__Car__userId__6A30C649");
         });
 
         modelBuilder.Entity<CarBrand>(entity =>
@@ -309,7 +308,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<CarDocument>(entity =>
         {
-            entity.HasKey(e => e.DocumentId).HasName("PK__CarDocum__EFAAAD85478D8349");
+            entity.HasKey(e => e.DocumentId).HasName("PK__CarDocum__EFAAAD8570073C2C");
 
             entity.ToTable("CarDocument");
 
@@ -360,7 +359,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<ContentOnScreen>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ContentO__3213E83F454A5431");
+            entity.HasKey(e => e.Id).HasName("PK__ContentO__3213E83F1C1EDBDD");
 
             entity.ToTable("ContentOnScreen");
 
@@ -396,7 +395,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<Feedback>(entity =>
         {
-            entity.HasKey(e => e.FeedbackId).HasName("PK__Feedback__2613FD243E8BDB51");
+            entity.HasKey(e => e.FeedbackId).HasName("PK__Feedback__2613FD24AE891FE4");
 
             entity.ToTable("Feedback");
 
@@ -410,12 +409,12 @@ public partial class RentCarDbContext : DbContext
 
             entity.HasOne(d => d.BookingNoNavigation).WithMany(p => p.Feedbacks)
                 .HasForeignKey(d => d.BookingNo)
-                .HasConstraintName("FK__Feedback__bookin__6754599E");
+                .HasConstraintName("FK__Feedback__bookin__6D0D32F4");
         });
 
         modelBuilder.Entity<TermOfUse>(entity =>
         {
-            entity.HasKey(e => e.TermId).HasName("PK__TermOfUs__90C2BD1E190553B4");
+            entity.HasKey(e => e.TermId).HasName("PK__TermOfUs__90C2BD1E17E0779E");
 
             entity.ToTable("TermOfUse");
 
@@ -428,7 +427,7 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<TokenInfor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TokenInf__3214EC07EF5C8E51");
+            entity.HasKey(e => e.Id).HasName("PK__TokenInf__3214EC07FF33997A");
 
             entity.Property(e => e.Token).HasMaxLength(255);
             entity.Property(e => e.UserId).HasColumnName("userId");
@@ -436,11 +435,11 @@ public partial class RentCarDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF01F185A9");
+            entity.HasKey(e => e.UserId).HasName("PK__User__CB9A1CFF6F4144DA");
 
             entity.ToTable("User");
 
-            entity.HasIndex(e => e.Email, "UQ__User__AB6E6164C0510F15").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__User__AB6E6164B5E4A99C").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.AddressId).HasColumnName("addressId");
@@ -467,9 +466,7 @@ public partial class RentCarDbContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("phone");
-            entity.Property(e => e.RememberMe)
-                .HasDefaultValue(false)
-                .HasColumnName("rememberMe");
+            entity.Property(e => e.RememberMe).HasColumnName("rememberMe");
             entity.Property(e => e.Role)
                 .HasDefaultValue(false)
                 .HasColumnName("role");
@@ -479,12 +476,12 @@ public partial class RentCarDbContext : DbContext
 
             entity.HasOne(d => d.Address).WithMany(p => p.Users)
                 .HasForeignKey(d => d.AddressId)
-                .HasConstraintName("FK__User__addressId__68487DD7");
+                .HasConstraintName("FK__User__addressId__6E01572D");
         });
 
         modelBuilder.Entity<Wallet>(entity =>
         {
-            entity.HasKey(e => e.WalletId).HasName("PK__Wallet__3785C8708E7DDFDA");
+            entity.HasKey(e => e.WalletId).HasName("PK__Wallet__3785C870B730F9D3");
 
             entity.ToTable("Wallet");
 
