@@ -19,7 +19,6 @@ public partial class Car
     public int BrandId { get; set; }
 
     public int ModelId { get; set; }
-    [Range(1, 49, ErrorMessage = "Seats must be a integer in range 1-49")]
 
     public int Seats { get; set; }
 
@@ -64,7 +63,7 @@ public partial class Car
 
     public int Status { get; set; }
 
-    public int NoOfRide { get; set; }
+    public int? NoOfRide { get; set; }
 
     public virtual Address Address { get; set; } = null!;
 

@@ -2,13 +2,6 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets.user"
-    },
-    "mssql1": {
-      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/southeastasia/connectors/ConnectionStringsDefaultConnection_4475C91F91",
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/rental-car-demodbserver/databases/RentCarDB",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

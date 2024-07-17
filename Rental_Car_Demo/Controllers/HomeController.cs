@@ -45,12 +45,14 @@ namespace Rental_Car_Demo.Controllers
         {
             _logger.LogInformation ($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars (address);
+
             return View (cars);
         }
 
         public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
             IEnumerable<Car> cars = _carRepository.SearchCars (brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
+
             return PartialView ("_CarResultsPartial", cars);
         }
 
