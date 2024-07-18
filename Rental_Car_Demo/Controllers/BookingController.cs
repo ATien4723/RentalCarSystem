@@ -17,6 +17,39 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
+        RentCarDbContext _db = new RentCarDbContext();
+
+        public IActionResult loadRating()
+        {
+            return View();
+        }
+
+        public IActionResult skipRating(int BookingNo)
+        {
+            Booking booking = _db.Bookings.Find(BookingNo);
+            booking.Status = 5;
+            _db.Bookings.Update(booking);
+            _db.SaveChanges();
+            return RedirectToAction("loadRating");
+        }
+
+        [HttpPost]
+        public IActionResult giveRating(int BookingNo, string content,int ratings)
+        {
+            Booking booking = _db.Bookings.Find(BookingNo);
+            booking.Status = 5;
+            _db.Bookings.Update(booking);
+            _db.SaveChanges();
+            Feedback feedback = new Feedback();
+            feedback.Content = content;
+            feedback.Ratings = ratings;
+            feedback.BookingNo = BookingNo;
+            feedback.Date= DateTime.Now;
+            _db.Feedbacks.Add(feedback);
+            _db.SaveChanges();
+            return RedirectToAction("loadRating");
+        }
+
         public BookingController()
         {
             bookingDAO = new BookingDAO();
