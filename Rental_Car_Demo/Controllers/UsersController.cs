@@ -153,14 +153,23 @@ namespace Rental_Car_Demo.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterAndLoginViewModel model)
         {
+            var checkMail = IsEmailExist(model.Register.Email);
             // Kiểm tra email trùng lặp
-            if (IsEmailExist(model.Register.Email))
+            if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
+                return View("Login", model);
             }
 
+            if(model.Register.AgreeToTerms == false)
+            {
+                ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
+                return View("Login", model);
+            }
+
+            var check = ModelState;
             // Kiểm tra tính hợp lệ của ModelState
-           // if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             //{
                 // Hash mật khẩu
                 var hashedPassword = HashPassword(model.Register.Password);
@@ -191,7 +200,7 @@ namespace Rental_Car_Demo.Controllers
                     // Ghi log lỗi nếu xảy ra
                     ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
                 }
-           // }
+            //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
             return View("Login", model);
@@ -269,7 +278,7 @@ namespace Rental_Car_Demo.Controllers
 
                 return View("Login");
             }
-            return View("Fail");
+            return View(model);
 
         }
 
