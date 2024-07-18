@@ -1,4 +1,4 @@
-﻿@model Rental_Car_Demo.Models.Car
+@model Rental_Car_Demo.Models.Car
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
@@ -79,17 +79,15 @@
 </head>
 <body>
     <div class="container mt-3">
-        @if(user != null)
+        @if (user?.Role == false)
         {
-            <a asp-action="LoginCus" asp-controller="Users" >Home</a> <span> > </span> <a href="#">Search Results</a>
+            <a asp-controller="Users" asp-action="LoginCus" class="text">Home</a>
         }
         else
         {
-            <a asp-action="Guest" asp-controller="Users">Home</a> <span> > </span> <a href="#">Search Results</a>
-
+            <a asp-controller="Users" asp-action="LoginOwn" class="text">Home</a>
         }
-        > <span>Car Details</span>
-        <h2 class="mt-2">Car Details</h2>
+        > <a href="javascript:history.back()">Search Results</a> > <span>Car Details</span>
     </div>
     <div class="container">
 
@@ -184,7 +182,25 @@
                 </div>
             </div>
             <div class="col-2 mt-3">
-                <span><a class="btn btn-primary p-2" href="#">Rent now</a></span>
+                @* @if(ViewBag.car.Status == 1)
+                { *@
+                    <a class="btn btn-primary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                       asp-route-startDate="@ViewBag.startDate"
+                       asp-route-endDate="@ViewBag.endDate"
+                       asp-route-CarId="@ViewBag.car.CarId">
+                       Rent now
+                    </a>
+                @* }
+                @if (ViewBag.car.Status != 1)
+                {
+                    <a style="pointer-events: none;" class="btn btn-secondary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                       asp-route-startDate="@ViewBag.startDate"
+                       asp-route-endDate="@ViewBag.endDate"
+                       asp-route-CarId="@ViewBag.car.CarId">
+                        Rent now
+                    </a>
+                } *@
+
             </div>
         </div>
 
@@ -532,13 +548,19 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-</body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
-<script>
+    <script>
+        function showImageAndDownload(imagePath, fileName) {
+            document.getElementById('modalImage').src = imagePath;
+            document.getElementById('downloadLink').href = imagePath;
+            document.getElementById('downloadLink').download = fileName;
+            $('#imageModal').modal('show');
+        }
+    </script>
+    <script>
     function setRating(rating) {
         const stars = document.querySelectorAll('#rating .star');
         stars.forEach((star, index) => {
@@ -554,12 +576,5 @@
     const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
     setRating(ratingFromViewBag);
 </script>
-<script>
-    function showImageAndDownload(imagePath, fileName) {
-        document.getElementById('modalImage').src = imagePath;
-        document.getElementById('downloadLink').href = imagePath;
-        document.getElementById('downloadLink').download = fileName;
-        $('#imageModal').modal('show');
-    }
-</script>
+</body>
 </html>
