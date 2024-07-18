@@ -269,6 +269,260 @@ namespace Rental_Car_Demo.Controllers
                         _user.Wallet -= car.Deposit;
                         _context.SaveChanges();
                     }
+
+                    car.Status = 2;
+                    _context.SaveChanges();
+                    
+                    var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                    currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
+                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
+
+                    TempData["CarId"] = car.CarId;
+                    TempData["CarName"] = car.Name;
+                    TempData["StartDate"] = viewModel.StartDate;
+                    TempData["EndDate"] = viewModel.EndDate;
+                    TempData["BookingNo"] = booking.BookingNo;
+
+                    return RedirectToAction("BookACarFinish");
+                }
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(viewModel);
+            }
+        }
+
+        // GET: BookingController/Create
+        public ActionResult BookACarFinish()
+        {
+            ViewBag.CarId = TempData["CarId"]?.ToString();
+            ViewBag.CarName = TempData["CarName"]?.ToString();
+            ViewBag.StartDate = TempData["StartDate"];
+            ViewBag.EndDate = TempData["EndDate"];
+            ViewBag.BookingNo = TempData["BookingNo"];
+
+            return View();
+        }
+
+
+        public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
+        {
+            try
+            {
+
+                var userString = HttpContext.Session.GetString("User");
+                User user = null;
+                if (!string.IsNullOrEmpty(userString))
+                {
+                    user = JsonConvert.DeserializeObject<User>(userString);
+                }
+
+                using var context = new RentCarDbContext();
+                var car = context.Cars.FirstOrDefault(x => x.CarId == carId);
+
+                var bookingDetail = context.Bookings
+                    .Include(b => b.BookingInfo)
+                        .ThenInclude(bi => bi.RenterAddress)
+                    .Include(b => b.BookingInfo)
+                        .ThenInclude(bi => bi.DriverAddress)
+                    .FirstOrDefault(b => b.BookingNo == bookingNo);
+
+
+                ViewBag.RenterName = bookingDetail?.BookingInfo?.RenterName;
+
+
+                //ViewBag.location = location;
+                ViewBag.startDate = startDate;
+                ViewBag.endDate = endDate;
+                ViewBag.carId = carId;
+
+                var numberOfDays = (endDate - startDate).TotalDays;
+                ViewBag.NumberOfDays = endDate - startDate;
+                ViewBag.BasePrice = car.BasePrice;
+                ViewBag.Total = (decimal)numberOfDays * car.BasePrice;
+                ViewBag.Deposit = car.Deposit;
+
+
+                //List<Booking> lBook = context.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
+                bool checkRent = false;
+
+                //foreach (Booking booking in lBook)
+                //{
+                //    if (booking.Status == 3 || booking.Status == 4)
+                //    {
+                //        checkRent = true;
+                //        break;
+                //    }
+                //}
+                //var lBooking = context.Bookings.Where(x => x.CarId == CarId).ToList();
+                //float rating = 0;
+                var brand = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
+                var model = context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
+                var document = context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
+                var color = context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
+                var address = context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
+                var ward = context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
+                var district = context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
+                var city = context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
+                var term = context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
+                var function = context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+                ViewBag.car = car;
+                ViewBag.brand = brand;
+                ViewBag.model = model;
+                ViewBag.document = document;
+                ViewBag.color = color;
+                ViewBag.address = address;
+                ViewBag.ward = ward;
+                ViewBag.district = district;
+                ViewBag.city = city;
+                ViewBag.term = term;
+                ViewBag.function = function;
+                ViewBag.checkRent = checkRent;
+
+                ViewBag.user = user;
+                ViewBag.userId = user.UserId;
+                ViewBag.wallet = user.Wallet;
+                ViewBag.dob = user.Dob?.ToString("yyyy-MM-dd");
+                ViewBag.DrivingLience = user.DrivingLicense;
+                var addressR = bookingDetail?.BookingInfo?.RenterAddress;
+
+                if (addressR == null)
+                {
+                    ViewBag.CitiesR = new SelectList(bookingDAO.GetCityList(), "CityId", "CityProvince");
+                    //ViewBag.Districts = new SelectList(bookingDAO.GetDistrictList(), "DistrictId", "DistrictName");
+                    //ViewBag.Wards = new SelectList(bookingDAO.GetWardList(), "WardId", "WardName");
+                }
+                else
+                {
+                    var cityR = bookingDAO.GetCityList();
+                    var districtR = bookingDAO.GetDistrictListByCity(addressR.CityId);
+                    var wardR = bookingDAO.GetWardListByDistrict(addressR.DistrictId);
+
+                    ViewBag.CitiesR = new SelectList(cityR, "CityId", "CityProvince", addressR.CityId);
+                    ViewBag.DistrictsR = new SelectList(districtR, "DistrictId", "DistrictName", addressR.DistrictId);
+                    ViewBag.WardsR = new SelectList(wardR, "WardId", "WardName", addressR.WardId);
+                    ViewBag.houseNumberStreetR = addressR.HouseNumberStreet;
+                }
+                
+                var addressD = bookingDetail?.BookingInfo?.DriverAddress;
+
+                if (addressD == null)
+                {
+                    ViewBag.CitiesD = new SelectList(bookingDAO.GetCityList(), "CityId", "CityProvince");
+                    //ViewBag.Districts = new SelectList(bookingDAO.GetDistrictList(), "DistrictId", "DistrictName");
+                    //ViewBag.Wards = new SelectList(bookingDAO.GetWardList(), "WardId", "WardName");
+                }
+                else
+                {
+                    var cityD = bookingDAO.GetCityList();
+                    var districtD = bookingDAO.GetDistrictListByCity(addressD.CityId);
+                    var wardD = bookingDAO.GetWardListByDistrict(addressD.DistrictId);
+
+                    ViewBag.CitiesD = new SelectList(cityD, "CityId", "CityProvince", addressD.CityId);
+                    ViewBag.DistrictsD = new SelectList(districtD, "DistrictId", "DistrictName", addressD.DistrictId);
+                    ViewBag.WardsD = new SelectList(wardD, "WardId", "WardName", addressD.WardId);
+                    ViewBag.houseNumberStreetD = addressD.HouseNumberStreet;
+                }
+
+                ViewBag.UserId = new SelectList(userDAO.GetUserList(), "UserId", "Name", user.UserId);
+                return View(bookingDetail);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View();
+            }
+        }
+
+        //POST: BookingController/BookACar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditBookingDetail(Booking viewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using var _context = new RentCarDbContext();
+
+                    var renterAddress = new Address
+                    {
+                        CityId = viewModel.BookingInfo.RenterAddress.CityId,
+                        DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId,
+                        WardId = viewModel.BookingInfo.RenterAddress.WardId,
+                        HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet
+                    };
+
+                    _context.Addresses.Add(renterAddress);
+                    _context.SaveChanges();
+
+                    var DriverAddress = new Address
+                    {
+                        CityId = viewModel.BookingInfo.DriverAddress.CityId,
+                        DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId,
+                        WardId = viewModel.BookingInfo.DriverAddress.WardId,
+                        HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet
+                    };
+
+                    _context.Addresses.Add(DriverAddress);
+                    _context.SaveChanges();
+
+                    var bookingInfo = new BookingInfo
+                    {
+                        RenterEmail = viewModel.BookingInfo.RenterEmail,
+                        RenterName = viewModel.BookingInfo.RenterName,
+                        RenterDob = viewModel.BookingInfo.RenterDob,
+                        RenterNationalId = viewModel.BookingInfo.RenterNationalId,
+                        RenterPhone = viewModel.BookingInfo.RenterPhone,
+                        RenterAddressId = renterAddress.AddressId,
+                        RenterDrivingLicense = viewModel.BookingInfo.RenterDrivingLicense,
+                        IsDifferent = viewModel.BookingInfo.IsDifferent,
+                        DriverEmail = viewModel.BookingInfo.DriverEmail,
+                        DriverName = viewModel.BookingInfo.DriverName,
+                        DriverDob = viewModel.BookingInfo.DriverDob,
+                        DriverNationalId = viewModel.BookingInfo.DriverNationalId,
+                        DriverPhone = viewModel.BookingInfo.DriverPhone,
+                        DriverAddressId = DriverAddress.AddressId,
+                        DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense
+                    };
+
+                    _context.BookingInfos.Add(bookingInfo);
+                    _context.SaveChanges();
+
+                    var booking = new Booking
+                    {
+                        UserId = viewModel.UserId,
+                        CarId = viewModel.CarId,
+                        StartDate = viewModel.StartDate,
+                        EndDate = viewModel.EndDate,
+                        PaymentMethod = viewModel.PaymentMethod,
+                        Status = viewModel.Status,
+                        BookingInfoId = bookingInfo.BookingInfoId
+                    };
+
+
+                    _context.Bookings.Add(booking);
+                    _context.SaveChanges();
+
+                    var userString = HttpContext.Session.GetString("User");
+                    User user = null;
+                    if (!string.IsNullOrEmpty(userString))
+                    {
+                        user = JsonConvert.DeserializeObject<User>(userString);
+                    }
+
+                    var car = _context.Cars.FirstOrDefault(x => x.CarId == viewModel.CarId);
+
+                    if (viewModel.PaymentMethod == 1)
+                    {
+                        user.Wallet -= car.Deposit;
+                        var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                        _user.Wallet -= car.Deposit;
+                        _context.SaveChanges();
+                    }
+
                     car.Status = 2;
                     _context.SaveChanges();
 
@@ -292,20 +546,9 @@ namespace Rental_Car_Demo.Controllers
             }
         }
 
-        // GET: BookingController/Create
-        public ActionResult BookACarFinish()
-        {
-            ViewBag.CarName = TempData["CarName"]?.ToString();
-            ViewBag.StartDate = TempData["StartDate"];
-            ViewBag.EndDate = TempData["EndDate"];
-            ViewBag.BookingNo = TempData["BookingNo"];
 
-            return View();
-        }
-
-
-            // GET: BookingController/Edit/5
-            public ActionResult Edit(int id)
+        // GET: BookingController/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }
