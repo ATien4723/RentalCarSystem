@@ -139,8 +139,10 @@
             <a href="/Users/LoginCus" class="btn btn-outline-secondary" style="padding: 0; text-decoration: underline; border: none;">
                 Go to homepage
             </a>
-            <a href="/Users/LoginCus" class="btn btn-secondary ms-5">Book another car</a>
-            <a href="#" class="btn btn-primary ms-5">View Booking</a>
+            <a href="javascript:history.go(-3)" class="btn btn-secondary ms-5">Book another car</a>
+            <a asp-controller="Booking" asp-action="EditBookingDetail" 
+               asp-route-startDate="@ViewBag.startDate"
+               asp-route-endDate="@ViewBag.endDate" asp-route-carId="@ViewBag.CarId" asp-route-bookingNo="@ViewBag.BookingNo" class="btn btn-primary ms-5">View Booking</a>
         </div>
     </div>
 </div>
