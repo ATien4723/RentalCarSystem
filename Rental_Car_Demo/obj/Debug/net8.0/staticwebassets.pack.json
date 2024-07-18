@@ -37,6 +37,14 @@
       "PackagePath": "staticwebassets\\img\\.net.png"
     },
     {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\5.png",
+      "PackagePath": "staticwebassets\\img\\5.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\6.png",
+      "PackagePath": "staticwebassets\\img\\6.png"
+    },
+    {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\9.png",
       "PackagePath": "staticwebassets\\img\\9.png"
     },
@@ -193,6 +201,10 @@
       "PackagePath": "staticwebassets\\img\\Test-English.jpg"
     },
     {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
+      "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
+    },
+    {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\acuralg.png",
       "PackagePath": "staticwebassets\\img\\acuralg.png"
     },
@@ -205,8 +217,32 @@
       "PackagePath": "staticwebassets\\img\\batteryDetail.png"
     },
     {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar1.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar1.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar2.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar3.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar3.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar4.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar4.jpg"
+    },
+    {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
       "PackagePath": "staticwebassets\\img\\conservation mode.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\da lat.jpeg",
+      "PackagePath": "staticwebassets\\img\\da lat.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\download.jpg",
+      "PackagePath": "staticwebassets\\img\\download.jpg"
     },
     {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\download.png",
@@ -215,6 +251,22 @@
     {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\giay-phep-lai-xe.jpg",
       "PackagePath": "staticwebassets\\img\\giay-phep-lai-xe.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar1.png",
+      "PackagePath": "staticwebassets\\img\\greencar1.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar2.png",
+      "PackagePath": "staticwebassets\\img\\greencar2.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar3.png",
+      "PackagePath": "staticwebassets\\img\\greencar3.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar4.jpg",
+      "PackagePath": "staticwebassets\\img\\greencar4.jpg"
     },
     {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\jagulg.png",
@@ -247,6 +299,10 @@
     {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar4.png",
       "PackagePath": "staticwebassets\\img\\redcar4.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe1.jpeg",
+      "PackagePath": "staticwebassets\\img\\sieuxe1.jpeg"
     },
     {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\subarulg.png",

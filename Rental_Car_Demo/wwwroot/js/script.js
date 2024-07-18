@@ -55,6 +55,10 @@ function showFile(dropArea, file, inputName, imgId, ahref) {
             dropArea.innerHTML = imgTag;
             dropArea.appendChild(ahreff);
             dropArea.appendChild(hiddenInput);
+
+            if (imgId) {
+                previewImage({ target: { files: [file] } }, imgId);
+            }
         }
         fileReader.readAsDataURL(file);
     } else {

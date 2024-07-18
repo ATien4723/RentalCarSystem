@@ -9,8 +9,6 @@ using System.Text;
 using Rental_Car_Demo.Repository.CarRepository;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository.UserRepository;
-using System;
-using System.Linq;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -293,8 +291,11 @@ namespace Rental_Car_Demo.Controllers
 
                 var bookingDetail = context.Bookings
                     .Include(b => b.BookingInfo)
+                        .ThenInclude(bi => bi.RenterAddress)
+                    .Include(b => b.BookingInfo)
                         .ThenInclude(bi => bi.DriverAddress)
                     .FirstOrDefault(b => b.BookingNo == bookingNo);
+
 
                 ViewBag.RenterName = bookingDetail?.BookingInfo?.RenterName;
 
@@ -603,17 +604,18 @@ namespace Rental_Car_Demo.Controllers
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
             var userId = user.UserId;
-            var carsWithBookings = context.Cars.Include(c => c.Bookings)
-                .ToList().Select(c => new { Car = c, Bookings = c.Bookings.Where(b => b.UserId == userId)
-                .OrderByDescending(b => b.BookingNo).ToList() }).ToList();
+            var bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.BookingNo)
+            .ToList();
 
-            var statuses = new int[] { 1, 2, 3, 4 };
-            var filteredBookingsCount = carsWithBookings
-                .SelectMany(c => c.Bookings)
-                .Count(b => b.Status.HasValue && statuses.Contains(b.Status.Value));
+            var bookingCount = context.Bookings
+            .Where(b => b.UserId == userId)
+            .Count();
 
-            ViewBag.Cars = carsWithBookings;
-            ViewBag.Count = filteredBookingsCount;
+            ViewBag.Bookings = bookings;
+            ViewBag.Count = bookingCount;
             return View();
         }
         [HttpPost]
@@ -629,20 +631,30 @@ namespace Rental_Car_Demo.Controllers
             var userId = user.UserId;
             if (sortOrder == "latest")
             {
-                ViewBag.Cars = context.Cars.Include(c => c.Bookings).ToList()
-                    .Select(c => new { Car = c, Bookings = c.Bookings
-                    .Where(b => b.UserId == userId).ToList() }).ToList();
+                ViewBag.Bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .ToList();
                 ViewBag.SortOrder = "latest";
             }
             else
             {
-                ViewBag.Cars = context.Cars.Include(c => c.Bookings)
-                    .ToList().Select(c => new { Car = c, Bookings = c.Bookings.Where(b => b.UserId == userId)
-                    .OrderByDescending(b => b.BookingNo).ToList() }).ToList();
+                ViewBag.Bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.BookingNo)
+            .ToList();
                 ViewBag.SortOrder = "newest";
             }
 
             return View();
+        }
+        public static class DateHelper
+        {
+            public static int GetDaysBetween(DateTime startDate, DateTime endDate)
+            {
+                return (endDate - startDate).Days;
+            }
         }
     }
 }
