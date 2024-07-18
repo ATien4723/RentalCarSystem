@@ -86,6 +86,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
                         .Include (c => c.Term)
                         .Include (c => c.User)
                         .Include (c => c.Bookings)
+                        .Where(c => c.Status != 2)
                         .AsQueryable ();
 
                     if ( !string.IsNullOrEmpty (brandName) ) {

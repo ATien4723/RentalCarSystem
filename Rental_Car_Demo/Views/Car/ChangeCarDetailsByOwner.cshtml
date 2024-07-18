@@ -4,7 +4,119 @@
     Layout = "~/Views/Shared/_LayoutCarOwner.cshtml";
     ViewData["Title"] = "ChangeCarDetailsByOwners";
 }
+<head>
+    <style>
+        .custom-drag-area {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            width: 250px; /* Equivalent to w-88 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+            height: 250px;
+        }
 
+        .custom-drag-area1 {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+        }
+
+        #drag-area4 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area4 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area5 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area5 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area6 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area6 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area7 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area7 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+    </style>
+</head>
 
 <body>
 
@@ -80,7 +192,7 @@
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##")<span class="fw-bold">k/day</span></label>
+                    <label class="col-5 fw-bold" id="PreviewPrice"> @ViewBag.car.BasePrice.ToString("0.##")  <span class="fw-bold"> /day</span></label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Locations:</label>
@@ -495,8 +607,8 @@
 
                             <a class="mt-4">File type: doc, docx, pdf, jpg, jpeg, png</a>
                             <div class="d-flex justify-content-center align-items-center mt-3">
-                                <a asp-controller="Home" asp-action="Privacy" type="button" class="btn btn-outline-secondary"
-                                   style="padding: 0;text-decoration: underline;border: none;">
+                                <a asp-controller="Car" asp-action="ChangeCarDetailsByOwner" asp-route-CarId="@Model.CarId" type="button" class="btn btn-outline-secondary"
+                                   style="padding: 0; text-decoration: underline; border: none;">
                                     Discard
                                 </a>
                                 <button type="submit" class="btn btn-primary ms-5">Save</button>
@@ -572,8 +684,8 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center mt-3">
-                                    <a asp-controller="Home" asp-action="Privacy" type="button" class="btn btn-outline-secondary"
-                                       style="padding: 0;text-decoration: underline;border: none;">
+                                    <a asp-controller="Car" asp-action="ChangeCarDetailsByOwner" asp-route-CarId="@Model.CarId" type="button" class="btn btn-outline-secondary"
+                                       style="padding: 0; text-decoration: underline; border: none;">
                                         Discard
                                     </a>
                                     <button type="submit" class="btn btn-primary ms-5">Save</button>

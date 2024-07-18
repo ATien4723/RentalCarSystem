@@ -2,18 +2,18 @@
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
+    ViewData["Title"] = "ViewCarDetailsByCustomer";
     var userString = Context.Session.GetString("User");
     User user = null;
     if (!string.IsNullOrEmpty(userString))
     {
+        Layout = "_LayoutCus";
         user = JsonConvert.DeserializeObject<User>(userString);
     }
-}
-
-@{
-    ViewData["Title"] = "ViewCarDetailsByCustomer";
-    Layout = "_LayoutCus";
-    // Layout = "_LayoutCarDetail";
+    else
+    {
+        Layout = "_Layout";
+    }
 }
 
 <!DOCTYPE html>
@@ -36,10 +36,10 @@
 
 
     <style>
-        .looking {
-            display: none;
-        }
 
+        .looking{
+            display:none;
+        }
         .carousel-control-prev-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
         }
@@ -62,6 +62,19 @@
             display: none;
         }
 
+        .star {
+            color: lightgray;
+        }
+
+        .filled {
+            color: gold;
+        }
+
+        .half-filled {
+            background: linear-gradient(90deg, gold 50%, lightgray 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -122,26 +135,30 @@
                 <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
                 <div class="row">
                     <label class="col-5 fw-bold  fs-5">Ratings:</label>
-                    <label class="col-5 d-flex fs-4">
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
+                    <label class="col-5 d-flex fs-4" id="rating">
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
                     </label>
+                    @if (ViewBag.car.NoOfRide == 0)
+                    {
+                        <label class="col-5"></label>
+                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    }
                 </div>
-                <div class="row">
-                    <label class="col-5"></label>
-                    <span class="col-5 fw-bold">(No ratings yet)</span>
-
-                </div>
+                
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">No. of rides:</label>
                     <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##")<span class="fw-bold">k/day</span></label>
+                    <label class="col-5 fw-bold" id="PreviewPrice">
+                        @((ViewBag.car.BasePrice / 1000).ToString("0.##"))
+                        <span class="fw-bold">k/day</span>
+                    </label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Locations:</label>
@@ -223,8 +240,8 @@
                     <div class="row mt-3">
                         <label class="col-2 fw-bold">Production Year:</label>
                         <span class="col-2" style="margin-left:-5%">@ViewBag.car.ProductionYear</span>
-                        <label class="col-1 fw-bold">No. of seat:</label>
-                        <span class="col-2 ">@ViewBag.car.Seats</span>
+                        <label class="col-2 fw-bold">No. of seat:</label>
+                        <span class="col-2 " style="margin-left:-8%">@ViewBag.car.Seats</span>
                     </div>
 
                     <div class="row mt-3">
@@ -250,7 +267,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td>Registration paper</td>
-                                        @if (!ViewBag.checkRent)
+                                        @if (ViewBag.checkRent)
                                         {
                                             <td>
                                                 <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
@@ -264,7 +281,7 @@
                                     <tr>
                                         <td>2</td>
                                         <td>Certificate of Inspection</td>
-                                        @if (!ViewBag.checkRent)
+                                        @if (ViewBag.checkRent)
                                         {
                                             <td>
                                                 <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
@@ -313,7 +330,7 @@
                     </div>
                     <div class="row mt-3">
                         <label class="col-1 fw-bold">Address:</label>
-                        @if (!ViewBag.checkRent)
+                        @if (ViewBag.checkRent)
                         {
                             <span class="col-10" style="margin-left:-2%">
                                 @ViewBag.address.HouseNumberStreet,
@@ -332,8 +349,6 @@
                         <span class="col-10">@ViewBag.car.Description</span>
                     </div>
                     <div class="row mt-3">
-
-
                         <label class="fw-bold">Additional functions:</label><br />
                         <table class="col-md-2 bg-white ms-5 mt-3">
                             <tr class="row flex items-center">
@@ -452,7 +467,7 @@
                     <br>
                     <div class="">
                         <label asp-for="BasePrice" class=" col-2 fw-bold">Base price:</label>
-                        <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("0.##"))" disabled class="col-3" style="width:10%" />
+                        <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("N0"))" disabled class="col-3" style="width:10%" />
                         <span class="fw-bold ms-2">VND/DAY</span>
                         <div>
                             <span asp-validation-for="BasePrice" id="checkBP" class="fw-bold text-danger"></span>
@@ -461,7 +476,7 @@
 
                     <div class="mt-3">
                         <label asp-for="Deposit" class="col-2 fw-bold">Required deposit:</label>
-                        <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("0.##"))" disabled class="col-3" required style=" width:10%" min="0" />
+                        <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" disabled class="col-3" required style=" width:10%" min="0" />
                         <span class="fw-bold ms-2">VND</span>
                     </div>
                     <div class="mt-5">
@@ -545,5 +560,21 @@
             $('#imageModal').modal('show');
         }
     </script>
+    <script>
+    function setRating(rating) {
+        const stars = document.querySelectorAll('#rating .star');
+        stars.forEach((star, index) => {
+            star.classList.remove('filled', 'half-filled');
+            if (rating >= index + 1) {
+                star.classList.add('filled');
+            } else if (rating > index && rating < index + 1) {
+                star.classList.add('half-filled');
+            }
+        });
+    }
+
+    const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+    setRating(ratingFromViewBag);
+</script>
 </body>
 </html>
