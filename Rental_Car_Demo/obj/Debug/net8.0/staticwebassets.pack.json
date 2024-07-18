@@ -233,6 +233,22 @@
       "PackagePath": "staticwebassets\\img\\pexels-aidanj-687653.jpg"
     },
     {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar.png",
+      "PackagePath": "staticwebassets\\img\\redcar.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar2.png",
+      "PackagePath": "staticwebassets\\img\\redcar2.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar3.png",
+      "PackagePath": "staticwebassets\\img\\redcar3.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar4.png",
+      "PackagePath": "staticwebassets\\img\\redcar4.png"
+    },
+    {
       "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\subarulg.png",
       "PackagePath": "staticwebassets\\img\\subarulg.png"
     },

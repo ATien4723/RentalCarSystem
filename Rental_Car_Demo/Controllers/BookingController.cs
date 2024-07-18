@@ -9,6 +9,7 @@ using System.Text;
 using Rental_Car_Demo.Repository.CarRepository;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository.UserRepository;
+using System;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -150,9 +151,9 @@ namespace Rental_Car_Demo.Controllers
             }
         }
 
-       //POST: BookingController/BookACar
-       [HttpPost]
-       [ValidateAntiForgeryToken]
+        //POST: BookingController/BookACar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult BookACar(Booking viewModel)
         {
             try
@@ -215,8 +216,8 @@ namespace Rental_Car_Demo.Controllers
                         Status = viewModel.Status,
                         BookingInfoId = bookingInfo.BookingInfoId
                     };
-                    
-                    
+
+
                     _context.Bookings.Add(booking);
                     _context.SaveChanges();
 
@@ -271,8 +272,8 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-            // GET: BookingController/Edit/5
-            public ActionResult Edit(int id)
+        // GET: BookingController/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }
@@ -349,6 +350,51 @@ namespace Rental_Car_Demo.Controllers
             }
 
             return Json(new { success = false, message = "Invalid file" });
+        }
+        [HttpGet]
+        public ActionResult ViewBookingList()
+        {
+            using var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+            var carsWithBookings = context.Cars.Include(c => c.Bookings)
+                .ToList().Select(c => new { Car = c, Bookings = c.Bookings.Where(b => b.UserId == userId)
+                .OrderByDescending(b => b.BookingNo).ToList() }).ToList();
+            ViewBag.Cars = carsWithBookings;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ViewMyCars(string sortOrder)
+        {
+            var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+            if (sortOrder == "latest")
+            {
+                ViewBag.Cars = context.Cars.Include(c => c.Bookings).ToList()
+                    .Select(c => new { Car = c, Bookings = c.Bookings
+                    .Where(b => b.UserId == userId).ToList() }).ToList();
+                ViewBag.SortOrder = "latest";
+            }
+            else
+            {
+                ViewBag.Cars = context.Cars.Include(c => c.Bookings)
+                    .ToList().Select(c => new { Car = c, Bookings = c.Bookings.Where(b => b.UserId == userId)
+                    .OrderByDescending(b => b.BookingNo).ToList() }).ToList();
+                ViewBag.SortOrder = "newest";
+            }
+
+            return View();
         }
     }
 }
