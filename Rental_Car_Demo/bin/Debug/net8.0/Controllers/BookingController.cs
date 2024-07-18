@@ -10,6 +10,7 @@ using Rental_Car_Demo.Repository.CarRepository;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository.UserRepository;
 using System;
+using System.Linq;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -365,11 +366,18 @@ namespace Rental_Car_Demo.Controllers
             var carsWithBookings = context.Cars.Include(c => c.Bookings)
                 .ToList().Select(c => new { Car = c, Bookings = c.Bookings.Where(b => b.UserId == userId)
                 .OrderByDescending(b => b.BookingNo).ToList() }).ToList();
+
+            var statuses = new int[] { 1, 2, 3, 4 };
+            var filteredBookingsCount = carsWithBookings
+                .SelectMany(c => c.Bookings)
+                .Count(b => b.Status.HasValue && statuses.Contains(b.Status.Value));
+
             ViewBag.Cars = carsWithBookings;
+            ViewBag.Count = filteredBookingsCount;
             return View();
         }
         [HttpPost]
-        public ActionResult ViewMyCars(string sortOrder)
+        public ActionResult ViewBookingList(string sortOrder)
         {
             var context = new RentCarDbContext();
             var userString = HttpContext.Session.GetString("User");
