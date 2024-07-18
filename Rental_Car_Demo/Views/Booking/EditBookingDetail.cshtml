@@ -77,10 +77,8 @@
     }
 
     .carousel-inner img {
-        max-width: 100%; /* Limits width to the size of its container */
-        max-height: 100%; /* Limits height to 200 pixels */
-        width: 70%; /* Ensure width adjusts proportionally */
-        height: auto; /* Ensure height adjusts proportionally */
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 
@@ -111,148 +109,105 @@
 <div class="mt-2 mb-2">
     <a asp-controller="Users" asp-action="LoginCus">Home</a> > Book car
 </div>
+<h1>Booking Details</h1>
 
 <div class="row">
-    @* <div class="container" id="step0"></div> *@
-    <div class="booking-details-card">
-        <div class="booking-header">
-            <h3>Booking Details</h3>
-            <a href="#" id="changeDetailsLink">
-                <i class="fas fa-edit"></i> Change details
-            </a>
-        </div>
-        <ul class="booking-info">
-            <li>
-                <strong>Pick-up location:</strong> <span id="pickupLocationText">@ViewBag.location</span>
-            </li>
-            <li>
-                <strong>Pick-up date and time:</strong> <span id="startDateText">@ViewBag.startDate.ToString("dd/MM/yyyy - HH:mm tt")</span>
-                <input type="hidden" id="hiddenStartDate" class="form-control" value="@ViewBag.startDate.ToString("yyyy-MM-ddTHH:mm")" />
-            </li>
-            <li>
-                <strong>Return date and time:</strong> <span id="endDateText">@ViewBag.endDate.ToString("dd/MM/yyyy - HH:mm tt")</span>
-                <input type="hidden" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate.ToString("yyyy-MM-ddTHH:mm")" />
-            </li>
-        </ul>
-    </div>
-
-    <div class="modal" id="editBookingModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Change booking details</h5>
-                    <button type="button" class="close" id="closeModal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editBookingForm">
-                        <div class="form-group">
-                            <label for="modalPickupLocation">Pick-up location</label>
-                            <input type="text" class="form-control" id="modalPickupLocation" value="@ViewBag.location" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modalStartDate">Pick-up date and time</label>
-                            <input type="datetime-local" class="form-control" id="modalStartDate" value="@ViewBag.startDate.ToString("yyyy-MM-ddTHH:mm")">
-                        </div>
-                        <div class="form-group">
-                            <label for="modalEndDate">Return date and time</label>
-                            <input type="datetime-local" class="form-control" id="modalEndDate" value="@ViewBag.endDate.ToString("yyyy-MM-ddTHH:mm")">
-                        </div>
-                        <div for="modalCarId" class="form-group" hidden>
-                            <label asp-for="CarId" class="control-label"></label>
-                            <input asp-for="CarId" class="form-control" id="modalCarId" value="@ViewBag.carId" readonly>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="closeModalBtn">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="progress-container">
-        <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
-        <div class="step">Step 2: Payment</div>
-        <div class="step">Step 3: Finish</div>
-    </div>
-
-    <form asp-controller="Booking" asp-action="BookACar" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+    <form asp-controller="Booking" asp-action="EditBookingDetail" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class=" row mt-2" style="border:1px solid;">
-            <div id="demo" class="col-md-6 carousel slide ms-4" data-bs-ride="carousel">
+        <div class=" row mt-3" >
+            <div id="demo" class="col-5 carousel slide ms-4 mt-3" data-bs-ride="carousel">
+                <!-- Indicators/dots -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+                </div>
+
                 <!-- The slideshow/carousel -->
-                <div style="margin-left: 9%;">
-                    <div class="carousel-inner" style="height: 50%" >
-                        <div class="carousel-item active">
-                            <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
-                        </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
                     </div>
-                    <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
-                    <div class="row">
-                        <label class="col-5 fw-bold  fs-6">Ratings:</label>
-                        <label class="col-5 d-flex fs-6" id="rating">
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                        </label>
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    <div class="carousel-item ">
+                        <img id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img">
                     </div>
+                    <div class="carousel-item ">
+                        <img id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img">
+                    </div>
+                    <div class="carousel-item ">
+                        <img id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img">
+                    </div>
+                </div>
 
-                    <div class="row fs-6 mt-2">
-                        <label class="col-5 fw-bold">No. of rides:</label>
-                        <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##") <span class="fw-bold">k/day</span></label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Locations:</label>
-                        <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
-                    </div>
+                <!-- Left and right controls/icons -->
+                <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
 
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Status:</label>
-                        @if (@ViewBag.car.Status == 1)
-                        {
-                            <label class="col-5 fw-bold text-success">Available</label>
-                        }
-                        else if (@ViewBag.car.Status == 2)
-                        {
-                            <label class="col-5 fw-bold text-primary">Booked</label>
-                        }
-                        else
-                        {
-                            <label class="col-5 fw-bold text-danger">Stopped</label>
-                        }
-                    </div>
+            <div class="col-1">
+            </div>
+
+            <div class="col-4" style="margin-left:-2%;">
+                <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
+                <div class=" mt-2 fs-5">
+                <ul class="row mt-2 fs-6 disc">
+                    <li>
+                        <label style="font-weight: 500;">From: @ViewBag.startDate.ToString("dd/MM/yyyy - HH:mm tt")</label>
+                    </li>
+                    <li>
+                        <label style="font-weight: 500;">To: @ViewBag.endDate.ToString("dd/MM/yyyy - HH:mm tt")</label>
+                    </li>
+                </ul>
+                </div>
+                <div class="row mt-2 fs-6">
+                    <label style="font-weight: 650;">Number of days: @Math.Round((double)ViewBag.NumberOfDays.TotalDays, 0)</label>
+                </div>
+                <div class="row mt-2 fs-6">
+                    <label style="font-weight: 650;">Base price: @ViewBag.car.BasePrice.ToString("0.##") k/day</label>
+                </div>
+                <div class="row mt-2 fs-6">
+                    <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                </div>
+                <div class="row mt-2 fs-6">
+                    <label style="font-weight: 650;">Deposit: @ViewBag.car.Deposit</label>
+                </div>
+                <div class="row mt-2 fs-5">
+                    <label class="col-4 fw-bold">Booking No.</label>
+                    <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
+                </div>
+                <div class="row mt-2 fs-5">
+                    <label class="col-4 fw-bold">Booking status:</label>
+                    @if (@ViewBag.car.Status == 1)
+                    {
+                        <label class="col-5 fw-bold text-success">Available</label>
+                    }
+                    else if (@ViewBag.car.Status == 2)
+                    {
+                        <label class="col-5 fw-bold text-primary">Booked</label>
+                    }
+                    else
+                    {
+                        <label class="col-5 fw-bold text-danger">Stopped</label>
+                    }
                 </div>
             </div>
-            
-            <!-- Booking summary -->
-            <div class="col-md-5 d-flex flex-column" style="border-left: 1px solid;">
-                <div class="mt-3 flex-grow-1">
-                    <h4 class="fw-bold">Booking Summary</h4>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Number of days: @Math.Round((double)ViewBag.NumberOfDays.TotalDays, 0)</label>
+            <div class="col-2 mt-3">
+                <div>
+                    <a style="width: 140px;" class="btn btn-primary p-2" asp-controller="Car" asp-action="ViewCarDetailsByCustomer" asp-route-location="@ViewBag.location" 
+                    asp-route-startDate="@ViewBag.startDate" 
+                    asp-route-endDate="@ViewBag.endDate" 
+                    asp-route-CarId="@ViewBag.car.CarId">View details</a>
                 </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("0,0")<span class="fw-bold"> VND</span></label>
+                <div class="mt-3">
+                    <a style="width: 140px;" class="btn btn-secondary p-2" href="#">Confirm Pick-up</a>
                 </div>
-                <hr style="width: 80%; margin-left: auto;">
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("0,0 VND")</label>
-                </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
-                </div>
+                <div class="mt-3">
+                    <a style="width: 140px;" class="btn btn-danger p-2" href="#">Cancel booking</a>
                 </div>
             </div>
         </div>
@@ -268,7 +223,7 @@
                 </div>
                 <div class="form-group" hidden>
                     <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" value="2" readonly/>
+                    <input asp-for="Status" class="form-control" value="1" readonly/>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
 
@@ -280,14 +235,14 @@
                     <div class="col-md-6">
                         <div class="form-group col-md-8 mb-3">
                             <label asp-for="BookingInfo.RenterName" class="control-label">Full Name: <span style="color: red;">*</span></label>
-                            <input asp-for="BookingInfo.RenterName" class="form-control" value="@ViewBag.user.Name" required/>
+                            <input asp-for="BookingInfo.RenterName" class="form-control" required/>
                             <span asp-validation-for="BookingInfo.RenterName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8 mb-3">
                             <label asp-for="BookingInfo.RenterPhone" class="control-label">
                                 Phone number: <span style="color: red;">*</span>
                             </label>
-                        <input asp-for="BookingInfo.RenterPhone" class="form-control" value="@ViewBag.user.Phone" required/>
+                        <input asp-for="BookingInfo.RenterPhone" class="form-control" required/>
                             <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
                         </div>
 
@@ -295,14 +250,14 @@
                             <label asp-for="BookingInfo.RenterNationalId" class="control-label">
                                 National ID No: <span style="color: red;">*</span>
                             </label>
-                        <input asp-for="BookingInfo.RenterNationalId" class="form-control" value="@ViewBag.user.NationalId" required />
+                        <input asp-for="BookingInfo.RenterNationalId" class="form-control" required />
                             <span asp-validation-for="BookingInfo.RenterNationalId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group col-md-8 mb-3">
                             <label asp-for="BookingInfo.RenterDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                        <input asp-for="BookingInfo.RenterDob" class="form-control" type="date" value="@ViewBag.dob" required/>
+                        <input asp-for="BookingInfo.RenterDob" class="form-control" type="date" required/>
                             <span asp-validation-for="BookingInfo.RenterDob" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8 mb-3">
@@ -310,14 +265,14 @@
                             <label asp-for="BookingInfo.RenterEmail" class="control-label">
                                 Email address: <span style="color: red;">*</span>
                             </label>
-                            <input asp-for="BookingInfo.RenterEmail" class="form-control" value="@ViewBag.user.Email" required/>
+                            <input asp-for="BookingInfo.RenterEmail" class="form-control" required/>
                             <span asp-validation-for="BookingInfo.RenterEmail" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8 mb-3">
                             <label asp-for="BookingInfo.RenterDrivingLicense" class="control-label">Driving license:</label>
                             <div class="input-group">
                                 <input asp-for="BookingInfo.RenterDrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
-                            <input asp-for="BookingInfo.RenterDrivingLicense" type="text" id="fileName" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
+                                <input asp-for="BookingInfo.RenterDrivingLicense" type="text" id="fileName" class="form-control" readonly />
                                 <div class="input-group-append">
                                     <button asp-for="BookingInfo.RenterDrivingLicense" type="button" id="chooseFileBtn" class="btn btn-outline-secondary">Upload</button>
                                 </div>
@@ -346,25 +301,25 @@
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
                     <label asp-for="BookingInfo.RenterAddress.CityId" class="control-label mb-1">Address:</label>
-                    <select asp-for="BookingInfo.RenterAddress.CityId" class="form-control form-select" asp-items="ViewBag.Cities">
+                    <select asp-for="BookingInfo.RenterAddress.CityId" class="form-control form-select" asp-items="ViewBag.CitiesR">
                         <option value="">-- Select City --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.RenterAddress.CityId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.RenterAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.Districts">
+                    <select asp-for="BookingInfo.RenterAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.DistrictsR">
                         <option value="">-- Select District --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.RenterAddress.DistrictId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.RenterAddress.WardId" class="form-control form-select" asp-items="ViewBag.Wards">
+                    <select asp-for="BookingInfo.RenterAddress.WardId" class="form-control form-select" asp-items="ViewBag.WardsR">
                         <option value="">-- Select Ward --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.RenterAddress.WardId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                <input asp-for="BookingInfo.RenterAddress.HouseNumberStreet" class="form-control" value="@ViewBag.houseNumberStreet" placeholder="House number, Street" />
+                <input asp-for="BookingInfo.RenterAddress.HouseNumberStreet" class="form-control" value="@ViewBag.houseNumberStreetR" placeholder="House number, Street" />
                     <span asp-validation-for="BookingInfo.RenterAddress.HouseNumberStreet" class="text-danger"></span>
                 </div>
                 
@@ -377,7 +332,7 @@
                     <h4 class="mb-4">Driver's information</h4>
                     <div class="form-group mb-3">
                         <div class="checkbox">
-                            <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent" checked/><span style="font-weight: 400;"> Different than Renter's information</span></input>
+                            <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent" /><span style="font-weight: 400;"> Different than Renter's information</span></input>
                             <span asp-validation-for="BookingInfo.IsDifferent" class="text-danger"></span>
                         </div>
                     </div>
@@ -421,7 +376,7 @@
                             <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
                             <div class="input-group">
                                 <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
-                                <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
+                                <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" readonly />
                                 <div class="input-group-append">
                                     <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
                                 </div>
@@ -449,25 +404,25 @@
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
                     <label asp-for="BookingInfo.DriverAddress.CityId" class="control-label mb-1">Address:</label>
-                    <select asp-for="BookingInfo.DriverAddress.CityId" class="form-control form-select" asp-items="ViewBag.Cities">
+                    <select asp-for="BookingInfo.DriverAddress.CityId" class="form-control form-select" asp-items="ViewBag.CitiesD">
                         <option value="">-- Select City --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.DriverAddress.CityId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.DriverAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.Districts">
+                    <select asp-for="BookingInfo.DriverAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.DistrictsD">
                         <option value="">-- Select District --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.DriverAddress.DistrictId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.DriverAddress.WardId" class="form-control form-select" asp-items="ViewBag.Wards">
+                    <select asp-for="BookingInfo.DriverAddress.WardId" class="form-control form-select" asp-items="ViewBag.WardsD">
                         <option value="">-- Select Ward --</option>
                     </select>
                     <span asp-validation-for="BookingInfo.DriverAddress.WardId" class="text-danger"></span>
                 </div>
                 <div class="form-group text-myfont col-md-6 mb-3">
-                    <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, Street" />
+                    <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, StreetD" />
                     <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
                 </div>
                 <div class="d-flex justify-content-center align-items-center mt-3">
@@ -703,7 +658,7 @@
     const fileInput = document.getElementById('fileInput');
     const fileNameInput = document.getElementById('fileName');
     const modalImage = document.getElementById('modalImage');
-    const defaultImage = '@Url.Content("~/img/" + ViewBag.DrivingLience)'; // Ensure correct path
+    const defaultImage = '@Url.Content("~/img/" + Model?.BookingInfo?.RenterDrivingLicense)'; // Ensure correct path
 
     chooseFileBtn.addEventListener('click', function () {
         fileInput.click(); // Simulate click on file input
@@ -1015,8 +970,8 @@
     <script>
     $(document).ready(function () {
     // Lưu trữ tùy chọn ban đầu của dropdown
-    var originalDistrictOptions = $('#BookingInfo_DriverAddress_DistrictId').html();
-    var originalWardOptions = $('#BookingInfo_DriverAddress_WardId').html();
+    var originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+    var originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
 
     // Initially hide driver's information fields
     toggleDriverFields();
@@ -1028,6 +983,16 @@
 
     function toggleDriverFields() {
         var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
+
+        // Kiểm tra xem checkbox có thuộc tính data-first-load không
+        var isFirstLoad = $('input[name="BookingInfo.IsDifferent"]').data('first-load');
+
+        if (isFirstLoad !== 'done') {
+            // Đánh dấu lần đầu đã hoàn thành
+            $('input[name="BookingInfo.IsDifferent"]').data('first-load', 'done');
+            return; // Không làm gì nếu là lần đầu
+        }
+
         if (isChecked) {
             // Clear driver's information fields
             $('#BookingInfo_DriverName').val('');
@@ -1072,5 +1037,16 @@
         }
     });
 </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
+    <script>
+        function showImageAndDownload(imagePath, fileName) {
+            document.getElementById('modalImage').src = imagePath;
+            document.getElementById('downloadLink').href = imagePath;
+            document.getElementById('downloadLink').download = fileName;
+            $('#imageModal').modal('show');
+        }
+    </script>
 }

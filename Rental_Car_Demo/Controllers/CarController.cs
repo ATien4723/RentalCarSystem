@@ -241,8 +241,12 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
-        public IActionResult ViewCarDetailsByCustomer(int CarId)
+        public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
         {
+            ViewBag.location = location;
+            ViewBag.startDate = startDate;
+            ViewBag.endDate = endDate;
+
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;

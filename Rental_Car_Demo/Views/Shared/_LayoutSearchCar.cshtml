@@ -476,6 +476,28 @@
 
     </script>
 
+    <script>
+        function navigateToCarDetails(carId) {
+            var location = document.getElementById('pickupLocation').value;
+            var pickupDate = document.getElementById('pickupDateInput').value;
+            var pickupTime = document.getElementById('pickupTimeInput').value;
+            var dropDate = document.getElementById('dropDateInput').value;
+            var dropTime = document.getElementById('dropTimeInput').value;
+
+            var startDate = pickupDate + 'T' + pickupTime;
+            var endDate = dropDate + 'T' + dropTime;
+
+            var url = '@Url.Action("ViewCarDetailsByCustomer", "Car")'
+                + '?CarId=' + carId
+                + '&location=' + encodeURIComponent(location)
+                + '&startDate=' + encodeURIComponent(startDate)
+                + '&endDate=' + encodeURIComponent(endDate);
+
+            window.location.href = url;
+        }
+    </script>
+
+    
 
 </body>
 

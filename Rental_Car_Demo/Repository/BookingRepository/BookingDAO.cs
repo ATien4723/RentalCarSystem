@@ -43,7 +43,7 @@ namespace Rental_Car_Demo.Repository.BookingRepository
             try
             {
                 using var context = new RentCarDbContext();
-                booking = context.Bookings.Include(b => b.BookingInfoId).SingleOrDefault(b => b.BookingNo == bookingNo);
+                booking = context.Bookings.Include(b => b.User).Include(b => b.Car).Include(b => b.BookingInfo). SingleOrDefault(b => b.BookingNo == bookingNo);
             }
             catch (Exception ex)
             {

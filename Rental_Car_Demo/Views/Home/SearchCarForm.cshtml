@@ -128,61 +128,54 @@
 
                 <div id="carResults" class="row">
                     @foreach ( var car in Model ) {
-                        @if(car.Status != 2)
-                        {
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <a asp-action="ViewCarDetailsByCustomer" asp-controller="Car" asp-route-CarId="@car.CarId"> 
-                                        <img src="~/img/@car.FrontImage" class="card-img-top" alt="@car.Name"> </a>
-                                    
-                                    <div class="card-body">
-                                        
-                                        <h5  class="card-title" >@car.Name</h5>
-                                        <div class="details">
-                                            <p class="card-text">
-                                                <i class="fa-sharp fa-solid fa-location-smile"></i>
-                                                <span>
-                                                    @car.Address.District?.DistrictName, @car.Address.City?.CityProvince
-                                                </span>
-                                            </p>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
-                                                </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <a href="javascript:void(0);" onclick="navigateToCarDetails('@car.CarId')">
+                                    <img src="~/img/sieuxe1.jpeg" class="card-img-top" alt="@car.Name">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">@car.Name</h5>
+                                    <div class="details">
+                                        <p class="card-text">
+                                            <i class="fa-sharp fa-solid fa-location-smile"></i>
+                                            <span>
+                                                @car.Address.District?.DistrictName, @car.Address.City?.CityProvince
+                                            </span>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p class="card-text">
-                                                        <i class="fa-solid fa-person-seat icon"></i> @car.Seats
-                                                    </p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="card-text">
-                                                        <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
-                                                    </p>
-                                                </div>
+                                            <div class="col-6">
+                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
                                             </div>
-                                            <p class="card-text">
-                                                <i class="fa-sharp fa-regular fa-calendar-days icon"></i> @car.ProductionYear
-                                            </p>
                                         </div>
-                                        <p class="price">@car.BasePrice.ToString("N0")VND</p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="card-text">
+                                                    <i class="fa-solid fa-person-seat icon"></i> @car.Seats
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="card-text">
+                                                    <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="card-text">
+                                            <i class="fa-sharp fa-regular fa-calendar-days icon"></i> @car.ProductionYear
+                                        </p>
                                     </div>
+                                    <p class="price">@car.BasePrice.ToString("N0")VND</p>
                                 </div>
                             </div>
-                        }
+                        </div>
                     }
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 
 
