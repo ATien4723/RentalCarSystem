@@ -291,8 +291,11 @@ namespace Rental_Car_Demo.Controllers
 
                 var bookingDetail = context.Bookings
                     .Include(b => b.BookingInfo)
+                        .ThenInclude(bi => bi.RenterAddress)
+                    .Include(b => b.BookingInfo)
                         .ThenInclude(bi => bi.DriverAddress)
                     .FirstOrDefault(b => b.BookingNo == bookingNo);
+
 
                 ViewBag.RenterName = bookingDetail?.BookingInfo?.RenterName;
 
@@ -589,6 +592,62 @@ namespace Rental_Car_Demo.Controllers
             }
 
             return Json(new { success = false, message = "Invalid file" });
+        }
+        [HttpGet]
+        public ActionResult ViewBookingList()
+        {
+            using var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+            var bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.BookingNo)
+            .ToList();
+
+            var bookingCount = context.Bookings
+            .Where(b => b.UserId == userId)
+            .Count();
+
+            ViewBag.Bookings = bookings;
+            ViewBag.Count = bookingCount;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ViewBookingList(string sortOrder)
+        {
+            var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+            if (sortOrder == "latest")
+            {
+                ViewBag.Bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .ToList();
+                ViewBag.SortOrder = "latest";
+            }
+            else
+            {
+                ViewBag.Bookings = context.Bookings
+            .Include(b => b.Car) // Include the Car navigation property
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.BookingNo)
+            .ToList();
+                ViewBag.SortOrder = "newest";
+            }
+
+            return View();
         }
     }
 }
