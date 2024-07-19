@@ -649,12 +649,5 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
-        public static class DateHelper
-        {
-            public static int GetDaysBetween(DateTime startDate, DateTime endDate)
-            {
-                return (endDate - startDate).Days;
-            }
-        }
     }
 }
