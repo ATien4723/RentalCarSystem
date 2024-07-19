@@ -270,7 +270,7 @@ namespace Rental_Car_Demo.Controllers
             {
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
 
-                var hashPass = HashPassword(customer.Password);
+                var hashPass = HashPassword(model.Password);
                 customer.Password = hashPass;
                 context.Update(customer);
                 context.SaveChanges();

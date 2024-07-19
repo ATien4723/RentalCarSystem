@@ -199,9 +199,15 @@ namespace Rental_Car_Demo.Controllers
                                         .ThenInclude(a => a.District)
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.City)
+                                    .Include(c => c.Bookings)
                                     .ToList();
             ViewBag.SortOrder = "newest";
+
+
+
+
             return View();
+
         }
 
         [HttpPost]
@@ -329,7 +335,6 @@ namespace Rental_Car_Demo.Controllers
                         break;
                     }
                 }
-
             }
 
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
@@ -345,6 +350,10 @@ namespace Rental_Car_Demo.Controllers
             var listCity = _db.Cities.ToList();
             var listDistrict = _db.Districts.ToList();
             var listWard = _db.Wards.ToList();
+
+
+            var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
+            ViewBag.booking = bookingg;
 
 
 
@@ -363,7 +372,7 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.listCity = listCity;
             ViewBag.listDistrict = listDistrict;
             ViewBag.listWard = listWard;
-
+            
 
 
             return View(car);
@@ -508,5 +517,24 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
         }
+
+
+        [HttpPost]
+        public IActionResult ConfirmDeposit(Car car)
+        {
+            
+            var booking = _db.Bookings.FirstOrDefault(b => b.CarId == car.CarId && b.Status == 1);
+            if (booking != null)
+            {
+
+                booking.Status = 2;
+                _db.Update(booking);
+                _db.SaveChanges();
+                
+            }
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
+        }
+
+
     }
 }
