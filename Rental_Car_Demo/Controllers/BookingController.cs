@@ -19,6 +19,7 @@ namespace Rental_Car_Demo.Controllers
         UserDAO userDAO = null;
         RentCarDbContext _db = new RentCarDbContext();
 
+       
         public IActionResult loadRating()
         {
             return View();
@@ -34,7 +35,7 @@ namespace Rental_Car_Demo.Controllers
         }
 
         [HttpPost]
-        public IActionResult giveRating(int BookingNo, string content,int ratings)
+        public IActionResult giveRating(int BookingNo, string content, int ratings)
         {
             Booking booking = _db.Bookings.Find(BookingNo);
             booking.Status = 5;
@@ -44,12 +45,11 @@ namespace Rental_Car_Demo.Controllers
             feedback.Content = content;
             feedback.Ratings = ratings;
             feedback.BookingNo = BookingNo;
-            feedback.Date= DateTime.Now;
+            feedback.Date = DateTime.Now;
             _db.Feedbacks.Add(feedback);
             _db.SaveChanges();
             return RedirectToAction("loadRating");
         }
-
         public BookingController()
         {
             bookingDAO = new BookingDAO();
@@ -183,9 +183,9 @@ namespace Rental_Car_Demo.Controllers
             }
         }
 
-       //POST: BookingController/BookACar
-       [HttpPost]
-       [ValidateAntiForgeryToken]
+        //POST: BookingController/BookACar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult BookACar(Booking viewModel)
         {
             try
@@ -248,8 +248,8 @@ namespace Rental_Car_Demo.Controllers
                         Status = viewModel.Status,
                         BookingInfoId = bookingInfo.BookingInfoId
                     };
-                    
-                    
+
+
                     _context.Bookings.Add(booking);
                     _context.SaveChanges();
 
@@ -272,7 +272,7 @@ namespace Rental_Car_Demo.Controllers
 
                     car.Status = 2;
                     _context.SaveChanges();
-                    
+
                     var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                     currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
@@ -305,8 +305,15 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
-
-
+        [HttpPost]
+        public IActionResult confirmPickupForDetailsPage(DateTime startDate, DateTime endDate, int carId, int bookingNo)
+        {
+            Booking booking = _db.Bookings.Find(bookingNo);
+            booking.Status = 3;
+            _db.Bookings.Update(booking);
+            _db.SaveChanges();
+            return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
+        }
         public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
         {
             try
@@ -405,7 +412,7 @@ namespace Rental_Car_Demo.Controllers
                     ViewBag.WardsR = new SelectList(wardR, "WardId", "WardName", addressR.WardId);
                     ViewBag.houseNumberStreetR = addressR.HouseNumberStreet;
                 }
-                
+
                 var addressD = bookingDetail?.BookingInfo?.DriverAddress;
 
                 if (addressD == null)
