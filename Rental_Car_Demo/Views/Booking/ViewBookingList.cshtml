@@ -31,13 +31,19 @@
             }
             else
             {
-                <a>You have @ViewBag.count on-going bookings</a>
+                <a>You have @ViewBag.Count on-going bookings</a>
             }
 
             <form id="sortForm" method="post" asp-action="ViewBookingList">
                 <select id="sortOrder" name="sortOrder" class="form-select w-auto">
                     <option value="newest">Newest to Latest</option>
                     <option value="latest">Latest to Newest</option>
+                </select>
+            </form>
+            <form id="sort" method="post" asp-action="ViewBookingList">
+                <select id="sortPrice" name="sortPrice" class="form-select w-auto">
+                    <option value="highest">Highest to Lowest</option>
+                    <option value="lowest">Lowest to Highest</option>
                 </select>
             </form>
         </div>
@@ -159,7 +165,14 @@
                         </div>
                     </div>
 
-                    @if (b.Status == 1 || b.Status == 2)
+                    @if (b.Status == 1)
+                    {
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary w-100">View details</button>
+                            <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
+                        </div>
+                    }
+                    else if (b.Status == 2)
                     {
                         <div class="col-sm-2">
                             <button class="btn btn-primary w-100">View details</button>
@@ -296,6 +309,20 @@
             document.getElementById("sortOrder").addEventListener("change", function () {
                 localStorage.setItem("sortOrder", this.value);
                 document.getElementById("sortForm").submit();
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var sortOrder = '@ViewBag.sortPrice';
+            if (sortOrder) {
+                document.getElementById("sortPrice").value = sortOrder;
+            }
+
+            document.getElementById("sortPrice").addEventListener("change", function () {
+                localStorage.setItem("sortPrice", this.value);
+                document.getElementById("sort").submit();
             });
         });
     </script>

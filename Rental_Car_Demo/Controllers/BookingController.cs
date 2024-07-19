@@ -611,7 +611,7 @@ namespace Rental_Car_Demo.Controllers
             .ToList();
 
             var bookingCount = context.Bookings
-            .Where(b => b.UserId == userId)
+            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
             .Count();
 
             ViewBag.Bookings = bookings;
