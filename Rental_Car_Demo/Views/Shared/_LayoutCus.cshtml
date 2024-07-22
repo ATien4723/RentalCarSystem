@@ -28,7 +28,6 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>@ViewData["Title"] - Rental_Car_Demo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rental_Car_Demo.styles.css" asp-append-version="true" />
     <style>
         .modal-header-center {
@@ -190,6 +189,7 @@
                                     <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                                     <li><a class="dropdown-item" href="#">My Bookings</a></li>
                                     <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

@@ -132,8 +132,9 @@
                     @foreach ( var car in Model ) {
                         <div class="col-md-4 mb-4">
                             <div class="card">
-
+                                <a asp-action="ViewCarDetailsByCustomer" asp-controller="Car" asp-route-CarId="@car.CarId">
                                 <img src="~/img/@car.FrontImage" class="card-img-top" alt="@car.Name">
+                                </a>
                                 <div class="card-body">
                                     <h5 class="card-title">@car.Name</h5>
                                     <div class="details">
@@ -155,11 +156,11 @@
                                             <div class="col-6">
                                                 <p class="card-text">
                                                     <i class="fa-solid fa-person-seat icon"></i> @car.Seats
+                                                    <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
                                                 </p>
                                             </div>
                                             <div class="col-6">
                                                 <p class="card-text">
-                                                    <i class="fa-sharp fa-solid fa-gears icon"></i> @(car.TransmissionType ? "Automatic" : "Manual")
                                                 </p>
                                             </div>
                                         </div>

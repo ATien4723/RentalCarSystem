@@ -76,6 +76,17 @@ namespace Rental_Car_Demo.Controllers
 
             return Json (addresses.Select (a => a.Address).ToList ());
         }
+
+        [HttpGet]
+        public IActionResult GetUserFeedbacks(int userId)
+        {
+            var feedbacks = _context.Feedbacks
+                .Include (f => f.BookingNoNavigation)
+                .Where (f => f.BookingNoNavigation.UserId == userId)
+                .ToList ();
+
+            return View (feedbacks);
+        }
     }
 }
 

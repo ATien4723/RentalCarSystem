@@ -26,6 +26,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\OJT_FAcademy\rental-car\Rental_Car_Demo
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Booking/BookACar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29rQUNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Booking/BookACarFinish.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29rQUNhckZpbmlzaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/AddACar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ViewMyCars.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdNeUNhcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Home/GetUserFeedbacks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZXRVc2VyRmVlZGJhY2tzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Home/Index.cshtml]
@@ -72,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutCus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDdXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutFeedBack.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRGZWVkQmFjay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutRegister.cshtml]
@@ -141,3 +157,7 @@ build_metadata.AdditionalFiles.CssScope = b-xeyxruoj3r
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-gs8ccpb0t8
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutRentCar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRSZW50Q2FyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-z5d0l12uqo
