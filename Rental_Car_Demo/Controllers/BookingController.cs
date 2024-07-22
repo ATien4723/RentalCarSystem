@@ -676,13 +676,13 @@ namespace Rental_Car_Demo.Controllers
             var userId = user.UserId;
 
             var bookings = context.Bookings
-            .Include(b => b.Car) // Include the Car navigation property
+            .Include(b => b.Car)
             .Where(b => b.UserId == userId)
             .OrderByDescending(b => b.BookingNo)
             .ToList();
 
             var bookingCount = context.Bookings
-            .Where(b => b.UserId == userId)
+            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
             .Count();
 
             ViewBag.Bookings = bookings;
@@ -703,21 +703,71 @@ namespace Rental_Car_Demo.Controllers
             if (sortOrder == "latest")
             {
                 ViewBag.Bookings = context.Bookings
-            .Include(b => b.Car) // Include the Car navigation property
-            .Where(b => b.UserId == userId)
-            .ToList();
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .ToList();
                 ViewBag.SortOrder = "latest";
             }
-            else
+            else if(sortOrder == "newest")
             {
                 ViewBag.Bookings = context.Bookings
-            .Include(b => b.Car) // Include the Car navigation property
-            .Where(b => b.UserId == userId)
-            .OrderByDescending(b => b.BookingNo)
-            .ToList();
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .OrderByDescending(b => b.BookingNo)
+                .ToList();
                 ViewBag.SortOrder = "newest";
             }
+            else if(sortOrder == "highest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .Select(b => new
+                {
+                    Booking = b,
+                    Car = b.Car,
+                    CarId = b.Car.CarId,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    BookingNo = b.BookingNo,
+                    Status = b.Status,
+                    Name = b.Car.Name,
+                    BasePrice = b.Car.BasePrice,
+                    
+                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                })
+                .OrderByDescending(b => b.TotalCost)
+                .ToList();
+                ViewBag.SortOrder = "highest";
+            }
+            else if(sortOrder == "lowest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .Select(b => new
+                {
+                    Booking = b,
+                    Car = b.Car,
+                    CarId = b.Car.CarId,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    BookingNo = b.BookingNo,
+                    Status = b.Status,
+                    Name = b.Car.Name,
+                    BasePrice = b.Car.BasePrice,
 
+                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                })
+                .OrderBy(b => b.TotalCost)
+                .ToList();
+                ViewBag.SortOrder = "lowest";
+            }
+            var bookingCount = context.Bookings
+            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+            .Count();
+
+            ViewBag.Count = bookingCount;
             return View();
         }
     }

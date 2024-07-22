@@ -38,6 +38,8 @@
                 <select id="sortOrder" name="sortOrder" class="form-select w-auto">
                     <option value="newest">Newest to Latest</option>
                     <option value="latest">Latest to Newest</option>
+                    <option value="highest">Highest to Lowest</option>
+                    <option value="lowest">Lowest to Highest</option>
                 </select>
             </form>
         </div>
@@ -165,7 +167,14 @@
                         </div>
                     </div>
 
-                    @if (b.Status == 1 || b.Status == 2)
+                    @if (b.Status == 1)
+                    {
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary w-100">View details</button>
+                            <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
+                        </div>
+                    }
+                    else if (b.Status == 2)
                     {
                         <div class="col-sm-2">
                             <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
@@ -345,4 +354,5 @@
             });
         });
     </script>
+
 </body>
