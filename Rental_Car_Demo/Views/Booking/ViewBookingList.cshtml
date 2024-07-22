@@ -38,10 +38,6 @@
                 <select id="sortOrder" name="sortOrder" class="form-select w-auto">
                     <option value="newest">Newest to Latest</option>
                     <option value="latest">Latest to Newest</option>
-                </select>
-            </form>
-            <form id="sort" method="post" asp-action="ViewBookingList">
-                <select id="sortPrice" name="sortPrice" class="form-select w-auto">
                     <option value="highest">Highest to Lowest</option>
                     <option value="lowest">Lowest to Highest</option>
                 </select>
@@ -313,17 +309,4 @@
         });
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var sortOrder = '@ViewBag.sortPrice';
-            if (sortOrder) {
-                document.getElementById("sortPrice").value = sortOrder;
-            }
-
-            document.getElementById("sortPrice").addEventListener("change", function () {
-                localStorage.setItem("sortPrice", this.value);
-                document.getElementById("sort").submit();
-            });
-        });
-    </script>
 </body>
