@@ -306,12 +306,42 @@ namespace Rental_Car_Demo.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult confirmPickupForDetailsPage(DateTime startDate, DateTime endDate, int carId, int bookingNo)
+        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
         {
             Booking booking = _db.Bookings.Find(bookingNo);
             booking.Status = 3;
             _db.Bookings.Update(booking);
             _db.SaveChanges();
+            if(!startDate.HasValue || !endDate.HasValue)
+            {
+                var context = new RentCarDbContext();
+                var userString = HttpContext.Session.GetString("User");
+                User user = null;
+                if (!string.IsNullOrEmpty(userString))
+                {
+                    user = JsonConvert.DeserializeObject<User>(userString);
+                }
+                var userId = user.UserId;
+                if (sortOrder == "latest")
+                {
+                    ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car) // Include the Car navigation property
+                .Where(b => b.UserId == userId)
+                .ToList();
+                    ViewBag.SortOrder = "latest";
+                }
+                else
+                {
+                    ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car) // Include the Car navigation property
+                .Where(b => b.UserId == userId)
+                .OrderByDescending(b => b.BookingNo)
+                .ToList();
+                    ViewBag.SortOrder = "newest";
+                }
+                return View("ViewBookingList");
+            }
+
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
         public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
@@ -644,6 +674,7 @@ namespace Rental_Car_Demo.Controllers
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
             var userId = user.UserId;
+
             var bookings = context.Bookings
             .Include(b => b.Car) // Include the Car navigation property
             .Where(b => b.UserId == userId)

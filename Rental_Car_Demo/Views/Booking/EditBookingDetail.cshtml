@@ -202,9 +202,9 @@
                     {
                         <label class="col-5 fw-bold text-primary">Confirm</label>
                     }
-                    else
+                    else if(Model.Status==3)
                     {
-                        <label class="col-5 fw-bold text-danger">Unknown</label>
+                        <label class="col-5 fw-bold text-warning">In-progress</label>
                     }
                 </div>
             </div>
@@ -217,7 +217,7 @@
                 </div>
                 @if(Model.Status==2){
                     <div class="mt-3">
-                    <button type="button" style="width: 140px;" class="btn btn-secondary p-2" data-bs-toggle="modal" data-bs-target="#confirm-pickup">
+                    <button type="button" style="width: 140px;" class="btn btn-secondary p-2" data-bs-toggle="modal" data-bs-target="#confirm-pickup"data-bs-toggle="modal" data-bs-target="#confirm-pickup">
             Confirm Pick-up
         </button>
                 </div>

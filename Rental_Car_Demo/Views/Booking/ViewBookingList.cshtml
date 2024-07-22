@@ -163,7 +163,7 @@
                     {
                         <div class="col-sm-2">
                             <button class="btn btn-primary w-100">View details</button>
-                            <button class="btn btn-primary mt-2 w-100 custom-lightgrey">Confirm Pick-up</button>
+                            <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary mt-2 w-100 custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
                             <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
                         </div>
                     }
@@ -206,6 +206,45 @@
             </select>
         </div>
     </div>
+
+    <div class="modal" id="confirm-pickup">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <form asp-controller="Booking" asp-action="confirmPickupForDetailsPage" method="post">
+                <div class="modal-content">
+
+                    <!-- Modal body -->
+                    <div class="modal-body rating-body">
+                        <h6 id="textForPickup" class="text-center fw-bold text-danger w-100">
+                            Are you sure you want to confirm pick-up?
+                        </h6>
+
+                        <input type="hidden" id="confirmPickup-bookingNo" name="bookingNo" value="" />
+                        <input type="hidden" id="confirmPickup-sortOrder" name="sortOrder" value="" />
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer " style="padding:0;">
+                        <div class="d-flex w-100 justify-content-center align-items-center" style="margin:0">
+                            <button type="button" data-bs-dismiss="modal" class="btn w-100 hover-shadow">No</button>
+                            <div class="vr mx-1"></div>
+                            <button type="submit" class="btn w-100 hover-shadow">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!--Get value for confirm pick up-->
+    <script>
+        function getValueForPickUp(bN) {
+            document.getElementById("textForPickup").innerHTML = "Are you sure you want to confirm pick-up for BookingNo " + bN + " ?";
+            document.getElementById("confirmPickup-bookingNo").value = bN;
+            document.getElementById("confirmPickup-sortOrder").value = document.getElementById("sortOrder").value;
+        }
+    </script>
 
     <script>
         var current_page = 1;
