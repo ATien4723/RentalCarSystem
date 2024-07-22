@@ -95,7 +95,13 @@
                     <div class="col-sm-1"></div>
                     <!-- Preview Details Car -->
                     <div class="col-sm-4">
-                        <h4 class=" fw-bold mb-3 mt-4">@b.Car.Name</h4>
+                        <h4 class=" fw-bold mb-3 mt-4">
+                            <a style="text-decoration:none;color:black;" href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })">
+                                @b.Car.Name
+                            </a>
+                            
+                        </h4>
+
                         <ul>
                             <li><p class="fw-bold">From @b.StartDate</p></li>
                             <li><p class="fw-bold">To @b.EndDate</p></li>
@@ -162,7 +168,7 @@
                     @if (b.Status == 1 || b.Status == 2)
                     {
                         <div class="col-sm-2">
-                            <button class="btn btn-primary w-100">View details</button>
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
                             <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary mt-2 w-100 custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
                             <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
                         </div>
@@ -170,13 +176,14 @@
                     else if (b.Status == 3)
                     {
                         <div class="col-sm-2">
-                            <button class="btn btn-primary w-100">View details</button>
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
                             <button class="btn btn-primary mt-2 w-100">Return car</button>
                         </div>
                     }
                     else if (b.Status == 0 || b.Status == 4 || b.Status == 5)
                     {
                         <div class="col-sm-2">
+                            <a href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })" class="btn btn-primary w-100">View details</a>
                             <button class="btn btn-primary w-100">View details</button>
                         </div>
                     }
