@@ -296,6 +296,10 @@ namespace Rental_Car_Demo.Controllers
             double rating = 0, nor = 0;
             foreach (Feedback o in matchedFeedback)
             {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
                 rating += o.Ratings;
                 nor += 1;
             }

@@ -101,7 +101,6 @@
                             <a style="text-decoration:none;color:black;" href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })">
                                 @b.Car.Name
                             </a>
-                            
                         </h4>
 
                         <ul>
@@ -170,7 +169,7 @@
                     @if (b.Status == 1)
                     {
                         <div class="col-sm-2">
-                            <button class="btn btn-primary w-100">View details</button>
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
                             <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
                         </div>
                     }
@@ -192,8 +191,7 @@
                     else if (b.Status == 0 || b.Status == 4 || b.Status == 5)
                     {
                         <div class="col-sm-2">
-                            <a href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })" class="btn btn-primary w-100">View details</a>
-                            <button class="btn btn-primary w-100">View details</button>
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
                         </div>
                     }
                 </div>
