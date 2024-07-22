@@ -77,8 +77,10 @@
     }
 
     .carousel-inner img {
-        width: 100%;
-        height: 100%;
+        max-width: 100%; /* Limits width to the size of its container */
+        max-height: 100%; /* Limits height to 200 pixels */
+        width: 70%; /* Ensure width adjusts proportionally */
+        height: auto; /* Ensure height adjusts proportionally */
         object-fit: cover;
     }
 
@@ -147,7 +149,7 @@
                     <form id="editBookingForm">
                         <div class="form-group">
                             <label for="modalPickupLocation">Pick-up location</label>
-                            <input type="text" class="form-control" id="modalPickupLocation" value="@ViewBag.location">
+                            <input type="text" class="form-control" id="modalPickupLocation" value="@ViewBag.location" readonly>
                         </div>
                         <div class="form-group">
                             <label for="modalStartDate">Pick-up date and time</label>
@@ -183,52 +185,54 @@
         <div class=" row mt-2" style="border:1px solid;">
             <div id="demo" class="col-md-6 carousel slide ms-4" data-bs-ride="carousel">
                 <!-- The slideshow/carousel -->
-                <div class="carousel-inner style" style="height: 50%">
-                    <div class="carousel-item active">
-                        <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                <div style="margin-left: 9%;">
+                    <div class="carousel-inner" style="height: 50%" >
+                        <div class="carousel-item active">
+                            <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                        </div>
                     </div>
-                </div>
-                <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
-                <div class="row">
-                    <label class="col-5 fw-bold  fs-6">Ratings:</label>
-                    <label class="col-5 d-flex fs-6" id="rating">
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                    </label>
-                    <label class="col-5"></label>
-                    <span class="col-5 fw-bold">(No ratings yet)</span>
-                </div>
+                    <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
+                    <div class="row">
+                        <label class="col-5 fw-bold  fs-6">Ratings:</label>
+                        <label class="col-5 d-flex fs-6" id="rating">
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                        </label>
+                        <label class="col-5"></label>
+                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    </div>
 
-                <div class="row fs-6 mt-2">
-                    <label class="col-5 fw-bold">No. of rides:</label>
-                    <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
-                </div>
-                <div class="row  fs-6 mt-2">
-                    <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##") <span class="fw-bold">k/day</span></label>
-                </div>
-                <div class="row  fs-6 mt-2">
-                    <label class="col-5 fw-bold">Locations:</label>
-                    <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
-                </div>
+                    <div class="row fs-6 mt-2">
+                        <label class="col-5 fw-bold">No. of rides:</label>
+                        <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
+                    </div>
+                    <div class="row  fs-6 mt-2">
+                        <label class="col-5 fw-bold">Price:</label>
+                        <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##") <span class="fw-bold">k/day</span></label>
+                    </div>
+                    <div class="row  fs-6 mt-2">
+                        <label class="col-5 fw-bold">Locations:</label>
+                        <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
+                    </div>
 
-                <div class="row  fs-6 mt-2">
-                    <label class="col-5 fw-bold">Status:</label>
-                    @if (@ViewBag.car.Status == 1)
-                    {
-                        <label class="col-5 fw-bold text-success">Available</label>
-                    }
-                    else if (@ViewBag.car.Status == 2)
-                    {
-                        <label class="col-5 fw-bold text-primary">Booked</label>
-                    }
-                    else
-                    {
-                        <label class="col-5 fw-bold text-danger">Stopped</label>
-                    }
+                    <div class="row  fs-6 mt-2">
+                        <label class="col-5 fw-bold">Status:</label>
+                        @if (@ViewBag.car.Status == 1)
+                        {
+                            <label class="col-5 fw-bold text-success">Available</label>
+                        }
+                        else if (@ViewBag.car.Status == 2)
+                        {
+                            <label class="col-5 fw-bold text-primary">Booked</label>
+                        }
+                        else
+                        {
+                            <label class="col-5 fw-bold text-danger">Stopped</label>
+                        }
+                    </div>
                 </div>
             </div>
             
@@ -264,7 +268,7 @@
                 </div>
                 <div class="form-group" hidden>
                     <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" value="1" readonly/>
+                    <input asp-for="Status" class="form-control" value="2" readonly/>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
 
