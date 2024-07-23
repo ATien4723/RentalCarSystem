@@ -109,6 +109,7 @@
                                 @{
                                     string statusText = "";
                                     string statusClass = "";
+                                    var st = c.Status;
                                     switch (c.Status)
                                     {
                                         case 0:
@@ -131,8 +132,30 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <button class="btn btn-primary w-100">View details</button>
-                        <button class="btn btn-primary mt-2 w-100">Confirm deposit</button>
+                        <a href="@Url.Action("ChangeCarDetailsByOwner", "Car", new { CarId = c.CarId })" class="btn btn-primary w-100">View details</a>
+                        @{
+                            
+                            var confirmDeposit = ((List<Booking>)ViewBag.Bookings)
+                            .FirstOrDefault(b => b.CarId == c.CarId && b.Status == 1);
+
+                            var confirmPayment = ((List<Booking>)ViewBag.Bookings)
+                            .FirstOrDefault(b => b.CarId == c.CarId && b.Status == 4);
+                        }
+                        @if (confirmDeposit != null)
+                        {
+                            <form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
+                                <button type="button" class="btn btn-primary mt-2 w-100" id="confirmDepositButton">Confirm Deposit</button>
+                                <input type="hidden" asp-for="CarId" value="@c.CarId" />
+                            </form>
+                        }
+                        @if (confirmPayment != null)
+                        {
+                            //<form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
+                                <button type="button" class="btn btn-primary mt-2 w-100" id="confirmPaymentButton">Confirm Payment</button>
+                                <input type="hidden" asp-for="CarId" value="@c.CarId" />
+                           // </form>
+                        }
+                        
                     </div>
                 </div>
 
@@ -252,6 +275,21 @@
                 localStorage.setItem("sortOrder", this.value);
                 document.getElementById("sortForm").submit();
             });
+        });
+    </script>
+
+
+    <!--  confirm deposit diaglog  -->
+    <script>
+        document.getElementById('confirmDepositButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default action of the button
+            if (confirm('Are you sure you want to confirm the deposit?')) {
+                // Submit the form if the user confirms
+                document.getElementById('confirmDepositForm').submit();
+            } else {
+                // Perform an action if the user cancels (optional)
+                console.log('User canceled the action.');
+            }
         });
     </script>
 </body>

@@ -159,13 +159,13 @@ namespace Rental_Car_Demo.Controllers
             if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             if(model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             var check = ModelState;
@@ -194,7 +194,7 @@ namespace Rental_Car_Demo.Controllers
 
                     // Hiển thị thông báo đăng ký thành công
                     TempData["SuccessMessage"] = "Account created successfully!";
-                    return RedirectToAction("Login", "Users");
+                    return RedirectToAction("Guest", "Users");
                 }
                 catch (Exception ex)
                 {
@@ -204,7 +204,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            return View("Login", model);
+            return View("Guest", model);
         }
 
         public IActionResult ResetPassword()
@@ -237,6 +237,7 @@ namespace Rental_Car_Demo.Controllers
             string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
             string subject = "Link Reset Password";
             _emailService.SendEmail(model.Email, subject, resetLink);
+            TempData["SuccessMessage"] = "We will send link to reset your password if your email exist in out database!";
 
             return View();
         }
@@ -261,6 +262,8 @@ namespace Rental_Car_Demo.Controllers
             context.Update(token);
             context.SaveChanges();
 
+            
+
             return View(model);
         }
 
@@ -271,11 +274,12 @@ namespace Rental_Car_Demo.Controllers
             {
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
 
-                var hashPass = HashPassword(customer.Password);
+                var hashPass = HashPassword(model.Password);
                 customer.Password = hashPass;
                 context.Update(customer);
                 context.SaveChanges();
 
+                TempData["SuccessMessage"] = "Your password has been reset";
 
                 return View("Login");
             }
