@@ -294,16 +294,16 @@
                         Confirm Pick-up
                     </button>
                 </div>
-                }
-                @if (Model.Status == 3 || Model.Status ==4)
-                {
-                <div class="mt-3">
-                    <a style="width: 140px;" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return Car</a>
-                </div>  
-                }
+            }
+            @if (Model.Status == 3 || Model.Status ==4)
+            {
+            <div class="mt-3">
+                <a style="width: 140px;" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return Car</a>
+            </div>  
+            }
 
-                @if (Model.Status == 1||Model.Status == 2)
-                {
+            @if (Model.Status == 1||Model.Status == 2)
+            {
                 <div class="mt-3">
                     <a style="width: 140px;" class="btn btn-danger p-2" id="cancelButton">Cancel booking</a>
                 </div>

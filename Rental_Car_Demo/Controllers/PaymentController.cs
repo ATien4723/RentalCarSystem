@@ -101,15 +101,27 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult ConfirmPayment(int carId)
         {
-            var booking = db.Bookings.SingleOrDefault(b => b.CarId == carId && b.Status != 5);
             var car = db.Cars.SingleOrDefault(c => c.CarId == carId);
-            if (booking != null && car != null)
+            var booking = (from b in db.Bookings
+                           join c in db.Cars on b.CarId equals c.CarId
+                           where b.CarId == carId
+                           && b.BookingNo == db.Bookings
+                                                .Where(b2 => b2.CarId == carId)
+                                                .Max(b2 => b2.BookingNo) && b.Status == 5
+                           select new
+                           {
+                               Booking = b,
+                               Car = c
+                           }).SingleOrDefault();
+            if (car != null && booking != null)
             {
-                booking.Status = 5;
                 car.Status = 1;
-                db.Bookings.Update(booking);
                 db.Cars.Update(car);
                 db.SaveChanges();
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Customer has not paid the car rental.";
             }
             return RedirectToAction("ChangeCarDetailsByOwner", "Car", new { CarId = carId });
         }

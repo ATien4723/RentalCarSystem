@@ -99,7 +99,12 @@
         <h2 class="mt-2">Car Details</h2>
     </div>
 
-
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
     <div class="container-fluid">
 
@@ -204,6 +209,12 @@
                         <button type="button" class="btn btn-primary p-2" id="confirmDepositButton">Confirm Deposit</button>
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                     </form>
+                }
+                else if (ViewBag.car.Status == 2)
+                {
+                    <div class="col-1 mt-3">
+                        <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
+                    </div>
                 }
             </div>
         </div>
@@ -728,9 +739,35 @@
             </div>
         </div>
     </div>
+    <form id="confirmPaymentForm" asp-controller="Payment" asp-action="ConfirmPayment" asp-route-carId="@ViewBag.car.CarId" method="post" style="display: none;">
+        <input type="hidden" name="returnUrl" value="~/">
+    </form>
+    <div class="modal fade" id="confirmPaymentModal" tabindex="-1" aria-labelledby="confirmPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-center">
+                    <h5 class="modal-title" id="logoutModalLabel">ConfirmPayment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-center">
+                    Please confirm that you have receive the payment for this booking
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <div class="vr mx-3"></div>
+                        <button type="button" class="btn btn-primary" onclick="submitConfirm()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
+    <script>
+        function submitConfirm() {
+            document.getElementById('confirmPaymentForm').submit();
+        }
+    </script>
     <script>
         function showImageAndDownload(imagePath, fileName) {
             document.getElementById('modalImage').src = imagePath;

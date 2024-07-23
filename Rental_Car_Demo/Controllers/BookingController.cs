@@ -300,7 +300,7 @@ namespace Rental_Car_Demo.Controllers
                         var wallet = new Wallet
                         {
                             UserId = user.UserId,
-                            Amount = (numberOfDays * car.Deposit).ToString("N2"),
+                            Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
                             Type = "Pay Deposit",
                             CreatedAt = DateTime.Now,
                             BookingNo = booking.BookingNo,
@@ -724,7 +724,7 @@ namespace Rental_Car_Demo.Controllers
                         var walletCarOwner = new Wallet
                         {
                             UserId = car.User.UserId,
-                            Amount = (numberOfDays * car.Deposit).ToString("N2"),
+                            Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
                             Type = "Refund Deposit",
                             CreatedAt = DateTime.Now,
                             BookingNo = booking.BookingNo,
