@@ -236,6 +236,7 @@ namespace Rental_Car_Demo.Controllers
             string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
             string subject = "Link Reset Password";
             _emailService.SendEmail(model.Email, subject, resetLink);
+            TempData["SuccessMessage"] = "We will send link to reset your password if your email exist in out database!";
 
             return View();
         }
@@ -260,6 +261,8 @@ namespace Rental_Car_Demo.Controllers
             context.Update(token);
             context.SaveChanges();
 
+            
+
             return View(model);
         }
 
@@ -275,6 +278,7 @@ namespace Rental_Car_Demo.Controllers
                 context.Update(customer);
                 context.SaveChanges();
 
+                TempData["SuccessMessage"] = "Your password has been reset";
 
                 return View("Login");
             }

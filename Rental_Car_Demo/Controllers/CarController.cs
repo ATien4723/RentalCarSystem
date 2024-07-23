@@ -181,6 +181,7 @@ namespace Rental_Car_Demo.Controllers
             else return RedirectToAction("Fail", "Users");
         }
 
+
         [HttpGet]
         public ActionResult ViewMyCars()
         {
@@ -202,6 +203,11 @@ namespace Rental_Car_Demo.Controllers
                                     .Include(c => c.Bookings)
                                     .ToList();
             ViewBag.SortOrder = "newest";
+
+            ViewBag.Bookings = context.Bookings
+           .Include(b => b.Car) // Include the Car navigation property
+           .ToList();
+
 
 
 
@@ -514,6 +520,7 @@ namespace Rental_Car_Demo.Controllers
             carrrr.Status = car.Status;
             _db.Update(carrrr);
             _db.SaveChanges();
+            TempData["SuccessMessage"] = "Your car status changed!";
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
         }
@@ -532,6 +539,7 @@ namespace Rental_Car_Demo.Controllers
                 _db.SaveChanges();
                 
             }
+            TempData["SuccessMessage"] = "You confirmed deposit!";
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
 

@@ -618,6 +618,8 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.Count = bookingCount;
             return View();
         }
+
+
         [HttpPost]
         public ActionResult ViewBookingList(string sortOrder)
         {
@@ -646,7 +648,6 @@ namespace Rental_Car_Demo.Controllers
             .ToList();
                 ViewBag.SortOrder = "newest";
             }
-
             return View();
         }
     }
