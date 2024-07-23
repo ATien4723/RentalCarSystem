@@ -324,15 +324,24 @@
             });
 
             $('#transactionForm').on('submit', function (e) {
-                var from = new Date($('#from').val());
-                var to = new Date($('#to').val());
-                if (to < from) {
+                var from = $('#from').val();
+                var to = $('#to').val();
+                var errorMessage = '';
+
+                if (!from || !to) {
+                    errorMessage = 'Please select start date and end date.';
+                } else if (new Date(to) < new Date(from)) {
+                    errorMessage = 'The end date must be later than the start date.';
+                }
+
+                if (errorMessage) {
                     e.preventDefault();
-                    $('#errorMessage').text('The end date must be later than the start date in order to search for transactions. Please try again.');
+                    $('#errorMessage').text(errorMessage);
                     $('#errorModal').modal('show');
                 }
             });
         });
+
     </script>
 
     <script>
