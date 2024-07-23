@@ -50,8 +50,10 @@ namespace Rental_Car_Demo.Repository.CarRepository
                             .ThenInclude (a => a.Ward)
                         .Include (c => c.Document)
                         .Include (c => c.Term)
+                        .Where (c => c.Status != 2)
                         .Include (c => c.User)
                         .Include (c => c.Bookings)
+                        .Where(c => c.Status != 2)
                         .AsQueryable ();
 
                     if ( !string.IsNullOrEmpty (address) ) {

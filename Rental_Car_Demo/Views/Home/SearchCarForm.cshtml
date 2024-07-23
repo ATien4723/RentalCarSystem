@@ -24,7 +24,8 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div class="collapse" id="carTypeOptions">
-                        @foreach ( var car in Model.Select (c => c.Brand.BrandName).Distinct () ) {
+                        @foreach (var car in Model.Select(c => c.Brand.BrandName).Distinct())
+                        {
                             <div class="form-check">
                                 <input class="form-check-input brandNameCheckbox" type="checkbox" name="brandName" value="@car">
                                 <p class="form-check-label">@car</p>
@@ -41,7 +42,8 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div class="collapse" id="seatingCapacityOptions">
-                        @foreach ( var car in Model.Select (c => c.Seats).Distinct () ) {
+                        @foreach (var car in Model.Select(c => c.Seats).Distinct())
+                        {
                             <!-- Add Seating Capacity options here -->
                             <div class="form-check">
                                 <input class="form-check-input seatsCheckbox" type="checkbox" id="seats-@car" value="@car">
@@ -59,7 +61,8 @@
                     </label>
                     <div class="collapse" id="gearTransmissionOptions">
                         <!-- Add Gear Transmission options here -->
-                        @foreach ( var car in Model.Select (c => c.TransmissionType).Distinct () ) {
+                        @foreach (var car in Model.Select(c => c.TransmissionType).Distinct())
+                        {
                             <div class="form-check">
                                 <input class="form-check-input transmissionCheckbox" type="checkbox" id="transmission-@car" value="@car">
                                 <p class="form-check-label" for="transmission-@car">@(car ? "Automatic" : "Manual")</p>
@@ -96,7 +99,8 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div id="brandsOptions" class="collapse">
-                        @foreach ( var brand in Model.Select (c => c.Brand).Distinct () ) {
+                        @foreach (var brand in Model.Select(c => c.Brand).Distinct())
+                        {
                             <div class="brand-item form-check" onclick="performBrandSearch('@brand.BrandName')">
                                 <img src="@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
                             </div>
@@ -127,7 +131,8 @@
 
 
                 <div id="carResults" class="row">
-                    @foreach ( var car in Model ) {
+                    @foreach (var car in Model)
+                    {
                         <div class="col-md-4 mb-4">
                             <div class="card">
                                 <a href="javascript:void(0);" onclick="navigateToCarDetails('@car.CarId')">
