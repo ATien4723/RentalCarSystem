@@ -158,13 +158,13 @@ namespace Rental_Car_Demo.Controllers
             if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             if(model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             var check = ModelState;
@@ -193,7 +193,7 @@ namespace Rental_Car_Demo.Controllers
 
                     // Hiển thị thông báo đăng ký thành công
                     TempData["SuccessMessage"] = "Account created successfully!";
-                    return RedirectToAction("Login", "Users");
+                    return RedirectToAction("Guest", "Users");
                 }
                 catch (Exception ex)
                 {
@@ -203,7 +203,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            return View("Login", model);
+            return View("Guest", model);
         }
 
         public IActionResult ResetPassword()
