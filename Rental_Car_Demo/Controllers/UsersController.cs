@@ -13,6 +13,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -448,7 +449,10 @@ namespace Rental_Car_Demo.Controllers
                 var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                 currentUser.Name = user.Name; // Assuming UserName is the property you want to update
                 HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
-
+                if (!String.IsNullOrEmpty(NewPassword))
+                {
+                    return RedirectToAction("Logout", "Users");
+                }
                 return RedirectToAction("LoginCus", "Users");
             }
             catch (Exception ex)

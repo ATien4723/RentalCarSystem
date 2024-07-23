@@ -31,7 +31,7 @@ namespace Rental_Car_Demo.Controllers
                     var transaction = new Wallet
                     {
                         UserId = userId,
-                        Amount = (-amount).ToString("N2"),
+                        Amount = (amount).ToString("N2"),
                         Type = "Withdraw",
                         CreatedAt = DateTime.Now
                     };

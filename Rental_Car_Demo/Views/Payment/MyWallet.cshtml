@@ -142,8 +142,34 @@
                         {
                             <tr class="listingItem">
                                 <td>@wallet.WalletId</td>
-                                <td class="@(wallet.Type == "Withdraw" ? "text-danger" : wallet.Type == "Pay Deposit" ? "text-danger" : "text-success")">
-                                    @(wallet.Type == "Top-Up" ? "+" : "")@wallet.Amount
+                                @{
+                                    string cssClass;
+                                    string prefix;
+                                    if (wallet.Type == "Withdraw" || wallet.Type == "Pay Deposit")
+                                    {
+                                        cssClass = "text-danger";
+                                    }
+                                    else
+                                    {
+                                        cssClass = "text-success";
+                                    }
+
+                                    if (wallet.Type == "Top-Up" || wallet.Type == "Receive Deposit" || (wallet.Type == "Refund Deposit" && wallet.User.Role == false))
+                                    {
+                                        prefix = "+";
+                                    }
+                                    else if (wallet.Type == "Refund Deposit" && wallet.User.Role == true)
+                                    {
+                                        prefix = "-";
+                                    }
+                                    else
+                                    {
+                                        prefix = "-";
+                                    }
+                                }
+
+                                <td class="@cssClass">
+                                    @prefix@wallet.Amount
                                 </td>
                                 <td>@wallet.Type</td>
                                 <td>@wallet.CreatedAt</td>
