@@ -30,6 +30,10 @@
                 <div>
                     <h4>Your current balance:</h4>
                     <h3 class="text-success">@walletFormatted VND</h3>
+                    @if (Model.User.Wallet < 0)
+                    {
+                        <span class="text-danger"><strong>You are out of money. Please top-up to continue.</strong></span>
+                    }
                 </div>
                 <div class="ms-auto">
                     <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#withdrawModal">Withdraw</button>
@@ -142,8 +146,8 @@
                         {
                             <tr class="listingItem">
                                 <td>@wallet.WalletId</td>
-                                <td class="@(wallet.Type == "Withdraw" ? "text-danger" : wallet.Type == "Pay Deposit" ? "text-danger" : "text-success")">
-                                    @(wallet.Type == "Top-Up" ? "+" : "")@wallet.Amount
+                                <td class="@(wallet.Amount.Contains("-") ? "text-danger" : "text-success")">
+                                    @(wallet.Amount.StartsWith("-") || wallet.Amount.StartsWith("+") ? "" : "+")@wallet.Amount
                                 </td>
                                 <td>@wallet.Type</td>
                                 <td>@wallet.CreatedAt</td>

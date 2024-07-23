@@ -19,6 +19,12 @@
     </style>
 </head>
 <body>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <div class="container mt-5">
         <a class="link mt-5" href="~/Users/LoginCus">Home</a> > <span>Add a car</span>
 
@@ -95,7 +101,11 @@
                     <div class="col-sm-1"></div>
                     <!-- Preview Details Car -->
                     <div class="col-sm-4">
-                        <h4 class=" fw-bold mb-3 mt-4">@b.Car.Name</h4>
+                        <h4 class=" fw-bold mb-3 mt-4">
+                            <a style="text-decoration:none;color:black;" href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })">
+                                @b.Car.Name
+                            </a>
+                        </h4>
                         <ul>
                             <li><p class="fw-bold">From @b.StartDate</p></li>
                             <li><p class="fw-bold">To @b.EndDate</p></li>
@@ -167,14 +177,14 @@
                             <button class="btn btn-danger mt-2 w-100">Cancel booking</button>
                         </div>
                     }
-                    else if (b.Status == 3)
+                    else if (b.Status == 4 || b.Status == 3)
                     {
                         <div class="col-sm-2">
                             <button class="btn btn-primary w-100">View details</button>
-                            <button class="btn btn-primary mt-2 w-100">Return car</button>
+                            <a class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return car</a>
                         </div>
                     }
-                    else if (b.Status == 0 || b.Status == 4 || b.Status == 5)
+                    else if (b.Status == 0 || b.Status == 5)
                     {
                         <div class="col-sm-2">
                             <button class="btn btn-primary w-100">View details</button>
@@ -183,6 +193,58 @@
                 </div>
 
             </div>
+            <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCar" 
+            asp-route-carId="@(b.CarId)" asp-route-userId="@(b.UserId)"
+                  asp-route-amount="@(BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)-BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate))"
+            method="post" style="display: none;">
+                <input type="hidden" name="returnUrl" value="~/">
+            </form>
+            <div class="modal fade" id="returnCarModal" tabindex="-1" aria-labelledby="returnCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-center">
+                            <h5 class="modal-title" id="logoutModalLabel">Return Car</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-body-center">
+                            @if (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate) > BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate))
+                            {
+                                <p class="text-center w-100">Please confirm to return the car.
+                                <br />
+                                    You must pay @(BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("N0")) VND for @(DateTime.Today.Date - b.StartDate.Date) days car rental.
+                                    <br />
+                                    The remaining amount of @(
+                            (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                </p>
+                                
+                            }
+                            else
+                            {
+                                <p class="text-center w-100">Please confirm to return the car.
+                                <br />
+                                    You must pay @(BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate)) VND for @(DateTime.Today - b.StartDate) days car rental.
+                                    <br />
+                                    The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, b.EndDate)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                </p>
+                                
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex w-100 justify-content-center align-items-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <div class="vr mx-3"></div>
+                                <button type="button" class="btn btn-primary" onclick="submitReturn()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         }
     </div>
 
@@ -206,7 +268,11 @@
             </select>
         </div>
     </div>
-
+    <script>
+        function submitReturn() {
+            document.getElementById('returnCarForm').submit();
+        }
+    </script>
     <script>
         var current_page = 1;
         var items = document.querySelectorAll('#listingContainer .listingItem');
