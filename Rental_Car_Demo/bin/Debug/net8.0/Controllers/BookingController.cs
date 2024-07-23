@@ -12,6 +12,7 @@ using Rental_Car_Demo.Repository.UserRepository;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Rental_Car_Demo.Validation;
+using Microsoft.CodeAnalysis;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -21,6 +22,46 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
+        RentCarDbContext _db = new RentCarDbContext();
+
+       
+        public IActionResult loadRating()
+        {
+            return View();
+        }
+
+        public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
+        {
+            Booking booking = _db.Bookings.Find(bookingNo);
+            booking.Status = 5;
+            _db.Bookings.Update(booking);
+            Feedback feedback = new Feedback();
+            feedback.BookingNo = bookingNo;
+            feedback.Ratings = -1;
+            feedback.Date = DateTime.Now;
+            _db.Feedbacks.Add(feedback);
+            _db.SaveChanges();
+            ViewBag.checkFbExisted = true;
+            return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
+        }
+
+        [HttpPost]
+        public IActionResult giveRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings)
+        {
+            Booking booking = _db.Bookings.Find(bookingNo);
+            booking.Status = 5;
+            _db.Bookings.Update(booking);
+            _db.SaveChanges();
+            Feedback feedback = new Feedback();
+            feedback.Content = content;
+            feedback.Ratings = ratings;
+            feedback.BookingNo = bookingNo;
+            feedback.Date = DateTime.Now;
+            _db.Feedbacks.Add(feedback);
+            _db.SaveChanges();
+            ViewBag.checkFbExisted = true;
+            return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
+        }
         public BookingController(IEmailService emailService)
         {
             this._emailService = emailService;
@@ -52,7 +93,7 @@ namespace Rental_Car_Demo.Controllers
         }
 
         // GET: BookingController/Create
-        public ActionResult BookACar(string location, DateTime startDate, DateTime endDate, int CarId)
+        public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId)
         {
             try
             {
@@ -158,7 +199,7 @@ namespace Rental_Car_Demo.Controllers
         //POST: BookingController/BookACar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult BookACar(Booking viewModel)
+        public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId, Booking viewModel)
         {
             try
             {
@@ -242,13 +283,11 @@ namespace Rental_Car_Demo.Controllers
                     var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
 
                     int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
-                    // Save the previous URL before redirecting to the current page
-                    HttpContext.Session.SetString("PreviousUrl", Request.Headers["Referer"].ToString());
+
                     if (viewModel.PaymentMethod == 1 && user.Wallet < (car.Deposit * numberOfDays))
                     {
-                        var previousUrl = HttpContext.Session.GetString("PreviousUrl");
-                        TempData["AlertMessage"] = "Not enough funds in your wallet.";
-                        return Redirect(previousUrl ?? "/"); // Fallback to home if no previous URL
+                        TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
+                        return RedirectToAction("BookACar", new {location = location, startDate = startDate, endDate = endDate, carId = CarId});
                     }
 
                     if (viewModel.PaymentMethod == 1)
@@ -323,10 +362,106 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
+        [HttpPost]
+        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
+        {
+            Booking booking = _db.Bookings.Find(bookingNo);
+            booking.Status = 3;
+            _db.Bookings.Update(booking);
+            _db.SaveChanges();
+            if(!startDate.HasValue || !endDate.HasValue)
+            {
+                var context = new RentCarDbContext();
+                var userString = HttpContext.Session.GetString("User");
+                User user = null;
+                if (!string.IsNullOrEmpty(userString))
+                {
+                    user = JsonConvert.DeserializeObject<User>(userString);
+                }
+                var userId = user.UserId;
+                if (sortOrder == "latest")
+                {
+                    ViewBag.Bookings = context.Bookings
+                    .Include(b => b.Car)
+                    .Where(b => b.UserId == userId)
+                    .ToList();
+                    ViewBag.SortOrder = "latest";
+                }
+                else if (sortOrder == "newest")
+                {
+                    ViewBag.Bookings = context.Bookings
+                    .Include(b => b.Car)
+                    .Where(b => b.UserId == userId)
+                    .OrderByDescending(b => b.BookingNo)
+                    .ToList();
+                    ViewBag.SortOrder = "newest";
+                }
+                else if (sortOrder == "highest")
+                {
+                    ViewBag.Bookings = context.Bookings
+                    .Include(b => b.Car)
+                    .Where(b => b.UserId == userId)
+                    .Select(b => new
+                    {
+                        Booking = b,
+                        Car = b.Car,
+                        CarId = b.Car.CarId,
+                        StartDate = b.StartDate,
+                        EndDate = b.EndDate,
+                        BookingNo = b.BookingNo,
+                        Status = b.Status,
+                        Name = b.Car.Name,
+                        BasePrice = b.Car.BasePrice,
 
+                        TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                    })
+                    .OrderByDescending(b => b.TotalCost)
+                    .ToList();
+                    ViewBag.SortOrder = "highest";
+                }
+                else if (sortOrder == "lowest")
+                {
+                    ViewBag.Bookings = context.Bookings
+                    .Include(b => b.Car)
+                    .Where(b => b.UserId == userId)
+                    .Select(b => new
+                    {
+                        Booking = b,
+                        Car = b.Car,
+                        CarId = b.Car.CarId,
+                        StartDate = b.StartDate,
+                        EndDate = b.EndDate,
+                        BookingNo = b.BookingNo,
+                        Status = b.Status,
+                        Name = b.Car.Name,
+                        BasePrice = b.Car.BasePrice,
 
+                        TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                    })
+                    .OrderBy(b => b.TotalCost)
+                    .ToList();
+                    ViewBag.SortOrder = "lowest";
+                }
+                var bookingCount = context.Bookings
+                .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+                .Count();
+
+                ViewBag.Count = bookingCount;
+                return View("ViewBookingList");
+            }
+
+            return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
+        }
         public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
         {
+            Boolean checkFbExisted = false;
+            Feedback? feedback = _db.Feedbacks.FirstOrDefault(x => x.BookingNo == bookingNo);
+            if (feedback != null)
+            {
+                checkFbExisted = true;
+            }
+            ViewBag.checkFbExisted = checkFbExisted;
+
             try
             {
 
@@ -539,7 +674,7 @@ namespace Rental_Car_Demo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelBooking()
+        public ActionResult CancelBooking(DateTime? startDate, DateTime? endDate, int? carId, int? BookingNo)
         {
             try
             {
@@ -612,7 +747,7 @@ namespace Rental_Car_Demo.Controllers
                      $"if the deposit has been paid and go to your car’s details page to confirm";
                     _emailService.SendEmail(email, subject, message);
 
-                    return RedirectToAction("LoginCus", "Users");
+                    return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = BookingNo });
                 }
 
                 return RedirectToAction("LoginCus", "Users");
@@ -681,6 +816,113 @@ namespace Rental_Car_Demo.Controllers
             }
 
             return Json(new { success = false, message = "Invalid file" });
+        }
+        [HttpGet]
+        public ActionResult ViewBookingList()
+        {
+            using var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+
+            var bookings = context.Bookings
+            .Include(b => b.Car)
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.BookingNo)
+            .ToList();
+
+            var bookingCount = context.Bookings
+            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+            .Count();
+
+            ViewBag.Bookings = bookings;
+            ViewBag.Count = bookingCount;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ViewBookingList(string sortOrder)
+        {
+            var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            var userId = user.UserId;
+            if (sortOrder == "latest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .ToList();
+                ViewBag.SortOrder = "latest";
+            }
+            else if(sortOrder == "newest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .OrderByDescending(b => b.BookingNo)
+                .ToList();
+                ViewBag.SortOrder = "newest";
+            }
+            else if(sortOrder == "highest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .Select(b => new
+                {
+                    Booking = b,
+                    Car = b.Car,
+                    CarId = b.Car.CarId,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    BookingNo = b.BookingNo,
+                    Status = b.Status,
+                    Name = b.Car.Name,
+                    BasePrice = b.Car.BasePrice,
+                    
+                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                })
+                .OrderByDescending(b => b.TotalCost)
+                .ToList();
+                ViewBag.SortOrder = "highest";
+            }
+            else if(sortOrder == "lowest")
+            {
+                ViewBag.Bookings = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .Select(b => new
+                {
+                    Booking = b,
+                    Car = b.Car,
+                    CarId = b.Car.CarId,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    BookingNo = b.BookingNo,
+                    Status = b.Status,
+                    Name = b.Car.Name,
+                    BasePrice = b.Car.BasePrice,
+
+                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
+                })
+                .OrderBy(b => b.TotalCost)
+                .ToList();
+                ViewBag.SortOrder = "lowest";
+            }
+            var bookingCount = context.Bookings
+            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+            .Count();
+
+            ViewBag.Count = bookingCount;
+            return View();
         }
     }
 }

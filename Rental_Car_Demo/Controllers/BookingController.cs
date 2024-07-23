@@ -12,6 +12,7 @@ using Rental_Car_Demo.Repository.UserRepository;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Rental_Car_Demo.Validation;
+using Microsoft.CodeAnalysis;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -61,7 +62,7 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.checkFbExisted = true;
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
-        public BookingController()
+        public BookingController(IEmailService emailService)
         {
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
@@ -92,7 +93,7 @@ namespace Rental_Car_Demo.Controllers
         }
 
         // GET: BookingController/Create
-        public ActionResult BookACar(string location, DateTime startDate, DateTime endDate, int CarId)
+        public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId)
         {
             try
             {
@@ -198,7 +199,7 @@ namespace Rental_Car_Demo.Controllers
         //POST: BookingController/BookACar
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult BookACar(Booking viewModel)
+        public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId, Booking viewModel)
         {
             try
             {
@@ -282,13 +283,11 @@ namespace Rental_Car_Demo.Controllers
                     var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
 
                     int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
-                    // Save the previous URL before redirecting to the current page
-                    HttpContext.Session.SetString("PreviousUrl", Request.Headers["Referer"].ToString());
+
                     if (viewModel.PaymentMethod == 1 && user.Wallet < (car.Deposit * numberOfDays))
                     {
-                        var previousUrl = HttpContext.Session.GetString("PreviousUrl");
-                        TempData["AlertMessage"] = "Not enough funds in your wallet.";
-                        return Redirect(previousUrl ?? "/"); // Fallback to home if no previous URL
+                        TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
+                        return RedirectToAction("BookACar", new {location = location, startDate = startDate, endDate = endDate, carId = CarId});
                     }
 
                     if (viewModel.PaymentMethod == 1)
@@ -675,7 +674,7 @@ namespace Rental_Car_Demo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelBooking()
+        public ActionResult CancelBooking(DateTime? startDate, DateTime? endDate, int? carId, int? BookingNo)
         {
             try
             {
@@ -748,7 +747,7 @@ namespace Rental_Car_Demo.Controllers
                      $"if the deposit has been paid and go to your car’s details page to confirm";
                     _emailService.SendEmail(email, subject, message);
 
-                    return RedirectToAction("LoginCus", "Users");
+                    return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = BookingNo });
                 }
 
                 return RedirectToAction("LoginCus", "Users");
