@@ -15,6 +15,8 @@
                 <select id="sortOrder" name="sortOrder" class="form-select w-auto">
                     <option value="newest">Newest to Latest</option>
                     <option value="latest">Latest to Newest</option>
+                    <option value="highest">Highest to Lowest</option>
+                    <option value="lowest">Lowest to Highest</option>
                 </select>
             </form>
         </div>
@@ -24,20 +26,19 @@
     </div>
 
     <div id="listingContainer">
-
         @foreach (var c in ViewBag.Cars)
         {
             <div class="listingItem container mt-3 p-5">
 
                 <div class="row d-flex align-items-center justify-content-between">
                     <!-- Preview car image -->
-                    <div id="@c.CarId" class="col-sm-5 carousel slide" data-bs-ride="carousel">
+                    <div id="demo@(c.CarId)" class="col-sm-5 carousel slide" data-bs-ride="carousel">
                         <!-- Indicators/dots -->
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+                            <button type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide-to="2"></button>
+                            <button type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide-to="3"></button>
                         </div>
 
                         <!-- The slideshow/carousel -->
@@ -61,11 +62,11 @@
                         </div>
 
                         <!-- Left and right controls/icons -->
-                        <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#@c.CarId" data-bs-slide="prev">
+                        <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#@c.CarId" data-bs-slide="next">
+                        <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -77,11 +78,11 @@
                         <div class="row">
                             <label class="col-5 fw-bold  fs-5">Ratings:</label>
                             <label class="col-5 d-flex fs-4">
-                                <i class="bi bi-star ms-1"></i>
-                                <i class="bi bi-star ms-1"></i>
-                                <i class="bi bi-star ms-1"></i>
-                                <i class="bi bi-star ms-1"></i>
-                                <i class="bi bi-star ms-1"></i>
+                                <i class="bi bi-star-fill star ms-1"></i>
+                                <i class="bi bi-star-fill star ms-1"></i>
+                                <i class="bi bi-star-fill star ms-1"></i>
+                                <i class="bi bi-star-fill star ms-1"></i>
+                                <i class="bi bi-star-fill star ms-1"></i>
                             </label>
                         </div>
                         <div class="row">
@@ -130,7 +131,7 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <a href="@Url.Action("ChangeCarDetailsByOwner", "Car", new { CarId = c.CarId })" class="btn btn-primary w-100">View details</a>
+                        <button class="btn btn-primary w-100">View details</button>
                         <button class="btn btn-primary mt-2 w-100">Confirm deposit</button>
                     </div>
                 </div>
