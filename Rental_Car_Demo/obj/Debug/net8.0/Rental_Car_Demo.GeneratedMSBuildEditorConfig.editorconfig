@@ -34,12 +34,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29rQUNhckZpbmlzaC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Booking/EditBookingDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xFZGl0Qm9va2luZ0RldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/AddACar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEFkZEFDYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ChangeCarDetailsByOwner.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXENoYW5nZUNhckRldGFpbHNCeU93bmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/tet1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXHRldDEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Car/ViewCarDetailsByCustomer.cshtml]
@@ -76,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutCarDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDYXJEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Shared/_LayoutCarOwner.cshtml]
@@ -136,10 +148,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Users/ResetPassword2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVzZXRQYXNzd29yZDIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/Verify/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVyaWZ5XExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/OJT_FAcademy/rental-car/Rental_Car_Demo/Views/_ViewImports.cshtml]

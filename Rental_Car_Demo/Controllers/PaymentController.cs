@@ -52,6 +52,9 @@ namespace Rental_Car_Demo.Controllers
             var user = db.Users.SingleOrDefault(u => u.UserId == userId);
             if (user != null)
             {
+                if(user.Wallet == null ) {
+                    user.Wallet = 0;
+                }
                 user.Wallet += amount;
                 var transaction = new Wallet
                 {

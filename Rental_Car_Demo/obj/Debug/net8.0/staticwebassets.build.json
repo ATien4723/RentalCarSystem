@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "plX5ho5uSvm6j+KtpZH7tHHKHTs/BuogsWLAdB1ohYE=",
+  "Hash": "j1wu9k5uiH1+VyrR1w2+W9MtWBJaYNBJUqYZKXzRRc0=",
   "Source": "Rental_Car_Demo",
   "BasePath": "_content/Rental_Car_Demo",
   "Mode": "Default",
@@ -870,6 +870,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\DJI_0550-HDR-Pano.jpg"
+    },
+    {
+      "Identity": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\download.jpg",
+      "SourceId": "Rental_Car_Demo",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\",
+      "BasePath": "_content/Rental_Car_Demo",
+      "RelativePath": "img/download.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\download.jpg"
     },
     {
       "Identity": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\wwwroot\\img\\download.png",

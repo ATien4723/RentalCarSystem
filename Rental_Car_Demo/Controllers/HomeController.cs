@@ -82,6 +82,7 @@ namespace Rental_Car_Demo.Controllers
         {
             var feedbacks = _context.Feedbacks
                 .Include (f => f.BookingNoNavigation)
+                .ThenInclude (b => b.Car)
                 .Where (f => f.BookingNoNavigation.UserId == userId)
                 .ToList ();
 
