@@ -1,6 +1,7 @@
 ﻿@model Rental_Car_Demo.Models.Booking
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
+@using Rental_Car_Demo.Repository.BookingRepository
 @{
     var userString = Context.Session.GetString("User");
     User user = null;
@@ -173,7 +174,12 @@
         }
 
     </style>
-    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
 <div class="mt-2 mb-2">
     <a asp-controller="Users" asp-action="LoginCus">Home</a> > Book car
@@ -288,16 +294,16 @@
                         Confirm Pick-up
                     </button>
                 </div>
-            }
-            @if (Model.Status == 3)
-            {
-            <div class="mt-3">
-                <a style="width: 140px;" class="btn btn-primary p-2" href="#">Return Car</a>
-            </div>  
-            }
+                }
+                @if (Model.Status == 3 || Model.Status ==4)
+                {
+                <div class="mt-3">
+                    <a style="width: 140px;" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return Car</a>
+                </div>  
+                }
 
-            @if(Model.Status == 1 || Model.Status == 2)
-            {
+                @if (Model.Status == 1||Model.Status == 2)
+                {
                 <div class="mt-3">
                     <a style="width: 140px;" class="btn btn-danger p-2" id="cancelButton">Cancel booking</a>
                 </div>
@@ -966,6 +972,59 @@
         </div>
     </div>
 
+	    <!--Return Modal-->
+        <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCarInDetail" 
+            asp-route-carId="@ViewBag.car.CarId" asp-route-userId="@user.UserId"
+                  asp-route-amount="@(BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)-BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate))"
+            method="post" style="display: none;">
+                <input type="hidden" name="returnUrl" value="~/">
+            </form>
+            <div class="modal fade" id="returnCarModal" tabindex="-1" aria-labelledby="returnCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-center">
+                            <h5 class="modal-title" id="logoutModalLabel">Return Car</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-body-center">
+                            @if (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                            {
+                                <p class="text-center w-100">Please confirm to return the car.
+                                <br />
+                                    You must pay @(BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate).ToString("N0")) VND for @(DateTime.Today.Date - @ViewBag.startDate.Date) days car rental.
+                                    <br />
+                                    The remaining amount of @(
+                            (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                </p>
+                                
+                            }
+                            else
+                            {
+                                <p class="text-center w-100">Please confirm to return the car.
+                                <br />
+                                    You must pay @(BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)) VND for @(DateTime.Today - @ViewBag.startDate) days car rental.
+                                    <br />
+                                    The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice,@ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                </p>
+                                
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex w-100 justify-content-center align-items-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <div class="vr mx-3"></div>
+                                <button type="button" class="btn btn-primary" onclick="submitReturn()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	
     <!--Rating modal-->
         <div class="modal" id="rating">
         
@@ -1018,12 +1077,17 @@
                 </div>
             </form>
         </div>
+        
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+<script>
+	function submitReturn() {
+                document.getElementById('returnCarForm').submit();
+            }
+</script>
 <script>
     $(document).ready(function () {
         // Fetch and populate districts when a city is selected

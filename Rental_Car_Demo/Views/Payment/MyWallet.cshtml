@@ -32,6 +32,10 @@
                         <i class="fa-light fa-square-dollar right-icon"></i>
                         <h1>@walletFormatted VND</h1>
                     </div>
+                    @if (Model.User.Wallet < 0)
+                    {
+                        <span class="text-danger"><strong>You are out of money. Please top-up to continue.</strong></span>
+                    }
                     <div class="buttonkk">
                         <button class="btn btn-success mx-2" data-bs-toggle="modal" data-bs-target="#topUpModal">
                             <i class="fa-sharp fa-regular fa-money-bill-transfer"></i>
@@ -189,34 +193,8 @@
                         {
                             <tr class="listingItem">
                                 <td>@wallet.WalletId</td>
-                                @{
-                                    string cssClass;
-                                    string prefix;
-                                    if (wallet.Type == "Withdraw" || wallet.Type == "Pay Deposit")
-                                    {
-                                        cssClass = "text-danger";
-                                    }
-                                    else
-                                    {
-                                        cssClass = "text-success";
-                                    }
-
-                                    if (wallet.Type == "Top-Up" || wallet.Type == "Receive Deposit" || (wallet.Type == "Refund Deposit" && wallet.User.Role == false))
-                                    {
-                                        prefix = "+";
-                                    }
-                                    else if (wallet.Type == "Refund Deposit" && wallet.User.Role == true)
-                                    {
-                                        prefix = "-";
-                                    }
-                                    else
-                                    {
-                                        prefix = "-";
-                                    }
-                                }
-
-                                <td class="@cssClass">
-                                    @prefix@wallet.Amount
+                                <td class="@(wallet.Amount.Contains("-") ? "text-danger" : "text-success")">
+                                    @(wallet.Amount.StartsWith("-") || wallet.Amount.StartsWith("+") ? "" : "+")@wallet.Amount
                                 </td>
                                 <td>@wallet.Type</td>
                                 <td>@wallet.CreatedAt</td>

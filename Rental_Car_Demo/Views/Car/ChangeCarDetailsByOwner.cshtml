@@ -705,7 +705,29 @@
         </div>
     </div>
 
-
+    <form id="confirmPaymentForm" asp-controller="Payment" asp-action="ConfirmPayment" asp-route-carId="@ViewBag.car.CarId" method="post" style="display: none;">
+        <input type="hidden" name="returnUrl" value="~/">
+    </form>
+    <div class="modal fade" id="confirmPaymentModal" tabindex="-1" aria-labelledby="confirmPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-center">
+                    <h5 class="modal-title" id="logoutModalLabel">ConfirmPayment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-center">
+                    Please confirm that you have receive the payment for this booking
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <div class="vr mx-3"></div>
+                        <button type="button" class="btn btn-primary" onclick="submitConfirm()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -717,7 +739,11 @@
             $('#imageModal').modal('show');
         }
     </script>
-
+    <script>
+        function submitConfirm() {
+            document.getElementById('confirmPaymentForm').submit();
+        }
+    </script>
     <script>
         function filterModels() {
             var selectedBrandId = document.getElementById('BrandId').value;
