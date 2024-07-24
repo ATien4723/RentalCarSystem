@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
+using Rental_Car_Demo.Repository.BookingRepository;
 using Rental_Car_Demo.Repository.CarRepository;
+using Rental_Car_Demo.Validation;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -11,7 +13,12 @@ namespace Rental_Car_Demo.Controllers
         ICarRepository carRepository = null;
 
         RentCarDbContext _db = new RentCarDbContext();
-        public CarController() => carRepository = new CarRepository();
+        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
+        {
+            this.carRepository = carRepository;
+            _db = db;
+            _emailService = emailService;
+        }
 
         public ActionResult AddACar()
         {
@@ -181,6 +188,7 @@ namespace Rental_Car_Demo.Controllers
             else return RedirectToAction("Fail", "Users");
         }
 
+
         [HttpGet]
         public ActionResult ViewMyCars()
         {
@@ -199,9 +207,20 @@ namespace Rental_Car_Demo.Controllers
                                         .ThenInclude(a => a.District)
                                     .Include(c => c.Address)
                                         .ThenInclude(a => a.City)
+                                    .Include(c => c.Bookings)
                                     .ToList();
             ViewBag.SortOrder = "newest";
+
+            ViewBag.Bookings = context.Bookings
+           .Include(b => b.Car) // Include the Car navigation property
+           .ToList();
+
+
+
+
+
             return View();
+
         }
 
         [HttpPost]
@@ -356,7 +375,6 @@ namespace Rental_Car_Demo.Controllers
                         break;
                     }
                 }
-
             }
 
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
@@ -372,6 +390,10 @@ namespace Rental_Car_Demo.Controllers
             var listCity = _db.Cities.ToList();
             var listDistrict = _db.Districts.ToList();
             var listWard = _db.Wards.ToList();
+
+
+            var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
+            ViewBag.booking = bookingg;
 
 
 
@@ -390,7 +412,7 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.listCity = listCity;
             ViewBag.listDistrict = listDistrict;
             ViewBag.listWard = listWard;
-
+            
 
 
             return View(car);
@@ -532,8 +554,125 @@ namespace Rental_Car_Demo.Controllers
             carrrr.Status = car.Status;
             _db.Update(carrrr);
             _db.SaveChanges();
+            TempData["SuccessMessage"] = "Your car status changed!";
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
+        }
+        private readonly IEmailService _emailService;
+        [HttpPost] 
+        public IActionResult ReturnCar(int carId, int userId, decimal amount)
+        {
+            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status==3 || b.Status == 4));
+            var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
+            var car = _db.Cars.FirstOrDefault(c => c.CarId == carId);
+            var carOwner = _db.Users.FirstOrDefault(u => u.UserId == car.UserId);
+            if (user != null)
+            {
+                if((-amount) > user.Wallet)
+                {
+                    TempData["ErrorMessage"] = "Your wallet doesn’t have enough balance. Please top-up your wallet and try again";
+                    booking.Status = 4;
+                    _db.Update(booking);
+                    _db.SaveChanges();
+                    return RedirectToAction("ViewBookingList", "Booking");
+                }
+                user.Wallet += amount; 
+                var transactionUser = new Wallet
+                {
+                    UserId = userId,
+                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
+                    Type = "Offset final payment",
+                    CreatedAt = DateTime.Now,
+                    BookingNo = booking.BookingNo,
+                    CarName = car.Name
+                };
+                carOwner.Wallet -= amount;
+                var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
+                var transactionCarOwner = new Wallet
+                {
+                    UserId = carOwner.UserId,
+                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
+                    Type = transactionCarOwnerType,
+                    CreatedAt = DateTime.Now,
+                    BookingNo = booking.BookingNo,
+                    CarName = car.Name
+                };
+                _db.Wallets.Add(transactionUser);
+                _db.Wallets.Add(transactionCarOwner);
+                booking.Status = 5;
+                car.NoOfRide += 1;
+                _db.Update(car);
+                _db.Update(booking);
+                _db.SaveChanges();
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+            }
+            return RedirectToAction("ViewBookingList", "Booking");
+        }
+        [HttpPost]
+        public IActionResult ReturnCarInDetail(int carId, int userId, decimal amount)
+        {
+            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3|| b.Status==4));
+            var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
+            var car = _db.Cars.FirstOrDefault(c => c.CarId == carId);
+            var carOwner = _db.Users.FirstOrDefault(u => u.UserId == car.UserId);
+            if (user != null)
+            {
+                if ((-amount) > user.Wallet)
+                {
+                    TempData["ErrorMessage"] = "Your wallet doesn’t have enough balance. Please top-up your wallet and try again";
+                    booking.Status = 4;
+                    _db.Update(booking);
+                    _db.SaveChanges();
+                    return RedirectToAction("EditBookingDetail","Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
+                }
+                user.Wallet += amount;
+                var transactionUser = new Wallet
+                {
+                    UserId = userId,
+                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
+                    Type = "Offset final payment",
+                    CreatedAt = DateTime.Now,
+                    BookingNo = booking.BookingNo,
+                    CarName = car.Name
+                };
+                carOwner.Wallet -= amount;
+                var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
+                var transactionCarOwner = new Wallet
+                {
+                    UserId = carOwner.UserId,
+                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
+                    Type = transactionCarOwnerType,
+                    CreatedAt = DateTime.Now,
+                    BookingNo = booking.BookingNo,
+                    CarName = car.Name
+                };
+                _db.Wallets.Add(transactionUser);
+                _db.Wallets.Add(transactionCarOwner);
+                booking.Status = 5;
+                car.NoOfRide += 1;
+                _db.Update(car);
+                _db.Update(booking);
+                _db.SaveChanges();
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+            }
+            return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmDeposit(Car car)
+        {
+            
+            var booking = _db.Bookings.FirstOrDefault(b => b.CarId == car.CarId && b.Status == 1);
+            if (booking != null)
+            {
+
+                booking.Status = 2;
+                _db.Update(booking);
+                _db.SaveChanges();
+                
+            }
+            TempData["SuccessMessage"] = "You confirmed deposit!";
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
     }
 }

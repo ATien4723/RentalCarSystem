@@ -31,7 +31,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rental_Car_Demo.styles.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .modal-header-center {
             display: flex;
@@ -219,9 +218,19 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
             <div class="container-fluid">
-                <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;">
-                    <i class='bx bxs-car'></i> Rent a car today!
-                </a>
+                @if(user.Role == false)
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                }
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
