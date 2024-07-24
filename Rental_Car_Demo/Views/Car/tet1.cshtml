@@ -496,27 +496,7 @@
                         @ViewBag.car.Description
                     </p>
                 </div>
-                <div class="reviews-section">
-                    <h5 style="font-weight: bold;">Đánh giá của khách hàng</h5>
-                    <div class="review">
-                        <div class="review-header">
-                            <img src="~/img/markzuck.jpg" alt="Reviewer Image">
-                            <div class="reviewer-info">
-                                <div class="reviewer-name">Guy Hawkins</div>
-                                <div class="star-rating">⭐⭐⭐⭐⭐</div>
-                            </div>
-                            <div class="review-date">20/06/2023</div>
-                        </div>
-                        <div class="review-body">
-                            Lorem ipsum dolor sit amet consectetur. Quam dolor augue placerat viverra elit vitae
-                            habitasse quisque rutrum.
-                            Quam a vel velit adipiscing nulla vel. Senectus dignissim varius tincidunt luctus
-                            suspendisse congue. Varius
-                            at facilisis ac commodo. Tempus nec sed tellus mi amet dictumst. Quam accumsan aliquet
-                            pretium amet varius posuere.
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row mt-3">
                     <label class="fw-bold">Documents:</label>
                     <div class="col-5 mt-2">
@@ -569,11 +549,64 @@
                     </div>
                     <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
                 </div>
+
+                        <div class=" reviews-section">
+                            <h5 style="font-weight: bold;">Feedbacks of customers:</h5>
+
+                                @if (ViewBag.matchedFeedback == null)
+                                {
+                                    <div class="review-body">
+                                        No feedback
+                                    </div>
+                                } else
+                                { int count = 0;
+                                    foreach (var f in ViewBag.matchedFeedback)
+                                    {
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+                                    <div class="review" id="feedbackContainer">
+
+                                        <div class="review-header">
+                                        <img src="~/img/markzuck.jpg" alt="Reviewer Image">
+                                            <div class="reviewer-info">
+                                                <div class="reviewer-name">@f.Name</div>
+                                                @if(@f.Ratings==1){
+                                                    <div class="star-rating">★☆☆☆☆</div>
+                                                } else if(@f.Ratings==2){
+                                                    <div style="color:yellow;" class="star-rating">★★☆☆☆</div>
+                                                }
+                                                else if(@f.Ratings==3){
+                                                    <div class="star-rating">★★★☆☆</div>
+                                                }
+                                                else if(@f.Ratings==4){
+                                                    <div class="star-rating">★★★★☆</div>
+                                                }
+                                                else if(@f.Ratings==5){
+                                                    <div class="star-rating">★★★★★</div>
+                                                }
+                                            </div>
+                                            <div class="review-date">@f.Date</div>
+                                        </div>
+                                        <div class="review-body">
+                                            @f.Content
+                                        </div>
+                                    </div>
+
+
+                                        count += 1;
+                                    }
+                                }
+                                
+                            <button id="readMoreBtn" onclick="showMoreFeedbacks()">Read more</button>
+                            <button id="showLessBtn" onclick="showLessFeedbacks()" style="display: none;">Show less</button>
+                        </div>
             </div>
 
             <div class="col-md-4">
                 <div class="price-section text-center">
-                    <h5>Giá Thuê Xe</h5>
+                            <h5>Car Rental Price</h5>
                     <div class="price" id="PreviewPrice"> @(( ViewBag.car.BasePrice / 1000 ).ToString ("0.##")) k/day</div>
 
                     <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
@@ -584,13 +617,13 @@
                     </a>
                 </div>
                 <div class="owner-section mt-4">
-                    <h5>Chủ xe</h5>
+                    <h5>Car Owner</h5>
                     <div class="owner-info d-flex align-items-center">
                         <img src="~/img/5.png" alt="Owner Image" class="owner-image">
                         <div class="owner-details ml-3">
-                            <div class="owner-name">Lê Anh Tiến</div>
+                                    <div class="owner-name">@ViewBag.CarOwner.Name</div>
                             <div class="verification-badge">
-                                <span class="verified-icon">&#10003;</span> Đã xác minh
+                                        <span class="verified-icon">&#10003;</span> Verified
                             </div>
                         </div>
 
@@ -598,7 +631,7 @@
                 </div>
             </div>
                     <div class="container mt-4">
-                        <h4 class="mb-4" style="font-weight: bold;">Xe tương tự</h4>
+                        <h4 class="mb-4" style="font-weight: bold;">Similar car</h4>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="card car-card">
@@ -855,5 +888,6 @@
         const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
         setRating(ratingFromViewBag);
     </script>
+ 
 </body>
 </html>
