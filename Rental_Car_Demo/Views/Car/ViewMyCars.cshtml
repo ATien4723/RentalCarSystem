@@ -117,7 +117,7 @@
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Price:</label>
-                            <label class="col-5 fw-bold">@c.BasePrice.ToString("0.##")<span class="fw-bold">k/day</span></label>
+                            <label class="col-5 fw-bold">@((c.BasePrice/1000).ToString("N0"))<span class="fw-bold"> k/day</span></label>
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Locations:</label>

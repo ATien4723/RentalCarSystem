@@ -233,6 +233,7 @@ namespace Rental_Car_Demo.Controllers
                     car.FucntionId,
                     car.Status,
                     car.NoOfRide,
+                    car.Address,
                     AverageRating = context.Feedbacks
                         .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                         .Average(f => (double?)f.Ratings) ?? 0
@@ -296,6 +297,7 @@ namespace Rental_Car_Demo.Controllers
                         car.FucntionId,
                         car.Status,
                         car.NoOfRide,
+                        car.Address,
                         AverageRating = context.Feedbacks
                             .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
@@ -339,6 +341,7 @@ namespace Rental_Car_Demo.Controllers
                         car.FucntionId,
                         car.Status,
                         car.NoOfRide,
+                        car.Address,
                         AverageRating = context.Feedbacks
                             .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
@@ -383,6 +386,7 @@ namespace Rental_Car_Demo.Controllers
                         car.FucntionId,
                         car.Status,
                         car.NoOfRide,
+                        car.Address,
                         AverageRating = context.Feedbacks
                             .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
@@ -427,6 +431,7 @@ namespace Rental_Car_Demo.Controllers
                         car.FucntionId,
                         car.Status,
                         car.NoOfRide,
+                        car.Address,
                         AverageRating = context.Feedbacks
                             .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
