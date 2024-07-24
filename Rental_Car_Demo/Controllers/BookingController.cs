@@ -160,19 +160,18 @@ namespace Rental_Car_Demo.Controllers
                 ViewBag.function = function;
                 ViewBag.checkRent = checkRent;
 
-                ViewBag.user = user;
-                ViewBag.userId = user.UserId;
-                ViewBag.wallet = user.Wallet;
-                ViewBag.dob = user.Dob?.ToString("yyyy-MM-dd");
-                ViewBag.DrivingLience = user.DrivingLicense;
-                var addressP = bookingDAO.GetAddressById(user.AddressId);
+                var userW = userDAO.GetUserById(user.UserId);
+                ViewBag.user = userW;
+                ViewBag.userId = userW.UserId;
+                ViewBag.wallet = userW.Wallet;
+                ViewBag.dob = userW.Dob?.ToString("yyyy-MM-dd");
+                ViewBag.DrivingLience = userW.DrivingLicense;
+                var addressP = bookingDAO.GetAddressById(userW.AddressId);
 
 
                 if (addressP == null)
                 {
                     ViewBag.Cities = new SelectList(bookingDAO.GetCityList(), "CityId", "CityProvince");
-                    //ViewBag.Districts = new SelectList(bookingDAO.GetDistrictList(), "DistrictId", "DistrictName");
-                    //ViewBag.Wards = new SelectList(bookingDAO.GetWardList(), "WardId", "WardName");
                 }
                 else
                 {
@@ -203,8 +202,8 @@ namespace Rental_Car_Demo.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
                     using var _context = new RentCarDbContext();
 
                     var renterAddress = new Address
@@ -341,8 +340,8 @@ namespace Rental_Car_Demo.Controllers
                      $"the deposit. Thank you!";
                     _emailService.SendEmail(email, subject, message);
                     return RedirectToAction("BookACarFinish");
-                }
-                return View(viewModel);
+                //}
+                //return View(viewModel);
             }
             catch (Exception ex)
             {
