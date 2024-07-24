@@ -127,6 +127,21 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.District = context.Districts.ToList();
             ViewBag.Ward = context.Wards.ToList();
             ViewBag.Year = year;
+
+
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if(user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
+
+
             return View();
         }
         [HttpPost]
@@ -306,10 +321,11 @@ namespace Rental_Car_Demo.Controllers
            .Include(b => b.Car) // Include the Car navigation property
            .ToList();
 
-
-
-
-
+            //get user to block customer access this view
+            if (user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
             return View();
 
         }
@@ -386,6 +402,11 @@ namespace Rental_Car_Demo.Controllers
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
+                //authority
+                if (user.Role == true)
+                {
+                    return View("ErrorAuthorization");
+                }
                 List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBook)
                 {
@@ -397,6 +418,8 @@ namespace Rental_Car_Demo.Controllers
                 }
 
             }
+
+            
             var lBooking = _db.Bookings.Where(x => x.CarId == CarId).ToList();
 
             var matchedFeedback = (from feedback in _db.Feedbacks.ToList()
@@ -457,6 +480,12 @@ namespace Rental_Car_Demo.Controllers
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
+
+                if (user.Role == false)
+                {
+                    return View("ErrorAuthorization");
+                }
+
                 List<Booking> lBooking = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBooking)
                 {
@@ -503,8 +532,6 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.listCity = listCity;
             ViewBag.listDistrict = listDistrict;
             ViewBag.listWard = listWard;
-            
-
 
             return View(car);
         }
@@ -650,6 +677,7 @@ namespace Rental_Car_Demo.Controllers
 
         }
         private readonly IEmailService _emailService;
+
         [HttpPost] 
         public IActionResult ReturnCar(int carId, int userId, decimal amount)
         {
