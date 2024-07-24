@@ -7,12 +7,11 @@
 }
 @using Rental_Car_Demo.ViewModel
 @model UserWalletViewModel
-<!DOCTYPE html>
-<html lang="en">
+
 
 <body>
-    <div class="container mt-3">
-        <div>
+    <div class="container-fluid mt-2">
+        <div style="padding-left:10px">
             @if (Model.User.Role==false)
             {
                 <a asp-controller="Users" asp-action="LoginCus" class="text">Home</a>
@@ -24,20 +23,37 @@
              >
             <a href="#" class="text-decoration-none">My Wallet</a>
         </div>
-        <h2 class="text ">My Wallet</h2>
-        <div class="text my-4">
-            <div class="d-flex align-items-center">
-                <div>
-                    <h4>Your current balance:</h4>
-                    <h3 class="text-success">@walletFormatted VND</h3>
+        <h3 class="text mt-2">My Wallet</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="balance-card">
+                    <h3>Your current balance:</h3>
+                    <div class="balance-details">
+                        <i class="fa-light fa-square-dollar right-icon"></i>
+                        <h1>@walletFormatted VND</h1>
+                    </div>
                     @if (Model.User.Wallet < 0)
                     {
                         <span class="text-danger"><strong>You are out of money. Please top-up to continue.</strong></span>
                     }
+                    <div class="buttonkk">
+                        <button class="btn btn-success mx-2" data-bs-toggle="modal" data-bs-target="#topUpModal">
+                            <i class="fa-sharp fa-regular fa-money-bill-transfer"></i>
+                            Top-up
+                        </button>
+                        <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                            <i class="fa-sharp fa-solid fa-money-from-bracket"></i>
+                            Withdraw
+                        </button>
+                    </div>
                 </div>
-                <div class="ms-auto">
-                    <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#withdrawModal">Withdraw</button>
-                    <button class="btn btn-success mx-2" data-bs-toggle="modal" data-bs-target="#topUpModal">Top-up</button>
+            </div>
+            <div class="col-md-6">
+                <div class="promo-card">
+                    <div class="promo-content">
+                        <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#topUpModal">Top-up now! </button>
+                    </div>
+                    <img src="~/img/kkk.png" alt="Birthday Image" class="promo-bg">
                 </div>
             </div>
         </div>
@@ -105,7 +121,38 @@
         </div>
 
         <form id="transactionForm" asp-controller="Payment" asp-action="SearchTransactions" asp-route-userId="@Model.User.UserId" method="post">
-        <div class="my-4">
+            <div class="mt-4">
+                <h4>All Transactions</h4>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="from" class="col-sm-2 col-form-label">From</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" id="from" name="from" value="@ViewBag.From?.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="to" class="col-sm-2 col-form-label" style="padding-left: 45px;">To</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" id="to" name="to" value="@ViewBag.To?.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 align-self-end">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary btn-block" style="width: 30%;">
+                                        Search
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    @*     <div class="my-4">
             <h5>Transactions</h5>
             <div class="row">
                 <div class="col-md-5">
@@ -120,7 +167,7 @@
                     <button class="btn btn-primary" type="submit">Search</button>
                 </div>
             </div>
-        </div>
+        </div> *@
         </form>
         <div class="table-responsive my-4">
             @if (Model.Wallets.Count == 0)

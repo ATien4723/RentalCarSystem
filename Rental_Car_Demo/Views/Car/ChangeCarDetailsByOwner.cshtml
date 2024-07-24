@@ -4,7 +4,93 @@
     Layout = "~/Views/Shared/_LayoutCarOwner.cshtml";
     ViewData["Title"] = "ChangeCarDetailsByOwners";
 }
+<head>
+    <style>
+        #drag-area4 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
 
+            #drag-area4 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area5 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area5 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area6 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area6 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+
+        #drag-area7 {
+            width: 400px; /* Set your desired width */
+            height: 300px; /* Set your desired height */
+            border: 2px dashed #ccc; /* Optional border style */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* To position the image absolutely */
+            overflow: hidden; /* Hide overflow if the image is too large */
+        }
+
+            #drag-area7 img {
+                width: 100%; /* Make the image fit the width of the div */
+                height: 100%; /* Make the image fit the height of the div */
+                object-fit: cover; /* Ensure the aspect ratio is maintained */
+                position: absolute; /* Position the image inside the div */
+                top: 0;
+                left: 0;
+            }
+    </style>
+</head>
 
 <body>
 
@@ -13,7 +99,12 @@
         <h2 class="mt-2">Car Details</h2>
     </div>
 
-
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
     <div class="container-fluid">
 
@@ -90,33 +181,42 @@
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Status:</label>
                     <div class="col-5">
-                        <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
-                            <select id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
-                            {
-                                new { Value = "1", Text = "Available" },
-                                new { Value = "2", Text = "Booked" },
-                                new { Value = "3", Text = "Stopped" }
-                            }, "Value", "Text", @ViewBag.car.Status))">
-                            </select>
-                            <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
-                            <input type="hidden" asp-for="CarId" value="@Model.CarId" />
-                        </form>
+                        @if (@ViewBag.car.Status == 2)
+                        {
+                            <label class="col-5 fw-bold text-primary">Booked</label>
+                        }
+                        else
+                        {
+                            <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
+                                <select id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
+                                        {
+                                            new { Value = "1", Text = "Available" },
+                                            new { Value = "3", Text = "Stopped" }
+                                        }, "Value", "Text", @ViewBag.car.Status))">
+                                </select>
+                                <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
+                                <input type="hidden" asp-for="CarId" value="@Model.CarId" />
+                            </form>
+                        }
                     </div>
                 </div>
             </div>
-            @if (ViewBag.car.Status == 1)
-            {
-                <div class="col-1 mt-3">
-                    <span><a class="btn btn-primary p-2" href="#">Confirm Deposit</a></span>
-                </div>
-            }
-            else if (ViewBag.car.Status == 2)
-            {
-                <div class="col-1 mt-3">
-                    <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
-                </div>
-            }
 
+            <div class="col-1 mt-3">
+                @if (ViewBag.booking != null && ViewBag.booking.Status == 1)
+                {
+                    <form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
+                        <button type="button" class="btn btn-primary p-2" id="confirmDepositButton">Confirm Deposit</button>
+                        <input type="hidden" asp-for="CarId" value="@Model.CarId" />
+                    </form>
+                }
+                else if (ViewBag.car.Status == 2)
+                {
+                    <div class="col-1 mt-3">
+                        <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
+                    </div>
+                }
+            </div>
         </div>
 
         <!--Car Details-->
@@ -639,9 +739,35 @@
             </div>
         </div>
     </div>
+    <form id="confirmPaymentForm" asp-controller="Payment" asp-action="ConfirmPayment" asp-route-carId="@ViewBag.car.CarId" method="post" style="display: none;">
+        <input type="hidden" name="returnUrl" value="~/">
+    </form>
+    <div class="modal fade" id="confirmPaymentModal" tabindex="-1" aria-labelledby="confirmPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-center">
+                    <h5 class="modal-title" id="logoutModalLabel">ConfirmPayment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-center">
+                    Please confirm that you have receive the payment for this booking
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <div class="vr mx-3"></div>
+                        <button type="button" class="btn btn-primary" onclick="submitConfirm()">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
+    <script>
+        function submitConfirm() {
+            document.getElementById('confirmPaymentForm').submit();
+        }
+    </script>
     <script>
         function showImageAndDownload(imagePath, fileName) {
             document.getElementById('modalImage').src = imagePath;
@@ -782,21 +908,84 @@
 
                 if (previousStatus == "2") {
                     // If the status is "Booked", show a message and revert the change
-                    alert("Cannot change status!");
+                    swal("Cannot change status!", "The car is currently booked.", "error");
                     statusDropdown.value = previousStatus;
                 } else {
-                    if (confirm("Are you sure you want to change the status?")) {
-                        // User confirmed the change, update the hidden input
-                        previousStatusInput.value = newStatus;
-                        // Submit the form
-                        statusForm.submit();
-                    } else {
-                        // User canceled the change, revert the dropdown to the previous status
-                        statusDropdown.value = previousStatus;
-                    }
+                    swal({
+                        title: "Are you sure?",
+                        text: "Are you sure you want to change the status?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willChange) => {
+                            if (willChange) {
+                                // User confirmed the change, update the hidden input
+                                previousStatusInput.value = newStatus;
+                                // Submit the form
+                                statusForm.submit();
+                            } else {
+                                // User canceled the change, revert the dropdown to the previous status
+                                statusDropdown.value = previousStatus;
+                                swal("Status change canceled!", "The status remains unchanged.", "info");
+                            }
+                        });
                 }
             });
+
+            // Show success message if available
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                swal({
+                    title: "Success!",
+                    text: "@TempData["SuccessMessage"]",
+                    icon: "success",
+                    button: "OK",
+                });
+            </text>
+        }
         });
+
+    </script>
+
+    <!--  confirm deposit diaglog  -->
+    <script>
+        document.getElementById('confirmDepositButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default action of the button
+
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to confirm the deposit?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willConfirm) => {
+                    if (willConfirm) {
+                        // User confirmed, submit the form
+                        document.getElementById('confirmDepositForm').submit();
+                    } else {
+                        // User canceled, show cancellation message
+                        swal("Action canceled!", "The deposit was not confirmed.", "info");
+                    }
+                });
+        });
+
+        // Show success message if available
+        document.addEventListener('DOMContentLoaded', function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+                    <script>
+                    swal({
+                        title: "Success!",
+                        text: "@TempData["SuccessMessage"]",
+                        icon: "success",
+                        button: "OK",
+                    });
+        </script>
+        }
+    });
     </script>
 
 </body>

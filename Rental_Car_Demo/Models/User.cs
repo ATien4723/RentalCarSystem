@@ -27,7 +27,7 @@ public partial class User
 
     public string? DrivingLicense { get; set; }
 
-    public decimal? Wallet { get; set; }
+    public decimal? Wallet { get; set; } = 0;
 
     public bool RememberMe { get; set; } = false;
 
