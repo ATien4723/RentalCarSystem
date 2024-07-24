@@ -37,9 +37,10 @@
 
     <style>
 
-        .looking{
-            display:none;
+        .looking {
+            display: none;
         }
+
         .carousel-control-prev-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
         }
@@ -148,7 +149,7 @@
                         <span class="col-5 fw-bold">(No ratings yet)</span>
                     }
                 </div>
-                
+
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">No. of rides:</label>
                     <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
@@ -184,21 +185,21 @@
             <div class="col-2 mt-3">
                 @* @if(ViewBag.car.Status == 1)
                 { *@
-                    <a class="btn btn-primary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
-                       asp-route-startDate="@ViewBag.startDate"
-                       asp-route-endDate="@ViewBag.endDate"
-                       asp-route-CarId="@ViewBag.car.CarId">
-                       Rent now
-                    </a>
+                <a class="btn btn-primary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                   asp-route-startDate="@ViewBag.startDate"
+                   asp-route-endDate="@ViewBag.endDate"
+                   asp-route-CarId="@ViewBag.car.CarId">
+                    Rent now
+                </a>
                 @* }
                 @if (ViewBag.car.Status != 1)
                 {
-                    <a style="pointer-events: none;" class="btn btn-secondary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
-                       asp-route-startDate="@ViewBag.startDate"
-                       asp-route-endDate="@ViewBag.endDate"
-                       asp-route-CarId="@ViewBag.car.CarId">
-                        Rent now
-                    </a>
+                <a style="pointer-events: none;" class="btn btn-secondary p-2" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                asp-route-startDate="@ViewBag.startDate"
+                asp-route-endDate="@ViewBag.endDate"
+                asp-route-CarId="@ViewBag.car.CarId">
+                Rent now
+                </a>
                 } *@
 
             </div>
@@ -557,20 +558,20 @@
         }
     </script>
     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-    const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
-    setRating(ratingFromViewBag);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 </body>
 </html>

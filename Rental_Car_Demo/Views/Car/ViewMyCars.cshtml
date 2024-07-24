@@ -2,7 +2,23 @@
 @{
     Layout = "~/Views/Shared/_LayoutCarOwner.cshtml";
 }
+<head>
+    <style>
+        .star {
+            color: lightgray;
+        }
 
+        .filled {
+            color: gold;
+        }
+
+        .half-filled {
+            background: linear-gradient(90deg, gold 50%, lightgray 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
 <body>
     <div class="container mt-5">
         <a class="link mt-5" href="~/Users/LoginOwn">Home</a> > <span>Add a car</span>
@@ -28,8 +44,12 @@
     <div id="listingContainer">
         @foreach (var c in ViewBag.Cars)
         {
-            <div class="listingItem container mt-3 p-5">
-
+            <div class="listingItem container mt-3 p-5 ">
+                <div class="car-data"
+                     data-car-id="@c.CarId"
+                     data-average-rating="@c.AverageRating"
+                     data-no-of-ride="@c.NoOfRide">
+                </div>
                 <div class="row d-flex align-items-center justify-content-between">
                     <!-- Preview car image -->
                     <div id="demo@(c.CarId)" class="col-sm-5 carousel slide" data-bs-ride="carousel">
@@ -76,19 +96,20 @@
                     <div class="col-sm-4">
                         <h4 class=" fw-bold mb-3 mt-4">@c.Name</h4>
                         <div class="row">
-                            <label class="col-5 fw-bold  fs-5">Ratings:</label>
-                            <label class="col-5 d-flex fs-4">
+                            
+                            <label class="col-5 fw-bold fs-5">Ratings:</label>
+                            <label class="col-5 d-flex fs-4" id="rating-@c.CarId">
                                 <i class="bi bi-star-fill star ms-1"></i>
                                 <i class="bi bi-star-fill star ms-1"></i>
                                 <i class="bi bi-star-fill star ms-1"></i>
                                 <i class="bi bi-star-fill star ms-1"></i>
                                 <i class="bi bi-star-fill star ms-1"></i>
                             </label>
-                        </div>
-                        <div class="row">
-                            <label class="col-5"></label>
-                            <span class="col-5 fw-bold">(No ratings yet)</span>
-
+                            @if (c.NoOfRide == 0)
+                            {
+                                <label class="col-5"></label>
+                                <span class="col-5 fw-bold">(No ratings yet)</span>
+                            }
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">No. of rides:</label>
@@ -175,7 +196,6 @@
         <div class="col-md-2"></div>
         <div class="col-md-1">
             <select id="selectpage" onchange="pageselect()">
-                <option value="3">3</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
@@ -189,7 +209,7 @@
         var current_page = 1;
         var items = document.querySelectorAll('#listingContainer .listingItem');
         var pagelength = items.length;
-        var item_per_page = 3; // Default items per page
+        var item_per_page = 10; // Default items per page
 
         function pageselect() {
             item_per_page = parseInt(document.getElementById("selectpage").value);
@@ -289,6 +309,31 @@
             } else {
                 // Perform an action if the user cancels (optional)
                 console.log('User canceled the action.');
+            }
+        });
+    </script>
+
+    <script>
+        function setRating(rating, carId) {
+            const stars = document.querySelectorAll(`#rating-${carId} .star`);
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
+
+        // Example of passing data via HTML attributes
+        document.querySelectorAll('.car-data').forEach(element => {
+            const carId = element.getAttribute('data-car-id');
+            const averageRating = parseFloat(element.getAttribute('data-average-rating'));
+            const noOfRide = parseInt(element.getAttribute('data-no-of-ride'), 10);
+
+            if (noOfRide > 0) {
+                setRating(averageRating, carId);
             }
         });
     </script>

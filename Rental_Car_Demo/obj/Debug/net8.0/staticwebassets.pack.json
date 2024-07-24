@@ -1,0 +1,793 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Rental_Car_Demo.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Rental_Car_Demo.bundle.scp.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\css\\stylehome.css",
+      "PackagePath": "staticwebassets\\css\\stylehome.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\images\\BookingManagement (Interaction Design).drawio.png",
+      "PackagePath": "staticwebassets\\images\\BookingManagement (Interaction Design).drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Edit).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Edit).drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\images\\InteractionDesign(Register).drawio.png",
+      "PackagePath": "staticwebassets\\images\\InteractionDesign(Register).drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\images\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\images\\StateDiagram.drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\.net.png",
+      "PackagePath": "staticwebassets\\img\\.net.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\1.png",
+      "PackagePath": "staticwebassets\\img\\1.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\10.png",
+      "PackagePath": "staticwebassets\\img\\10.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\11.png",
+      "PackagePath": "staticwebassets\\img\\11.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\12.png",
+      "PackagePath": "staticwebassets\\img\\12.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\13.png",
+      "PackagePath": "staticwebassets\\img\\13.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\2.png",
+      "PackagePath": "staticwebassets\\img\\2.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\3.png",
+      "PackagePath": "staticwebassets\\img\\3.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
+      "PackagePath": "staticwebassets\\img\\360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\4.png",
+      "PackagePath": "staticwebassets\\img\\4.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\5.png",
+      "PackagePath": "staticwebassets\\img\\5.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\6.png",
+      "PackagePath": "staticwebassets\\img\\6.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\7.png",
+      "PackagePath": "staticwebassets\\img\\7.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\8.png",
+      "PackagePath": "staticwebassets\\img\\8.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\9.png",
+      "PackagePath": "staticwebassets\\img\\9.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\BookingInfomation.png",
+      "PackagePath": "staticwebassets\\img\\BookingInfomation.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\BookingManagement (Dynamic Design).drawio.png",
+      "PackagePath": "staticwebassets\\img\\BookingManagement (Dynamic Design).drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Buicklg.png",
+      "PackagePath": "staticwebassets\\img\\Buicklg.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\CarManagement-InteractionDesign(ViewFeedbackReport).drawio.png",
+      "PackagePath": "staticwebassets\\img\\CarManagement-InteractionDesign(ViewFeedbackReport).drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\ClassUserManager.drawio.png",
+      "PackagePath": "staticwebassets\\img\\ClassUserManager.drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\DJI_0550-HDR-Pano.jpg",
+      "PackagePath": "staticwebassets\\img\\DJI_0550-HDR-Pano.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 065031.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 065031.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 072957.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 072957.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073020.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073020.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 073122.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 073122.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 075227.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 075227.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 084431.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 084431.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 095506.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 095506.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102455.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102455.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102625.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102625.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 102746.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 102746.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 103754.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 103754.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-14 113003.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-14 113003.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-21 081539.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-21 081539.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-21 081622.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-21 081622.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-21 082959.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-21 082959.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2023-06-21 083103.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2023-06-21 083103.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-26 110647.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-02-26 110647.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-02-26 113105.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-02-26 113105.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 074812.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 074812.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-15 123725.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-15 123725.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 073652.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-17 073652.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 074020.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-17 074020.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 074235.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-17 074235.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 084309.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-17 084309.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-17 224420.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-17 224420.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-18 170434.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-18 170434.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-18 200220.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-18 200220.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-20 232025.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-20 232025.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-03-26 063624.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-03-26 063624.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-07-09 095802.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-07-09 095802.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-07-12 070136.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-07-12 070136.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Screenshot 2024-07-15 122928.png",
+      "PackagePath": "staticwebassets\\img\\Screenshot 2024-07-15 122928.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\StateDiagram.drawio.png",
+      "PackagePath": "staticwebassets\\img\\StateDiagram.drawio.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Template_SAD for ASPICE.docx",
+      "PackagePath": "staticwebassets\\img\\Template_SAD for ASPICE.docx"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Test-English.jpg",
+      "PackagePath": "staticwebassets\\img\\Test-English.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\[FU] CV Intern Back-end - Vu Truong An.pdf",
+      "PackagePath": "staticwebassets\\img\\[FU] CV Intern Back-end - Vu Truong An.pdf"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg",
+      "PackagePath": "staticwebassets\\img\\a4917a4fcb3b1a6b3416e27491d9422b.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\acura.png",
+      "PackagePath": "staticwebassets\\img\\acura.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\battery.png",
+      "PackagePath": "staticwebassets\\img\\battery.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\batteryDetail.png",
+      "PackagePath": "staticwebassets\\img\\batteryDetail.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar1.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar1.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar2.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar3.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar3.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\bluecar4.jpg",
+      "PackagePath": "staticwebassets\\img\\bluecar4.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\conservation mode.png",
+      "PackagePath": "staticwebassets\\img\\conservation mode.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\convinent.png",
+      "PackagePath": "staticwebassets\\img\\convinent.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\da lat.jpeg",
+      "PackagePath": "staticwebassets\\img\\da lat.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\da nang hoi an.jpg",
+      "PackagePath": "staticwebassets\\img\\da nang hoi an.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\download.jpg",
+      "PackagePath": "staticwebassets\\img\\download.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\download.png",
+      "PackagePath": "staticwebassets\\img\\download.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\elonmusk.jpg",
+      "PackagePath": "staticwebassets\\img\\elonmusk.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\filetest.png",
+      "PackagePath": "staticwebassets\\img\\filetest.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\giay-phep-lai-xe.jpg",
+      "PackagePath": "staticwebassets\\img\\giay-phep-lai-xe.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar1.png",
+      "PackagePath": "staticwebassets\\img\\greencar1.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar2.png",
+      "PackagePath": "staticwebassets\\img\\greencar2.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar3.png",
+      "PackagePath": "staticwebassets\\img\\greencar3.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\greencar4.jpg",
+      "PackagePath": "staticwebassets\\img\\greencar4.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\hanoi.jpeg",
+      "PackagePath": "staticwebassets\\img\\hanoi.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\headphone.png",
+      "PackagePath": "staticwebassets\\img\\headphone.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\jagulg.png",
+      "PackagePath": "staticwebassets\\img\\jagulg.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\jeffbezoa.jpg",
+      "PackagePath": "staticwebassets\\img\\jeffbezoa.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\jeffbz2.jpg",
+      "PackagePath": "staticwebassets\\img\\jeffbz2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\kkk.png",
+      "PackagePath": "staticwebassets\\img\\kkk.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\legal.png",
+      "PackagePath": "staticwebassets\\img\\legal.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\lookcar.jpg",
+      "PackagePath": "staticwebassets\\img\\lookcar.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\lookcar2.jpg",
+      "PackagePath": "staticwebassets\\img\\lookcar2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\markzuck.jpg",
+      "PackagePath": "staticwebassets\\img\\markzuck.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\nha trang.jpeg",
+      "PackagePath": "staticwebassets\\img\\nha trang.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\nissanlg.png",
+      "PackagePath": "staticwebassets\\img\\nissanlg.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\pexels-a2pro-3422964.jpg",
+      "PackagePath": "staticwebassets\\img\\pexels-a2pro-3422964.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\pexels-aidanj-687653.jpg",
+      "PackagePath": "staticwebassets\\img\\pexels-aidanj-687653.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\quang ninh.jpg",
+      "PackagePath": "staticwebassets\\img\\quang ninh.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar.png",
+      "PackagePath": "staticwebassets\\img\\redcar.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar2.png",
+      "PackagePath": "staticwebassets\\img\\redcar2.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar3.png",
+      "PackagePath": "staticwebassets\\img\\redcar3.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\redcar4.png",
+      "PackagePath": "staticwebassets\\img\\redcar4.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\rentcar1.jpg",
+      "PackagePath": "staticwebassets\\img\\rentcar1.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe1.jpeg",
+      "PackagePath": "staticwebassets\\img\\sieuxe1.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe2.jpg",
+      "PackagePath": "staticwebassets\\img\\sieuxe2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe3.jpg",
+      "PackagePath": "staticwebassets\\img\\sieuxe3.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe4.jpg",
+      "PackagePath": "staticwebassets\\img\\sieuxe4.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe5.jpg",
+      "PackagePath": "staticwebassets\\img\\sieuxe5.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\sieuxe6.png",
+      "PackagePath": "staticwebassets\\img\\sieuxe6.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\subarulg.png",
+      "PackagePath": "staticwebassets\\img\\subarulg.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\tet man hinh1.png",
+      "PackagePath": "staticwebassets\\img\\tet man hinh1.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\timcook.jpg",
+      "PackagePath": "staticwebassets\\img\\timcook.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\timcook2.jpg",
+      "PackagePath": "staticwebassets\\img\\timcook2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\timcook3.jpeg",
+      "PackagePath": "staticwebassets\\img\\timcook3.jpeg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\timcook4.jpg",
+      "PackagePath": "staticwebassets\\img\\timcook4.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\wait.png",
+      "PackagePath": "staticwebassets\\img\\wait.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\xechay1.jpg",
+      "PackagePath": "staticwebassets\\img\\xechay1.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\xechay2.jpg",
+      "PackagePath": "staticwebassets\\img\\xechay2.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\xechay3.jpg",
+      "PackagePath": "staticwebassets\\img\\xechay3.jpg"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-27 143012.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-27 143012.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 075144.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 075144.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2023-12-28 080919.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2023-12-28 080919.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 094308.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 094308.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-17 095650.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-17 095650.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-18 193247.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-18 193247.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\img\\Ảnh chụp màn hình 2024-01-19 104848.png",
+      "PackagePath": "staticwebassets\\img\\Ảnh chụp màn hình 2024-01-19 104848.png"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\js\\editcar.js",
+      "PackagePath": "staticwebassets\\js\\editcar.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\js\\script.js",
+      "PackagePath": "staticwebassets\\js\\script.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-theme.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Rental_Car_Demo.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Rental_Car_Demo.props",
+      "PackagePath": "build\\Rental_Car_Demo.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Rental_Car_Demo.props",
+      "PackagePath": "buildMultiTargeting\\Rental_Car_Demo.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Rental_Car_Demo.props",
+      "PackagePath": "buildTransitive\\Rental_Car_Demo.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

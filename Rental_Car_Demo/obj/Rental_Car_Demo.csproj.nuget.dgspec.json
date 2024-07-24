@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
+    "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "projectName": "Rental_Car_Demo",
-        "projectPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
-        "packagesPath": "C:\\Users\\decid\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\obj\\",
+        "projectPath": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "E:\\Learn\\VS\\rental-car.git\\Rental_Car_Demo\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\decid\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -105,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
