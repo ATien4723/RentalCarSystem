@@ -74,18 +74,41 @@ namespace Rental_Car_Demo.Controllers
         public ActionResult Index()
         {
             var bookingList = bookingDAO.GetBookingList();
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
             return View();
         }
 
         // GET: BookingController/Details/5
         public ActionResult Details(int id)
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
-            var user = bookingDAO.GetBookingById(id);
-            if (user == null)
+            var user1 = bookingDAO.GetBookingById(id);
+            if (user1 == null)
             {
                 return NotFound();
             }
@@ -107,6 +130,12 @@ namespace Rental_Car_Demo.Controllers
                 if (!string.IsNullOrEmpty(userString))
                 {
                     user = JsonConvert.DeserializeObject<User>(userString);
+                }
+
+                //get user to block customer access this view
+                if (user.Role == true)
+                {
+                    return View("ErrorAuthorization");
                 }
 
                 using var context = new RentCarDbContext();
@@ -359,6 +388,18 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.EndDate = TempData["EndDate"];
             ViewBag.BookingNo = TempData["BookingNo"];
 
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
         [HttpPost]
@@ -451,6 +492,7 @@ namespace Rental_Car_Demo.Controllers
 
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
+
         public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
         {
             Boolean checkFbExisted = false;
@@ -471,6 +513,13 @@ namespace Rental_Car_Demo.Controllers
                     user = JsonConvert.DeserializeObject<User>(userString);
                 }
 
+                //get user to block customer access this view
+
+                if (user.Role == true)
+                {
+                    return View("ErrorAuthorization");
+                }
+                //
                 using var context = new RentCarDbContext();
                 var car = context.Cars.FirstOrDefault(x => x.CarId == carId);
 
@@ -826,6 +875,14 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
+
+            //get user to block customer access this view
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+            //
+
             var userId = user.UserId;
 
             var bookings = context.Bookings

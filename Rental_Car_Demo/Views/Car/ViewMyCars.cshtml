@@ -134,7 +134,6 @@
                     <div class="col-sm-2">
                         <a href="@Url.Action("ChangeCarDetailsByOwner", "Car", new { CarId = c.CarId })" class="btn btn-primary w-100">View details</a>
                         @{
-                            
                             var confirmDeposit = ((List<Booking>)ViewBag.Bookings)
                             .FirstOrDefault(b => b.CarId == c.CarId && b.Status == 1);
 

@@ -260,9 +260,18 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
         <div class="container-fluid">
-            <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
-                <i class='bx bxs-car'></i> Rent a car today!
-            </a>
+            @if (user.Role == false)
+            {
+                <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
+                    <i class='bx bxs-car'></i> Rent a car today!
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
+                    <i class='bx bxs-car'></i> Rent a car today!
+                </a>
+            }
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -281,7 +290,7 @@
                             <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
                             <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
-                            <li><a class="dropdown-item" href="#">My Reports</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="GetCarOwnerFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
