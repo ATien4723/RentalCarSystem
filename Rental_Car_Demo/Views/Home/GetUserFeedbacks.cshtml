@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Rental_Car_Demo.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback Report";
+    Layout = "_LayoutFeedBack";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Average Ratings</h2>
+        <div class="display-4">
+            @(Model.Any() ? Model.Average(f => f.Ratings).ToString("0.00") : "N/A")
+        </div>
+        <div class="rating">
+            @{
+                var averageRating = Model.Any() ? Model.Average(f => f.Ratings) : 0;
+                for (var i = 0; i < 5; i++)
+                {
+                    <span>@(i < averageRating ? "★" : "☆")</span>
+                }
+            }
+        </div>
+    </div>
+    <div class="text-center my-4">
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback('all')">All (@Model.Count())</button>
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(5)">5 Stars (@Model.Count(f => f.Ratings == 5))</button>
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(4)">4 Stars (@Model.Count(f => f.Ratings == 4))</button>
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(3)">3 Stars (@Model.Count(f => f.Ratings == 3))</button>
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(2)">2 Stars (@Model.Count(f => f.Ratings == 2))</button>
+        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(1)">1 Star (@Model.Count(f => f.Ratings == 1))</button>
+    </div>
+
+    <div id="listingContainer">
+        @foreach (var feedback in Model)
+        {
+            <div class="listingItem card mb-3" data-rating="@feedback.Ratings">
+                <div class="card-header d-flex justify-content-between align-items-center text-black">
+                    <div>
+                        <img src="~/img/elonmusk.jpg" alt="User" class="rounded-circle mr-2 user-image">
+                        <span>User @feedback.BookingNoNavigation.UserId</span>
+                    </div>
+                    <div class="text-right">
+                        <span>@feedback.Date</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>@feedback.Content</p>
+                    <div class="d-flex">
+                        <img src="~/img/@feedback.BookingNoNavigation.Car?.FrontImage" alt="Car Image" class="img-thumbnail mr-3 car-image">
+                        <div class="content-report">
+                            <h5>@feedback.BookingNoNavigation.Car?.Name</h5>
+                            <p>From: @feedback.BookingNoNavigation.StartDate</p>
+                            <p>To: @feedback.BookingNoNavigation.EndDate</p>
+                        </div>
+                    </div>
+                    <div class="text-right rating">
+                        @{
+                            for (var i = 0; i < 5; i++)
+                            {
+                                <span>@(i < feedback.Ratings ? "★" : "☆")</span>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center mb-3">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination-controls mb-0">
+                <button onclick="prevPage()" id="btn_prev">Prev</button>
+                <span id="pagination"></span>
+                <button onclick="nextPage()" id="btn_next">Next</button>
+            </ul>
+        </nav>
+        <div class="ms-3"></div>
+        <div class="items-per-page">
+            <select id="selectpage" onchange="pageselect()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select> Per Page
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterFeedback(rating) {
+        var feedbackItems = document.querySelectorAll('.listingItem');
+        feedbackItems.forEach(function (item) {
+            if (rating === 'all') {
+                item.style.display = 'block';
+            } else {
+                var itemRating = item.getAttribute('data-rating');
+                if (itemRating == rating) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
+    }
+</script>

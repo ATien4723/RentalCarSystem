@@ -17,5 +17,16 @@
             TimeSpan difference = endDate - startDate;
             return deposit * (int)Math.Ceiling(difference.TotalDays);
         }
+        public static decimal GetTotalPriceFromToday(decimal baseprice, DateTime startDate, DateTime endDate)
+        {
+            DateTime today = DateTime.Today;
+            DateTime actualEndDate = today < endDate ? today : endDate;
+            DateTime startDateOnly = startDate.Date;
+            DateTime actualEndDateOnly = actualEndDate.Date;
+            int days = (actualEndDateOnly - startDateOnly).Days;
+            days = days < 0 ? 0 : days;
+
+            return baseprice * days;
+        }
     }
 }
