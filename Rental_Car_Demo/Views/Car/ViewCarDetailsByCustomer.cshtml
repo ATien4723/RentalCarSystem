@@ -2,7 +2,7 @@
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
-    ViewData["Title"] = "testViewCarDetail";
+    ViewData["Title"] = "ViewCarDetailsByCustomer";
     var userString = Context.Session.GetString("User");
     User user = null;
     if (!string.IsNullOrEmpty(userString))
