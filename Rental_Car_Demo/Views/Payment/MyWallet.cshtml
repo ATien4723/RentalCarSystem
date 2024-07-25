@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutWallet.cshtml";
 }
 @{
-    string walletFormatted = Model.User.Wallet?.ToString("N2") ?? "0.00";
+    string walletFormatted = Model.User.Wallet?.ToString("N0");
 }
 @using Rental_Car_Demo.ViewModel
 @model UserWalletViewModel
@@ -194,7 +194,7 @@
                             <tr class="listingItem">
                                 <td>@wallet.WalletId</td>
                                 <td class="@(wallet.Amount.Contains("-") ? "text-danger" : "text-success")">
-                                    @(wallet.Amount.StartsWith("-") || wallet.Amount.StartsWith("+") ? "" : "+")@wallet.Amount
+                                    @(wallet.Amount.StartsWith("-") || wallet.Amount.StartsWith("+") ? "" : "+")@decimal.Parse(wallet.Amount).ToString("N0", System.Globalization.CultureInfo.CurrentCulture) VND
                                 </td>
                                 <td>@wallet.Type</td>
                                 <td>@wallet.CreatedAt</td>
