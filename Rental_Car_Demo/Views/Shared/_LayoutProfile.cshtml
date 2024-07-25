@@ -25,146 +25,188 @@
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .navbar-custom {
+            background-color: #4a4a4a;
+            color: white;
+            border-bottom: 2px solid #ccc;
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: white;
+            }
+
+
+            .navbar-custom .navbar-nav .nav-item {
+                position: relative;
+            }
+
+                .navbar-custom .navbar-nav .nav-item::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                    width: 1px;
+                    height: 20px;
+                    background-color: white;
+                }
+
+                .navbar-custom .navbar-nav .nav-item:last-child::after {
+                    display: none;
+                }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .step {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            color: #555;
+            background-color: #e6e6e6;
+            border-radius: 5px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+            .step.active {
+                background-color: #007bff;
+                color: white;
+                font-weight: bold;
+            }
+
+            .step::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: -20px;
+                width: 0;
+                height: 0;
+                border-top: 22px solid transparent;
+                border-bottom: 23px solid transparent;
+                border-left: 23px solid #e6e6e6;
+            }
+
+            .step.active::after {
+                border-left-color: #007bff;
+            }
+
+            .step:last-child {
+                margin-right: 0;
+            }
+
+                .step:last-child::after {
+                    display: none;
+                }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .footer-guest {
+            margin-top: auto;
+            background-color: #d3d3d3;
+            color: black; /* Adjust text color as needed */
+            padding: 10px 0; /* Adjust padding as needed */
+        }
+    </style>
 </head>
 
-<style>
-    .navbar-custom {
-        background-color: #4a4a4a;
-        color: white;
-        border-bottom: 2px solid #ccc;
-    }
 
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
-            color: white;
-        }
-
-
-        .navbar-custom .navbar-nav .nav-item {
-            position: relative;
-        }
-
-            .navbar-custom .navbar-nav .nav-item::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                right: 0;
-                transform: translateY(-50%);
-                width: 1px;
-                height: 20px;
-                background-color: white;
-            }
-
-            .navbar-custom .navbar-nav .nav-item:last-child::after {
-                display: none;
-            }
-
-    .progress-container {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        margin: 20px 0;
-        font-family: Arial, sans-serif;
-    }
-
-    .step {
-        position: relative;
-        flex: 1;
-        text-align: center;
-        padding: 10px;
-        color: #555;
-        background-color: #e6e6e6;
-        border-radius: 5px;
-        margin-right: 20px;
-        cursor: pointer;
-    }
-
-        .step.active {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-
-        .step::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: -20px;
-            width: 0;
-            height: 0;
-            border-top: 22px solid transparent;
-            border-bottom: 23px solid transparent;
-            border-left: 23px solid #e6e6e6;
-        }
-
-        .step.active::after {
-            border-left-color: #007bff;
-        }
-
-        .step:last-child {
-            margin-right: 0;
-        }
-
-            .step:last-child::after {
-                display: none;
-            }
-
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .container {
-        flex: 1;
-    }
-
-    .footer-guest {
-        margin-top: auto;
-        background-color: #d3d3d3;
-        color: black; /* Adjust text color as needed */
-        padding: 10px 0; /* Adjust padding as needed */
-    }
-</style>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
             <div class="container-fluid">
-                <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
-                    <i class='bx bxs-car'></i> Rent a car today!
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">ABOUT US</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Welcome, @user?.Name
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
-                                <li><a class="dropdown-item" href="#">My Bookings</a></li>
-                                <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                @if (user.Role == false)
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">ABOUT US</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Welcome, @user?.Name
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">My Bookings</a></li>
+
+                                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">ABOUT US</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Welcome, @user?.Name
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="GetCarOwnerFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
             </div>
         </nav>
 
@@ -176,9 +218,9 @@
     </div>
 
     @* <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - automobilewebapp - <a asp-area="" asp-controller="home" asp-action="privacy">privacy</a>
-        </div>
+    <div class="container">
+    &copy; 2024 - automobilewebapp - <a asp-area="" asp-controller="home" asp-action="privacy">privacy</a>
+    </div>
     </footer> *@
 
     <footer class="footer-guest py-4">

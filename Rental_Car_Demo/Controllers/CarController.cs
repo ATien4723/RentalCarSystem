@@ -20,6 +20,139 @@ namespace Rental_Car_Demo.Controllers
             _emailService = emailService;
         }
 
+        public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
+        {
+            ViewBag.location = location;
+            ViewBag.startDate = startDate;
+            ViewBag.endDate = endDate;
+
+            var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
+            var userJson = HttpContext.Session.GetString("User");
+            bool checkRent = false;
+            if (!string.IsNullOrEmpty(userJson))
+            {
+                var user = JsonConvert.DeserializeObject<User>(userJson);
+                List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
+                foreach (Booking booking in lBook)
+                {
+                    if (booking.Status==2||booking.Status == 3 || booking.Status == 4)
+                    {
+                        checkRent = true;
+                        break;
+                    }
+                }
+
+            }
+            var matchedFeedback = (from feedback in _db.Feedbacks
+                                   join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
+                                   join user in _db.Users on booking.UserId equals user.UserId
+                                   where booking.CarId == CarId && feedback.Ratings > 0
+                                   select new
+                                   {
+                                       feedback.FeedbackId,
+                                       feedback.BookingNo,
+                                       feedback.Ratings,
+                                       feedback.Content,
+                                       feedback.Date,
+                                       user.Name,
+                                   }).ToList();
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date).ToList();
+
+
+
+            double rating = 0, nor = 0;
+            foreach (var o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x=> x.Date);
+            ViewBag.Rating = rating;
+            var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
+            var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
+            var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
+            var color = _db.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
+            var address = _db.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
+            var ward = _db.Wards.FirstOrDefault(x => x.WardId == address.WardId);
+            var district = _db.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
+            var city = _db.Cities.FirstOrDefault(x => x.CityId == address.CityId);
+            var term = _db.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
+            var function = _db.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+            ViewBag.car = car;
+            ViewBag.brand = brand;
+            ViewBag.model = model;
+            ViewBag.document = document;
+            ViewBag.color = color;
+            ViewBag.address = address;
+            ViewBag.ward = ward;
+            ViewBag.district = district;
+            ViewBag.city = city;
+            ViewBag.term = term;
+            ViewBag.function = function;
+            ViewBag.checkRent = checkRent;
+
+            ViewBag.CarsList = _db.Cars
+    .Include(c => c.Address)
+        .ThenInclude(a => a.District)
+    .Include(c => c.Address)
+        .ThenInclude(a => a.City)
+    .Select(car => new
+    {
+        car.CarId,
+        car.UserId,
+        car.Name,
+        car.LicensePlate,
+        car.BrandId,
+        car.ModelId,
+        car.Seats,
+        car.ColorId,
+        car.FrontImage,
+        car.BackImage,
+        car.LeftImage,
+        car.RightImage,
+        car.ProductionYear,
+        car.TransmissionType,
+        car.FuelType,
+        car.Mileage,
+        car.FuelConsumption,
+        car.BasePrice,
+        car.Deposit,
+        car.AddressId,
+        car.Description,
+        car.DocumentId,
+        car.TermId,
+        car.FucntionId,
+        car.Status,
+        car.NoOfRide,
+        car.Address,
+        AverageRating = _db.Feedbacks
+            .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+            .Average(f => (double?)f.Ratings) ?? 0
+        })
+        .Where(c => c.CarId != car.CarId && c.Status==1)
+        .ToList();
+
+            return View();
+        }
         public ActionResult AddACar()
         {
             var context = new RentCarDbContext();
@@ -36,8 +169,25 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.District = context.Districts.ToList();
             ViewBag.Ward = context.Wards.ToList();
             ViewBag.Year = year;
+
+
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if(user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
+
+
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
@@ -247,6 +397,11 @@ namespace Rental_Car_Demo.Controllers
            .Include(b => b.Car) // Include the Car navigation property
            .ToList();
 
+            //get user to block customer access this view
+            if (user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
             return View();
 
         }
@@ -446,89 +601,27 @@ namespace Rental_Car_Demo.Controllers
             }
             return View();
         }
-        public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
-        {
-            ViewBag.location = location;
-            ViewBag.startDate = startDate;
-            ViewBag.endDate = endDate;
-
-            var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
-            var userJson = HttpContext.Session.GetString("User");
-            bool checkRent = false;
-            if (!string.IsNullOrEmpty(userJson))
-            {
-                var user = JsonConvert.DeserializeObject<User>(userJson);
-                List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
-                foreach (Booking booking in lBook)
-                {
-                    if (booking.Status == 3 || booking.Status == 4)
-                    {
-                        checkRent = true;
-                        break;
-                    }
-                }
-
-            }
-            var lBooking = _db.Bookings.Where(x => x.CarId == CarId).ToList();
-
-            var matchedFeedback = (from feedback in _db.Feedbacks.ToList()
-                                   join booking in lBooking on feedback.BookingNo equals booking.BookingNo
-                                   select feedback).ToList();
-
-            double rating = 0, nor = 0;
-            foreach (Feedback o in matchedFeedback)
-            {
-                if (o.Ratings < 0)
-                {
-                    continue;
-                }
-                rating += o.Ratings;
-                nor += 1;
-            }
-
-            if (nor > 0)
-            {
-                rating = rating / nor;
-                rating = (Math.Ceiling(rating * 2)) / 2.0;
-            }
-            else
-            {
-                rating = 0;
-            }
-            ViewBag.Rating = rating;
-            var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
-            var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
-            var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
-            var color = _db.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
-            var address = _db.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
-            var ward = _db.Wards.FirstOrDefault(x => x.WardId == address.WardId);
-            var district = _db.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
-            var city = _db.Cities.FirstOrDefault(x => x.CityId == address.CityId);
-            var term = _db.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
-            var function = _db.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
-            ViewBag.car = car;
-            ViewBag.brand = brand;
-            ViewBag.model = model;
-            ViewBag.document = document;
-            ViewBag.color = color;
-            ViewBag.address = address;
-            ViewBag.ward = ward;
-            ViewBag.district = district;
-            ViewBag.city = city;
-            ViewBag.term = term;
-            ViewBag.function = function;
-            ViewBag.checkRent = checkRent;
-            return View();
-        }
-
+        
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
+
+                if (user.Role == false || car.UserId != user.UserId)
+                {
+                    return View("ErrorAuthorization");
+                }
+
                 List<Booking> lBooking = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBooking)
                 {
@@ -558,7 +651,49 @@ namespace Rental_Car_Demo.Controllers
             var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
             ViewBag.booking = bookingg;
 
+            var matchedFeedback = (from feedback in _db.Feedbacks
+                                   join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
+                                   join user in _db.Users on booking.UserId equals user.UserId
+                                   where booking.CarId == CarId && feedback.Ratings > 0
+                                   select new
+                                   {
+                                       feedback.FeedbackId,
+                                       feedback.BookingNo,
+                                       feedback.Ratings,
+                                       feedback.Content,
+                                       feedback.Date,
+                                       user.Name,
+                                   }).ToList();
 
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date).ToList();
+
+
+
+            double rating = 0, nor = 0;
+            foreach (var o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
+            ViewBag.Rating = rating;
 
             ViewBag.car = car;
             ViewBag.brand = brand;
@@ -576,17 +711,15 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.listDistrict = listDistrict;
             ViewBag.listWard = listWard;
 
-
-
             return View(car);
         }
 
 
         [HttpPost]
-        public IActionResult ChangeCarDetailsByOwner(Car car,
-            IFormFile front, IFormFile back, IFormFile left, IFormFile right,
-            bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            int city, int district, int ward, string street)
+        public async Task<IActionResult> ChangeCarDetailsByOwner(Car car,
+    IFormFile front, IFormFile back, IFormFile left, IFormFile right,
+    bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
+    int city, int district, int ward, string street)
         {
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
@@ -615,7 +748,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameFront);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    front.CopyToAsync(stream);
+                    await front.CopyToAsync(stream);
                 }
                 carrrr.FrontImage = fileNameFront;
             }
@@ -628,7 +761,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameBack);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    back.CopyToAsync(stream);
+                    await back.CopyToAsync(stream);
                 }
                 carrrr.BackImage = fileNameBack;
             }
@@ -639,7 +772,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameLeft);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    left.CopyToAsync(stream);
+                    await left.CopyToAsync(stream);
                 }
                 carrrr.LeftImage = fileNameLeft;
             }
@@ -650,7 +783,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameRight);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    right.CopyToAsync(stream);
+                    await right.CopyToAsync(stream);
                 }
                 carrrr.RightImage = fileNameRight;
             }
@@ -671,7 +804,6 @@ namespace Rental_Car_Demo.Controllers
 
             _db.AdditionalFunctions.Update(additionalFunction);
             _db.SaveChanges();
-
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
 
@@ -684,7 +816,7 @@ namespace Rental_Car_Demo.Controllers
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
 
-
+       
             carrrr.BasePrice = car.BasePrice;
             carrrr.Deposit = car.Deposit;
             _db.Update(carrrr);
@@ -705,7 +837,7 @@ namespace Rental_Car_Demo.Controllers
             _db.SaveChanges();
 
 
-            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
+            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId});
         }
 
         [HttpPost]
@@ -722,7 +854,8 @@ namespace Rental_Car_Demo.Controllers
 
         }
         private readonly IEmailService _emailService;
-        [HttpPost]
+
+        [HttpPost] 
         public IActionResult ReturnCar(int carId, int userId, decimal amount)
         {
             var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
@@ -771,6 +904,8 @@ namespace Rental_Car_Demo.Controllers
             }
             return RedirectToAction("ViewBookingList", "Booking");
         }
+
+
         [HttpPost]
         public IActionResult ReturnCarInDetail(int carId, int userId, decimal amount)
         {

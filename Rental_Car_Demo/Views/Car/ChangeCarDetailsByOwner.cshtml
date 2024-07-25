@@ -6,96 +6,36 @@
 }
 <head>
     <style>
-        #drag-area4 {
-            width: 400px; /* Set your desired width */
-            height: 300px; /* Set your desired height */
-            border: 2px dashed #ccc; /* Optional border style */
+        .custom-drag-area1 {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* To position the image absolutely */
-            overflow: hidden; /* Hide overflow if the image is too large */
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
         }
 
-            #drag-area4 img {
-                width: 100%; /* Make the image fit the width of the div */
-                height: 100%; /* Make the image fit the height of the div */
-                object-fit: cover; /* Ensure the aspect ratio is maintained */
-                position: absolute; /* Position the image inside the div */
-                top: 0;
-                left: 0;
-            }
-
-        #drag-area5 {
-            width: 400px; /* Set your desired width */
-            height: 300px; /* Set your desired height */
-            border: 2px dashed #ccc; /* Optional border style */
+        .car-card {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: relative; /* To position the image absolutely */
-            overflow: hidden; /* Hide overflow if the image is too large */
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
-
-            #drag-area5 img {
-                width: 100%; /* Make the image fit the width of the div */
-                height: 100%; /* Make the image fit the height of the div */
-                object-fit: cover; /* Ensure the aspect ratio is maintained */
-                position: absolute; /* Position the image inside the div */
-                top: 0;
-                left: 0;
-            }
-
-        #drag-area6 {
-            width: 400px; /* Set your desired width */
-            height: 300px; /* Set your desired height */
-            border: 2px dashed #ccc; /* Optional border style */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* To position the image absolutely */
-            overflow: hidden; /* Hide overflow if the image is too large */
-        }
-
-            #drag-area6 img {
-                width: 100%; /* Make the image fit the width of the div */
-                height: 100%; /* Make the image fit the height of the div */
-                object-fit: cover; /* Ensure the aspect ratio is maintained */
-                position: absolute; /* Position the image inside the div */
-                top: 0;
-                left: 0;
-            }
-
-        #drag-area7 {
-            width: 400px; /* Set your desired width */
-            height: 300px; /* Set your desired height */
-            border: 2px dashed #ccc; /* Optional border style */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* To position the image absolutely */
-            overflow: hidden; /* Hide overflow if the image is too large */
-        }
-
-            #drag-area7 img {
-                width: 100%; /* Make the image fit the width of the div */
-                height: 100%; /* Make the image fit the height of the div */
-                object-fit: cover; /* Ensure the aspect ratio is maintained */
-                position: absolute; /* Position the image inside the div */
-                top: 0;
-                left: 0;
-            }
     </style>
 </head>
 
 <body>
 
     <div class="mt-3">
-        <a href="#">Home</a> > <a href="#">Search Results</a> > <span>Car Details</span>
+        <a href="~/Users/LoginOwn">Home</a> > <a href="~/Car/ViewMyCars">List of Cars</a> > <span>Car Details</span>
         <h2 class="mt-2">Car Details</h2>
     </div>
 
@@ -109,7 +49,7 @@
     <div class="container-fluid">
 
         <!--Image and Preview-->
-        <div class=" row mt-3" style="border-top:1px solid;">
+        <div class="car-card row mt-3">
 
             <div id="demo" class="col-5 carousel slide ms-4 mt-3" data-bs-ride="carousel">
                 <!-- Indicators/dots -->
@@ -151,27 +91,28 @@
             <div class="col-4" style="margin-left:-2%;">
                 <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
                 <div class="row">
-                    <label class="col-5 fw-bold  fs-5">Ratings:</label>
-                    <label class="col-5 d-flex fs-4">
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
+                    <label class="col-5 fw-bold text-black fs-5">Ratings:</label>
+                    <label class="col-5 d-flex fs-4" id="rating">
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
                     </label>
+                    @if (ViewBag.car.NoOfRide == 0)
+                    {
+                        <label class="col-5"></label>
+                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    }
                 </div>
-                <div class="row">
-                    <label class="col-5"></label>
-                    <span class="col-5 fw-bold">(No ratings yet)</span>
 
-                </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">No. of rides:</label>
                     <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice / 1000).ToString("N0"))<span class="fw-bold"> k/day</span></label>
+                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice ).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Locations:</label>
@@ -188,11 +129,14 @@
                         else
                         {
                             <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
-                                <select id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
-                                        {
-                                            new { Value = "1", Text = "Available" },
-                                            new { Value = "3", Text = "Stopped" }
-                                        }, "Value", "Text", @ViewBag.car.Status))">
+                                @{
+                                    var statusColor = @ViewBag.car.Status == 1 ? "green" : @ViewBag.car.Status == 3 ? "red" : "black";
+                                }
+                                <select style="color:@statusColor;" id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
+                                {
+                                    new { Value = "1", Text = "Available" },
+                                    new { Value = "3", Text = "Stopped" }
+                                }, "Value", "Text", @ViewBag.car.Status))">
                                 </select>
                                 <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
                                 <input type="hidden" asp-for="CarId" value="@Model.CarId" />
@@ -218,6 +162,7 @@
                 }
             </div>
         </div>
+
 
         <!--Car Details-->
         <div class="mt-3">
@@ -528,17 +473,10 @@
                                     <label class="fw-bold">Front</label>
                                     <div id="drag-area4"
                                          class="custom-drag-area1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                                             class="bi bi-upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
-                                        </svg>
-                                        <header class="dragdrop4">Drag and drop</header>
-                                        <p>OR</p>
+                                        <img src="~/img/@ViewBag.car.FrontImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile4" href=""
-                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
+                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
                                         <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4" />
-                                        <img src="~/img/@ViewBag.car.FrontImage"></img>
                                     </div>
                                 </div>
 
@@ -547,17 +485,10 @@
                                     <label class="fw-bold">Back</label>
                                     <div id="drag-area5"
                                          class="custom-drag-area1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                                             class="bi bi-upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
-                                        </svg>
-                                        <header class="dragdrop5">Drag and drop</header>
-                                        <p>OR</p>
+                                        <img src="~/img/@ViewBag.car.BackImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile5" href=""
-                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
+                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
                                         <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5" />
-                                        <img src="~/img/@ViewBag.car.BackImage"></img>
                                     </div>
                                 </div>
                             </div>
@@ -567,37 +498,22 @@
                                     <label class="fw-bold mt-2">Left</label>
                                     <div id="drag-area6"
                                          class="custom-drag-area1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                                             class="bi bi-upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
-                                        </svg>
-                                        <header class="dragdrop6">Drag and drop</header>
-                                        <p>OR</p>
+                                        <img src="~/img/@ViewBag.car.LeftImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile6" href=""
-                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
+                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
                                         <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6" />
-                                        <img src="~/img/@ViewBag.car.LeftImage"></img>
                                     </div>
 
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="fw-bold mt-2">Right</label>
-                                    <div id="drag-area7">
-                                        class="custom-drag-area1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                                             class="bi bi-upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
-                                        </svg>
-
-                                        <header class="dragdrop7">Drag and drop</header>
-                                        <p>OR</p>
+                                    <div id="drag-area7"
+                                         class="custom-drag-area1">
+                                        <img src="~/img/@ViewBag.car.RightImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile7" href=""
-                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
+                                           style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
                                         <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7" />
-                                        <img src="~/img/@ViewBag.car.RightImage"></img>
                                     </div>
                                 </div>
                             </div>
@@ -625,7 +541,7 @@
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="">
                             <label asp-for="BasePrice" class=" col-2 fw-bold">Base price:</label>
-                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("0.##"))" class="col-3" style="width:10%" />
+                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("N0"))" class="col-3" style="width:10%" />
                             <span class="fw-bold ms-2">VND/DAY</span>
                             <div>
                                 <span asp-validation-for="BasePrice" id="checkBP" class="fw-bold text-danger"></span>
@@ -634,7 +550,7 @@
 
                         <div class="mt-3">
                             <label asp-for="Deposit" class="col-2 fw-bold">Required deposit:</label>
-                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("0.##"))" class="col-3" required style=" width:10%" min="0" />
+                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" class="col-3" required style=" width:10%" min="0" />
                             <span class="fw-bold ms-2">VND</span>
                         </div>
 
@@ -986,6 +902,47 @@
         </script>
         }
     });
+
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
+
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusDropdown = document.getElementById('statusDropdown');
+
+            function updateOptionColors() {
+                Array.from(statusDropdown.options).forEach(option => {
+                    if (option.value === "1") {
+                        option.style.color = "green";
+                    } else if (option.value === "3") {
+                        option.style.color = "red";
+                    } else {
+                        option.style.color = ""; // Reset to default for other options if any
+                    }
+                });
+            }
+
+            // Initial call to set colors
+            updateOptionColors();
+
+            // Update colors when the dropdown changes (if needed)
+            statusDropdown.addEventListener('change', updateOptionColors);
+        });
     </script>
 
 </body>
