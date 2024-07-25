@@ -47,20 +47,25 @@ namespace Rental_Car_Demo.Controllers
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+
+            if ( user != null && user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View(cars);
         }
 
         public IActionResult SearchCarForm()
         {
             IEnumerable<Car> cars = _carRepository.GetAllCars();
-
-            return View(cars);
-        }
-
-
-        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
-        {
-            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
 
             //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
@@ -73,6 +78,15 @@ namespace Rental_Car_Demo.Controllers
             {
                 return View("ErrorAuthorization");
             }
+
+            return View(cars);
+        }
+
+
+        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
+        {
+            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
+
 
             return PartialView("_CarResultsPartial", cars);
         }
