@@ -1,0 +1,202 @@
+﻿@model Rental_Car_Demo.Models.Booking
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@{
+    var userString = Context.Session.GetString("User");
+    User user = null;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        user = JsonConvert.DeserializeObject<User>(userString);
+    }
+}
+
+@{
+    ViewData["Title"] = "BookACar";
+    Layout = "~/Views/Shared/_LayoutRentCar.cshtml";
+}
+
+<style>
+    .booking-details-card {
+        background-color: #4e4e4e;
+        color: white;
+        padding: 20px 20px 20px 60px;
+        margin: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .booking-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .booking-header h3 {
+            margin: 0;
+        }
+
+    .change-details-link {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+        .change-details-link i {
+            margin-right: 5px;
+        }
+
+    .booking-info {
+        list-style: disc;
+        padding-left: 60px;
+    }
+
+        .booking-info li {
+            margin: 10px 0;
+        }
+
+        .booking-info strong {
+            font-weight: 400;
+        }
+
+    .text-myfont {
+        font-weight: 500;
+    }
+</style>
+
+<style>
+
+    .looking {
+        display: none;
+    }
+
+    .carousel-control-prev-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+    }
+
+    .carousel-control-next-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+    }
+
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-item {
+        height: 320px;
+    }
+
+    .d-none {
+        display: none;
+    }
+
+    .star {
+        color: lightgray;
+    }
+
+    .filled {
+        color: gold;
+    }
+
+    .half-filled {
+        background: linear-gradient(90deg, gold 50%, lightgray 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<div class="row">
+    <div class="progress-container">
+        <div class="step" onclick="navigateTo(0)">Step 1: Booking Information</div>
+        <div class="step" onclick="navigateTo(1)">Step 2: Payment</div>
+        <div class="step active">Step 3: Finish</div>
+    </div>
+
+    <div class="cont mt-4" id="step1" style="display: none;">
+        <!-- Step 1 content -->
+    </div>
+
+    <div class="cont" id="step2" style="display: none;">
+        <!-- Step 2 content -->
+    </div>
+
+    <div class="cont" id="step3" style="margin-left: 44px; font-size: 1.3em;">
+        <!-- Step 3 content -->
+        <strong class="mb-2">
+            You've successfully booked @ViewBag.CarName from @ViewBag.StartDate.ToString("dd/MM/yyyy - HH:mm tt") to @ViewBag.EndDate.ToString("dd/MM/yyyy - HH:mm tt").
+        </strong><br />
+        <strong class="mb-2">
+            Your booking number is: @ViewBag.BookingNo
+        </strong><br />
+        <strong class="mb-2">
+            Our operator will contact you with further guidance about pickup.
+        </strong>
+
+
+    </div>
+    <div class="form-group mt-2 row justify-content-center">
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            <a href="/Users/LoginCus" class="btn btn-outline-secondary" style="padding: 0; text-decoration: underline; border: none;">
+                Go to homepage
+            </a>
+            <a href="javascript:history.go(-3)" class="btn btn-secondary ms-5">Book another car</a>
+            <a asp-controller="Booking" asp-action="EditBookingDetail"
+               asp-route-startDate="@ViewBag.startDate"
+               asp-route-endDate="@ViewBag.endDate" asp-route-carId="@ViewBag.CarId" asp-route-bookingNo="@ViewBag.BookingNo" class="btn btn-primary ms-5">View Booking</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hide Step 1 and Step 2 on page load
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+
+            // Show Step 3 directly
+            document.getElementById('step3').style.display = 'block';
+
+            // Update active state in progress bar
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index === 2) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        });
+
+        function navigateTo(stepIndex) {
+            // Implement logic to prevent navigation to Step 1 and Step 2 if needed
+            if (stepIndex === 0 || stepIndex === 1) {
+                // Example: Optionally show an alert or take another action to prevent navigation
+                // alert('Please complete Step 3 first.');
+                return;
+            }
+
+            // Hide all steps
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'none';
+
+            // Show the selected step
+            document.getElementById('step' + (stepIndex + 1)).style.display = 'block';
+
+            // Update active state in progress bar
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index === stepIndex) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+    </script>
+}
