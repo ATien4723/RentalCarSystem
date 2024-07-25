@@ -687,7 +687,7 @@
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Price:</label>
-                            <label class="col-5 fw-bold" id="PreviewPrice">900<span class="fw-bold">k/day</span></label>
+                            <label class="col-5 fw-bold" id="PreviewPrice">900<span class="fw-bold">VND/day</span></label>
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Locations:</label>
@@ -955,8 +955,8 @@
                 options[document.getElementById('district').selectedIndex].textContent + ", " +
                 document.getElementById('city').options[document.getElementById('city').selectedIndex].textContent;
 
-            const price = document.getElementById('BasePrice').value / 1000;
-            document.getElementById('PreviewPrice').innerHTML = price + "k/day";
+            const price = document.getElementById('BasePrice').value;
+            document.getElementById('PreviewPrice').innerHTML = price + "VND/day";
         }
     </script>
 

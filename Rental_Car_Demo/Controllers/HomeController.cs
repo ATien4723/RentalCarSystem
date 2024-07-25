@@ -41,14 +41,23 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult SearchCarForm(string address)
+        [HttpGet]
+        public IActionResult SearchCarForm(string? address)
         {
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            ViewBag.location = address;
             return View(cars);
         }
+
+        public IActionResult SearchCarForm()
+        {
+            IEnumerable<Car> cars = _carRepository.GetAllCars();
+
+            return View(cars);
+        }
+
 
         public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
@@ -73,17 +82,21 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public JsonResult GetSuggestions(string query)
         {
-            var addresses = _context.Addresses
-                .Include(a => a.City)
-                .Include(a => a.District)
-                .Include(a => a.Ward)
-                .Where(a => a.District.DistrictName.Contains(query) ||
-                            a.Ward.WardName.Contains(query) ||
-                            a.City.CityProvince.Contains(query) ||
-                            a.HouseNumberStreet.Contains(query))
-                .Select(a => new
+            var addresses = _context.Cars
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.City)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.District)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.Ward)
+                .Where(car => car.Status == 1 &&
+                  (car.Address.District.DistrictName.Contains(query) ||
+                   car.Address.Ward.WardName.Contains(query) ||
+                   car.Address.City.CityProvince.Contains(query) ||
+                   car.Address.HouseNumberStreet.Contains(query)))
+                .Select(car => new
                 {
-                    Address = $"{a.HouseNumberStreet}, {a.Ward.WardName}, {a.District.DistrictName}, {a.City.CityProvince}"
+                    Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
                 .ToList();
 
@@ -100,7 +113,7 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-            if (user.Role == true)
+            if (user.Role == true || user.UserId != userId)
             {
                 return View("ErrorAuthorization");
             }
@@ -125,7 +138,8 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-            if (user.Role == false) // neu user la customer thi khong duoc vao trang nay
+
+            if (user.Role == false || user.UserId != userId) // neu user la customer thi khong duoc vao trang nay hoac co gang truy cap vao feedback nguoi khac
             {
                 return View("ErrorAuthorization");
             }

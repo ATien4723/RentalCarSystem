@@ -20,13 +20,17 @@
             }
         </div>
     </div>
+
     <div class="text-center my-4">
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback('all')">All (@Model.Count())</button>
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(5)">5 Stars (@Model.Count(f => f.Ratings == 5))</button>
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(4)">4 Stars (@Model.Count(f => f.Ratings == 4))</button>
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(3)">3 Stars (@Model.Count(f => f.Ratings == 3))</button>
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(2)">2 Stars (@Model.Count(f => f.Ratings == 2))</button>
-        <button class="btn btn-outline-primary mx-1" onclick="filterFeedback(1)">1 Star (@Model.Count(f => f.Ratings == 1))</button>
+        <label class="btn btn-outline-primary mx-1 filter-button">
+            <input type="checkbox" value="all" onchange="filterFeedback()" style="display: none;"> All (@Model.Count())
+        </label>
+        @for (int i = 5; i >= 1; i--)
+        {
+            <label class="btn btn-outline-primary mx-1 filter-button">
+                <input type="checkbox" value="@i" onchange="filterFeedback()" style="display: none;"> @i Stars (@Model.Count(f => f.Ratings == i))
+            </label>
+        }
     </div>
 
     <div id="listingContainer">
@@ -85,20 +89,66 @@
     </div>
 </div>
 
+<style>
+    .filter-button.selected {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
 <script>
-    function filterFeedback(rating) {
-        var feedbackItems = document.querySelectorAll('.listingItem');
-        feedbackItems.forEach(function (item) {
-            if (rating === 'all') {
-                item.style.display = 'block';
+    function filterFeedback() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var selectedRatings = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked && checkbox.value !== 'all') {
+                selectedRatings.push(checkbox.value);
+                checkbox.parentElement.classList.add('selected');
             } else {
-                var itemRating = item.getAttribute('data-rating');
-                if (itemRating == rating) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+                checkbox.parentElement.classList.remove('selected');
             }
         });
+
+        var feedbackItems = document.querySelectorAll('.listingItem');
+        feedbackItems.forEach(function (item) {
+            var itemRating = item.getAttribute('data-rating');
+            if (selectedRatings.length === 0 || selectedRatings.includes(itemRating)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // If no specific rating checkbox is checked, check the "All" checkbox
+        var allCheckbox = document.querySelector('input[value="all"]');
+        if (selectedRatings.length === 0) {
+            allCheckbox.checked = true;
+            allCheckbox.parentElement.classList.add('selected');
+        } else {
+            allCheckbox.checked = false;
+            allCheckbox.parentElement.classList.remove('selected');
+        }
     }
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (checkbox.value === 'all' && checkbox.checked) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                        cb.parentElement.classList.remove('selected');
+                    }
+                });
+            } else {
+                document.querySelector('input[value="all"]').checked = false;
+                document.querySelector('input[value="all"]').parentElement.classList.remove('selected');
+            }
+            filterFeedback();
+        });
+    });
+
+    // Initialize the "All" checkbox as selected
+    document.querySelector('input[value="all"]').checked = true;
+    document.querySelector('input[value="all"]').parentElement.classList.add('selected');
+    filterFeedback();
 </script>

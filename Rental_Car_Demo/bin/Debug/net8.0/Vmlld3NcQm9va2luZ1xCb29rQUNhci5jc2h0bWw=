@@ -201,8 +201,11 @@
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                         </label>
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                        @if (ViewBag.car.NoOfRide == 0)
+                        {
+                            <label class="col-5"></label>
+                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                        }
                     </div>
 
                     <div class="row fs-6 mt-2">
@@ -211,7 +214,7 @@
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice / 1000).ToString("0")) <span class="fw-bold">k/day</span></label>
+                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></label>
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Locations:</label>
@@ -244,14 +247,14 @@
                     <label class="col-6 fw-bold text-end">Number of days: @ViewBag.NumberOfDays</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("0,0")<span class="fw-bold"> VND</span></label>
+                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></label>
                 </div>
                 <hr style="width: 80%; margin-left: auto;">
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0 VND")</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
                 </div>
                 </div>
             </div>
@@ -510,6 +513,12 @@
                 </div>
                 <span asp-validation-for="@Model.PaymentMethod" class="text-danger"></span>
             </div>
+
+            <input name="location" value="@ViewBag.location" hidden/>
+            <input name="startDate" value="@ViewBag.startDate" hidden/>
+            <input name="endDate" value="@ViewBag.endDate" hidden/>
+            <input name="carId" value="@ViewBag.carId" hidden/>
+
             <div class="form-group mt-2 row justify-content-center">
                 <div class="d-flex justify-content-center align-items-center mt-3">
                     <a onclick="goToStep1();" type="button" class="btn btn-outline-secondary"
@@ -893,24 +902,22 @@
 </script>
 
      
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-
-     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
-
-    // Example rating
-    setRating(3.5);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 
 
     <script>
@@ -996,9 +1003,9 @@
         // Function to check if start date and time is greater than current date and time
         function isStartDateGreaterThanCurrentDate(startDate) {
             var startDateTime = new Date(startDate).getTime();
-            var currentDateTime = new Date().getTime();
+            var currentDateTime = new Date().getTime() - (1 * 60 * 1000);
 
-            return startDateTime > currentDateTime;
+            return startDateTime >= currentDateTime;
         }
 
         // Function to check if end date and time is greater than start date and time
@@ -1092,26 +1099,11 @@
     });
 </script>
 
-
-@* <script>
-    document.getElementById('Form').addEventListener('submit', function(event) {
-        var insufficientBalance = document.getElementById('insufficient');
-        var pm1 = document.getElementById('pm1').checked; // Check if the radio button is checked
-        var wallet = @Html.Raw(Json.Serialize(ViewBag.wallet)); // Retrieve wallet balance from ViewBag
-        var deposit = @Html.Raw(Json.Serialize(ViewBag.Deposit)); // Retrieve deposit from ViewBag
-
-        if (pm1 && wallet < deposit) {
-            alert("Insufficient balance. Please add more funds to your wallet.");
-            event.preventDefault(); // Prevent the form from being submitted
-        }
-    });
-</script> *@
     @if(@TempData["AlertMessage"] != null)
     {
         <script>
         alert('@TempData["AlertMessage"]');
         </script>
     }
-    
 
 }

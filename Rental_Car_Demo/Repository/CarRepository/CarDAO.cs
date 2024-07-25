@@ -70,6 +70,40 @@ namespace Rental_Car_Demo.Repository.CarRepository
             }
         }
 
+        public IEnumerable<Car> GetAllCars()
+        {
+            try
+            {
+                using (var context = new RentCarDbContext())
+                {
+                    var cars = context.Cars
+                        .Include(c => c.Brand)
+                        .Include(c => c.Model)
+                        .Include(c => c.Color)
+                        .Include(c => c.Address)
+                            .ThenInclude(a => a.City)
+                        .Include(c => c.Address)
+                            .ThenInclude(a => a.District)
+                        .Include(c => c.Address)
+                            .ThenInclude(a => a.Ward)
+                        .Include(c => c.Document)
+                        .Include(c => c.Term)
+                        .Where(c => c.Status != 2)
+                        .Include(c => c.User)
+                        .Include(c => c.Bookings)
+                        .Where(c => c.Status != 2)
+                        .AsQueryable();
+
+
+                    return cars.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
             try {

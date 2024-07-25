@@ -1,8 +1,9 @@
 ﻿@model Rental_Car_Demo.Models.Car
+
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
-    ViewData["Title"] = "testViewCarDetail";
+    ViewData["Title"] = "ViewCarDetailsByCustomer";
     var userString = Context.Session.GetString("User");
     User user = null;
     if (!string.IsNullOrEmpty(userString))
@@ -53,6 +54,12 @@
     <style>
 
         .card-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .location {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -407,15 +414,21 @@
 </head>
 <body>
     <div class="container mt-3">
+
+
         @if (user?.Role == false)
         {
             <a asp-controller="Users" asp-action="LoginCus" class="text">Home</a>
         }
-        else
+        else if (user?.Role == true)
         {
             <a asp-controller="Users" asp-action="LoginOwn" class="text">Home</a>
         }
-        > <a href="javascript:history.back()">Search Results</a> > <span>Car Details</span>
+        else
+        {
+            <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
+        }
+         <a asp-action="SearchCarForm" asp-controller="Home">Search Results</a> > <span>Car Details</span>
     </div>
 
     <div class="container mt-4">
@@ -509,14 +522,14 @@
                             }
                         </div>
                         <div class="description mt-3">
-                            <h5 style="font-weight: bold;">Mô tả</h5>
+                            <h5 style="font-weight: bold;">Description:</h5>
                             <p>
                                 @ViewBag.car.Description
                             </p>
                         </div>
 
-                        <div class="row mt-3">
-                            <label class="fw-bold">Documents:</label>
+                        <div class="row mt-3" >
+                            <label class="fw-bold" style="font-size:20px">Documents:</label>
                             <div class="col-5 mt-2">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -642,7 +655,7 @@
                     <div class="col-md-4">
                         <div class="price-section text-center">
                             <h5>Car Rental Price</h5>
-                            <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice / 1000).ToString("N0")) k/day</div>
+                            <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice ).ToString("N0")) VND/day</div>
 
                             <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
                                asp-route-startDate="@ViewBag.startDate"
@@ -703,7 +716,7 @@
                                                     <div class="col-6"><i class="fa-sharp fa-regular fa-calendar-days icon"></i>@c.ProductionYear</div>
                                                 </div>
                                             </div>
-                                            <div class="price">@((c.BasePrice / 1000).ToString("N0")) k/day</div>
+                                            <div class="price">@((c.BasePrice ).ToString("N0")) VND/day</div>
                                             <a href="@Url.Action("ViewCarDetailsByCustomer","Car",new {CarId = c.CarId,location = ViewBag.location,startDate= ViewBag.startDate,endDate = ViewBag.endDate})" class="btn btn-dark">View more</a>
                                         </div>
                                     </div>

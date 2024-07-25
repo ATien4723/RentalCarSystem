@@ -170,12 +170,12 @@
                     <h2>Looking for a vehicle?</h2>
                     <p>You're at the right place.</p>
                     <p>Choose between 100's of private cars for rent at really low prices!</p>
-                    <button class="btn btn-custom">Find a Rental Car Near You</button>
+                    <a class="btn btn-custom" asp-action="SearchCarForm" asp-controller="Home">Find a Rental Car Near You</a>
                 </div>
                 <div class="col-md-6 mb-4">
                     <h2>Are you a car owner?</h2>
                     <p>List your car and make money from your asset today!</p>
-                    <button class="btn btn-custom">List Your Car Today</button>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#authModal" class="btn btn-custom">List Your Car Today</a>
                 </div>
             </div>
         </div>
@@ -369,9 +369,6 @@
         </div>
     </section>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">
-        Open Authentication Modal
-    </button>
 
     <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">

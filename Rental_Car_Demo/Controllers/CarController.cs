@@ -36,7 +36,7 @@ namespace Rental_Car_Demo.Controllers
                 List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBook)
                 {
-                    if (booking.Status == 3 || booking.Status == 4)
+                    if (booking.Status==2||booking.Status == 3 || booking.Status == 4)
                     {
                         checkRent = true;
                         break;
@@ -186,6 +186,8 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
@@ -349,14 +351,46 @@ namespace Rental_Car_Demo.Controllers
             }
             var userId = user.UserId;
             ViewBag.Cars = context.Cars
+                .Include(c => c.Address)
+                    .ThenInclude(a => a.District)
+                .Include(c => c.Address)
+                    .ThenInclude(a => a.City)
+                .Select(car => new
+                {
+                    car.CarId,
+                    car.UserId,
+                    car.Name,
+                    car.LicensePlate,
+                    car.BrandId,
+                    car.ModelId,
+                    car.Seats,
+                    car.ColorId,
+                    car.FrontImage,
+                    car.BackImage,
+                    car.LeftImage,
+                    car.RightImage,
+                    car.ProductionYear,
+                    car.TransmissionType,
+                    car.FuelType,
+                    car.Mileage,
+                    car.FuelConsumption,
+                    car.BasePrice,
+                    car.Deposit,
+                    car.AddressId,
+                    car.Description,
+                    car.DocumentId,
+                    car.TermId,
+                    car.FucntionId,
+                    car.Status,
+                    car.NoOfRide,
+                    car.Address,
+                    AverageRating = context.Feedbacks
+                        .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                        .Average(f => (double?)f.Ratings) ?? 0
+                })
                 .Where(c => c.UserId == userId)
-                                    .OrderByDescending(c => c.CarId)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.District)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.City)
-                                    .Include(c => c.Bookings)
-                                    .ToList();
+                .OrderByDescending(c => c.CarId)
+                .ToList();
             ViewBag.SortOrder = "newest";
 
             ViewBag.Bookings = context.Bookings
@@ -376,6 +410,9 @@ namespace Rental_Car_Demo.Controllers
         public ActionResult ViewMyCars(string sortOrder)
         {
             var context = new RentCarDbContext();
+            ViewBag.Bookings = context.Bookings
+           .Include(b => b.Car) // Include the Car navigation property
+           .ToList();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
@@ -386,48 +423,180 @@ namespace Rental_Car_Demo.Controllers
             if (sortOrder == "latest")
             {
                 ViewBag.Cars = context.Cars
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.District)
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.City)
+                    .Select(car => new
+                    {
+                        car.CarId,
+                        car.UserId,
+                        car.Name,
+                        car.LicensePlate,
+                        car.BrandId,
+                        car.ModelId,
+                        car.Seats,
+                        car.ColorId,
+                        car.FrontImage,
+                        car.BackImage,
+                        car.LeftImage,
+                        car.RightImage,
+                        car.ProductionYear,
+                        car.TransmissionType,
+                        car.FuelType,
+                        car.Mileage,
+                        car.FuelConsumption,
+                        car.BasePrice,
+                        car.Deposit,
+                        car.AddressId,
+                        car.Description,
+                        car.DocumentId,
+                        car.TermId,
+                        car.FucntionId,
+                        car.Status,
+                        car.NoOfRide,
+                        car.Address,
+                        AverageRating = context.Feedbacks
+                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                            .Average(f => (double?)f.Ratings) ?? 0
+                    })
                     .Where(c => c.UserId == userId)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.District)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.City)
-                                    .ToList();
+                    .ToList();
                 ViewBag.SortOrder = "latest";
             }
-            else if(sortOrder == "newest")
+            else if (sortOrder == "newest")
             {
                 ViewBag.Cars = context.Cars
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.District)
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.City)
+                    .Select(car => new
+                    {
+                        car.CarId,
+                        car.UserId,
+                        car.Name,
+                        car.LicensePlate,
+                        car.BrandId,
+                        car.ModelId,
+                        car.Seats,
+                        car.ColorId,
+                        car.FrontImage,
+                        car.BackImage,
+                        car.LeftImage,
+                        car.RightImage,
+                        car.ProductionYear,
+                        car.TransmissionType,
+                        car.FuelType,
+                        car.Mileage,
+                        car.FuelConsumption,
+                        car.BasePrice,
+                        car.Deposit,
+                        car.AddressId,
+                        car.Description,
+                        car.DocumentId,
+                        car.TermId,
+                        car.FucntionId,
+                        car.Status,
+                        car.NoOfRide,
+                        car.Address,
+                        AverageRating = context.Feedbacks
+                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                            .Average(f => (double?)f.Ratings) ?? 0
+                    })
                     .Where(c => c.UserId == userId)
-                                    .OrderByDescending(c => c.CarId)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.District)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.City)
-                                    .ToList();
+                    .OrderByDescending(c => c.CarId)
+                    .ToList();
                 ViewBag.SortOrder = "newest";
             }
             else if (sortOrder == "highest")
             {
                 ViewBag.Cars = context.Cars
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.District)
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.City)
+                    .Select(car => new
+                    {
+                        car.CarId,
+                        car.UserId,
+                        car.Name,
+                        car.LicensePlate,
+                        car.BrandId,
+                        car.ModelId,
+                        car.Seats,
+                        car.ColorId,
+                        car.FrontImage,
+                        car.BackImage,
+                        car.LeftImage,
+                        car.RightImage,
+                        car.ProductionYear,
+                        car.TransmissionType,
+                        car.FuelType,
+                        car.Mileage,
+                        car.FuelConsumption,
+                        car.BasePrice,
+                        car.Deposit,
+                        car.AddressId,
+                        car.Description,
+                        car.DocumentId,
+                        car.TermId,
+                        car.FucntionId,
+                        car.Status,
+                        car.NoOfRide,
+                        car.Address,
+                        AverageRating = context.Feedbacks
+                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                            .Average(f => (double?)f.Ratings) ?? 0
+                    })
                     .Where(c => c.UserId == userId)
-                                    .OrderByDescending(c => c.BasePrice)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.District)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.City)
-                                    .ToList();
+                    .OrderByDescending(c => c.BasePrice)
+                    .ToList();
                 ViewBag.SortOrder = "highest";
             }
             else if (sortOrder == "lowest")
             {
                 ViewBag.Cars = context.Cars
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.District)
+                    .Include(c => c.Address)
+                        .ThenInclude(a => a.City)
+                    .Select(car => new
+                    {
+                        car.CarId,
+                        car.UserId,
+                        car.Name,
+                        car.LicensePlate,
+                        car.BrandId,
+                        car.ModelId,
+                        car.Seats,
+                        car.ColorId,
+                        car.FrontImage,
+                        car.BackImage,
+                        car.LeftImage,
+                        car.RightImage,
+                        car.ProductionYear,
+                        car.TransmissionType,
+                        car.FuelType,
+                        car.Mileage,
+                        car.FuelConsumption,
+                        car.BasePrice,
+                        car.Deposit,
+                        car.AddressId,
+                        car.Description,
+                        car.DocumentId,
+                        car.TermId,
+                        car.FucntionId,
+                        car.Status,
+                        car.NoOfRide,
+                        car.Address,
+                        AverageRating = context.Feedbacks
+                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                            .Average(f => (double?)f.Ratings) ?? 0
+                    })
                     .Where(c => c.UserId == userId)
-                                    .OrderBy(c => c.BasePrice)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.District)
-                                    .Include(c => c.Address)
-                                        .ThenInclude(a => a.City)
-                                    .ToList();
+                    .OrderBy(c => c.BasePrice)
+                    .ToList();
                 ViewBag.SortOrder = "lowest";
             }
             return View();
@@ -436,13 +605,19 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
 
-                if (user.Role == false)
+                if (user.Role == false || car.UserId != user.UserId)
                 {
                     return View("ErrorAuthorization");
                 }
@@ -476,7 +651,49 @@ namespace Rental_Car_Demo.Controllers
             var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
             ViewBag.booking = bookingg;
 
+            var matchedFeedback = (from feedback in _db.Feedbacks
+                                   join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
+                                   join user in _db.Users on booking.UserId equals user.UserId
+                                   where booking.CarId == CarId && feedback.Ratings > 0
+                                   select new
+                                   {
+                                       feedback.FeedbackId,
+                                       feedback.BookingNo,
+                                       feedback.Ratings,
+                                       feedback.Content,
+                                       feedback.Date,
+                                       user.Name,
+                                   }).ToList();
 
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date).ToList();
+
+
+
+            double rating = 0, nor = 0;
+            foreach (var o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
+            ViewBag.Rating = rating;
 
             ViewBag.car = car;
             ViewBag.brand = brand;
@@ -499,10 +716,10 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public IActionResult ChangeCarDetailsByOwner(Car car,
-            IFormFile front, IFormFile back, IFormFile left, IFormFile right,
-            bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            int city, int district, int ward, string street)
+        public async Task<IActionResult> ChangeCarDetailsByOwner(Car car,
+    IFormFile front, IFormFile back, IFormFile left, IFormFile right,
+    bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
+    int city, int district, int ward, string street)
         {
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
@@ -531,7 +748,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameFront);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    front.CopyToAsync(stream);
+                    await front.CopyToAsync(stream);
                 }
                 carrrr.FrontImage = fileNameFront;
             }
@@ -544,7 +761,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameBack);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    back.CopyToAsync(stream);
+                    await back.CopyToAsync(stream);
                 }
                 carrrr.BackImage = fileNameBack;
             }
@@ -555,7 +772,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameLeft);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    left.CopyToAsync(stream);
+                    await left.CopyToAsync(stream);
                 }
                 carrrr.LeftImage = fileNameLeft;
             }
@@ -566,7 +783,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameRight);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    right.CopyToAsync(stream);
+                    await right.CopyToAsync(stream);
                 }
                 carrrr.RightImage = fileNameRight;
             }
@@ -587,7 +804,6 @@ namespace Rental_Car_Demo.Controllers
 
             _db.AdditionalFunctions.Update(additionalFunction);
             _db.SaveChanges();
-
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
 
@@ -642,13 +858,13 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost] 
         public IActionResult ReturnCar(int carId, int userId, decimal amount)
         {
-            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status==3 || b.Status == 4));
+            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
             var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
             var car = _db.Cars.FirstOrDefault(c => c.CarId == carId);
             var carOwner = _db.Users.FirstOrDefault(u => u.UserId == car.UserId);
             if (user != null)
             {
-                if((-amount) > user.Wallet)
+                if ((-amount) > user.Wallet)
                 {
                     TempData["ErrorMessage"] = "Your wallet doesn’t have enough balance. Please top-up your wallet and try again";
                     booking.Status = 4;
@@ -656,7 +872,7 @@ namespace Rental_Car_Demo.Controllers
                     _db.SaveChanges();
                     return RedirectToAction("ViewBookingList", "Booking");
                 }
-                user.Wallet += amount; 
+                user.Wallet += amount;
                 var transactionUser = new Wallet
                 {
                     UserId = userId,
@@ -688,10 +904,12 @@ namespace Rental_Car_Demo.Controllers
             }
             return RedirectToAction("ViewBookingList", "Booking");
         }
+
+
         [HttpPost]
         public IActionResult ReturnCarInDetail(int carId, int userId, decimal amount)
         {
-            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3|| b.Status==4));
+            var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
             var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
             var car = _db.Cars.FirstOrDefault(c => c.CarId == carId);
             var carOwner = _db.Users.FirstOrDefault(u => u.UserId == car.UserId);
@@ -703,7 +921,7 @@ namespace Rental_Car_Demo.Controllers
                     booking.Status = 4;
                     _db.Update(booking);
                     _db.SaveChanges();
-                    return RedirectToAction("EditBookingDetail","Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
+                    return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
                 }
                 user.Wallet += amount;
                 var transactionUser = new Wallet
@@ -741,7 +959,7 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult ConfirmDeposit(Car car)
         {
-            
+
             var booking = _db.Bookings.FirstOrDefault(b => b.CarId == car.CarId && b.Status == 1);
             if (booking != null)
             {
@@ -749,7 +967,7 @@ namespace Rental_Car_Demo.Controllers
                 booking.Status = 2;
                 _db.Update(booking);
                 _db.SaveChanges();
-                
+
             }
             TempData["SuccessMessage"] = "You confirmed deposit!";
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
