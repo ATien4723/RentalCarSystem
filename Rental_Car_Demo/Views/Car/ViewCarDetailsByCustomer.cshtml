@@ -428,7 +428,7 @@
         {
             <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
         }
-         <a asp-action="SearchCarForm" asp-controller="Home">Search Results</a> > <span>Car Details</span>
+         <a asp-action="SearchCarForm" asp-controller="Home"> > Search Results</a> > <span>Car Details</span>
     </div>
 
     <div class="container mt-4">
@@ -657,12 +657,17 @@
                             <h5>Car Rental Price</h5>
                             <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice ).ToString("N0")) VND/day</div>
 
-                            <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
-                               asp-route-startDate="@ViewBag.startDate"
-                               asp-route-endDate="@ViewBag.endDate"
-                               asp-route-CarId="@ViewBag.car.CarId">
-                                Rent now
-                            </a>
+                            @if(ViewBag.car.Status == 1)
+                            {
+                                <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                                   asp-route-startDate="@ViewBag.startDate"
+                                   asp-route-endDate="@ViewBag.endDate"
+                                   asp-route-CarId="@ViewBag.car.CarId">
+                                    Rent now
+                                </a>
+                            }
+                      
+
                         </div>
                         <div class="owner-section mt-4">
                             <h5>Car Owner</h5>

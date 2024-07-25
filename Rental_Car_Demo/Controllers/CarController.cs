@@ -633,6 +633,8 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
+
+
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
             var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
@@ -651,7 +653,49 @@ namespace Rental_Car_Demo.Controllers
             var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
             ViewBag.booking = bookingg;
 
+            var matchedFeedback = (from feedback in _db.Feedbacks
+                                   join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
+                                   join user in _db.Users on booking.UserId equals user.UserId
+                                   where booking.CarId == CarId && feedback.Ratings > 0
+                                   select new
+                                   {
+                                       feedback.FeedbackId,
+                                       feedback.BookingNo,
+                                       feedback.Ratings,
+                                       feedback.Content,
+                                       feedback.Date,
+                                       user.Name,
+                                   }).ToList();
 
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date).ToList();
+
+
+
+            double rating = 0, nor = 0;
+            foreach (var o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
+            ViewBag.Rating = rating;
 
             ViewBag.car = car;
             ViewBag.brand = brand;
