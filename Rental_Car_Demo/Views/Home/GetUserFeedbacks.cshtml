@@ -9,13 +9,12 @@
     <div class="text-center">
         <h2>Average Ratings</h2>
         <div class="display-4">
-            @(Model.Any() ? Model.Average(f => f.Ratings).ToString("0.00") : "N/A")
+            @(Model.Any () ? Model.Average (f => f.Ratings).ToString ("0.00") : "N/A")
         </div>
         <div class="rating">
             @{
-                var averageRating = Model.Any() ? Model.Average(f => f.Ratings) : 0;
-                for (var i = 0; i < 5; i++)
-                {
+                var averageRating = Model.Any () ? Model.Average (f => f.Ratings) : 0;
+                for ( var i = 0; i < 5; i++ ) {
                     <span>@(i < averageRating ? "★" : "☆")</span>
                 }
             }
@@ -35,8 +34,7 @@
     </div>
 
     <div id="listingContainer">
-        @foreach (var feedback in Model)
-        {
+        @foreach ( var feedback in Model ) {
             <div class="listingItem card mb-3" data-rating="@feedback.Ratings">
                 <div class="card-header d-flex justify-content-between align-items-center text-black">
                     <div>
@@ -59,8 +57,7 @@
                     </div>
                     <div class="text-right rating">
                         @{
-                            for (var i = 0; i < 5; i++)
-                            {
+                            for ( var i = 0; i < 5; i++ ) {
                                 <span>@(i < feedback.Ratings ? "★" : "☆")</span>
                             }
                         }
