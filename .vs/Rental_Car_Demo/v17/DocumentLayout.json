@@ -1,7 +1,20 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|c:\\users\\decid\\onedrive\\desktop\\pojectfsoft\\rental-car\\rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\rental_car_demo\\views\\booking\\bookacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\booking\\bookacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\rental_car_demo\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +39,43 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CarController.cs",
+              "DocumentMoniker": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Controllers\\CarController.cs",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\CarController.cs",
+              "ToolTip": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Controllers\\CarController.cs",
+              "RelativeToolTip": "Rental_Car_Demo\\Controllers\\CarController.cs",
+              "ViewState": "AQIAAJACAAAAAAAAAAAQwKkCAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-25T09:31:14.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MyWallet.cshtml",
+              "DocumentMoniker": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ToolTip": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ViewState": "AQIAALQAAAAAAAAAAAAAAMQAAAB+AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T09:31:09.31Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BookACar.cshtml",
+              "DocumentMoniker": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Views\\Booking\\BookACar.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Booking\\BookACar.cshtml",
+              "ToolTip": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Views\\Booking\\BookACar.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Booking\\BookACar.cshtml",
+              "ViewState": "AQIAAJsDAAAAAAAAAAAAAKgDAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T09:21:32.651Z"
             }
           ]
         }
