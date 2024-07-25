@@ -1,7 +1,32 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\shared\\_layoutwallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutwallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\shared\\_layoutfeedback.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutfeedback.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\shared\\_layoutprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\users\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\users\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\shared\\_layoutcarowner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutcarowner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +43,84 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_LayoutFeedBack.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutFeedBack.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutFeedBack.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutFeedBack.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutFeedBack.cshtml",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAEIAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:21:36.585Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_LayoutProfile.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutProfile.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutProfile.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutProfile.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutProfile.cshtml",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAAAIsAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:13:49.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MyWallet.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAA4AAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:16:43.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Users\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Users\\Edit.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Users\\Edit.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Users\\Edit.cshtml",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:16:24.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_LayoutCarOwner.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
+              "ViewState": "AQIAAAUBAAAAAAAAAAAAACQBAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:12:16.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_LayoutWallet.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutWallet.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutWallet.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutWallet.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutWallet.cshtml",
+              "ViewState": "AQIAANsAAAAAAAAAAAAAAPMAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-25T04:12:06.214Z",
+              "EditorCaption": ""
             }
           ]
         }
