@@ -692,8 +692,33 @@
                             </tbody>
                         </table>
                     </div>
-                    <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
+                    @if (!ViewBag.checkRent)
+                    {
+                        <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
+                    }
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="imageModal0" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel">File Preview</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img id="modalImage0" src="" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="modal-footer">
+                                <a id="downloadLink0" href="" download="" class="btn btn-primary">Download</a>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <br>
                 <div class="row">
                     <label class="col-1 fw-bold">Mileage:</label>
@@ -718,7 +743,10 @@
                         <span class="col-10 fw-bold">
                         </span>
                     }
-                    <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
+                    @if (!ViewBag.checkRent)
+                    {
+                        <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
+                    }
                 </div>
                 <div class="row mt-3">
                     <label class="col-1 fw-bold">Description:</label><br />
@@ -1411,24 +1439,22 @@
 </script>
 
      
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-
-     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
-
-    // Example rating
-    setRating(3.5);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 
 
     <script>
@@ -1607,10 +1633,10 @@
     
     <script>
         function showImageAndDownload(imagePath, fileName) {
-            document.getElementById('modalImage').src = imagePath;
-            document.getElementById('downloadLink').href = imagePath;
-            document.getElementById('downloadLink').download = fileName;
-            $('#imageModal').modal('show');
+            document.getElementById('modalImage0').src = imagePath;
+            document.getElementById('downloadLink0').href = imagePath;
+            document.getElementById('downloadLink0').download = fileName;
+            $('#imageModal0').modal('show');
         }
     </script>
 

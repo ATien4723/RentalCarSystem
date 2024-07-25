@@ -47,6 +47,7 @@ namespace Rental_Car_Demo.Controllers
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            ViewBag.location = address;
             return View(cars);
         }
 
@@ -81,17 +82,21 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public JsonResult GetSuggestions(string query)
         {
-            var addresses = _context.Addresses
-                .Include(a => a.City)
-                .Include(a => a.District)
-                .Include(a => a.Ward)
-                .Where(a => a.District.DistrictName.Contains(query) ||
-                            a.Ward.WardName.Contains(query) ||
-                            a.City.CityProvince.Contains(query) ||
-                            a.HouseNumberStreet.Contains(query))
-                .Select(a => new
+            var addresses = _context.Cars
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.City)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.District)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.Ward)
+                .Where(car => car.Status == 1 &&
+                  (car.Address.District.DistrictName.Contains(query) ||
+                   car.Address.Ward.WardName.Contains(query) ||
+                   car.Address.City.CityProvince.Contains(query) ||
+                   car.Address.HouseNumberStreet.Contains(query)))
+                .Select(car => new
                 {
-                    Address = $"{a.HouseNumberStreet}, {a.Ward.WardName}, {a.District.DistrictName}, {a.City.CityProvince}"
+                    Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
                 .ToList();
 
