@@ -277,10 +277,8 @@
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center mt-3">
-                        <a asp-controller="Home" asp-action="Privacy" type="button" class="btn btn-outline-secondary"
-                           style="padding: 0;text-decoration: underline;border: none;">
-                            Cancel
-                        </a>
+                        <a asp-controller="Users" asp-action="LoginOwn" type="button" class="btn btn-outline-secondary" style="padding: 0;text-decoration: underline;border: none;">Cancel</a>
+
                         <button type="button" onclick="nextStep();" class="btn btn-primary ms-5">Next</button>
                     </div>
                 </div>
@@ -541,10 +539,8 @@
 
                     <a class="mt-4">File type: doc, docx, pdf, jpg, jpeg, png</a>
                     <div class="d-flex justify-content-center align-items-center mt-3">
-                        <a asp-controller="Home" asp-action="Privacy" type="button" class="btn btn-outline-secondary"
-                           style="padding: 0;text-decoration: underline;border: none;">
-                            Cancel
-                        </a>
+                        <a asp-controller="Users" asp-action="LoginOwn" type="button" class="btn btn-outline-secondary" style="padding: 0;text-decoration: underline;border: none;">Cancel</a>
+
                         <button type="button" onclick="nextStep()" class="btn btn-primary ms-5">Next</button>
                     </div>
 
@@ -619,7 +615,7 @@
                             </div>
 
                             <div class="d-flex justify-content-center align-items-center mt-3">
-                                <a asp-controller="Home" asp-action="Privacy" type="button" class="btn btn-outline-secondary" style="padding: 0;text-decoration: underline;border: none;">Cancel</a>
+                                <a asp-controller="Users" asp-action="LoginOwn" type="button" class="btn btn-outline-secondary" style="padding: 0;text-decoration: underline;border: none;">Cancel</a>
                                 <button type="button" class="btn btn-primary ms-5" onclick=" nextStep(); previewCarDetails()">Next</button>
                             </div>
                         </div>
@@ -691,7 +687,7 @@
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Price:</label>
-                            <label class="col-5 fw-bold" id="PreviewPrice">900<span class="fw-bold">k/day</span></label>
+                            <label class="col-5 fw-bold" id="PreviewPrice">900<span class="fw-bold">VND/day</span></label>
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Locations:</label>
@@ -959,8 +955,8 @@
                 options[document.getElementById('district').selectedIndex].textContent + ", " +
                 document.getElementById('city').options[document.getElementById('city').selectedIndex].textContent;
 
-            const price = document.getElementById('BasePrice').value / 1000;
-            document.getElementById('PreviewPrice').innerHTML = price + "k/day";
+            const price = document.getElementById('BasePrice').value;
+            document.getElementById('PreviewPrice').innerHTML = price + "VND/day";
         }
     </script>
 

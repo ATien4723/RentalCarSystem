@@ -41,8 +41,8 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult SearchCarForm(string address)
+        [HttpGet]
+        public IActionResult SearchCarForm(string? address)
         {
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
@@ -50,6 +50,14 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.location = address;
             return View(cars);
         }
+
+        public IActionResult SearchCarForm()
+        {
+            IEnumerable<Car> cars = _carRepository.GetAllCars();
+
+            return View(cars);
+        }
+
 
         public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
@@ -105,7 +113,7 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-            if (user.Role == true)
+            if (user.Role == true || user.UserId != userId)
             {
                 return View("ErrorAuthorization");
             }
@@ -130,7 +138,8 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-            if (user.Role == false) // neu user la customer thi khong duoc vao trang nay
+
+            if (user.Role == false || user.UserId != userId) // neu user la customer thi khong duoc vao trang nay hoac co gang truy cap vao feedback nguoi khac
             {
                 return View("ErrorAuthorization");
             }

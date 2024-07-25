@@ -198,7 +198,8 @@
                                     <li><a class="dropdown-item" href="~/Booking/ViewBookingList">My Bookings</a></li>
                                     <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
                                     <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
-                                    <li>
+@*                                 <li><a class="dropdown-item" asp-controller="Car" asp-action="tet1" asp-route-CarId="1">View Details</a></li>
+ *@                                    <li>
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
@@ -223,7 +224,7 @@
                     <div class="col-md-7">
                         <div class="card-time p-4">
                             <h4 class="">Find the ideal car rental for your trip</h4>
-                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="post">
+                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="get">
                                 <div class="form-group">
                                     <label for="pickupLocation">PICK-UP LOCATION</label>
                                     <input type="text" class="form-control" id="pickupLocation" name="address" placeholder="Location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
@@ -302,6 +303,7 @@
                 </div>
             </div>
         </div>
+
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script>

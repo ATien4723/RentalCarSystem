@@ -214,7 +214,7 @@
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice / 1000).ToString("0")) <span class="fw-bold">k/day</span></label>
+                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></label>
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Locations:</label>
@@ -247,14 +247,14 @@
                     <label class="col-6 fw-bold text-end">Number of days: @ViewBag.NumberOfDays</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("0,0")<span class="fw-bold"> VND</span></label>
+                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></label>
                 </div>
                 <hr style="width: 80%; margin-left: auto;">
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0 VND")</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
                 </div>
                 </div>
             </div>

@@ -241,13 +241,13 @@
                 <label style="font-weight: 650;">Number of days: @ViewBag.NumberOfDays</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Base price: @((ViewBag.car.BasePrice / 1000).ToString("0")) k/day</label>
+                <label style="font-weight: 650;">Base price: @((ViewBag.car.BasePrice).ToString("N0")) VND/day</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("N0 VND")</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
+                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
             </div>
             <div class="row mt-2 fs-5">
                 <label class="col-4 fw-bold">Booking No.</label>
@@ -1003,7 +1003,9 @@
 	    <!--Return Modal-->
         <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCarInDetail" 
             asp-route-carId="@ViewBag.car.CarId" asp-route-userId="@user.UserId"
-                  asp-route-amount="@(BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)-BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate))"
+            asp-route-amount="@(((DateTime.Today > @ViewBag.startDate && DateTime.Today < @ViewBag.endDate)||DateTime.Today<@ViewBag.startDate)
+                 ? BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) - BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)
+                 : BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) - BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date))"
             method="post" style="display: none;">
                 <input type="hidden" name="returnUrl" value="~/">
             </form>
@@ -1015,31 +1017,62 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body modal-body-center">
-                            @if (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                            @if ((DateTime.Today > @ViewBag.startDate && DateTime.Today < @ViewBag.endDate) || DateTime.Today < @ViewBag.startDate)
                             {
-                                <p class="text-center w-100">Please confirm to return the car.
-                                <br />
-                                    You must pay @(BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate).ToString("N0")) VND for @(DateTime.Today.Date - @ViewBag.startDate.Date) days car rental.
-                                    <br />
-                                    The remaining amount of @(
-                            (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) -
+                                @if (BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.                                      
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) -
                             BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
                             ) VND will be deducted from your wallet.
-                                </p>
-                                
-                            }
-                            else
-                            {
-                                <p class="text-center w-100">Please confirm to return the car.
-                                <br />
-                                    You must pay @(BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)) VND for @(DateTime.Today - @ViewBag.startDate) days car rental.
-                                    <br />
-                                    The exceeding amount of @(
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        The exceeding amount of @(
                             (BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) -
-                            BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice,@ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
                             ) VND will be returned to your wallet.
-                                </p>
-                                
+                                    </p>
+
+                                }
+                            } else if (DateTime.Today > @ViewBag.endDate)
+                            {
+                                @if (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                         <br />
+                                        You returned the car @((DateTime.Today.Date - @ViewBag.endDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.endDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date) -
+                            BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        You returned the car @((DateTime.Today.Date - @ViewBag.endDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.endDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                    </p>
+
+                                }
                             }
                         </div>
                         <div class="modal-footer">
