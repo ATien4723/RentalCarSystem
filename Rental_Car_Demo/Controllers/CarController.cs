@@ -674,7 +674,7 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public IActionResult ChangeCarDetailsByOwner(Car car,
+        public async Task<IActionResult> ChangeCarDetailsByOwner(Car car,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
             bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
             int city, int district, int ward, string street)
@@ -706,7 +706,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameFront);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    front.CopyToAsync(stream);
+                   await front.CopyToAsync(stream);
                 }
                 carrrr.FrontImage = fileNameFront;
             }
@@ -719,7 +719,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameBack);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    back.CopyToAsync(stream);
+                  await  back.CopyToAsync(stream);
                 }
                 carrrr.BackImage = fileNameBack;
             }
@@ -730,7 +730,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameLeft);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    left.CopyToAsync(stream);
+                    await left.CopyToAsync(stream);
                 }
                 carrrr.LeftImage = fileNameLeft;
             }
@@ -741,7 +741,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameRight);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    right.CopyToAsync(stream);
+                    await right.CopyToAsync(stream);
                 }
                 carrrr.RightImage = fileNameRight;
             }

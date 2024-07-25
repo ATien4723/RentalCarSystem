@@ -224,7 +224,7 @@
                     <div class="col-md-7">
                         <div class="card-time p-4">
                             <h4 class="">Find the ideal car rental for your trip</h4>
-                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="post">
+                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="get">
                                 <div class="form-group">
                                     <label for="pickupLocation">PICK-UP LOCATION</label>
                                     <input type="text" class="form-control" id="pickupLocation" name="address" placeholder="Location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">

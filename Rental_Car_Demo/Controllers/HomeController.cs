@@ -41,7 +41,7 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult SearchCarForm(string? address)
         {
             _logger.LogInformation($"Search parameters: address={address}");
