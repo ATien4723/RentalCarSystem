@@ -255,6 +255,9 @@ namespace Rental_Car_Demo.Controllers
         public ActionResult ViewMyCars(string sortOrder)
         {
             var context = new RentCarDbContext();
+            ViewBag.Bookings = context.Bookings
+           .Include(b => b.Car) // Include the Car navigation property
+           .ToList();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
