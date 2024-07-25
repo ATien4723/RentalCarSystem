@@ -108,12 +108,37 @@ namespace Rental_Car_Demo.Controllers
                 return builder.ToString();
             }
         }
+
         public IActionResult LoginCus()
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
         public IActionResult LoginOwn()
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
         public IActionResult Logout()
@@ -121,15 +146,11 @@ namespace Rental_Car_Demo.Controllers
             HttpContext.Session.Remove("User");
             return RedirectToAction("Guest", "Users");
         }
+
         public IActionResult Guest()
         {
             return View();
         }
-
-
-
-
-
 
         RentCarDbContext context = new RentCarDbContext();
         CustomerContext customerContext = new CustomerContext();
@@ -353,6 +374,18 @@ namespace Rental_Car_Demo.Controllers
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User userLogged = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                userLogged = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (userLogged.UserId != id)
+            {
+                return View("ErrorAuthorization");
+            }
+
             var user = userDAO.GetUserById(id);
             if (user == null)
             {

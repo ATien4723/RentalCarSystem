@@ -241,13 +241,13 @@
                 <label style="font-weight: 650;">Number of days: @ViewBag.NumberOfDays</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Base price: @((ViewBag.car.BasePrice / 1000).ToString("0")) k/day</label>
+                <label style="font-weight: 650;">Base price: @((ViewBag.car.BasePrice).ToString("N0")) VND/day</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("N0 VND")</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
+                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
             </div>
             <div class="row mt-2 fs-5">
                 <label class="col-4 fw-bold">Booking No.</label>

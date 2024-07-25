@@ -186,6 +186,8 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
@@ -603,13 +605,19 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
 
-                if (user.Role == false)
+                if (user.Role == false || car.UserId != user.UserId)
                 {
                     return View("ErrorAuthorization");
                 }
@@ -855,6 +863,8 @@ namespace Rental_Car_Demo.Controllers
             }
             return RedirectToAction("ViewBookingList", "Booking");
         }
+
+
         [HttpPost]
         public IActionResult ReturnCarInDetail(int carId, int userId, decimal amount)
         {

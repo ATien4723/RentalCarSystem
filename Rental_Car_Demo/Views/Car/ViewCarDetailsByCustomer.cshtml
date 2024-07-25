@@ -1,4 +1,5 @@
 ﻿@model Rental_Car_Demo.Models.Car
+
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @{
@@ -31,7 +32,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>x`
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
 
@@ -407,13 +408,20 @@
 </head>
 <body>
     <div class="container mt-3">
+        
+
+
         @if (user?.Role == false)
         {
             <a asp-controller="Users" asp-action="LoginCus" class="text">Home</a>
         }
-        else
+        else if (user?.Role == true)
         {
             <a asp-controller="Users" asp-action="LoginOwn" class="text">Home</a>
+        }
+        else
+        {
+            <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
         }
         > <a href="javascript:history.back()">Search Results</a> > <span>Car Details</span>
     </div>
@@ -642,7 +650,7 @@
                     <div class="col-md-4">
                         <div class="price-section text-center">
                             <h5>Car Rental Price</h5>
-                            <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice / 1000).ToString("N0")) k/day</div>
+                            <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice ).ToString("N0")) VND/day</div>
 
                             <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
                                asp-route-startDate="@ViewBag.startDate"
@@ -703,7 +711,7 @@
                                                     <div class="col-6"><i class="fa-sharp fa-regular fa-calendar-days icon"></i>@c.ProductionYear</div>
                                                 </div>
                                             </div>
-                                            <div class="price">@((c.BasePrice / 1000).ToString("N0")) k/day</div>
+                                            <div class="price">@((c.BasePrice ).ToString("N0")) VND/day</div>
                                             <a href="@Url.Action("ViewCarDetailsByCustomer","Car",new {CarId = c.CarId,location = ViewBag.location,startDate= ViewBag.startDate,endDate = ViewBag.endDate})" class="btn btn-dark">View more</a>
                                         </div>
                                     </div>
