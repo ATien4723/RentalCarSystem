@@ -201,8 +201,11 @@
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                         </label>
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                        @if (ViewBag.car.NoOfRide == 0)
+                        {
+                            <label class="col-5"></label>
+                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                        }
                     </div>
 
                     <div class="row fs-6 mt-2">
@@ -899,24 +902,22 @@
 </script>
 
      
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-
-     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
-
-    // Example rating
-    setRating(3.5);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 
 
     <script>
@@ -1028,8 +1029,8 @@
 
 
     <script>
-    $(document).ready(function () {
-    // Lưu trữ tùy chọn ban đầu của dropdown
+$(document).ready(function () {
+    // Store the original options of the dropdowns
     var originalDistrictOptions = $('#BookingInfo_DriverAddress_DistrictId').html();
     var originalWardOptions = $('#BookingInfo_DriverAddress_WardId').html();
 
@@ -1039,6 +1040,13 @@
     // Toggle driver's information fields based on checkbox state
     $('input[name="BookingInfo.IsDifferent"]').change(function () {
         toggleDriverFields();
+    });
+
+    // Update driver's information when renter's information changes
+    $('#BookingInfo_RenterName, #BookingInfo_RenterPhone, #BookingInfo_RenterNationalId, #BookingInfo_RenterDob, #BookingInfo_RenterEmail, #fileName, #BookingInfo_RenterAddress_CityId, #BookingInfo_RenterAddress_DistrictId, #BookingInfo_RenterAddress_WardId, #BookingInfo_RenterAddress_HouseNumberStreet').on('input', function () {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
     });
 
     function toggleDriverFields() {
@@ -1056,25 +1064,30 @@
             $('#BookingInfo_DriverAddress_WardId').val('').find('option:not(:first)').remove(); // Clear WardId dropdown options
             $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
         } else {
-            // Copy renter's information to driver's information fields
-            originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
-            originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
-            $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
-            $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
-            $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
-            $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
-            $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
-            $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
-            $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
-            $('#fileName2').val($('#fileName').val());
-            $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
-            $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
-            $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
-            $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
+            // Update driver's information fields with renter's data
+            updateDriverFields();
         }
+    }
+
+    function updateDriverFields() {
+        originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+        originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
+        $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
+        $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
+        $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
+        $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
+        $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
+        $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
+        $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
+        $('#fileName2').val($('#fileName').val());
+        $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
+        $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
+        $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
+        $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
     }
 });
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1098,26 +1111,11 @@
     });
 </script>
 
-
-@* <script>
-    document.getElementById('Form').addEventListener('submit', function(event) {
-        var insufficientBalance = document.getElementById('insufficient');
-        var pm1 = document.getElementById('pm1').checked; // Check if the radio button is checked
-        var wallet = @Html.Raw(Json.Serialize(ViewBag.wallet)); // Retrieve wallet balance from ViewBag
-        var deposit = @Html.Raw(Json.Serialize(ViewBag.Deposit)); // Retrieve deposit from ViewBag
-
-        if (pm1 && wallet < deposit) {
-            alert("Insufficient balance. Please add more funds to your wallet.");
-            event.preventDefault(); // Prevent the form from being submitted
-        }
-    });
-</script> *@
     @if(@TempData["AlertMessage"] != null)
     {
         <script>
         alert('@TempData["AlertMessage"]');
         </script>
     }
-    
 
 }

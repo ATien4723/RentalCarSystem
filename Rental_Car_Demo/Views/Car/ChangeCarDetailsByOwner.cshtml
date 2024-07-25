@@ -91,27 +91,28 @@
             <div class="col-4" style="margin-left:-2%;">
                 <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
                 <div class="row">
-                    <label class="col-5 fw-bold  fs-5">Ratings:</label>
-                    <label class="col-5 d-flex fs-4">
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
-                        <i class="bi bi-star ms-1"></i>
+                    <label class="col-5 fw-bold text-black fs-5">Ratings:</label>
+                    <label class="col-5 d-flex fs-4" id="rating">
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
                     </label>
+                    @if (ViewBag.car.NoOfRide == 0)
+                    {
+                        <label class="col-5"></label>
+                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    }
                 </div>
-                <div class="row">
-                    <label class="col-5"></label>
-                    <span class="col-5 fw-bold">(No ratings yet)</span>
 
-                </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">No. of rides:</label>
                     <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-7 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
+                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice ).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
                 </div>
                 <div class="row mt-4 fs-5">
                     <label class="col-5 fw-bold">Locations:</label>

@@ -36,7 +36,7 @@ namespace Rental_Car_Demo.Controllers
                 List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBook)
                 {
-                    if (booking.Status == 3 || booking.Status == 4)
+                    if (booking.Status==2||booking.Status == 3 || booking.Status == 4)
                     {
                         checkRent = true;
                         break;
@@ -651,7 +651,49 @@ namespace Rental_Car_Demo.Controllers
             var bookingg = _db.Bookings.FirstOrDefault(x => x.CarId == CarId && x.Status == 1);
             ViewBag.booking = bookingg;
 
+            var matchedFeedback = (from feedback in _db.Feedbacks
+                                   join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
+                                   join user in _db.Users on booking.UserId equals user.UserId
+                                   where booking.CarId == CarId && feedback.Ratings > 0
+                                   select new
+                                   {
+                                       feedback.FeedbackId,
+                                       feedback.BookingNo,
+                                       feedback.Ratings,
+                                       feedback.Content,
+                                       feedback.Date,
+                                       user.Name,
+                                   }).ToList();
 
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date).ToList();
+
+
+
+            double rating = 0, nor = 0;
+            foreach (var o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
+            ViewBag.Rating = rating;
 
             ViewBag.car = car;
             ViewBag.brand = brand;
@@ -675,9 +717,9 @@ namespace Rental_Car_Demo.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ChangeCarDetailsByOwner(Car car,
-            IFormFile front, IFormFile back, IFormFile left, IFormFile right,
-            bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            int city, int district, int ward, string street)
+    IFormFile front, IFormFile back, IFormFile left, IFormFile right,
+    bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
+    int city, int district, int ward, string street)
         {
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
@@ -706,7 +748,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameFront);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                   await front.CopyToAsync(stream);
+                    await front.CopyToAsync(stream);
                 }
                 carrrr.FrontImage = fileNameFront;
             }
@@ -719,7 +761,7 @@ namespace Rental_Car_Demo.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileNameBack);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                  await  back.CopyToAsync(stream);
+                    await back.CopyToAsync(stream);
                 }
                 carrrr.BackImage = fileNameBack;
             }
@@ -762,7 +804,6 @@ namespace Rental_Car_Demo.Controllers
 
             _db.AdditionalFunctions.Update(additionalFunction);
             _db.SaveChanges();
-
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
         }
 
