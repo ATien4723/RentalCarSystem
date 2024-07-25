@@ -537,7 +537,7 @@ namespace Rental_Car_Demo.Controllers
                 var lBooking = _db.Bookings.Where(x => x.CarId == carId).ToList();
 
                 var matchedFeedback = (from feedbackEdit in _db.Feedbacks.ToList()
-                                       join booking in lBooking on feedbackEdit.BookingNo equals booking.BookingNo
+                                       join booking2 in lBooking on feedbackEdit.BookingNo equals booking.BookingNo
                                        select feedbackEdit).ToList();
 
                 double rating = 0, nor = 0;
