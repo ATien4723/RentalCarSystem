@@ -233,17 +233,19 @@
                                 <div class="form-group">
                                     <label for="pickupDate">PICK-UP DATE AND TIME</label>
                                     <div class="input-group">
-                                        <input type="date" class="form-control" id="pickupDate" placeholder="DD / MM / YYYY">
-                                        <input type="time" class="form-control" id="pickupTime" placeholder="HH:MM">
+                                    <input type="date" class="form-control" id="pickupDate" placeholder="DD / MM / YYYY">
+                                    <input type="time" class="form-control" id="pickupTime" placeholder="HH:MM">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="dropoffDate">DROP-OFF DATE AND TIME</label>
                                     <div class="input-group">
-                                        <input type="date" class="form-control" id="dropoffDate" placeholder="DD / MM / YYYY">
-                                        <input type="time" class="form-control" id="dropoffTime" placeholder="HH:MM">
+                                    <input type="date" class="form-control" id="dropoffDate" placeholder="DD / MM / YYYY">
+                                    <input type="time" class="form-control" id="dropoffTime" placeholder="HH:MM">
                                     </div>
                                 </div>
+                                <input type="datetime-local" id="pickupDateString" name="pickupDateTime" hidden>
+                                <input type="datetime-local" id="dropoffDateString" name="dropoffDateTime" hidden>
                                 <button type="submit" class="btn btn-primary btn-block">SEARCH</button>
                             </form>
                         </div>
@@ -330,11 +332,28 @@
                     })
                     .catch(error => console.error('Error searching cars:', error));
             }
-
-            
-
         </script>
 
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            // Lấy giá trị từ các input date và time
+            const pickupDate = document.getElementById('pickupDate').value;
+            const pickupTime = document.getElementById('pickupTime').value;
+            const dropoffDate = document.getElementById('dropoffDate').value;
+            const dropoffTime = document.getElementById('dropoffTime').value;
+
+            // Kết hợp ngày và giờ thành chuỗi định dạng `yyyy-MM-ddTHH:mm`
+            const pickupDateTime = `${pickupDate}T${pickupTime}`;
+            const dropoffDateTime = `${dropoffDate}T${dropoffTime}`;
+
+            // const pickupDateTime = pickupDate + 'T' + pickupTime;
+            // const dropoffDateTime = dropDate + 'T' + dropTime;
+
+            // Gán giá trị vào các input ẩn
+            document.getElementById('pickupDateString').value = pickupDateTime;
+            document.getElementById('dropoffDateString').value = dropoffDateTime;
+        });
+    </script>
 
 </body>
 </html>

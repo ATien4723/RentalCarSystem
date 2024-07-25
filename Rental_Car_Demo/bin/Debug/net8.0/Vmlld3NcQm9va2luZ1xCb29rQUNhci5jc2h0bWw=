@@ -201,8 +201,11 @@
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                         </label>
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                        @if (ViewBag.car.NoOfRide == 0)
+                        {
+                            <label class="col-5"></label>
+                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                        }
                     </div>
 
                     <div class="row fs-6 mt-2">
@@ -899,24 +902,22 @@
 </script>
 
      
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-
-     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
-
-    // Example rating
-    setRating(0);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 
 
     <script>
@@ -1098,26 +1099,11 @@
     });
 </script>
 
-
-@* <script>
-    document.getElementById('Form').addEventListener('submit', function(event) {
-        var insufficientBalance = document.getElementById('insufficient');
-        var pm1 = document.getElementById('pm1').checked; // Check if the radio button is checked
-        var wallet = @Html.Raw(Json.Serialize(ViewBag.wallet)); // Retrieve wallet balance from ViewBag
-        var deposit = @Html.Raw(Json.Serialize(ViewBag.Deposit)); // Retrieve deposit from ViewBag
-
-        if (pm1 && wallet < deposit) {
-            alert("Insufficient balance. Please add more funds to your wallet.");
-            event.preventDefault(); // Prevent the form from being submitted
-        }
-    });
-</script> *@
     @if(@TempData["AlertMessage"] != null)
     {
         <script>
         alert('@TempData["AlertMessage"]');
         </script>
     }
-    
 
 }

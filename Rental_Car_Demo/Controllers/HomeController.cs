@@ -47,6 +47,7 @@ namespace Rental_Car_Demo.Controllers
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            ViewBag.location = address;
             return View(cars);
         }
 

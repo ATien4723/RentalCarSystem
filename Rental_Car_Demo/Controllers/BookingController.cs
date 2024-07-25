@@ -152,20 +152,36 @@ namespace Rental_Car_Demo.Controllers
                 ViewBag.Total = numberOfDays * car.BasePrice;
                 ViewBag.Deposit = numberOfDays * car.Deposit;
 
-
-                //List<Booking> lBook = context.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 bool checkRent = false;
 
-                //foreach (Booking booking in lBook)
-                //{
-                //    if (booking.Status == 3 || booking.Status == 4)
-                //    {
-                //        checkRent = true;
-                //        break;
-                //    }
-                //}
-                //var lBooking = context.Bookings.Where(x => x.CarId == CarId).ToList();
-                //float rating = 0;
+                var lBooking = _db.Bookings.Where(x => x.CarId == CarId).ToList();
+
+                var matchedFeedback = (from feedback in _db.Feedbacks.ToList()
+                                       join booking in lBooking on feedback.BookingNo equals booking.BookingNo
+                                       select feedback).ToList();
+
+                double rating = 0, nor = 0;
+                foreach (Feedback o in matchedFeedback)
+                {
+                    if (o.Ratings < 0)
+                    {
+                        continue;
+                    }
+                    rating += o.Ratings;
+                    nor += 1;
+                }
+
+                if (nor > 0)
+                {
+                    rating = rating / nor;
+                    rating = (Math.Ceiling(rating * 2)) / 2.0;
+                }
+                else
+                {
+                    rating = 0;
+                }
+                ViewBag.Rating = rating;
+
                 var brand = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
                 var model = context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
                 var document = context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
@@ -545,20 +561,40 @@ namespace Rental_Car_Demo.Controllers
                 ViewBag.Total = numberOfDays * car.BasePrice;
                 ViewBag.Deposit = numberOfDays * car.Deposit;
 
-
-                //List<Booking> lBook = context.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 bool checkRent = false;
+                if (bookingDetail.Status == 2 || bookingDetail.Status == 3 || bookingDetail.Status == 4)
+                {
+                    checkRent = true;
+                }
 
-                //foreach (Booking booking in lBook)
-                //{
-                //    if (booking.Status == 3 || booking.Status == 4)
-                //    {
-                //        checkRent = true;
-                //        break;
-                //    }
-                //}
-                //var lBooking = context.Bookings.Where(x => x.CarId == CarId).ToList();
-                //float rating = 0;
+                var lBooking = _db.Bookings.Where(x => x.CarId == carId).ToList();
+
+                var matchedFeedback = (from feedbackEdit in _db.Feedbacks.ToList()
+                                       join booking in lBooking on feedbackEdit.BookingNo equals booking.BookingNo
+                                       select feedbackEdit).ToList();
+
+                double rating = 0, nor = 0;
+                foreach (Feedback o in matchedFeedback)
+                {
+                    if (o.Ratings < 0)
+                    {
+                        continue;
+                    }
+                    rating += o.Ratings;
+                    nor += 1;
+                }
+
+                if (nor > 0)
+                {
+                    rating = rating / nor;
+                    rating = (Math.Ceiling(rating * 2)) / 2.0;
+                }
+                else
+                {
+                    rating = 0;
+                }
+                ViewBag.Rating = rating;
+
                 var brand = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
                 var model = context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
                 var document = context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
