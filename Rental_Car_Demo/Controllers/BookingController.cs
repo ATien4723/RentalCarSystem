@@ -62,6 +62,7 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.checkFbExisted = true;
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
+
         public BookingController(IEmailService emailService)
         {
             this._emailService = emailService;
@@ -70,31 +71,12 @@ namespace Rental_Car_Demo.Controllers
             userDAO = new UserDAO();
         }
 
-        // GET: BookingController
-        public ActionResult Index()
-        {
-            var bookingList = bookingDAO.GetBookingList();
-            return View();
-        }
-
-        // GET: BookingController/Details/5
-        public ActionResult Details(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = bookingDAO.GetBookingById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View();
-        }
-
         // GET: BookingController/Create
         public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId)
         {
+
+
+
             try
             {
                 //var Booking = new Booking();
@@ -107,6 +89,17 @@ namespace Rental_Car_Demo.Controllers
                 if (!string.IsNullOrEmpty(userString))
                 {
                     user = JsonConvert.DeserializeObject<User>(userString);
+                }
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Users");
+                }
+
+                //get user to block customer access this view
+                if (user.Role == true)
+                {
+                    return View("ErrorAuthorization");
                 }
 
                 using var context = new RentCarDbContext();
@@ -360,8 +353,22 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.EndDate = TempData["EndDate"];
             ViewBag.BookingNo = TempData["BookingNo"];
 
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
+
+
         [HttpPost]
         public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
         {
@@ -452,6 +459,7 @@ namespace Rental_Car_Demo.Controllers
 
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
+
         public ActionResult EditBookingDetail(DateTime startDate, DateTime endDate, int carId, int bookingNo)
         {
             Boolean checkFbExisted = false;
@@ -464,6 +472,7 @@ namespace Rental_Car_Demo.Controllers
 
             try
             {
+                var booking = _db.Bookings.FirstOrDefault(b => b.BookingNo == bookingNo);
 
                 var userString = HttpContext.Session.GetString("User");
                 User user = null;
@@ -472,6 +481,13 @@ namespace Rental_Car_Demo.Controllers
                     user = JsonConvert.DeserializeObject<User>(userString);
                 }
 
+                //get user to block customer access this view
+
+                if (user.Role == true || booking.UserId != user.UserId)
+                {
+                    return View("ErrorAuthorization");
+                }
+                //
                 using var context = new RentCarDbContext();
                 var car = context.Cars.FirstOrDefault(x => x.CarId == carId);
 
@@ -817,6 +833,8 @@ namespace Rental_Car_Demo.Controllers
 
             return Json(new { success = false, message = "Invalid file" });
         }
+
+
         [HttpGet]
         public ActionResult ViewBookingList()
         {
@@ -827,6 +845,14 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
+
+            //get user to block customer access this view
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+            //
+
             var userId = user.UserId;
 
             var bookings = context.Bookings
