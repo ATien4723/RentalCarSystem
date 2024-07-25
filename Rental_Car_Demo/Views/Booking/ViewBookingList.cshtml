@@ -122,11 +122,11 @@
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Total:</label>
-                            <label class="col-5 fw-bold">@BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("NO")<span class="fw-bold"> VND</span></label>
+                            <label class="col-5 fw-bold">@BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Deposit:</label>
-                            <label class="col-5 fw-bold">@BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate).ToString("NO")<span class="fw-bold"> VND</span></label>
+                            <label class="col-5 fw-bold">@BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
                         </div>
                         <div class="row mt-4 fs-5">
                             <label class="col-5 fw-bold">Booking no:</label>

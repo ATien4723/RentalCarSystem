@@ -490,7 +490,15 @@ namespace Rental_Car_Demo.Controllers
                 {
                     return RedirectToAction("Logout", "Users");
                 }
-                return RedirectToAction("LoginCus", "Users");
+                if(currentUser.Role == false)
+                {
+                    return RedirectToAction("LoginCus", "Users");
+                }
+                else
+                {
+                    return RedirectToAction("LoginOwn", "Users");
+                }
+                
             }
             catch (Exception ex)
             {

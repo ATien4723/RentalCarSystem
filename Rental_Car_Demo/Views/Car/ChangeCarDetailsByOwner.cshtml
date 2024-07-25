@@ -625,7 +625,7 @@
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="">
                             <label asp-for="BasePrice" class=" col-2 fw-bold">Base price:</label>
-                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("NO"))" class="col-3" style="width:10%" />
+                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("N0"))" class="col-3" style="width:10%" />
                             <span class="fw-bold ms-2">VND/DAY</span>
                             <div>
                                 <span asp-validation-for="BasePrice" id="checkBP" class="fw-bold text-danger"></span>
@@ -634,7 +634,7 @@
 
                         <div class="mt-3">
                             <label asp-for="Deposit" class="col-2 fw-bold">Required deposit:</label>
-                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("NO"))" class="col-3" required style=" width:10%" min="0" />
+                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" class="col-3" required style=" width:10%" min="0" />
                             <span class="fw-bold ms-2">VND</span>
                         </div>
 

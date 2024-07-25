@@ -36,7 +36,7 @@ namespace Rental_Car_Demo.Controllers
                 List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBook)
                 {
-                    if (booking.Status == 3 || booking.Status == 4)
+                    if (booking.Status==2||booking.Status == 3 || booking.Status == 4)
                     {
                         checkRent = true;
                         break;
