@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\rental-car\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\views\\booking\\editbookingdetail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\booking\\editbookingdetail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\views\\shared\\_layoutrentcar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutrentcar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -30,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -43,6 +51,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "_LayoutRentCar.cshtml",
+              "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutRentCar.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutRentCar.cshtml",
+              "ToolTip": "D:\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutRentCar.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutRentCar.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T06:21:31.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EditBookingDetail.cshtml",
+              "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Views\\Booking\\EditBookingDetail.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Booking\\EditBookingDetail.cshtml",
+              "ToolTip": "D:\\rental-car\\Rental_Car_Demo\\Views\\Booking\\EditBookingDetail.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Booking\\EditBookingDetail.cshtml",
+              "ViewState": "AQIAAKcAAAAAAAAAAAAAALMAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T06:20:22.485Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Program.cs",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\Program.cs",
@@ -50,12 +84,11 @@
               "RelativeToolTip": "Rental_Car_Demo\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAA4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-26T04:38:52.717Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-26T04:38:52.717Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ViewCarDetailsByCustomer.cshtml",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Views\\Car\\ViewCarDetailsByCustomer.cshtml",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Car\\ViewCarDetailsByCustomer.cshtml",
@@ -63,12 +96,11 @@
               "RelativeToolTip": "Rental_Car_Demo\\Views\\Car\\ViewCarDetailsByCustomer.cshtml",
               "ViewState": "AQIAAK0CAAAAAAAAAAAgwLECAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-07-26T02:55:45.837Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-26T02:55:45.837Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "CarController.cs",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Controllers\\CarController.cs",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\CarController.cs",
@@ -76,12 +108,11 @@
               "RelativeToolTip": "Rental_Car_Demo\\Controllers\\CarController.cs",
               "ViewState": "AQIAAFEAAAAAAAAAAAASwF8AAABhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T16:03:15.516Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T16:03:15.516Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\appsettings.json",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\appsettings.json",
@@ -94,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "BookingController.cs",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Controllers\\BookingController.cs",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\BookingController.cs",
@@ -102,8 +133,7 @@
               "RelativeToolTip": "Rental_Car_Demo\\Controllers\\BookingController.cs",
               "ViewState": "AQIAABoAAAAAAAAAAAAAwDAAAABcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-22T07:09:15.784Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-22T07:09:15.784Z"
             }
           ]
         }
