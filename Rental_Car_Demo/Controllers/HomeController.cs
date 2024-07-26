@@ -68,11 +68,23 @@ namespace Rental_Car_Demo.Controllers
             return View(cars);
         }
 
-        public IActionResult SearchCarForm()
+        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
-            IEnumerable<Car> cars = _carRepository.GetAllCars();
+            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
 
-            return View(cars);
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
+            return PartialView("_CarResultsPartial", cars);
         }
 
 
