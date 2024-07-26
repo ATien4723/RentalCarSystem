@@ -115,16 +115,17 @@
                     <div class="d-flex mb-3 details-item">
                         <input type="text" class="form-control me-2 details-input" id="pickupLocation" name="pickupLocation" placeholder="Location" value="@ViewBag.location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
                         <datalist id="pickupLocationSuggestions"></datalist>
-                        <input type="date" class="form-control me-2 details-input" id="pickupDateInput">
-                        <input type="time" class="form-control details-input" id="pickupTimeInput">
+                        <input type="date" class="form-control me-2 details-input" id="pickupDateInput" name="pickupDate" value="@ViewBag.pickupDate.ToString("yyyy-MM-dd")">
+                        <input type="time" class="form-control details-input" id="pickupTimeInput" name="pickupTime" value="@ViewBag.pickupTime.ToString("HH:mm")">
                         <button type="button" class="btn btn-secondary" onclick="resetLocationInput('pickupLocation')">Clear</button>
                     </div>
+
                     <h5 class="mb-3 details-label">Drop off Details</h5>
                     <div class="d-flex mb-3 details-item">
                         <input type="text" class="form-control me-2 details-input" id="dropLocation" name="dropLocation" placeholder="Drop Location" onkeyup="fetchSuggestions(this.value, 'dropLocation')" list="dropLocationSuggestions" onchange="handleSelection(event)">
                         <datalist id="dropLocationSuggestions"></datalist>
-                        <input type="date" class="form-control me-2 details-input" id="dropDateInput">
-                        <input type="time" class="form-control details-input" id="dropTimeInput">
+                        <input type="date" class="form-control me-2 details-input" id="dropDateInput" name="dropoffDate" value="@ViewBag.dropoffDate.ToString("yyyy-MM-dd")">
+                        <input type="time" class="form-control details-input" id="dropTimeInput" name="dropoffTime" value="@ViewBag.dropoffTime.ToString("HH:mm")">
                         <button type="button" class="btn btn-secondary" onclick="resetLocationInput('dropLocation')">Clear</button>
                     </div>
                 </div>

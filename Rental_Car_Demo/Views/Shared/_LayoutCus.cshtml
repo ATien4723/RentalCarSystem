@@ -234,19 +234,17 @@
                                 <div class="form-group">
                                     <label for="pickupDate">PICK-UP DATE AND TIME</label>
                                     <div class="input-group">
-                                    <input type="date" class="form-control" id="pickupDate" placeholder="DD / MM / YYYY">
-                                    <input type="time" class="form-control" id="pickupTime" placeholder="HH:MM">
+                                    <input type="date" class="form-control" id="pickupDate" name="pickupDate" placeholder="DD / MM / YYYY">
+                                    <input type="time" class="form-control" id="pickupTime" name="pickupTime" placeholder="HH:MM">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="dropoffDate">DROP-OFF DATE AND TIME</label>
                                     <div class="input-group">
-                                    <input type="date" class="form-control" id="dropoffDate" placeholder="DD / MM / YYYY">
-                                    <input type="time" class="form-control" id="dropoffTime" placeholder="HH:MM">
+                                    <input type="date" class="form-control" id="dropoffDate" name="dropoffDate" placeholder="DD / MM / YYYY">
+                                    <input type="time" class="form-control" id="dropoffTime" name="dropoffTime" placeholder="HH:MM">
                                     </div>
                                 </div>
-                                <input type="datetime-local" id="pickupDateString" name="pickupDateTime" hidden>
-                                <input type="datetime-local" id="dropoffDateString" name="dropoffDateTime" hidden>
                                 <button type="submit" class="btn btn-primary btn-block">SEARCH</button>
                             </form>
                         </div>
@@ -337,23 +335,127 @@
         </script>
 
     <script>
-        document.getElementById('searchForm').addEventListener('submit', function (event) {
-            // Lấy giá trị từ các input date và time
-            const pickupDate = document.getElementById('pickupDate').value;
-            const pickupTime = document.getElementById('pickupTime').value;
-            const dropoffDate = document.getElementById('dropoffDate').value;
-            const dropoffTime = document.getElementById('dropoffTime').value;
+        document.addEventListener("DOMContentLoaded", function () {
+            const pickupDateInput = document.getElementById("pickupDate");
+            const pickupTimeInput = document.getElementById("pickupTime");
+            const dropoffDateInput = document.getElementById("dropoffDate");
+            const dropoffTimeInput = document.getElementById("dropoffTime");
 
-            // Kết hợp ngày và giờ thành chuỗi định dạng `yyyy-MM-ddTHH:mm`
-            const pickupDateTime = `${pickupDate}T${pickupTime}`;
-            const dropoffDateTime = `${dropoffDate}T${dropoffTime}`;
+            function getCurrentDateTime() {
+                const now = new Date();
+                now.setDate(now.getDate() + 1); // Add 1 day to correct the -1 day issue
+                return {
+                    date: now.toISOString().split('T')[0],
+                    time: now.toTimeString().split(' ')[0].substring(0, 5)
+                };
+            }
 
-            // const pickupDateTime = pickupDate + 'T' + pickupTime;
-            // const dropoffDateTime = dropDate + 'T' + dropTime;
+            function validatePickupDateTime() {
+                const currentDateTime = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
 
-            // Gán giá trị vào các input ẩn
-            document.getElementById('pickupDateString').value = pickupDateTime;
-            document.getElementById('dropoffDateString').value = dropoffDateTime;
+                if (pickupDateTime < currentDateTime) {
+                    alert("Pickup date and time must be equal to or greater than the current date and time.");
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                    return false;
+                }
+                return true;
+            }
+
+            function validateDropoffDateTime() {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const dropoffDateTime = new Date(`${dropoffDateInput.value}T${dropoffTimeInput.value}`);
+                const halfDayInMilliseconds = 12 * 60 * 60 * 1000;
+
+                if ((dropoffDateTime - pickupDateTime) < halfDayInMilliseconds) {
+                    alert("Drop-off date and time must be greater than the pickup date and time by at least half a day.");
+
+                    // Adjust dropoff time to be 12 hours after pickup time
+                    let adjustedDropoffDateTime = new Date(pickupDateTime.getTime() + halfDayInMilliseconds);
+
+                    // Check if adjusted dropoff time is still on the same day as pickupDateTime
+                    if (adjustedDropoffDateTime.toDateString() === pickupDateTime.toDateString()) {
+                        // Add an extra day to dropDateInput
+                        adjustedDropoffDateTime.setDate(adjustedDropoffDateTime.getDate() + 1);
+                    }
+
+                    // Set the adjusted date and time for dropoff
+                    dropoffDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
+                    dropoffTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+
+                    return false;
+                }
+                return true;
+            }
+
+            function updatePickupTime() {
+                const now = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+
+                if (pickupDateTime <= now) {
+                    const currentTime = now.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
+                    pickupTimeInput.value = currentTime;
+                }
+            }
+
+            function updateDropoffMin() {
+                const pickupDate = pickupDateInput.value;
+                const pickupTime = pickupTimeInput.value;
+
+                if (pickupDate && pickupTime) {
+                    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+                    const halfDayLater = new Date(pickupDateTime.getTime() + 12 * 60 * 60 * 1000);
+                    const formattedHalfDayLaterDate = halfDayLater.toISOString().split('T')[0];
+                    const formattedHalfDayLaterTime = halfDayLater.toTimeString().split(' ')[0].substring(0, 5);
+
+                    dropoffDateInput.setAttribute('min', formattedHalfDayLaterDate);
+                    dropoffTimeInput.setAttribute('min', formattedHalfDayLaterTime);
+                }
+            }
+
+            // Initialize dropoff min values
+            updateDropoffMin();
+
+            // Update pickupTime every minute if needed
+            setInterval(function () {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const now = new Date();
+                if (pickupDateTime <= now) {
+                    updatePickupTime();
+                }
+            }, 60000); // 60000 ms = 1 minute
+
+            pickupDateInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            pickupTimeInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            dropoffDateInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
+
+            dropoffTimeInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
         });
     </script>
 

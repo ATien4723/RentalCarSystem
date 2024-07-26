@@ -41,15 +41,49 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
+        //[HttpGet]
+        //public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        //{
+        //    _logger.LogInformation($"Search parameters: address={address}");
+        //    IEnumerable<Car> cars = _carRepository.GetAllCars(address);
+
+        //    ViewBag.location = address;
+        //    ViewBag.pickupDate = pickupDate;
+        //    ViewBag.pickupTime = pickupTime;
+        //    ViewBag.dropoffDate = dropoffDate;
+        //    ViewBag.dropoffTime = dropoffTime;
+        //    return View(cars);
+        //}
+
         [HttpGet]
-        public IActionResult SearchCarForm(string? address)
+        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
             _logger.LogInformation($"Search parameters: address={address}");
-            IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            // Get current date and time
+            DateTime currentDateTime = DateTime.Now;
+
+            // Set default pickup date to current date if not provided
+            pickupDate ??= DateOnly.FromDateTime(currentDateTime);
+
+            // Set default dropoff date to the day after the current date if not provided
+            dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
+
+            // Set default time to current time if not provided
+            pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
+            dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
+
+            // Pass values to ViewBag
             ViewBag.location = address;
+            ViewBag.pickupDate = pickupDate;
+            ViewBag.pickupTime = pickupTime;
+            ViewBag.dropoffDate = dropoffDate;
+            ViewBag.dropoffTime = dropoffTime;
+
+            IEnumerable<Car> cars = _carRepository.GetAllCars(address);
             return View(cars);
         }
+
 
         public IActionResult SearchCarForm()
         {
