@@ -696,7 +696,6 @@ namespace Rental_Car_Demo.Controllers
 
             ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
             ViewBag.Rating = rating;
-
             ViewBag.car = car;
             ViewBag.brand = brand;
             ViewBag.model = model;
@@ -719,7 +718,7 @@ namespace Rental_Car_Demo.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ChangeCarDetailsByOwner(Car car,
-    IFormFile front, IFormFile back, IFormFile left, IFormFile right,
+        IFormFile front, IFormFile back, IFormFile left, IFormFile right,
     bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
     int city, int district, int ward, string street)
         {

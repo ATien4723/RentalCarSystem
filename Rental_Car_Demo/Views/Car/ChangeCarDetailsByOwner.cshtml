@@ -29,6 +29,25 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
         }
+
+        .star-rating {
+            color: #ffa500;
+            font-size: 1rem;
+        }
+
+        .star {
+            color: lightgray;
+        }
+
+        .filled {
+            color: gold;
+        }
+
+        .half-filled {
+            background: linear-gradient(90deg, gold 50%, lightgray 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 
@@ -90,20 +109,22 @@
 
             <div class="col-4" style="margin-left:-2%;">
                 <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
-                <div class="row">
-                    <label class="col-5 fw-bold text-black fs-5">Ratings:</label>
-                    <label class="col-5 d-flex fs-4" id="rating">
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                    </label>
-                    @if (ViewBag.car.NoOfRide == 0)
-                    {
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
-                    }
+                <div class="star-rating">
+                    <div class="row">
+                        <label class="col-5 fw-bold text-black fs-5">Ratings:</label>
+                        <label class="col-5 d-flex fs-4" id="rating">
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                            <i class="bi bi-star-fill star ms-1"></i>
+                        </label>
+                        @if (ViewBag.car.NoOfRide == 0)
+                        {
+                            <label class="col-5"></label>
+                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                        }
+                    </div>
                 </div>
 
                 <div class="row mt-4 fs-5">
@@ -259,11 +280,11 @@
                                         {
                                             <td>Not available</td>
                                         }
-                                        else if (!ViewBag.checkRent)
+@*                                         else if (!ViewBag.checkRent)
                                         {
                                             <td>Verified</td>
-                                        }
-                                        else if (ViewBag.checkRent)
+                                        } *@
+                                        else if (!ViewBag.checkRent)
                                         {
                                             <td>
                                                 <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
