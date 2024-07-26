@@ -2,19 +2,19 @@
   "dependencies": {
     "mssql1": {
       "restored": true,
-      "restoreTime": "2024-07-16T06:38:59.1737093Z"
+      "restoreTime": "2024-07-26T04:27:05.8725918Z"
     }
   },
   "parameters": {
     "mssql1.subscriptionId": {
       "Name": "mssql1.subscriptionId",
       "Type": "subscription",
-      "Value": "62c968a4-5635-49b7-a998-39de9c92c895"
+      "Value": "e4260c8c-8865-428a-9170-919dc09a99a3"
     },
     "mssql1.resourceGroupName": {
       "Name": "mssql1.resourceGroupName",
       "Type": "resourceGroup",
-      "Value": "DemoApp"
+      "Value": "rentalcar"
     }
   }
 }
