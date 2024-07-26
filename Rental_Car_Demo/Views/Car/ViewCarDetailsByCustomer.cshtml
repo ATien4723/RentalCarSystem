@@ -662,6 +662,7 @@
                         <div class="price-section text-center">
                             <h5>Car Rental Price</h5>
                             <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice ).ToString("N0")) VND/day</div>
+
                             @if(ViewBag.car.Status == 1)
                             {
                                 <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"

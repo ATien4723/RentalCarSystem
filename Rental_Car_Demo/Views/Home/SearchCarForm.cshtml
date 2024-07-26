@@ -1,16 +1,39 @@
 ﻿@model IEnumerable<Car>
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "SearchCarForm";
     Layout = "_LayoutSearchCar";
 }
+
+@{
+    var userString = Context.Session.GetString("User");
+
+    User userLog = null;
+    bool isUserLoggedIn = false;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        userLog = JsonConvert.DeserializeObject<User>(userString);
+        isUserLoggedIn = true;
+    }
+}
+
 <div id="carResultss" class="main-content mt-3">
 
     <div class="container my-1">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a asp-controller="Users" asp-action="LoginCus">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                @if (isUserLoggedIn)
+                {
+                    <li class="breadcrumb-item"><a asp-controller="Users" asp-action="LoginCus">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a asp-controller="Users" asp-action="Guest">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                }
             </ol>
         </nav>
     </div>
@@ -153,7 +176,7 @@
                                                 <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
                                             </div>
                                             <div class="col-6">
-                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
+                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Gasoline" : "Diesel")</p>
                                             </div>
                                         </div>
                                         <div class="row">
