@@ -107,41 +107,38 @@
             <div class="col-1">
             </div>
 
-            <div class="col-4" style="margin-left:-2%;">
+            <div class="col-6" style="margin-left:-2%;">
                 <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
-                <div class="star-rating">
-                    <div class="row">
-                        <label class="col-5 fw-bold text-black fs-5">Ratings:</label>
-                        <label class="col-5 d-flex fs-4" id="rating">
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                            <i class="bi bi-star-fill star ms-1"></i>
-                        </label>
-                        @if (ViewBag.car.NoOfRide == 0)
-                        {
-                            <label class="col-5"></label>
-                            <span class="col-5 fw-bold">(No ratings yet)</span>
-                        }
-                    </div>
+                <div class="row">
+                    <label class="col-3 fw-bold text-black fs-5">Ratings:</label>
+                    <label class="col-9 d-flex fs-4" id="rating">
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                        <i class="bi bi-star-fill star ms-1"></i>
+                    </label>
+                    @if (ViewBag.car.NoOfRide == 0)
+                    {
+                        <label class="col-3"> </label>
+                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                    }
                 </div>
-
                 <div class="row mt-4 fs-5">
-                    <label class="col-5 fw-bold">No. of rides:</label>
+                    <label class="col-3 fw-bold">No. of rides:</label>
                     <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
                 </div>
                 <div class="row mt-4 fs-5">
-                    <label class="col-5 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice ).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
+                    <label class="col-3 fw-bold">Price:</label>
+                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
                 </div>
                 <div class="row mt-4 fs-5">
-                    <label class="col-5 fw-bold">Locations:</label>
-                    <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
+                    <label class="col-3 fw-bold">Locations:</label>
+                    <label class="col-5 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
                 </div>
 
                 <div class="row mt-4 fs-5">
-                    <label class="col-5 fw-bold">Status:</label>
+                    <label class="col-3 fw-bold">Status:</label>
                     <div class="col-5">
                         @if (@ViewBag.car.Status == 2)
                         {
@@ -164,24 +161,25 @@
                             </form>
                         }
                     </div>
+
+                    <div class="col-4">
+                        @if (ViewBag.booking != null && ViewBag.booking.Status == 1)
+                        {
+                            <form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
+                                <button type="button" class="btn btn-primary p-2" id="confirmDepositButton">Confirm Deposit</button>
+                                <input type="hidden" asp-for="CarId" value="@Model.CarId" />
+                            </form>
+                        }
+                        else if (ViewBag.car.Status == 2)
+                        {
+                            <div>
+                                <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
 
-            <div class="col-1 mt-3">
-                @if (ViewBag.booking != null && ViewBag.booking.Status == 1)
-                {
-                    <form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
-                        <button type="button" class="btn btn-primary p-2" id="confirmDepositButton">Confirm Deposit</button>
-                        <input type="hidden" asp-for="CarId" value="@Model.CarId" />
-                    </form>
-                }
-                else if (ViewBag.car.Status == 2)
-                {
-                    <div class="col-1 mt-3">
-                        <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
-                    </div>
-                }
-            </div>
         </div>
 
 
@@ -941,8 +939,6 @@
         </script>
         }
     });
-
-    
 
 
     <script>
