@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "D:\\rental-car\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\payment\\mywallet.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\rental-car\\rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,12 +43,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "MyWallet.cshtml",
+              "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ToolTip": "D:\\rental-car\\Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Payment\\MyWallet.cshtml",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAgAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-26T07:54:00.093Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\rental-car\\Rental_Car_Demo\\appsettings.json",
               "RelativeDocumentMoniker": "Rental_Car_Demo\\appsettings.json",
               "ToolTip": "D:\\rental-car\\Rental_Car_Demo\\appsettings.json",
               "RelativeToolTip": "Rental_Car_Demo\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAABJAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-07-26T06:36:51.602Z",
               "EditorCaption": ""
