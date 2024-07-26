@@ -42,7 +42,7 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchCarForm(string? address)
+        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
@@ -61,6 +61,10 @@ namespace Rental_Car_Demo.Controllers
             }
 
             ViewBag.location = address;
+            ViewBag.pickupDate = pickupDate;
+            ViewBag.pickupTime = pickupTime;
+            ViewBag.dropoffDate = dropoffDate;
+            ViewBag.dropoffTime = dropoffTime;
             return View(cars);
         }
 
