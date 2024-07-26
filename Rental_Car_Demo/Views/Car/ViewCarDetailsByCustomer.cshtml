@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>x`
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
 
@@ -54,6 +54,12 @@
     <style>
 
         .card-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .location {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -408,7 +414,6 @@
 </head>
 <body>
     <div class="container mt-3">
-        
 
 
         @if (user?.Role == false)
@@ -423,7 +428,7 @@
         {
             <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
         }
-        > <a href="javascript:history.back()">Search Results</a> > <span>Car Details</span>
+         <a asp-action="SearchCarForm" asp-controller="Home"> > Search Results</a> > <span>Car Details</span>
     </div>
 
     <div class="container mt-4">
@@ -517,14 +522,14 @@
                             }
                         </div>
                         <div class="description mt-3">
-                            <h5 style="font-weight: bold;">Mô tả</h5>
+                            <h5 style="font-weight: bold;">Description:</h5>
                             <p>
                                 @ViewBag.car.Description
                             </p>
                         </div>
 
-                        <div class="row mt-3">
-                            <label class="fw-bold">Documents:</label>
+                        <div class="row mt-3" >
+                            <label class="fw-bold" style="font-size:20px">Documents:</label>
                             <div class="col-5 mt-2">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -652,12 +657,17 @@
                             <h5>Car Rental Price</h5>
                             <div class="price" id="PreviewPrice"> @((ViewBag.car.BasePrice ).ToString("N0")) VND/day</div>
 
-                            <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
-                               asp-route-startDate="@ViewBag.startDate"
-                               asp-route-endDate="@ViewBag.endDate"
-                               asp-route-CarId="@ViewBag.car.CarId">
-                                Rent now
-                            </a>
+                            @if(ViewBag.car.Status == 1)
+                            {
+                                <a class="btn btn-danger contact-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                                   asp-route-startDate="@ViewBag.startDate"
+                                   asp-route-endDate="@ViewBag.endDate"
+                                   asp-route-CarId="@ViewBag.car.CarId">
+                                    Rent now
+                                </a>
+                            }
+                      
+
                         </div>
                         <div class="owner-section mt-4">
                             <h5>Car Owner</h5>

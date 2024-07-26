@@ -1,10 +1,10 @@
 ﻿const validExtensions = ['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
 const areas = [
-    { dropArea: '#drag-area4', ahref: '#selectfile4', input: '#fileInput4', inputName: 'front', dragText: '.dragdrop4', imgId: 'frontImg' },
-    { dropArea: '#drag-area5', ahref: '#selectfile5', input: '#fileInput5', inputName: 'back', dragText: '.dragdrop5', imgId: 'backImg' },
-    { dropArea: '#drag-area6', ahref: '#selectfile6', input: '#fileInput6', inputName: 'left', dragText: '.dragdrop6', imgId: 'leftImg' },
-    { dropArea: '#drag-area7', ahref: '#selectfile7', input: '#fileInput7', inputName: 'right', dragText: '.dragdrop7', imgId: 'rightImg' }
+    { dropArea: '#drag-area4', ahref: '#selectfile4', input: '#fileInput4', inputName: 'front', imgId: 'frontImg' },
+    { dropArea: '#drag-area5', ahref: '#selectfile5', input: '#fileInput5', inputName: 'back', imgId: 'backImg' },
+    { dropArea: '#drag-area6', ahref: '#selectfile6', input: '#fileInput6', inputName: 'left', imgId: 'leftImg' },
+    { dropArea: '#drag-area7', ahref: '#selectfile7', input: '#fileInput7', inputName: 'right', imgId: 'rightImg' }
 ];
 
 function showFile(dropArea, file, inputName, imgId, ahref) {
@@ -43,6 +43,10 @@ function showFile(dropArea, file, inputName, imgId, ahref) {
             dropArea.innerHTML = imgTag;
             dropArea.appendChild(ahreff);
             dropArea.appendChild(hiddenInput);
+
+            if (imgId) {
+                previewImage({ target: { files: [file] } }, imgId);
+            }
         }
         fileReader.readAsDataURL(file);
     } else {
@@ -60,7 +64,6 @@ areas.forEach(area => {
     const dropArea = document.querySelector(area.dropArea);
     const ahref = document.querySelector(area.ahref);
     const input = document.querySelector(area.input);
-    const dragdrop = document.querySelector(area.dragText);
     const imgId = area.imgId;
 
     ahref.addEventListener('click', (event) => {
@@ -78,17 +81,14 @@ areas.forEach(area => {
 
     dropArea.addEventListener('dragover', (event) => {
         event.preventDefault();
-        dragdrop.textContent = "Drop";
     });
 
     dropArea.addEventListener('dragleave', (event) => {
         event.preventDefault();
-        dragdrop.textContent = "Drag and Drop";
     });
 
     dropArea.addEventListener('drop', (event) => {
         event.preventDefault();
-        dragdrop.textContent = "Drag and Drop";
         const file = event.dataTransfer.files[0];
         if (file) {
             showFile(dropArea, file, area.inputName, imgId, ahref);
