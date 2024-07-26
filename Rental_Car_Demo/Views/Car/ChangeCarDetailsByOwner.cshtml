@@ -701,10 +701,28 @@
     </div>
 
     <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
+
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
+
+    <script>
         function submitConfirm() {
             document.getElementById('confirmPaymentForm').submit();
         }
     </script>
+
     <script>
         function showImageAndDownload(imagePath, fileName) {
             document.getElementById('modalImage').src = imagePath;
@@ -924,22 +942,7 @@
         }
     });
 
-    <script>
-        function setRating(rating) {
-            const stars = document.querySelectorAll('#rating .star');
-            stars.forEach((star, index) => {
-                star.classList.remove('filled', 'half-filled');
-                if (rating >= index + 1) {
-                    star.classList.add('filled');
-                } else if (rating > index && rating < index + 1) {
-                    star.classList.add('half-filled');
-                }
-            });
-        }
-
-        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
-        setRating(ratingFromViewBag);
-    </script>
+    
 
 
     <script>
