@@ -194,7 +194,7 @@
                             <tr class="listingItem">
                                 <td>@wallet.WalletId</td>
                                 <td class="@(wallet.Amount.Contains("-") ? "text-danger" : "text-success")">
-                                    @(wallet.Amount.StartsWith("-") || wallet.Amount.StartsWith("+") ? "" : "+")@decimal.Parse(wallet.Amount).ToString("N0", System.Globalization.CultureInfo.CurrentCulture) VND
+                                    @(wallet.Amount.StartsWith("-") ? "-" : (wallet.Amount.StartsWith("+") ? "+" : "+"))@decimal.Parse(wallet.Amount.TrimStart('+', '-')).ToString("N0", System.Globalization.CultureInfo.CurrentCulture) VND
                                 </td>
                                 <td>@wallet.Type</td>
                                 <td>@wallet.CreatedAt</td>

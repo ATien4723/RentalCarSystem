@@ -41,31 +41,66 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
+        //[HttpGet]
+        //public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        //{
+        //    _logger.LogInformation($"Search parameters: address={address}");
+        //    IEnumerable<Car> cars = _carRepository.GetAllCars(address);
+
+        //    //get user to block customer access this view
+        //    var userString = HttpContext.Session.GetString("User");
+        //    User user = null;
+        //    if (!string.IsNullOrEmpty(userString))
+        //    {
+        //        user = JsonConvert.DeserializeObject<User>(userString);
+        //    }
+
+        //    if ( user != null && user.Role == true)
+        //    {
+        //        return View("ErrorAuthorization");
+        //    }
+
+        //    ViewBag.location = address;
+        //    ViewBag.pickupDate = pickupDate;
+        //    ViewBag.pickupTime = pickupTime;
+        //    ViewBag.dropoffDate = dropoffDate;
+        //    ViewBag.dropoffTime = dropoffTime;
+        //    return View(cars);
+        //}
+
         [HttpGet]
-        public IActionResult SearchCarForm(string? address)
+        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
             _logger.LogInformation($"Search parameters: address={address}");
+
+            // Get current date and time
+            DateTime currentDateTime = DateTime.Now;
+
+            // Set default pickup date to current date if not provided
+            pickupDate ??= DateOnly.FromDateTime(currentDateTime);
+
+            // Set default dropoff date to the day after the current date if not provided
+            dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
+
+            // Set default time to current time if not provided
+            pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
+            dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
+
+            // Pass values to ViewBag
+            ViewBag.location = address;
+            ViewBag.pickupDate = pickupDate;
+            ViewBag.pickupTime = pickupTime;
+            ViewBag.dropoffDate = dropoffDate;
+            ViewBag.dropoffTime = dropoffTime;
+
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
-
-            //get user to block customer access this view
-            var userString = HttpContext.Session.GetString("User");
-            User user = null;
-            if (!string.IsNullOrEmpty(userString))
-            {
-                user = JsonConvert.DeserializeObject<User>(userString);
-            }
-
-            if ( user != null && user.Role == true)
-            {
-                return View("ErrorAuthorization");
-            }
-
             return View(cars);
         }
 
-        public IActionResult SearchCarForm()
+
+        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
-            IEnumerable<Car> cars = _carRepository.GetAllCars();
+            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
 
             //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
@@ -79,33 +114,29 @@ namespace Rental_Car_Demo.Controllers
                 return View("ErrorAuthorization");
             }
 
-            return View(cars);
-        }
-
-
-        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
-        {
-            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
-
-
             return PartialView("_CarResultsPartial", cars);
         }
+        
 
 
         [HttpGet]
         public JsonResult GetSuggestions(string query)
         {
-            var addresses = _context.Addresses
-                .Include(a => a.City)
-                .Include(a => a.District)
-                .Include(a => a.Ward)
-                .Where(a => a.District.DistrictName.Contains(query) ||
-                            a.Ward.WardName.Contains(query) ||
-                            a.City.CityProvince.Contains(query) ||
-                            a.HouseNumberStreet.Contains(query))
-                .Select(a => new
+            var addresses = _context.Cars
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.City)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.District)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.Ward)
+                .Where(car => car.Status == 1 &&
+                  (car.Address.District.DistrictName.Contains(query) ||
+                   car.Address.Ward.WardName.Contains(query) ||
+                   car.Address.City.CityProvince.Contains(query) ||
+                   car.Address.HouseNumberStreet.Contains(query)))
+                .Select(car => new
                 {
-                    Address = $"{a.HouseNumberStreet}, {a.Ward.WardName}, {a.District.DistrictName}, {a.City.CityProvince}"
+                    Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
                 .ToList();
 

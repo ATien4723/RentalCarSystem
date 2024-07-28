@@ -291,7 +291,7 @@
                         }
                         else
                         {
-                            <span>(@c.AverageRating)</span>
+                            <span>(@c.AverageRating.ToString("F1"))</span>
                         }
                     </p>
 
@@ -304,7 +304,7 @@
                                 var st = c.Status;
                                 switch (c.Status)
                                 {
-                                    case 0:
+                                    case 3:
                                         statusText = "Stopped";
                                         statusClass = "text-danger";
                                         break;
