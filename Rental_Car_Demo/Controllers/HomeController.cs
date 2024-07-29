@@ -42,12 +42,29 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchCarForm(string? address)
+        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
             _logger.LogInformation($"Search parameters: address={address}");
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+
+            if ( user != null && user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             ViewBag.location = address;
+            ViewBag.pickupDate = pickupDate;
+            ViewBag.pickupTime = pickupTime;
+            ViewBag.dropoffDate = dropoffDate;
+            ViewBag.dropoffTime = dropoffTime;
             return View(cars);
         }
 
@@ -63,17 +80,6 @@ namespace Rental_Car_Demo.Controllers
         {
             IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
 
-            //get user to block customer access this view
-            var userString = HttpContext.Session.GetString("User");
-            User user = null;
-            if (!string.IsNullOrEmpty(userString))
-            {
-                user = JsonConvert.DeserializeObject<User>(userString);
-            }
-            if (user.Role == true)
-            {
-                return View("ErrorAuthorization");
-            }
 
             return PartialView("_CarResultsPartial", cars);
         }

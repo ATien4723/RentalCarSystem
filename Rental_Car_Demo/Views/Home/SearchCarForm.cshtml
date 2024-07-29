@@ -1,16 +1,39 @@
 ﻿@model IEnumerable<Car>
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "SearchCarForm";
     Layout = "_LayoutSearchCar";
 }
+
+@{
+    var userString = Context.Session.GetString("User");
+
+    User userLog = null;
+    bool isUserLoggedIn = false;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        userLog = JsonConvert.DeserializeObject<User>(userString);
+        isUserLoggedIn = true;
+    }
+}
+
 <div id="carResultss" class="main-content mt-3">
 
     <div class="container my-1">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a asp-controller="Users" asp-action="LoginCus">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                @if (isUserLoggedIn)
+                {
+                    <li class="breadcrumb-item"><a asp-controller="Users" asp-action="LoginCus">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a asp-controller="Users" asp-action="Guest">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+                }
             </ol>
         </nav>
     </div>
@@ -115,16 +138,17 @@
                     <div class="d-flex mb-3 details-item">
                         <input type="text" class="form-control me-2 details-input" id="pickupLocation" name="pickupLocation" placeholder="Location" value="@ViewBag.location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
                         <datalist id="pickupLocationSuggestions"></datalist>
-                        <input type="date" class="form-control me-2 details-input" id="pickupDateInput">
-                        <input type="time" class="form-control details-input" id="pickupTimeInput">
+                        <input type="date" class="form-control me-2 details-input" id="pickupDateInput" name="pickupDate" value="@ViewBag.pickupDate.ToString("yyyy-MM-dd")">
+                        <input type="time" class="form-control details-input" id="pickupTimeInput" name="pickupTime" value="@ViewBag.pickupTime.ToString("HH:mm")">
                         <button type="button" class="btn btn-secondary" onclick="resetLocationInput('pickupLocation')">Clear</button>
                     </div>
+
                     <h5 class="mb-3 details-label">Drop off Details</h5>
                     <div class="d-flex mb-3 details-item">
                         <input type="text" class="form-control me-2 details-input" id="dropLocation" name="dropLocation" placeholder="Drop Location" onkeyup="fetchSuggestions(this.value, 'dropLocation')" list="dropLocationSuggestions" onchange="handleSelection(event)">
                         <datalist id="dropLocationSuggestions"></datalist>
-                        <input type="date" class="form-control me-2 details-input" id="dropDateInput">
-                        <input type="time" class="form-control details-input" id="dropTimeInput">
+                        <input type="date" class="form-control me-2 details-input" id="dropDateInput" name="dropoffDate" value="@ViewBag.dropoffDate.ToString("yyyy-MM-dd")">
+                        <input type="time" class="form-control details-input" id="dropTimeInput" name="dropoffTime" value="@ViewBag.dropoffTime.ToString("HH:mm")">
                         <button type="button" class="btn btn-secondary" onclick="resetLocationInput('dropLocation')">Clear</button>
                     </div>
                 </div>
@@ -152,7 +176,7 @@
                                                 <p class="card-text"><i class="fa-duotone fa-car icon"></i> @car.Brand.BrandName</p>
                                             </div>
                                             <div class="col-6">
-                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Electric" : "Gas")</p>
+                                                <p class="card-text"><i class="fa-solid fa-gas-pump icon"></i> @(car.FuelType ? "Gasoline" : "Diesel")</p>
                                             </div>
                                         </div>
                                         <div class="row">

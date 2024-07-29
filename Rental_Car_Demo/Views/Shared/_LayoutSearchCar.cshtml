@@ -179,9 +179,9 @@
             border-radius: 5px;
         }
 
-        .details-item .form-control:focus {
+            .details-item .form-control:focus {
                 box-shadow: none;
-        }
+            }
 
         .card .btn {
             position: absolute;
@@ -242,10 +242,9 @@
             font-size: 14px;
         }
 
-        .brand-item.selected img{
+        .brand-item.selected img {
             border-color: blue;
         }
-        
     </style>
 </head>
 
@@ -260,47 +259,40 @@
                 </button>
             </div>
             <div class="dropdown">
-                <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
-                   id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
-                    Welcome, @user?.Name
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
-                    <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
-                    <li><a class="dropdown-item" href="~/Booking/ViewBookingList">My Bookings</a></li>
-                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
-                    <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
-                </ul>
+                @if (isUserLoggedIn)
+                {
+                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
+                       id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
+                        Welcome, @user?.Name
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
+                        <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                        <li><a class="dropdown-item" href="~/Booking/ViewBookingList">My Bookings</a></li>
+                        <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                        <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                    </ul>
+                }
+                else
+                {
+                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
+                       id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
+                        Guest
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
+                        <li><a class="dropdown-item" asp-controller="Users" asp-action="Login">Login</a></li>
+
+                    </ul>
+                }
+
             </div>
         </div>
     </header>
-    <form id="logoutForm" asp-controller="Users" asp-action="Logout" method="post" style="display: none;">
-        <input type="hidden" name="returnUrl" value="~/">
-    </form>
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header modal-header-center">
-                    <h5 class="modal-title" id="logoutModalLabel">Log Out</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body modal-body-center">
-                    Are you sure you want to log out?
-                </div>
-                <div class="modal-footer">
-                    <div class="d-flex w-100 justify-content-center align-items-center">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <div class="vr mx-3"></div>
-                        <button type="button" class="btn btn-primary" onclick="submitLogout()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -333,12 +325,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script> 
-    <script>
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script>
 
         function toggleSelection(element) {
@@ -418,43 +406,43 @@
         });
 
 
-         function performPriceRangeSearch() {
-                var selectedPriceRanges = [];
-                $(".priceRangeCheckbox:checked").each(function () {
-                    selectedPriceRanges.push($(this).val());
-                });
+        function performPriceRangeSearch() {
+            var selectedPriceRanges = [];
+            $(".priceRangeCheckbox:checked").each(function () {
+                selectedPriceRanges.push($(this).val());
+            });
 
-                var minPrice = null;
-                var maxPrice = null;
+            var minPrice = null;
+            var maxPrice = null;
 
-                selectedPriceRanges.forEach(function (range) {
-                    var bounds = range.split('-');
-                    var lowerBound = parseFloat(bounds[0]);
-                    var upperBound = parseFloat(bounds[1]);
+            selectedPriceRanges.forEach(function (range) {
+                var bounds = range.split('-');
+                var lowerBound = parseFloat(bounds[0]);
+                var upperBound = parseFloat(bounds[1]);
 
-                    if (minPrice === null || lowerBound < minPrice) {
-                        minPrice = lowerBound;
-                    }
-                    if (maxPrice === null || upperBound > maxPrice) {
-                        maxPrice = upperBound;
-                    }
-                });
+                if (minPrice === null || lowerBound < minPrice) {
+                    minPrice = lowerBound;
+                }
+                if (maxPrice === null || upperBound > maxPrice) {
+                    maxPrice = upperBound;
+                }
+            });
 
-                $.ajax({
-                    url: "/Home/SearchCar",
-                    type: "GET",
-                    data: {
-                        minPrice: minPrice,
-                        maxPrice: maxPrice
-                    },
-                    success: function (data) {
-                        $("#carResults").html(data);
-                    },
-                    error: function (error) {
-                        console.log("Error performing search: " + error);
-                    }
-                });
-            }
+            $.ajax({
+                url: "/Home/SearchCar",
+                type: "GET",
+                data: {
+                    minPrice: minPrice,
+                    maxPrice: maxPrice
+                },
+                success: function (data) {
+                    $("#carResults").html(data);
+                },
+                error: function (error) {
+                    console.log("Error performing search: " + error);
+                }
+            });
+        }
 
         $(document).ready(function () {
             $(".priceRangeCheckbox").change(function () {
@@ -485,13 +473,13 @@
         }
 
         function resetLocationInput(inputId) {
-            document.getElementById(inputId).value = ''; 
-            document.getElementById(inputId + "Suggestions").innerHTML = ''; 
-            searchAllCars(); 
+            document.getElementById(inputId).value = '';
+            document.getElementById(inputId + "Suggestions").innerHTML = '';
+            searchAllCars();
         }
 
         function resetCarList() {
-            document.getElementById('carResults').innerHTML = ''; 
+            document.getElementById('carResults').innerHTML = '';
         }
 
         function searchAllCars() {
@@ -512,30 +500,137 @@
                 .catch(error => console.error('Error searching cars:', error));
         }
 
-
-        document.addEventListener("DOMContentLoaded", function () {
-
-            let currentDate = new Date();
-
-
-            let formattedDate = currentDate.toISOString().slice(0, 10);
-            let formattedTime = currentDate.toTimeString().slice(0, 5);
-
-
-            document.getElementById("pickupDateInput").value = formattedDate;
-            document.getElementById("pickupTimeInput").value = formattedTime;
-            document.getElementById("dropDateInput").value = formattedDate;
-            document.getElementById("dropTimeInput").value = formattedTime;
-        });
-
         function toggleSelection(element) {
             element.classList.toggle('selected');
         }
-
-
-
-
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const pickupDateInput = document.getElementById("pickupDateInput");
+            const pickupTimeInput = document.getElementById("pickupTimeInput");
+            const dropDateInput = document.getElementById("dropDateInput");
+            const dropTimeInput = document.getElementById("dropTimeInput");
+
+            function getCurrentDateTime() {
+                const now = new Date();
+                now.setDate(now.getDate() + 1); // Add 1 day to correct the -1 day issue
+                return {
+                    date: now.toISOString().split('T')[0],
+                    time: now.toTimeString().split(' ')[0].substring(0, 5)
+                };
+            }
+
+            function validatePickupDateTime() {
+                const currentDateTime = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+
+                if (pickupDateTime < currentDateTime) {
+                    alert("Pickup date and time must be equal to or greater than the current date and time.");
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                    return false;
+                }
+                return true;
+            }
+
+            function validateDropoffDateTime() {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const dropDateTime = new Date(`${dropDateInput.value}T${dropTimeInput.value}`);
+                const halfDayInMilliseconds = 12 * 60 * 60 * 1000;
+
+                if ((dropDateTime - pickupDateTime) < halfDayInMilliseconds) {
+                    alert("Drop-off date and time must be greater than the pickup date and time by at least half a day.");
+
+                    // Adjust dropoff time to be 12 hours after pickup time
+                    let adjustedDropoffDateTime = new Date(pickupDateTime.getTime() + halfDayInMilliseconds);
+
+                    // Check if adjusted dropoff time is still on the same day as pickupDateTime
+                    if (adjustedDropoffDateTime.toDateString() === pickupDateTime.toDateString()) {
+                        // Add an extra day to dropDateInput
+                        adjustedDropoffDateTime.setDate(adjustedDropoffDateTime.getDate() + 1);
+                    }
+
+                    // Set the adjusted date and time for dropoff
+                    dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
+                    dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+
+                    return false;
+                }
+                return true;
+            }
+
+            function updatePickupTime() {
+                const now = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+
+                if (pickupDateTime <= now) {
+                    const currentTime = now.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
+                    pickupTimeInput.value = currentTime;
+                }
+            }
+
+            function updateDropoffMin() {
+                const pickupDate = pickupDateInput.value;
+                const pickupTime = pickupTimeInput.value;
+
+                if (pickupDate && pickupTime) {
+                    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+                    const halfDayLater = new Date(pickupDateTime.getTime() + 12 * 60 * 60 * 1000);
+                    const formattedHalfDayLaterDate = halfDayLater.toISOString().split('T')[0];
+                    const formattedHalfDayLaterTime = halfDayLater.toTimeString().split(' ')[0].substring(0, 5);
+
+                    dropDateInput.setAttribute('min', formattedHalfDayLaterDate);
+                    dropTimeInput.setAttribute('min', formattedHalfDayLaterTime);
+                }
+            }
+
+            // Initialize dropoff min values
+            updateDropoffMin();
+
+            // Update pickupTime every minute if needed
+            setInterval(function () {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const now = new Date();
+                if (pickupDateTime <= now) {
+                    updatePickupTime();
+                }
+            }, 60000); // 60000 ms = 1 minute
+
+            pickupDateInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            pickupTimeInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            dropDateInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
+
+            dropTimeInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
+        });
+    </script>
+
+
 
     <script>
         function navigateToCarDetails(carId) {
@@ -559,7 +654,11 @@
     </script>
 
 
-
+    <script>
+        function submitLogout() {
+            document.getElementById('logoutForm').submit();
+        }
+    </script>
 </body>
 
 

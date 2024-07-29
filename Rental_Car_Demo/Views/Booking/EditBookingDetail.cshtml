@@ -244,10 +244,10 @@
                 <label style="font-weight: 650;">Base price: @((ViewBag.car.BasePrice).ToString("N0")) VND/day</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("N0 VND")</label>
+                <label style="font-weight: 650;">Total: @ViewBag.Total.ToString("N0") VND</label>
             </div>
             <div class="row mt-2 fs-6">
-                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
+                <label style="font-weight: 650;">Deposit: @ViewBag.Deposit.ToString("N0") VND</label>
             </div>
             <div class="row mt-2 fs-5">
                 <label class="col-4 fw-bold">Booking No.</label>
@@ -308,7 +308,7 @@
                     <a style="width: 140px;" class="btn btn-danger p-2" id="cancelButton">Cancel booking</a>
                 </div>
             }
-            <form asp-controller="Booking" asp-action="CancelBooking" method="post" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+            <form asp-controller="Booking" asp-action="CancelBooking" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
                 <input name="startDate" value="@ViewBag.startDate" hidden/>
                 <input name="endDate" value="@ViewBag.endDate" hidden/>
                 <input name="carId" value="@ViewBag.carId" hidden/>
@@ -406,7 +406,7 @@
                             <div class="col-md-6">
                                 <div class="form-group col-md-8 mb-3">
                                     <label asp-for="BookingInfo.RenterDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                                <input asp-for="BookingInfo.RenterDob" class="form-control" type="date" required/>
+                                <input asp-for="BookingInfo.RenterDob" class="form-control" id="renterDob" type="date" required/>
                                     <span asp-validation-for="BookingInfo.RenterDob" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-8 mb-3">
@@ -510,7 +510,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group col-md-8 mb-3">
                                         <label asp-for="BookingInfo.DriverDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                                        <input asp-for="BookingInfo.DriverDob" class="form-control" type="date" required/>
+                                        <input asp-for="BookingInfo.DriverDob" class="form-control" id="driverDob" type="date" required/>
                                         <span asp-validation-for="BookingInfo.DriverDob" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-8 mb-3">
@@ -594,7 +594,7 @@
                                     style="padding: 0;text-decoration: underline;border: none;">
                                     Cancel
                                 </a>
-                                <input type="submit" value="Save" class="btn btn-primary ms-5">
+                                <input type="submit" value="Save" id="submitbutton" class="btn btn-primary ms-5">
                             </div>
                         }
                     </div>
@@ -1564,6 +1564,12 @@
         toggleDriverFields();
     });
 
+    $('#BookingInfo_RenterName, #BookingInfo_RenterPhone, #BookingInfo_RenterNationalId, #BookingInfo_RenterDob, #BookingInfo_RenterEmail, #fileName, #BookingInfo_RenterAddress_CityId, #BookingInfo_RenterAddress_DistrictId, #BookingInfo_RenterAddress_WardId, #BookingInfo_RenterAddress_HouseNumberStreet').on('input', function () {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
+    });
+
     // function toggleDriverFields() {
     //     var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
 
@@ -1575,36 +1581,41 @@
     //         $('input[name="BookingInfo.IsDifferent"]').data('first-load', 'done');
     //         return; // Không làm gì nếu là lần đầu
     //     }
-
+    function toggleDriverFields() {
+        var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
         if (!isChecked) {
             // Clear driver's information fields
-            $('#BookingInfo_DriverName').val('');
-            $('#BookingInfo_DriverPhone').val('');
-            $('#BookingInfo_DriverNationalId').val('');
-            $('#BookingInfo_DriverDob').val('');
-            $('#BookingInfo_DriverEmail').val('');
-            $('#fileName2').val('');
-            $('#BookingInfo_DriverAddress_CityId').val('');
-            $('#BookingInfo_DriverAddress_DistrictId').val('').find('option:not(:first)').remove(); // Clear DistrictId dropdown options
-            $('#BookingInfo_DriverAddress_WardId').val('').find('option:not(:first)').remove(); // Clear WardId dropdown options
-            $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
+            // $('#BookingInfo_DriverName').val('');
+            // $('#BookingInfo_DriverPhone').val('');
+            // $('#BookingInfo_DriverNationalId').val('');
+            // $('#BookingInfo_DriverDob').val('');
+            // $('#BookingInfo_DriverEmail').val('');
+            // $('#fileName2').val('');
+            // $('#BookingInfo_DriverAddress_CityId').val('');
+            // $('#BookingInfo_DriverAddress_DistrictId').val('').find('option:not(:first)').remove(); // Clear DistrictId dropdown options
+            // $('#BookingInfo_DriverAddress_WardId').val('').find('option:not(:first)').remove(); // Clear WardId dropdown options
+            // $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
         } else {
-            // Copy renter's information to driver's information fields
-            originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
-            originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
-            $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
-            $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
-            $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
-            $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
-            $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
-            $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
-            $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
-            $('#fileName2').val($('#fileName').val());
-            $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
-            $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
-            $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
-            $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
+            // Update driver's information fields with renter's data
+            updateDriverFields();
         }
+    }
+
+    function updateDriverFields() {
+        originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+        originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
+        $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
+        $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
+        $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
+        $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
+        $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
+        $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
+        $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
+        $('#fileName2').val($('#fileName').val());
+        $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
+        $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
+        $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
+        $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
     }
 });
 </script>
@@ -1662,4 +1673,66 @@
     document.getElementById('closeModal').addEventListener('click', hideModal);
     document.getElementById('closeModalButton').addEventListener('click', hideModal);
 </script>
+
+<script>
+    document.getElementById('Form').addEventListener('submit', function () {
+        var submitButton = document.getElementById('confirmCancel');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+    });
+</script>
+
+<script>
+    var previousRenterDob = '';
+    var previousDriverDob = '';
+
+    document.getElementById('renterDob').addEventListener('focus', function(event) {
+        previousRenterDob = event.target.value;
+    });
+
+    document.getElementById('driverDob').addEventListener('focus', function(event) {
+        previousDriverDob = event.target.value;
+    });
+
+    document.getElementById('renterDob').addEventListener('change', function(event) {
+        validateAge(event, previousRenterDob);
+        synchronizeDriverDob();
+    });
+
+    document.getElementById('driverDob').addEventListener('change', function(event) {
+        validateAge(event, previousDriverDob);
+    });
+
+    document.querySelector('input[name="BookingInfo.IsDifferent"]').addEventListener('change', function(event) {
+        synchronizeDriverDob();
+    });
+
+    function validateAge(event, previousValue) {
+        var dob = new Date(event.target.value);
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+
+        var monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert("The selected date makes the user under 18 years old. Please select a valid date.");
+            event.target.value = previousValue;  // Revert to the previous valid date
+        }
+    }
+
+    function synchronizeDriverDob() {
+        var isDifferent = document.querySelector('input[name="BookingInfo.IsDifferent"]').checked;
+        if (!isDifferent) {
+            var renterDob = document.getElementById('renterDob').value;
+            document.getElementById('driverDob').value = renterDob;
+            document.getElementById('driverDob').dispatchEvent(new Event('change'));
+        }
+    }
+</script>
+
+
+
 }

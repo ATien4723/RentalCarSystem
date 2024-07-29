@@ -30,6 +30,11 @@
             position: relative;
         }
 
+        .star-rating {
+            color: #ffa500;
+            font-size: 1rem;
+        }
+
         .star {
             color: lightgray;
         }
@@ -273,11 +278,11 @@
                                         {
                                             <td>Not available</td>
                                         }
-                                        else if (!ViewBag.checkRent)
+@*                                         else if (!ViewBag.checkRent)
                                         {
                                             <td>Verified</td>
-                                        }
-                                        else if (ViewBag.checkRent)
+                                        } *@
+                                        else if (!ViewBag.checkRent)
                                         {
                                             <td>
                                                 <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
@@ -692,6 +697,7 @@
             </div>
         </div>
     </div>
+
     <script>
         function setRating(rating) {
             const stars = document.querySelectorAll('#rating .star');
@@ -708,11 +714,13 @@
         const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
         setRating(ratingFromViewBag);
     </script>
+
     <script>
         function submitConfirm() {
             document.getElementById('confirmPaymentForm').submit();
         }
     </script>
+
     <script>
         function showImageAndDownload(imagePath, fileName) {
             document.getElementById('modalImage').src = imagePath;
