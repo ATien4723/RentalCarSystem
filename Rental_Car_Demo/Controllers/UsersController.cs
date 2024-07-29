@@ -241,24 +241,37 @@ namespace Rental_Car_Demo.Controllers
             string em = "";
             em = model.Email;
 
-            var token = new TokenInfor()
+            int user = customerContext.getCustomerIdByEmail(model.Email);
+
+            if(user != -1) //not found email
             {
-                Token = tokenValue,
-                UserId = customerContext.getCustomerIdByEmail(model.Email),
-                //UserId = 1,
-                ExpirationTime = exTime,
-                IsLocked = false
-            };
+                var token = new TokenInfor()
+                {
+                    Token = tokenValue,
+                    UserId = user,
+                    //UserId = 1,
+                    ExpirationTime = exTime,
+                    IsLocked = false
+                };
 
-            context.Add(token);
-            context.SaveChanges();
+                context.Add(token);
+                context.SaveChanges();
 
-            int? customerId = token.UserId;
+                int? customerId = token.UserId;
 
-            string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
-            string subject = "Link Reset Password";
-            _emailService.SendEmail(model.Email, subject, resetLink);
-            TempData["SuccessMessage"] = "We will send link to reset your password if your email exist in out database!";
+                string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
+                string subject = "Link Reset Password";
+                _emailService.SendEmail(model.Email, subject, resetLink);
+                TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
+                
+            }
+            else
+            {
+                TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
+            }
+
+            
+
 
             return View();
         }

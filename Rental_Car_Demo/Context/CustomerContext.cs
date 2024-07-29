@@ -13,7 +13,6 @@ namespace Rental_Car_Demo.Context
 
             if (customer == null)
             {
-                _logger.LogWarning("No user found with email: {Email}", email);
                 return -1; // or throw an exception
             }
 

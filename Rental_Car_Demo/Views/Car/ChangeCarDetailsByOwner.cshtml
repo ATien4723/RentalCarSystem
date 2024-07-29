@@ -304,7 +304,7 @@
                     <br>
 
                     @*  <div class="container mt-3 " id="Step2">   *@
-                    <form asp-action="ChangeCarDetailsByOwner" asp-controller="Car" method="post" enctype="multipart/form-data">
+                    <form asp-action="ChangeCarDetailsByOwner" id="Form" asp-controller="Car" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="row mt-4">
                             <div class="col-md-6">
@@ -543,7 +543,7 @@
                                    style="padding: 0; text-decoration: underline; border: none;">
                                     Discard
                                 </a>
-                                <button type="submit" class="btn btn-primary ms-5">Save</button>
+                                <button type="submit" id="submitButton" class="btn btn-primary ms-5">Save</button>
                             </div>
 
                         </div>
@@ -556,7 +556,7 @@
                 <div id="menu2" class="row container tab-pane fade">
                     <br>
 
-                    <form asp-action="ChangeCarTermsByOwner" asp-controller="Car" method="post">
+                    <form asp-action="ChangeCarTermsByOwner" id="Form2" asp-controller="Car" method="post">
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="">
                             <label asp-for="BasePrice" class=" col-2 fw-bold">Base price:</label>
@@ -620,7 +620,7 @@
                                        style="padding: 0; text-decoration: underline; border: none;">
                                         Discard
                                     </a>
-                                    <button type="submit" class="btn btn-primary ms-5">Save</button>
+                                    <button type="submit" id="submitButton2" class="btn btn-primary ms-5">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -697,6 +697,10 @@
             </div>
         </div>
     </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
 
     <script>
         function setRating(rating) {
@@ -965,5 +969,21 @@
         });
     </script>
 
+
+    <script>
+        document.getElementById('Form').addEventListener('submit', function () {
+            var submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+        });
+    </script>
+
+    <script>
+        document.getElementById('Form2').addEventListener('submit', function () {
+            var submitButton2 = document.getElementById('submitButton2');
+            submitButton2.disabled = true;
+            submitButton2.innerText = 'Processing...'; // Optional: change button text to indicate processing
+        });
+    </script>
 </body>
 
