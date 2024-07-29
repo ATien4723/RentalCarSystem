@@ -152,7 +152,7 @@ public partial class RentCarDbContext : DbContext
             entity.Property(e => e.DriverName)
                 .HasMaxLength(100)
                 .HasColumnName("driverName");
-            entity.Property(e => e.DriverNationalId).HasColumnName("driverNationalId");
+            entity.Property(e => e.DriverNationalId).HasMaxLength(20).HasColumnName("driverNationalId");
             entity.Property(e => e.DriverPhone)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -170,7 +170,7 @@ public partial class RentCarDbContext : DbContext
             entity.Property(e => e.RenterName)
                 .HasMaxLength(100)
                 .HasColumnName("renterName");
-            entity.Property(e => e.RenterNationalId).HasColumnName("renterNationalId");
+            entity.Property(e => e.RenterNationalId).HasMaxLength(20).HasColumnName("renterNationalId");
             entity.Property(e => e.RenterPhone)
                 .HasMaxLength(20)
                 .IsUnicode(false)

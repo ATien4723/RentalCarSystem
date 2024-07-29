@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\car\\changecardetailsbyowner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\shared\\_layoutcarowner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\shared\\_layoutcarowner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\users\\resetpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\users\\resetpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\car\\addacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\car\\addacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,30 +33,36 @@
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "_LayoutCarOwner.cshtml",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
-              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
-              "RelativeToolTip": "Rental_Car_Demo\\Views\\Shared\\_LayoutCarOwner.cshtml",
-              "ViewState": "AQIAAKgAAAAAAAAAAAAAALIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-07-18T02:55:21.112Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{605322a2-17ae-43f4-b60f-766556e46c87}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "AddACar.cshtml",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "RelativeToolTip": "Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "ViewState": "AQIAAO0AAAAAAAAAAAAswA0BAABeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-28T17:51:35.248Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ResetPassword.cshtml",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Users\\ResetPassword.cshtml",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Users\\ResetPassword.cshtml",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Users\\ResetPassword.cshtml",
+              "RelativeToolTip": "Rental_Car_Demo\\Views\\Users\\ResetPassword.cshtml",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAAABIAAAA3AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-07-18T02:55:14.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-28T17:49:27.883Z"
             },
             {
               "$type": "Document",
@@ -66,9 +72,9 @@
               "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Car\\ChangeCarDetailsByOwner.cshtml",
               "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Car\\ChangeCarDetailsByOwner.cshtml",
               "RelativeToolTip": "Rental_Car_Demo\\Views\\Car\\ChangeCarDetailsByOwner.cshtml",
-              "ViewState": "AQIAALEAAAAAAAAAAAAAAMEAAAA/AAAA",
+              "ViewState": "AQIAABUCAAAAAAAAAAAuwDACAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-07-18T02:18:25.69Z",
+              "WhenOpened": "2024-07-28T17:26:50.051Z",
               "EditorCaption": ""
             }
           ]

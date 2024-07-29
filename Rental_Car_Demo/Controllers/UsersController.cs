@@ -13,6 +13,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -107,12 +108,37 @@ namespace Rental_Car_Demo.Controllers
                 return builder.ToString();
             }
         }
+
         public IActionResult LoginCus()
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
         public IActionResult LoginOwn()
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (user.Role == false)
+            {
+                return View("ErrorAuthorization");
+            }
+
             return View();
         }
         public IActionResult Logout()
@@ -120,15 +146,11 @@ namespace Rental_Car_Demo.Controllers
             HttpContext.Session.Remove("User");
             return RedirectToAction("Guest", "Users");
         }
+
         public IActionResult Guest()
         {
             return View();
         }
-
-
-
-
-
 
         RentCarDbContext context = new RentCarDbContext();
         CustomerContext customerContext = new CustomerContext();
@@ -158,13 +180,13 @@ namespace Rental_Car_Demo.Controllers
             if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             if(model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
-                return View("Login", model);
+                return View("Guest", model);
             }
 
             var check = ModelState;
@@ -193,7 +215,7 @@ namespace Rental_Car_Demo.Controllers
 
                     // Hiển thị thông báo đăng ký thành công
                     TempData["SuccessMessage"] = "Account created successfully!";
-                    return RedirectToAction("Login", "Users");
+                    return RedirectToAction("Guest", "Users");
                 }
                 catch (Exception ex)
                 {
@@ -203,7 +225,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            return View("Login", model);
+            return View("Guest", model);
         }
 
         public IActionResult ResetPassword()
@@ -219,23 +241,37 @@ namespace Rental_Car_Demo.Controllers
             string em = "";
             em = model.Email;
 
-            var token = new TokenInfor()
+            int user = customerContext.getCustomerIdByEmail(model.Email);
+
+            if(user != -1) //not found email
             {
-                Token = tokenValue,
-                UserId = customerContext.getCustomerIdByEmail(model.Email),
-                //UserId = 1,
-                ExpirationTime = exTime,
-                IsLocked = false
-            };
+                var token = new TokenInfor()
+                {
+                    Token = tokenValue,
+                    UserId = user,
+                    //UserId = 1,
+                    ExpirationTime = exTime,
+                    IsLocked = false
+                };
 
-            context.Add(token);
-            context.SaveChanges();
+                context.Add(token);
+                context.SaveChanges();
 
-            int? customerId = token.UserId;
+                int? customerId = token.UserId;
 
-            string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
-            string subject = "Link Reset Password";
-            _emailService.SendEmail(model.Email, subject, resetLink);
+                string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
+                string subject = "Link Reset Password";
+                _emailService.SendEmail(model.Email, subject, resetLink);
+                TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
+                
+            }
+            else
+            {
+                TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
+            }
+
+            
+
 
             return View();
         }
@@ -260,6 +296,8 @@ namespace Rental_Car_Demo.Controllers
             context.Update(token);
             context.SaveChanges();
 
+            
+
             return View(model);
         }
 
@@ -270,11 +308,12 @@ namespace Rental_Car_Demo.Controllers
             {
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
 
-                var hashPass = HashPassword(customer.Password);
+                var hashPass = HashPassword(model.Password);
                 customer.Password = hashPass;
                 context.Update(customer);
                 context.SaveChanges();
 
+                TempData["SuccessMessage"] = "Your password has been reset";
 
                 return View("Login");
             }
@@ -348,6 +387,18 @@ namespace Rental_Car_Demo.Controllers
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)
         {
+            //get user to block customer access this view
+            var userString = HttpContext.Session.GetString("User");
+            User userLogged = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                userLogged = JsonConvert.DeserializeObject<User>(userString);
+            }
+            if (userLogged.UserId != id)
+            {
+                return View("ErrorAuthorization");
+            }
+
             var user = userDAO.GetUserById(id);
             if (user == null)
             {
@@ -448,8 +499,19 @@ namespace Rental_Car_Demo.Controllers
                 var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
                 currentUser.Name = user.Name; // Assuming UserName is the property you want to update
                 HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
-
-                return RedirectToAction("LoginCus", "Users");
+                if (!String.IsNullOrEmpty(NewPassword))
+                {
+                    return RedirectToAction("Logout", "Users");
+                }
+                if(currentUser.Role == false)
+                {
+                    return RedirectToAction("LoginCus", "Users");
+                }
+                else
+                {
+                    return RedirectToAction("LoginOwn", "Users");
+                }
+                
             }
             catch (Exception ex)
             {

@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Rental_Car_Demo.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback Report";
+    Layout = "_LayoutFeedBack";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Average Ratings</h2>
+        <div class="display-4">
+            @(Model.Any() ? Model.Average(f => f.Ratings).ToString("0.00") : "N/A")
+        </div>
+        <div class="rating">
+            @{
+                var averageRating = Model.Any() ? Model.Average(f => f.Ratings) : 0;
+                for (var i = 0; i < 5; i++)
+                {
+                    <span>@(i < averageRating ? "★" : "☆")</span>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="text-center my-4">
+        <label class="btn btn-outline-primary mx-1 filter-button">
+            <input type="checkbox" value="all" onchange="filterFeedback()" style="display: none;"> All (@Model.Count())
+        </label>
+        @for (int i = 5; i >= 1; i--)
+        {
+            <label class="btn btn-outline-primary mx-1 filter-button">
+                <input type="checkbox" value="@i" onchange="filterFeedback()" style="display: none;"> @i Stars (@Model.Count(f => f.Ratings == i))
+            </label>
+        }
+    </div>
+
+    <div id="listingContainer">
+        @foreach (var feedback in Model)
+        {
+            <div class="listingItem card mb-3" data-rating="@feedback.Ratings">
+                <div class="card-header d-flex justify-content-between align-items-center text-black">
+                    <div>
+                        <img src="~/img/elonmusk.jpg" alt="User" class="rounded-circle mr-2 user-image">
+                        <span>User @feedback.BookingNoNavigation.UserId</span>
+                    </div>
+                    <div class="text-right">
+                        <span>@feedback.Date</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>@feedback.Content</p>
+                    <div class="d-flex">
+                        <img src="~/img/@feedback.BookingNoNavigation.Car?.FrontImage" alt="Car Image" class="img-thumbnail mr-3 car-image">
+                        <div class="content-report">
+                            <h5>@feedback.BookingNoNavigation.Car?.Name</h5>
+                            <p>From: @feedback.BookingNoNavigation.StartDate</p>
+                            <p>To: @feedback.BookingNoNavigation.EndDate</p>
+                        </div>
+                    </div>
+                    <div class="text-right rating">
+                        @{
+                            for (var i = 0; i < 5; i++)
+                            {
+                                <span>@(i < feedback.Ratings ? "★" : "☆")</span>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center mb-3">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination-controls mb-0">
+                <button onclick="prevPage()" id="btn_prev">Prev</button>
+                <span id="pagination"></span>
+                <button onclick="nextPage()" id="btn_next">Next</button>
+            </ul>
+        </nav>
+        <div class="ms-3"></div>
+        <div class="items-per-page">
+            <select id="selectpage" onchange="pageselect()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select> Per Page
+        </div>
+    </div>
+</div>
+
+<style>
+    .filter-button.selected {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
+<script>
+    function filterFeedback() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var selectedRatings = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked && checkbox.value !== 'all') {
+                selectedRatings.push(checkbox.value);
+                checkbox.parentElement.classList.add('selected');
+            } else {
+                checkbox.parentElement.classList.remove('selected');
+            }
+        });
+
+        var feedbackItems = document.querySelectorAll('.listingItem');
+        feedbackItems.forEach(function (item) {
+            var itemRating = item.getAttribute('data-rating');
+            if (selectedRatings.length === 0 || selectedRatings.includes(itemRating)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // If no specific rating checkbox is checked, check the "All" checkbox
+        var allCheckbox = document.querySelector('input[value="all"]');
+        if (selectedRatings.length === 0) {
+            allCheckbox.checked = true;
+            allCheckbox.parentElement.classList.add('selected');
+        } else {
+            allCheckbox.checked = false;
+            allCheckbox.parentElement.classList.remove('selected');
+        }
+    }
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (checkbox.value === 'all' && checkbox.checked) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                        cb.parentElement.classList.remove('selected');
+                    }
+                });
+            } else {
+                document.querySelector('input[value="all"]').checked = false;
+                document.querySelector('input[value="all"]').parentElement.classList.remove('selected');
+            }
+            filterFeedback();
+        });
+    });
+
+    // Initialize the "All" checkbox as selected
+    document.querySelector('input[value="all"]').checked = true;
+    document.querySelector('input[value="all"]').parentElement.classList.add('selected');
+    filterFeedback();
+</script>

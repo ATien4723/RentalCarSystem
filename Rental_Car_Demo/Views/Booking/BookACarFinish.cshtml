@@ -16,7 +16,7 @@
 }
 
 <style>
-     .booking-details-card {
+    .booking-details-card {
         background-color: #4e4e4e;
         color: white;
         padding: 20px 20px 20px 60px;
@@ -132,15 +132,15 @@
             Our operator will contact you with further guidance about pickup.
         </strong>
 
-        
+
     </div>
     <div class="form-group mt-2 row justify-content-center">
         <div class="d-flex justify-content-center align-items-center mt-3">
             <a href="/Users/LoginCus" class="btn btn-outline-secondary" style="padding: 0; text-decoration: underline; border: none;">
                 Go to homepage
             </a>
-            <a href="javascript:history.go(-3)" class="btn btn-secondary ms-5">Book another car</a>
-            <a asp-controller="Booking" asp-action="EditBookingDetail" 
+            <a asp-action="SearchCarForm" asp-controller="Home" class="btn btn-secondary ms-5">Book another car</a>
+            <a asp-controller="Booking" asp-action="EditBookingDetail"
                asp-route-startDate="@ViewBag.startDate"
                asp-route-endDate="@ViewBag.endDate" asp-route-carId="@ViewBag.CarId" asp-route-bookingNo="@ViewBag.BookingNo" class="btn btn-primary ms-5">View Booking</a>
         </div>

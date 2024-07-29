@@ -177,6 +177,35 @@
             height: 320px;
         }
 
+   
+
+        .custom-drag-area {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            width: 250px; /* Equivalent to w-88 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+            height: 250px;
+        }
+
+        .custom-drag-area1 {
+            margin-top: 1rem; /* Equivalent to mt-3 */
+            border-radius: 1rem; /* Equivalent to rounded-2xl */
+            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
+            padding: 1.5rem; /* Equivalent to p-6 */
+            display: flex;
+            flex-direction: column; /* Equivalent to flex-col */
+            align-items: center; /* Equivalent to items-center */
+            justify-content: center; /* Equivalent to justify-content-center */
+            background-color: white;
+        }
+
+        
 
     </style>
 
@@ -231,9 +260,18 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom ">
         <div class="container-fluid">
-            <a class="navbar-brand fs-2" href="#" style="font-family: Arial, sans-serif !important;">
-                <i class='bx bxs-car'></i> Rent a car today!
-            </a>
+            @if (user.Role == false)
+            {
+                <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
+                    <i class='bx bxs-car'></i> Rent a car today!
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
+                    <i class='bx bxs-car'></i> Rent a car today!
+                </a>
+            }
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -252,8 +290,7 @@
                             <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
                             <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="GetUserFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
-                            <li><a class="dropdown-item" href="#">My Reports</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="GetCarOwnerFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -320,6 +357,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/editcar.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 

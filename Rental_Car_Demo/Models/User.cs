@@ -18,6 +18,7 @@ public partial class User
 
     public DateOnly? Dob { get; set; }
 
+    [RegularExpression(@"^\d{12}$", ErrorMessage = "National ID must be 12 digits.")]
     public string? NationalId { get; set; }
 
     [RegularExpression(@"^0[35789]\d{8}$", ErrorMessage = "Phone number is not valid.")]
@@ -27,7 +28,7 @@ public partial class User
 
     public string? DrivingLicense { get; set; }
 
-    public decimal? Wallet { get; set; }
+    public decimal? Wallet { get; set; } = 0;
 
     public bool RememberMe { get; set; } = false;
 

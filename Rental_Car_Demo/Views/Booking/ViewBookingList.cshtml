@@ -1,0 +1,520 @@
+﻿@model Rental_Car_Demo.Models.Car
+@{
+    Layout = "~/Views/Shared/_LayoutBookingList.cshtml";
+}
+@using Rental_Car_Demo.Repository.BookingRepository
+<head>
+    <style>
+        .custom-lightgrey {
+            background-color: lightgrey;
+            border-color: lightgrey;
+            color: black;
+        }
+
+            .custom-lightgrey:hover {
+                background-color: grey; /* Adjust this color to your desired hover color */
+                border-color: grey;
+                color: black;
+            }
+    </style>
+</head>
+<body>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <div class="container mt-5">
+        <a class="link mt-5" href="~/Users/LoginCus">Home</a> > <span>Add a car</span>
+
+        <h2 class="mt-3" style="font-weight: bold;">List of Cars</h2>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            @if (ViewBag.Count == 0)
+            {
+                <a>You have no bookings</a>
+            }
+            else
+            {
+                <a>You have @ViewBag.Count on-going bookings</a>
+            }
+
+            <form id="sortForm" method="post" asp-action="ViewBookingList">
+                <select id="sortOrder" name="sortOrder" class="form-select w-auto">
+                    <option value="newest">Newest to Latest</option>
+                    <option value="latest">Latest to Newest</option>
+                    <option value="highest">Highest to Lowest</option>
+                    <option value="lowest">Lowest to Highest</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+    </div>
+
+    <div id="listingContainer">
+        @foreach (var b in ViewBag.Bookings)
+        {
+            <div class="listingItem container mt-3 p-5">
+
+                <div class="row d-flex align-items-center justify-content-between">
+                    <!-- Preview car image -->
+                    <div id="demo@(b.CarId)" class="col-sm-5 carousel slide" data-bs-ride="carousel">
+                        <!-- Indicators/dots -->
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="2"></button>
+                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="3"></button>
+                        </div>
+
+                        <!-- The slideshow/carousel -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="~/img/@b.Car.FrontImage"
+                                     alt="Front img" style="width: 100%; height: 100%; border: 2px solid black;">
+                            </div>
+                            <div class="carousel-item ">
+                                <img src="~/img/@b.Car.BackImage"
+                                     alt="Back img" style="width: 100%; height: 100%; border: 2px solid black;">
+                            </div>
+                            <div class="carousel-item ">
+                                <img src="~/img/@b.Car.LeftImage"
+                                     alt="Left img" style="width: 100%; height: 100%; border: 2px solid black;">
+                            </div>
+                            <div class="carousel-item ">
+                                <img src="~/img/@b.Car.RightImage"
+                                     alt="Right img" style="width: 100%; height: 100%; border: 2px solid black;">
+                            </div>
+                        </div>
+
+                        <!-- Left and right controls/icons -->
+                        <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <!-- Preview Details Car -->
+                    <div class="col-sm-4">
+                        <h4 class=" fw-bold mb-3 mt-4">
+                            <a style="text-decoration:none;color:black;" href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })">
+                                @b.Car.Name
+                            </a>
+                        </h4>
+                        <ul>
+                            <li><p class="fw-bold">From @b.StartDate</p></li>
+                            <li><p class="fw-bold">To @b.EndDate</p></li>
+                        </ul>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Number of days:</label>
+                            <label class="col-5 fw-bold">@BookingHelper.GetDaysBetween(b.StartDate, b.EndDate)<span class="fw-bold"></span></label>
+                        </div>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Base price:</label>
+                            <label class="col-5 fw-bold">@b.Car.BasePrice.ToString("N0")<span class="fw-bold"></span> VND/day</label>
+                        </div>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Total:</label>
+                            <label class="col-5 fw-bold">@BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
+                        </div>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Deposit:</label>
+                            <label class="col-5 fw-bold">@BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
+                        </div>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Booking no:</label>
+                            <label class="col-5 fw-bold">@b.BookingNo<span class="fw-bold"></span></label>
+                        </div>
+                        <div class="row mt-4 fs-5">
+                            <label class="col-5 fw-bold">Booking status:</label>
+                            <label class="col-5 fw-bold">
+                                @{
+                                    string statusText = "";
+                                    string statusStyle = "";
+                                    switch (b.Status)
+                                    {
+                                        case 0:
+                                            statusText = "Cancelled";
+                                            statusStyle = "color: grey";
+                                            break;
+                                        case 1:
+                                            statusText = "Pending Deposit";
+                                            statusStyle = "color: red";
+                                            break;
+                                        case 2:
+                                            statusText = "Confirmed";
+                                            statusStyle = "color: forestgreen";
+                                            break;
+                                        case 3:
+                                            statusText = "In-Progress";
+                                            statusStyle = "color: orange";
+                                            break;
+                                        case 4:
+                                            statusText = "Pending Payment";
+                                            statusStyle = "color: red";
+                                            break;
+                                        case 5:
+                                            statusText = "Completed";
+                                            statusStyle = "color: blue";
+                                            break;
+                                    }
+                                }
+                                <span style="@statusStyle">@statusText</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    @if (b.Status == 1)
+                    {
+                        <div class="col-sm-2">
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                            <a id="cancelButton_@b.BookingNo" class="btn btn-danger mt-2 w-100 cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
+                        </div>
+                    }
+                    else if (b.Status == 2)
+                    {
+                        <div class="col-sm-2">
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                            <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary mt-2 w-100 custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
+                            <a id="cancelButton_@b.BookingNo" class="btn btn-danger mt-2 w-100 cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
+                        </div>
+                    }
+                    else if (b.Status == 4 || b.Status == 3)
+                    {
+                        <div class="col-sm-2">
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                            <a class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return car</a>
+                        </div>
+                    }
+                    else if (b.Status == 0 || b.Status == 5)
+                    {
+                        <div class="col-sm-2">
+                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <form asp-controller="Booking" asp-action="CancelBooking" method="post" id="Form_@b.BookingNo" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+                <input name="startDate" value="@(b.StartDate)" hidden />
+                @* <input name="endDate" value="@(b.EndDate)" hidden /> *@
+                <input name="carId" value="@(b.CarId)" hidden />
+                <input name="bookingNo" value="@(b.BookingNo)" hidden />
+
+                <!-- Modal -->
+                <div class="modal fade" id="cancelModal_@b.BookingNo" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel_@b.BookingNo" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalLabel_@b.BookingNo">Confirm Cancellation</h5>
+                                <button type="button" class="close" id="closeModalButton_@b.BookingNo" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to cancel this booking?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="closeModal_@b.BookingNo">Close</button>
+                                <input type="submit" value="Yes" id="confirmCancel_@b.BookingNo" class="btn btn-danger">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Get elements
+                    var cancelButton = document.getElementById('cancelButton_@b.BookingNo');
+                    var cancelModal = document.getElementById('cancelModal_@b.BookingNo');
+                    var closeModalButton = document.getElementById('closeModalButton_@b.BookingNo');
+                    var closeModal = document.getElementById('closeModal_@b.BookingNo');
+                    var confirmCancel = document.getElementById('confirmCancel_@b.BookingNo');
+
+                    // Show modal when "Cancel booking" button is clicked
+                    cancelButton.addEventListener('click', function () {
+                        $(cancelModal).modal('show'); // Using jQuery to show the modal
+                    });
+
+                    // Close modal when "Close" button or the 'x' is clicked
+                    closeModalButton.addEventListener('click', function () {
+                        $(cancelModal).modal('hide'); // Using jQuery to hide the modal
+                    });
+
+                    closeModal.addEventListener('click', function () {
+                        $(cancelModal).modal('hide'); // Using jQuery to hide the modal
+                    });
+
+                    // Form submission when "Yes" button is clicked
+                    confirmCancel.addEventListener('click', function () {
+                        // Form is automatically submitted when "Yes" button is clicked
+                    });
+                });
+            </script>
+            <script>
+                document.getElementById('Form_@b.BookingNo').addEventListener('submit', function () {
+                    var submitButton = document.getElementById('confirmCancel_@b.BookingNo');
+                    submitButton.disabled = true;
+                    submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+                });
+            </script>
+
+            
+
+            <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCar" 
+            asp-route-carId="@(b.CarId)" asp-route-userId="@(b.UserId)"
+                  asp-route-amount="@(((DateTime.Today > b.StartDate && DateTime.Today < b.EndDate)||DateTime.Today<b.StartDate)
+                 ? BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) - BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate)
+                 : BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) - BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date))"
+            method="post" style="display: none;">
+                <input type="hidden" name="returnUrl" value="~/">
+            </form>
+            <div class="modal fade" id="returnCarModal" tabindex="-1" aria-labelledby="returnCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-center">
+                            <h5 class="modal-title" id="logoutModalLabel">Return Car</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-body-center">
+                            @if ((DateTime.Today > b.StartDate && DateTime.Today < b.EndDate) || DateTime.Today < b.StartDate)
+                            {
+                                @if (BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate) > BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.                                      
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                    </p>
+
+                                }
+                            } else if (DateTime.Today > b.EndDate)
+                            {
+                                @if (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date) > BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                         <br />
+                                        You returned the car @((DateTime.Today.Date - b.EndDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.EndDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date) -
+                            BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        You returned the car @((DateTime.Today.Date - b.EndDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.EndDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                    </p>
+
+                                }
+                            }
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex w-100 justify-content-center align-items-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <div class="vr mx-3"></div>
+                                <button type="button" class="btn btn-primary" onclick="submitReturn()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-4">
+            <div class="pagination-controls">
+                <button onclick="prevPage()" id="btn_prev">Prev</button>
+                <span id="pagination"></span>
+                <button onclick="nextPage()" id="btn_next">Next</button>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1">
+            <select id="selectpage" onchange="pageselect()">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal" id="confirm-pickup">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <form asp-controller="Booking" asp-action="confirmPickupForDetailsPage" method="post">
+                <div class="modal-content">
+
+                    <!-- Modal body -->
+                    <div class="modal-body rating-body">
+                        <h6 id="textForPickup" class="text-center fw-bold text-danger w-100">
+                            Are you sure you want to confirm pick-up?
+                        </h6>
+
+                        <input type="hidden" id="confirmPickup-bookingNo" name="bookingNo" value="" />
+                        <input type="hidden" id="confirmPickup-sortOrder" name="sortOrder" value="" />
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer " style="padding:0;">
+                        <div class="d-flex w-100 justify-content-center align-items-center" style="margin:0">
+                            <button type="button" data-bs-dismiss="modal" class="btn w-100 hover-shadow">No</button>
+                            <div class="vr mx-1"></div>
+                            <button type="submit" class="btn w-100 hover-shadow">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!--Get value for confirm pick up-->
+    <script>
+        function getValueForPickUp(bN) {
+            document.getElementById("textForPickup").innerHTML = "Are you sure you want to confirm pick-up for BookingNo " + bN + " ?";
+            document.getElementById("confirmPickup-bookingNo").value = bN;
+            document.getElementById("confirmPickup-sortOrder").value = document.getElementById("sortOrder").value;
+        }
+    </script>
+	<script>
+        function submitReturn() {
+            document.getElementById('returnCarForm').submit();
+        }
+    </script>
+    <script>
+        var current_page = 1;
+        var items = document.querySelectorAll('#listingContainer .listingItem');
+        var pagelength = items.length;
+        var item_per_page = 10; // Default items per page
+
+        function pageselect() {
+            item_per_page = parseInt(document.getElementById("selectpage").value);
+            changePage(1); // Reset to the first page when items per page is changed
+        }
+
+        function prevPage() {
+            if (current_page > 1) {
+                current_page--;
+                changePage(current_page);
+            }
+        }
+
+        function nextPage() {
+            if (current_page < numPages()) {
+                current_page++;
+                changePage(current_page);
+            }
+        }
+
+        function changePage(page) {
+            var btn_next = document.getElementById("btn_next");
+            var btn_prev = document.getElementById("btn_prev");
+            var pagination = document.getElementById("pagination");
+
+            // Validate page
+            if (page < 1) page = 1;
+            if (page > numPages()) page = numPages();
+
+            items.forEach((item, index) => {
+                item.style.display = 'none'; // Reset all to not display
+            });
+
+            for (var i = (page - 1) * item_per_page; i < (page * item_per_page); i++) {
+                if (items[i]) {
+                    items[i].style.display = ""; // Display the current page items
+                }
+            }
+
+            pagination.innerHTML = generatePagination(page);
+
+            btn_prev.style.visibility = (page === 1) ? "hidden" : "visible";
+            btn_next.style.visibility = (page === numPages()) ? "hidden" : "visible";
+
+            current_page = page; // Update current page
+        }
+
+        function generatePagination(currentPage) {
+            var html = '';
+            var totalPages = numPages();
+
+            for (var i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    html += '<button class="pagination-num current" onclick="changePage(' + i + ')">' + i + '</button>';
+                } else {
+                    html += '<button class="pagination-num" onclick="changePage(' + i + ')">' + i + '</button>';
+                }
+            }
+
+            return html;
+        }
+
+        function numPages() {
+            return Math.ceil(pagelength / item_per_page);
+        }
+
+        window.onload = function () {
+            // Set the dropdown to the default items per page value
+            document.getElementById("selectpage").value = item_per_page;
+            changePage(current_page);
+        };
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var sortOrder = '@ViewBag.SortOrder';
+            if (sortOrder) {
+                document.getElementById("sortOrder").value = sortOrder;
+            }
+
+            document.getElementById("sortOrder").addEventListener("change", function () {
+                localStorage.setItem("sortOrder", this.value);
+                document.getElementById("sortForm").submit();
+            });
+        });
+    </script>
+
+    
+
+</body>

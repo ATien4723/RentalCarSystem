@@ -201,8 +201,11 @@
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                         </label>
-                        <label class="col-5"></label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
+                        @if (ViewBag.car.NoOfRide == 0)
+                        {
+                            <label class="col-5"></label>
+                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                        }
                     </div>
 
                     <div class="row fs-6 mt-2">
@@ -211,7 +214,7 @@
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@ViewBag.car.BasePrice.ToString("0.##") <span class="fw-bold">k/day</span></label>
+                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></label>
                     </div>
                     <div class="row  fs-6 mt-2">
                         <label class="col-5 fw-bold">Locations:</label>
@@ -222,7 +225,7 @@
                         <label class="col-5 fw-bold">Status:</label>
                         @if (@ViewBag.car.Status == 1)
                         {
-                            <label class="col-5 fw-bold text-success">Available</label>
+                            <label class="col-5 fw-bold text-warning">Available</label>
                         }
                         else if (@ViewBag.car.Status == 2)
                         {
@@ -241,17 +244,17 @@
                 <div class="mt-3 flex-grow-1">
                     <h4 class="fw-bold">Booking Summary</h4>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Number of days: @Math.Round((double)ViewBag.NumberOfDays.TotalDays, 0)</label>
+                    <label class="col-6 fw-bold text-end">Number of days: @ViewBag.NumberOfDays</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("0,0")<span class="fw-bold"> VND</span></label>
+                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></label>
                 </div>
                 <hr style="width: 80%; margin-left: auto;">
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0 VND")</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("0,0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
                 </div>
                 </div>
             </div>
@@ -266,12 +269,6 @@
                     <label asp-for="CarId" class="control-label"></label>
                     <input asp-for="CarId" class="form-control" value="@ViewBag.carId" readonly>
                 </div>
-                <div class="form-group" hidden>
-                    <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" value="2" readonly/>
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-
                 <input type="datetime" asp-for="StartDate" id="hiddenStartDate" class="form-control" value="@ViewBag.startDate" hidden/>
                 <input type="datetime" asp-for="EndDate" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate" hidden/>
             
@@ -371,104 +368,104 @@
 
 
                     @* --------------------driver's info------------------------ *@
-
-
-                <div class="row text-myfont mt-2 pt-2">
-                    <h4 class="mb-4">Driver's information</h4>
-                    <div class="form-group mb-3">
-                        <div class="checkbox">
-                            <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent" checked/><span style="font-weight: 400;"> Different than Renter's information</span></input>
-                            <span asp-validation-for="BookingInfo.IsDifferent" class="text-danger"></span>
-                        </div>
+                <h4 class="mb-4">Driver's information</h4>
+                <div class="form-group mb-3">
+                    <div class="checkbox">
+                        <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent"/><span style="font-weight: 400;"> Same with Renter's information</span></input>
+                        <span asp-validation-for="BookingInfo.IsDifferent" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group col-md-8 mb-3">
-                            <label asp-for="BookingInfo.DriverName" class="control-label">Full Name: <span style="color: red;">*</span></label>
-                            <input asp-for="BookingInfo.DriverName" class="form-control" required/>
-                            <span asp-validation-for="BookingInfo.DriverName" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-8 mb-3">
-                            <label asp-for="BookingInfo.DriverPhone" class="control-label">
-                                Phone number: <span style="color: red;">*</span>
-                            </label>
-                            <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
-                            <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-md-8 mb-3">
-                            <label asp-for="BookingInfo.DriverNationalId" class="control-label">
-                                National ID No: <span style="color: red;">*</span>
-                            </label>
-                            <input asp-for="BookingInfo.DriverNationalId" class="form-control" required />
-                            <span asp-validation-for="BookingInfo.DriverNationalId" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group col-md-8 mb-3">
-                            <label asp-for="BookingInfo.DriverDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                            <input asp-for="BookingInfo.DriverDob" class="form-control" type="date" required/>
-                            <span asp-validation-for="BookingInfo.DriverDob" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-8 mb-3">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <label asp-for="BookingInfo.DriverEmail" class="control-label">
-                                Email address: <span style="color: red;">*</span>
-                            </label>
-                            <input asp-for="BookingInfo.DriverEmail" class="form-control" required/>
-                            <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-8 mb-3">
-                            <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
-                            <div class="input-group">
-                                <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
-                                <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
-                                <div class="input-group-append">
-                                    <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
-                                </div>
+                </div>
+                <div class="driver-info-container">
+                    <div class="row text-myfont mt-2 pt-2">
+                        <div class="col-md-6">
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="BookingInfo.DriverName" class="control-label">Full Name: <span style="color: red;">*</span></label>
+                                <input asp-for="BookingInfo.DriverName" class="form-control" required/>
+                                <span asp-validation-for="BookingInfo.DriverName" class="text-danger"></span>
                             </div>
-                            <span asp-validation-for="BookingInfo.DriverDrivingLicense" class="text-danger"></span>
-                        </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="imageModal2" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <!-- Add modal-lg class -->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageModalLabel2">Driving Lience</h5>
-                                        <button type="button" class="close2" id="closeModalBtn2" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img id="modalImage2" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
-                                    </div>
-                                </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="BookingInfo.DriverPhone" class="control-label">
+                                    Phone number: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
+                                <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="BookingInfo.DriverNationalId" class="control-label">
+                                    National ID No: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="BookingInfo.DriverNationalId" class="form-control" required />
+                                <span asp-validation-for="BookingInfo.DriverNationalId" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="BookingInfo.DriverDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
+                                <input asp-for="BookingInfo.DriverDob" class="form-control" type="date" required/>
+                                <span asp-validation-for="BookingInfo.DriverDob" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <label asp-for="BookingInfo.DriverEmail" class="control-label">
+                                    Email address: <span style="color: red;">*</span>
+                                </label>
+                                <input asp-for="BookingInfo.DriverEmail" class="form-control" required/>
+                                <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-8 mb-3">
+                                <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
+                                <div class="input-group">
+                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
+                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
+                                    <div class="input-group-append">
+                                        <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="BookingInfo.DriverDrivingLicense" class="text-danger"></span>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="imageModal2" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <!-- Add modal-lg class -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="imageModalLabel2">Driving Lience</h5>
+                                            <button type="button" class="close2" id="closeModalBtn2" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img id="modalImage2" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group text-myfont col-md-6 mb-3">
-                    <label asp-for="BookingInfo.DriverAddress.CityId" class="control-label mb-1">Address:</label>
-                    <select asp-for="BookingInfo.DriverAddress.CityId" class="form-control form-select" asp-items="ViewBag.Cities">
-                        <option value="">-- Select City --</option>
-                    </select>
-                    <span asp-validation-for="BookingInfo.DriverAddress.CityId" class="text-danger"></span>
-                </div>
-                <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.DriverAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.Districts">
-                        <option value="">-- Select District --</option>
-                    </select>
-                    <span asp-validation-for="BookingInfo.DriverAddress.DistrictId" class="text-danger"></span>
-                </div>
-                <div class="form-group text-myfont col-md-6 mb-3">
-                    <select asp-for="BookingInfo.DriverAddress.WardId" class="form-control form-select" asp-items="ViewBag.Wards">
-                        <option value="">-- Select Ward --</option>
-                    </select>
-                    <span asp-validation-for="BookingInfo.DriverAddress.WardId" class="text-danger"></span>
-                </div>
-                <div class="form-group text-myfont col-md-6 mb-3">
-                    <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, Street" />
-                    <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        <label asp-for="BookingInfo.DriverAddress.CityId" class="control-label mb-1">Address:</label>
+                        <select asp-for="BookingInfo.DriverAddress.CityId" class="form-control form-select" asp-items="ViewBag.Cities">
+                            <option value="">-- Select City --</option>
+                        </select>
+                        <span asp-validation-for="BookingInfo.DriverAddress.CityId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        <select asp-for="BookingInfo.DriverAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.Districts">
+                            <option value="">-- Select District --</option>
+                        </select>
+                        <span asp-validation-for="BookingInfo.DriverAddress.DistrictId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        <select asp-for="BookingInfo.DriverAddress.WardId" class="form-control form-select" asp-items="ViewBag.Wards">
+                            <option value="">-- Select Ward --</option>
+                        </select>
+                        <span asp-validation-for="BookingInfo.DriverAddress.WardId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-myfont col-md-6 mb-3">
+                        <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, Street" />
+                        <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center mt-3">
                     <a asp-controller="Users" asp-action="LoginCus" type="button" class="btn btn-outline-secondary"
@@ -516,6 +513,12 @@
                 </div>
                 <span asp-validation-for="@Model.PaymentMethod" class="text-danger"></span>
             </div>
+
+            <input name="location" value="@ViewBag.location" hidden/>
+            <input name="startDate" value="@ViewBag.startDate" hidden/>
+            <input name="endDate" value="@ViewBag.endDate" hidden/>
+            <input name="carId" value="@ViewBag.carId" hidden/>
+
             <div class="form-group mt-2 row justify-content-center">
                 <div class="d-flex justify-content-center align-items-center mt-3">
                     <a onclick="goToStep1();" type="button" class="btn btn-outline-secondary"
@@ -899,24 +902,22 @@
 </script>
 
      
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
 
-
-     <script>
-    function setRating(rating) {
-        const stars = document.querySelectorAll('#rating .star');
-        stars.forEach((star, index) => {
-            star.classList.remove('filled', 'half-filled');
-            if (rating >= index + 1) {
-                star.classList.add('filled');
-            } else if (rating > index && rating < index + 1) {
-                star.classList.add('half-filled');
-            }
-        });
-    }
-
-    // Example rating
-    setRating(3.5);
-</script>
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
 
 
     <script>
@@ -945,6 +946,12 @@
             // Validate end date and time is greater than start date and time
             if (!isEndDateGreaterThanStartDate(newStartDate, newEndDate)) {
                 alert('End date and time must be greater than start date and time.');
+                return;
+            }
+
+            // Validate end date and time is greater than start date and time and at least 1 day later
+            if (!isEndDateValid(newStartDate, newEndDate)) {
+                alert('End date and time must be at least 1 day greater than start date and time.');
                 return;
             }
 
@@ -996,9 +1003,9 @@
         // Function to check if start date and time is greater than current date and time
         function isStartDateGreaterThanCurrentDate(startDate) {
             var startDateTime = new Date(startDate).getTime();
-            var currentDateTime = new Date().getTime();
+            var currentDateTime = new Date().getTime() - (1 * 60 * 1000);
 
-            return startDateTime > currentDateTime;
+            return startDateTime >= currentDateTime;
         }
 
         // Function to check if end date and time is greater than start date and time
@@ -1007,6 +1014,15 @@
             var endDateTime = new Date(endDate).getTime();
 
             return endDateTime > startDateTime;
+        }
+
+        // Function to check if end date and time is at least 1 day greater than start date and time
+        function isEndDateValid(startDate, endDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var endDateTime = new Date(endDate).getTime();
+            var oneDayInMillis = 24 * 60 * 60 * 1000; // One day in milliseconds
+
+            return endDateTime > startDateTime && (endDateTime - startDateTime) >= oneDayInMillis;
         }
     });
 </script>
@@ -1028,7 +1044,7 @@
 
     function toggleDriverFields() {
         var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
-        if (isChecked) {
+        if (!isChecked) {
             // Clear driver's information fields
             $('#BookingInfo_DriverName').val('');
             $('#BookingInfo_DriverPhone').val('');
@@ -1042,6 +1058,8 @@
             $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
         } else {
             // Copy renter's information to driver's information fields
+            originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+            originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
             $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
             $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
             $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
@@ -1060,17 +1078,32 @@
 </script>
 
 <script>
-    document.getElementById('Form').addEventListener('submit', function(event) {
-        var insufficientBalance = document.getElementById('insufficient');
-        var pm1 = document.getElementById('pm1').checked; // Check if the radio button is checked
-        var wallet = @Html.Raw(Json.Serialize(ViewBag.wallet)); // Retrieve wallet balance from ViewBag
-        var deposit = @Html.Raw(Json.Serialize(ViewBag.Deposit)); // Retrieve deposit from ViewBag
-
-        if (pm1 && wallet < deposit) {
-            alert("Insufficient balance. Please add more funds to your wallet.");
-            event.preventDefault(); // Prevent the form from being submitted
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('isDifferentCheckbox');
+        const driverInfoContainer = document.querySelector('.driver-info-container');
+        
+        // Function to toggle visibility
+        function toggleDriverInfo() {
+            if (checkbox.checked) {
+                driverInfoContainer.style.display = 'none';
+            } else {
+                driverInfoContainer.style.display = 'block';
+            }
         }
+
+        // Initialize visibility based on the initial checkbox state
+        toggleDriverInfo();
+
+        // Add event listener to the checkbox
+        checkbox.addEventListener('change', toggleDriverInfo);
     });
 </script>
+
+    @if(@TempData["AlertMessage"] != null)
+    {
+        <script>
+        alert('@TempData["AlertMessage"]');
+        </script>
+    }
 
 }
