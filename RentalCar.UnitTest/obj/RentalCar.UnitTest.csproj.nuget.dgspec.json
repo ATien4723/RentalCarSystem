@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
+    "D:\\OJT_FAcademy\\rental-car\\RentalCar.UnitTest\\RentalCar.UnitTest.csproj": {}
   },
   "projects": {
-    "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "D:\\OJT_FAcademy\\rental-car\\RentalCar.UnitTest\\RentalCar.UnitTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
-        "projectName": "Rental_Car_Demo",
-        "projectPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "D:\\OJT_FAcademy\\rental-car\\RentalCar.UnitTest\\RentalCar.UnitTest.csproj",
+        "projectName": "RentalCar.UnitTest",
+        "projectPath": "D:\\OJT_FAcademy\\rental-car\\RentalCar.UnitTest\\RentalCar.UnitTest.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\obj\\",
+        "outputPath": "D:\\OJT_FAcademy\\rental-car\\RentalCar.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,41 +40,25 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "MailKit": {
+            "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[4.7.1.1, )"
+              "version": "[17.6.0, )"
             },
-            "Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter": {
+            "NUnit": {
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[3.13.3, )"
             },
-            "Microsoft.EntityFrameworkCore": {
+            "NUnit.Analyzers": {
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[3.6.1, )"
             },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
+            "NUnit3TestAdapter": {
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[4.2.1, )"
             },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
+            "coverlet.collector": {
               "target": "Package",
-              "version": "[8.0.7, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.7, )"
-            },
-            "Microsoft.Extensions.Configuration.Json": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            },
-            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
-              "target": "Package",
-              "version": "[8.0.3, )"
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -89,9 +73,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
