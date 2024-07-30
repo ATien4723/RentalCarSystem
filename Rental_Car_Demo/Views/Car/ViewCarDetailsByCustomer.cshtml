@@ -716,7 +716,7 @@
                                             <div class="star-rating">
                                                 ⭐ @if (c.AverageRating > 0)
                                                 {
-                                                    <span>@c.AverageRating</span>
+                                                    <span>@c.AverageRating.ToString("0.#")</span>
                                                 } else
                                                 {
                                                     <span>No ratings yet</span>
