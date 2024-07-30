@@ -2,12 +2,12 @@
     ViewData["Title"] = "MyWallet";
     Layout = "~/Views/Shared/_LayoutWallet.cshtml";
 }
+
+@using Rental_Car_Demo.ViewModel
+@model UserWalletViewModel
 @{
     string walletFormatted = Model.User.Wallet?.ToString("N0");
 }
-@using Rental_Car_Demo.ViewModel
-@model UserWalletViewModel
-
 
 <body>
     <div class="container-fluid mt-2">

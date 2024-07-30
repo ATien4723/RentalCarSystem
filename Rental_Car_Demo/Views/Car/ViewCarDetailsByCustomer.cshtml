@@ -716,7 +716,7 @@
                                             <div class="star-rating">
                                                 ⭐ @if (c.AverageRating > 0)
                                                 {
-                                                    <span>@c.AverageRating</span>
+                                                    <span>@c.AverageRating.ToString("0.#")</span>
                                                 } else
                                                 {
                                                     <span>No ratings yet</span>
@@ -774,7 +774,7 @@
                             <span class="col-10 fw-bold">
                             </span>
                         }
-                        <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
+                        <span class="text-danger">Note: Full address will be available after you've paid the deposit to rent.</span>
                     </div>
 
                     <div class="row mt-3">
