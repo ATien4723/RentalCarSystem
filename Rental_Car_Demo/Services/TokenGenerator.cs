@@ -59,8 +59,6 @@ namespace Rental_Car_Demo.Validation
         private  void isValidToken(string token)
         {
             var storedToken = context.TokenInfors.FirstOrDefault(t => t.Token == token);
-            
-            
         }
 
 
