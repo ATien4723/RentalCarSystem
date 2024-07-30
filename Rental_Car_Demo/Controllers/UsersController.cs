@@ -20,8 +20,28 @@ namespace Rental_Car_Demo.Controllers
 {
     public class UsersController : Controller
     {
+        public UsersController()
+        {
 
-        RentCarDbContext db = new RentCarDbContext();
+        }
+
+
+        public UsersController(IEmailService emailService)
+        {
+            this._emailService = emailService;
+            this.userDAO = new UserDAO();
+        }
+
+
+        RentCarDbContext context = new RentCarDbContext();
+        CustomerContext customerContext = new CustomerContext();
+        TokenGenerator tokenGenerator = new TokenGenerator();
+
+        private readonly IEmailService _emailService;
+
+        UserDAO userDAO;
+
+
         public IActionResult Login()
         {
             string culture = "or-IN";
@@ -61,7 +81,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email)
+                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email)
             && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
@@ -90,7 +110,7 @@ namespace Rental_Car_Demo.Controllers
                 if (user == null && !string.IsNullOrEmpty(userLogin.User.Email) && !string.IsNullOrEmpty(userLogin.User.Password))
                 {
                     ViewBag.Error = "Either email address or password is incorrect. Please try again";
-                   
+
                 }
             }
             TempData["ShowModal"] = "SignIn"; // Set flag to show sign-in modal
@@ -153,19 +173,6 @@ namespace Rental_Car_Demo.Controllers
             return View();
         }
 
-        RentCarDbContext context = new RentCarDbContext();
-        CustomerContext customerContext = new CustomerContext();
-        TokenGenerator tokenGenerator = new TokenGenerator();
-
-        private readonly IEmailService _emailService;
-
-        UserDAO userDAO;
-
-        public UsersController(IEmailService emailService)
-        {
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
-        }
 
         public IActionResult Register()
         {
@@ -184,7 +191,7 @@ namespace Rental_Car_Demo.Controllers
                 return View("Guest", model);
             }
 
-            if(model.Register.AgreeToTerms == false)
+            if (model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
                 return View("Guest", model);
@@ -194,35 +201,35 @@ namespace Rental_Car_Demo.Controllers
             // Kiểm tra tính hợp lệ của ModelState
             //if (ModelState.IsValid)
             //{
-                // Hash mật khẩu
-                var hashedPassword = HashPassword(model.Register.Password);
-                bool isCarOwner = model.Register.Role == "carOwner";
+            // Hash mật khẩu
+            var hashedPassword = HashPassword(model.Register.Password);
+            bool isCarOwner = model.Register.Role == "carOwner";
 
-                var customer = new User
-                {
-                    Email = model.Register.Email,
-                    Password = hashedPassword,
-                    Name = model.Register.Name,
-                    Phone = model.Register.Phone,
-                    Role = isCarOwner
-                };
+            var customer = new User
+            {
+                Email = model.Register.Email,
+                Password = hashedPassword,
+                Name = model.Register.Name,
+                Phone = model.Register.Phone,
+                Role = isCarOwner
+            };
 
-                try
-                {
-                    // Thêm customer vào context và lưu thay đổi
-                    context.Add(customer);
-                    context.SaveChanges();
+            try
+            {
+                // Thêm customer vào context và lưu thay đổi
+                context.Add(customer);
+                context.SaveChanges();
 
 
-                    // Hiển thị thông báo đăng ký thành công
-                    TempData["SuccessMessage"] = "Account created successfully!";
-                    return RedirectToAction("Guest", "Users");
-                }
-                catch (Exception ex)
-                {
-                    // Ghi log lỗi nếu xảy ra
-                    ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
-                }
+                // Hiển thị thông báo đăng ký thành công
+                TempData["SuccessMessage"] = "Account created successfully!";
+                return RedirectToAction("Guest", "Users");
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi nếu xảy ra
+                ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
+            }
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
@@ -245,7 +252,7 @@ namespace Rental_Car_Demo.Controllers
 
             int user = customerContext.getCustomerIdByEmail(model.Email);
 
-            if(user != -1) //not found email
+            if (user != -1) //not found email
             {
                 var token = new TokenInfor()
                 {
@@ -265,14 +272,14 @@ namespace Rental_Car_Demo.Controllers
                 string subject = "Link Reset Password";
                 _emailService.SendEmail(model.Email, subject, resetLink);
                 TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
-                
+
             }
             else
             {
                 TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
             }
 
-            
+
 
 
             return View();
@@ -449,7 +456,7 @@ namespace Rental_Car_Demo.Controllers
                 {
                     return RedirectToAction("Logout", "Users");
                 }
-                if(currentUser.Role == false)
+                if (currentUser.Role == false)
                 {
                     return RedirectToAction("LoginCus", "Users");
                 }
@@ -457,7 +464,7 @@ namespace Rental_Car_Demo.Controllers
                 {
                     return RedirectToAction("LoginOwn", "Users");
                 }
-                
+
             }
             catch (Exception ex)
             {

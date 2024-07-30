@@ -25,6 +25,8 @@ namespace Rental_Car_Demo.Validation
                                ));
 
         }
+
+
         private readonly string fromAddress = "kietnvt2705@gmail.com";
         private readonly string fromPassword = "ueku bgbu qacj murs";
         private readonly string smtpHost = "smtp.gmail.com";

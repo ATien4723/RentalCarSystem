@@ -15,17 +15,27 @@ namespace Rental_Car_Demo.UnitTests
 
     public class UsersControllerTests
     {
-        private UsersController _usersController;
-        private Mock<RentCarDbContext> _dbContextMock;
+        private UsersController _uc;
+        private RentCarDbContext _db;
 
         [SetUp]
         public void Setup()
         {
             // Tạo mock cho RentCarDbContext
-            _dbContextMock = new Mock<RentCarDbContext>();
+            _db = new RentCarDbContext();
 
             // Tạo instance của UsersController với RentCarDbContext mock
-            _usersController = new UsersController(_dbContextMock.Object);
+            _uc = new UsersController();
+            
+        }
+
+        
+        [TearDown]
+        public void TearDown()
+        {
+            _uc.Dispose();
+            _db.Dispose();
+
         }
 
         [Test, MaxTime(2000)]
@@ -36,7 +46,7 @@ namespace Rental_Car_Demo.UnitTests
         [TestCase("minhquandancom", false)]
         public void IsEmailExist_Return(string email, bool expected)
         {
-            bool result = uc.IsEmailExist(email);
+            bool result = _uc.IsEmailExist(email);
             Assert.That(result, Is.EqualTo(expected));
         }
 
