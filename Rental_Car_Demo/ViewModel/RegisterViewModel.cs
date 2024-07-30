@@ -36,6 +36,8 @@ namespace Rental_Car_Demo.ViewModel
         [Required(ErrorMessage = "This field is required.")]
         public string Role { get; set; }
 
+
+        [Required(ErrorMessage = "This field is required.")]
         public bool AgreeToTerms { get; set; }
     }
 }

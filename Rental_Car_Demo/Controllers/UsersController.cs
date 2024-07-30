@@ -90,10 +90,11 @@ namespace Rental_Car_Demo.Controllers
                 if (user == null && !string.IsNullOrEmpty(userLogin.User.Email) && !string.IsNullOrEmpty(userLogin.User.Password))
                 {
                     ViewBag.Error = "Either email address or password is incorrect. Please try again";
+                   
                 }
             }
-
-            return View();
+            TempData["ShowModal"] = "SignIn"; // Set flag to show sign-in modal
+            return View("Guest", userLogin);
         }
         private string HashPassword(string password)
         {
@@ -225,6 +226,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
+            TempData["ShowModal"] = "Register";
             return View("Guest", model);
         }
 
@@ -296,8 +298,6 @@ namespace Rental_Car_Demo.Controllers
             context.Update(token);
             context.SaveChanges();
 
-            
-
             return View(model);
         }
 
@@ -328,61 +328,7 @@ namespace Rental_Car_Demo.Controllers
             return context.Users.Any(u => u.Email == email);
         }
 
-        // GET: UsersController
-        public ActionResult Index()
-        {
-            var userList = userDAO.GetUserList();
-            return View(userList);
-        }
 
-        // GET: UsersController/Details/5
-        public ActionResult Details(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = userDAO.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }
-
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View();
-            }
-        }
-
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    userDAO.Create(user);
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View(user);
-            }
-        }
 
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)
@@ -521,37 +467,6 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-        // GET: UsersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = userDAO.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                userDAO.Delete(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View();
-            }
-        }
 
         [HttpGet]
         public JsonResult GetDistricts(int cityId)

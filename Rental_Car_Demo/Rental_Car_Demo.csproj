@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="web.config" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\login.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,7 +55,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
