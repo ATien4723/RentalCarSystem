@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -11,29 +10,20 @@ using Rental_Car_Demo.ViewModel;
 using System.Globalization;
 using System.Text;
 using System.Security.Cryptography;
-using Newtonsoft.Json;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
+
 
 
 namespace Rental_Car_Demo.Controllers
 {
     public class UsersController : Controller
     {
-        public UsersController()
-        {
 
+        public RentCarDbContext context = new RentCarDbContext();
+        public UsersController(RentCarDbContext _context)
+        {
+            context = _context;
         }
 
-
-        public UsersController(IEmailService emailService)
-        {
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
-        }
-
-
-        RentCarDbContext context = new RentCarDbContext();
         CustomerContext customerContext = new CustomerContext();
         TokenGenerator tokenGenerator = new TokenGenerator();
 
@@ -184,6 +174,7 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult Register(RegisterAndLoginViewModel model)
         {
             var checkMail = IsEmailExist(model.Register.Email);
+
             // Kiểm tra email trùng lặp
             if (checkMail == true)
             {
@@ -197,7 +188,6 @@ namespace Rental_Car_Demo.Controllers
                 return View("Guest", model);
             }
 
-            var check = ModelState;
             // Kiểm tra tính hợp lệ của ModelState
             //if (ModelState.IsValid)
             //{
