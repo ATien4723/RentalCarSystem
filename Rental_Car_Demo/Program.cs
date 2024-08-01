@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using NuGet.Protocol.Core.Types;
 using Rental_Car_Demo.Repository.CarRepository;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 using Rental_Car_Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository;
+using Rental_Car_Demo.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<ICustomerContext, CustomerContext>();
+builder.Services.AddTransient<ITokenGenerator, TokenGenerator>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

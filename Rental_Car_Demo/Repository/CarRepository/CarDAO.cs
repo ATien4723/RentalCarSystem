@@ -4,6 +4,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
 {
     public class CarDAO
     {
+        private readonly RentCarDbContext _context;
         private static CarDAO instance;
         public static readonly object instanceLock = new object();
         public static CarDAO Instance

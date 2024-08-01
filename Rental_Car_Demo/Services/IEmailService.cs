@@ -1,4 +1,4 @@
-﻿namespace Rental_Car_Demo.Validation
+﻿namespace Rental_Car_Demo.Services
 {
     public interface IEmailService
     {

@@ -4,9 +4,9 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Rental_Car_Demo.Validation
+namespace Rental_Car_Demo.Services
 {
-    public class TokenGenerator
+    public class TokenGenerator : ITokenGenerator
     {
         public RentCarDbContext context = new RentCarDbContext();
 

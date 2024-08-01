@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository.UserRepository;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 using Microsoft.CodeAnalysis;
 
 namespace Rental_Car_Demo.Controllers
@@ -24,17 +24,12 @@ namespace Rental_Car_Demo.Controllers
         UserDAO userDAO = null;
         RentCarDbContext _db = new RentCarDbContext();
 
-       
-        public IActionResult loadRating()
-        {
-            return View();
-        }
+
+
 
         public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
-            Booking booking = _db.Bookings.Find(bookingNo);
-            booking.Status = 5;
-            _db.Bookings.Update(booking);
+
             Feedback feedback = new Feedback();
             feedback.BookingNo = bookingNo;
             feedback.Ratings = -1;
@@ -48,10 +43,7 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult giveRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings)
         {
-            Booking booking = _db.Bookings.Find(bookingNo);
-            booking.Status = 5;
-            _db.Bookings.Update(booking);
-            _db.SaveChanges();
+
             Feedback feedback = new Feedback();
             feedback.Content = content;
             feedback.Ratings = ratings;
@@ -97,12 +89,12 @@ namespace Rental_Car_Demo.Controllers
                 using var context = new RentCarDbContext();
                 var car = context.Cars.Include(c => c.Address).ThenInclude(c => c.City).ThenInclude(c => c.Districts).ThenInclude(c => c.Wards).FirstOrDefault(x => x.CarId == CarId);
 
-                if(car.Status != 1)
+                if (car.Status != 1)
                 {
                     return RedirectToAction("LoginCus", "Users");
                 }
 
-                if(string.IsNullOrEmpty(location))
+                if (string.IsNullOrEmpty(location))
                 {
                     ViewBag.location = $"{car.Address.HouseNumberStreet}, {car?.Address?.Ward?.WardName}, {car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
                 }
@@ -137,7 +129,7 @@ namespace Rental_Car_Demo.Controllers
                 }
                 else
                 {
-                    numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays); 
+                    numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
                 }
                 ViewBag.NumberOfDays = numberOfDays;
                 ViewBag.BasePrice = car.BasePrice;
@@ -241,136 +233,136 @@ namespace Rental_Car_Demo.Controllers
             {
                 //if (ModelState.IsValid)
                 //{
-                    using var _context = new RentCarDbContext();
+                using var _context = new RentCarDbContext();
 
-                    var renterAddress = new Address
+                var renterAddress = new Address
+                {
+                    CityId = viewModel.BookingInfo.RenterAddress.CityId,
+                    DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId,
+                    WardId = viewModel.BookingInfo.RenterAddress.WardId,
+                    HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet
+                };
+
+                _context.Addresses.Add(renterAddress);
+                _context.SaveChanges();
+
+                var DriverAddress = new Address
+                {
+                    CityId = viewModel.BookingInfo.DriverAddress.CityId,
+                    DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId,
+                    WardId = viewModel.BookingInfo.DriverAddress.WardId,
+                    HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet
+                };
+
+                _context.Addresses.Add(DriverAddress);
+                _context.SaveChanges();
+
+                var bookingInfo = new BookingInfo
+                {
+                    RenterEmail = viewModel.BookingInfo.RenterEmail,
+                    RenterName = viewModel.BookingInfo.RenterName,
+                    RenterDob = viewModel.BookingInfo.RenterDob,
+                    RenterNationalId = viewModel.BookingInfo.RenterNationalId,
+                    RenterPhone = viewModel.BookingInfo.RenterPhone,
+                    RenterAddressId = renterAddress.AddressId,
+                    RenterDrivingLicense = viewModel.BookingInfo.RenterDrivingLicense,
+                    IsDifferent = viewModel.BookingInfo.IsDifferent,
+                    DriverEmail = viewModel.BookingInfo.DriverEmail,
+                    DriverName = viewModel.BookingInfo.DriverName,
+                    DriverDob = viewModel.BookingInfo.DriverDob,
+                    DriverNationalId = viewModel.BookingInfo.DriverNationalId,
+                    DriverPhone = viewModel.BookingInfo.DriverPhone,
+                    DriverAddressId = DriverAddress.AddressId,
+                    DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense
+                };
+
+                _context.BookingInfos.Add(bookingInfo);
+                _context.SaveChanges();
+
+                var booking = new Booking
+                {
+                    UserId = viewModel.UserId,
+                    CarId = viewModel.CarId,
+                    StartDate = viewModel.StartDate,
+                    EndDate = viewModel.EndDate,
+                    PaymentMethod = viewModel.PaymentMethod,
+                    BookingInfoId = bookingInfo.BookingInfoId,
+                };
+                if (viewModel.PaymentMethod == 1)
+                {
+                    booking.Status = 2;
+                }
+                else
+                {
+                    booking.Status = 1;
+                }
+
+                _context.Bookings.Add(booking);
+                _context.SaveChanges();
+
+                var userString = HttpContext.Session.GetString("User");
+                User user = null;
+                if (!string.IsNullOrEmpty(userString))
+                {
+                    user = JsonConvert.DeserializeObject<User>(userString);
+                }
+
+                var car = _context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
+                var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
+
+                int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
+
+                if (viewModel.PaymentMethod == 1 && user.Wallet < (car.Deposit * numberOfDays))
+                {
+                    TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
+                    return RedirectToAction("BookACar", new { location = location, startDate = startDate, endDate = endDate, carId = CarId });
+                }
+
+                if (viewModel.PaymentMethod == 1)
+                {
+                    user.Wallet -= (numberOfDays * car.Deposit);
+                    carOwner.Wallet += (numberOfDays * car.Deposit);
+                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    _user.Wallet -= (numberOfDays * car.Deposit);
+
+                    var wallet = new Wallet
                     {
-                        CityId = viewModel.BookingInfo.RenterAddress.CityId,
-                        DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId,
-                        WardId = viewModel.BookingInfo.RenterAddress.WardId,
-                        HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet
+                        UserId = user.UserId,
+                        Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
+                        Type = "Pay Deposit",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
                     };
-
-                    _context.Addresses.Add(renterAddress);
-                    _context.SaveChanges();
-
-                    var DriverAddress = new Address
+                    var walletCarOwner = new Wallet
                     {
-                        CityId = viewModel.BookingInfo.DriverAddress.CityId,
-                        DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId,
-                        WardId = viewModel.BookingInfo.DriverAddress.WardId,
-                        HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet
+                        UserId = car.User.UserId,
+                        Amount = (numberOfDays * car.Deposit).ToString("N2"),
+                        Type = "Receive Deposit",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
                     };
-
-                    _context.Addresses.Add(DriverAddress);
+                    _context.Wallets.Add(wallet);
+                    _context.Wallets.Add(walletCarOwner);
                     _context.SaveChanges();
+                }
 
-                    var bookingInfo = new BookingInfo
-                    {
-                        RenterEmail = viewModel.BookingInfo.RenterEmail,
-                        RenterName = viewModel.BookingInfo.RenterName,
-                        RenterDob = viewModel.BookingInfo.RenterDob,
-                        RenterNationalId = viewModel.BookingInfo.RenterNationalId,
-                        RenterPhone = viewModel.BookingInfo.RenterPhone,
-                        RenterAddressId = renterAddress.AddressId,
-                        RenterDrivingLicense = viewModel.BookingInfo.RenterDrivingLicense,
-                        IsDifferent = viewModel.BookingInfo.IsDifferent,
-                        DriverEmail = viewModel.BookingInfo.DriverEmail,
-                        DriverName = viewModel.BookingInfo.DriverName,
-                        DriverDob = viewModel.BookingInfo.DriverDob,
-                        DriverNationalId = viewModel.BookingInfo.DriverNationalId,
-                        DriverPhone = viewModel.BookingInfo.DriverPhone,
-                        DriverAddressId = DriverAddress.AddressId,
-                        DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense
-                    };
+                car.Status = 2;
+                _context.SaveChanges();
 
-                    _context.BookingInfos.Add(bookingInfo);
-                    _context.SaveChanges();
+                var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
+                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
 
-                    var booking = new Booking
-                    {
-                        UserId = viewModel.UserId,
-                        CarId = viewModel.CarId,
-                        StartDate = viewModel.StartDate,
-                        EndDate = viewModel.EndDate,
-                        PaymentMethod = viewModel.PaymentMethod,
-                        BookingInfoId = bookingInfo.BookingInfoId,
-                    };
-                    if (viewModel.PaymentMethod == 1)
-                    {
-                        booking.Status = 2;
-                    }
-                    else
-                    {
-                        booking.Status = 1;
-                    }
-
-                    _context.Bookings.Add(booking);
-                    _context.SaveChanges();
-
-                    var userString = HttpContext.Session.GetString("User");
-                    User user = null;
-                    if (!string.IsNullOrEmpty(userString))
-                    {
-                        user = JsonConvert.DeserializeObject<User>(userString);
-                    }
-
-                    var car = _context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
-                    var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
-
-                    int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
-
-                    if (viewModel.PaymentMethod == 1 && user.Wallet < (car.Deposit * numberOfDays))
-                    {
-                        TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
-                        return RedirectToAction("BookACar", new {location = location, startDate = startDate, endDate = endDate, carId = CarId});
-                    }
-
-                    if (viewModel.PaymentMethod == 1)
-                    {
-                        user.Wallet -= (numberOfDays * car.Deposit);
-                        carOwner.Wallet += (numberOfDays * car.Deposit);
-                        var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-                        _user.Wallet -= (numberOfDays * car.Deposit);
-
-                        var wallet = new Wallet
-                        {
-                            UserId = user.UserId,
-                            Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
-                            Type = "Pay Deposit",
-                            CreatedAt = DateTime.Now,
-                            BookingNo = booking.BookingNo,
-                            CarName = car.Name
-                        };
-                        var walletCarOwner = new Wallet
-                        {
-                            UserId = car.User.UserId,
-                            Amount = (numberOfDays * car.Deposit).ToString("N2"),
-                            Type = "Receive Deposit",
-                            CreatedAt = DateTime.Now,
-                            BookingNo = booking.BookingNo,
-                            CarName = car.Name
-                        };
-                        _context.Wallets.Add(wallet);
-                        _context.Wallets.Add(walletCarOwner);
-                        _context.SaveChanges();
-                    }
-
-                    car.Status = 2;
-                    _context.SaveChanges();
-
-                    var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                    currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
-                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
-
-                    string email = car.User.Email;
-                    string subject = "Your car has been booked";
-                    string message = $"Congratulations! Your car {car.Name} has been booked at " +
-                     $"{DateTime.Now:dd/MM/yyyy HH:mm}. Please go to your wallet to check " +
-                     $"if the deposit has been paid and go to your car’s details page to confirm " +
-                     $"the deposit. Thank you!";
-                    _emailService.SendEmail(email, subject, message);
-                    return RedirectToAction("BookACarFinish", new { carId = car.CarId, carName = car.Name, startDate = viewModel.StartDate, endDate = viewModel.EndDate, bookingNo = booking.BookingNo });
+                string email = car.User.Email;
+                string subject = "Your car has been booked";
+                string message = $"Congratulations! Your car {car.Name} has been booked at " +
+                 $"{DateTime.Now:dd/MM/yyyy HH:mm}. Please go to your wallet to check " +
+                 $"if the deposit has been paid and go to your car’s details page to confirm " +
+                 $"the deposit. Thank you!";
+                _emailService.SendEmail(email, subject, message);
+                return RedirectToAction("BookACarFinish", new { carId = car.CarId, carName = car.Name, startDate = viewModel.StartDate, endDate = viewModel.EndDate, bookingNo = booking.BookingNo });
                 //}
                 //return View(viewModel);
             }
@@ -407,13 +399,13 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
+        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder)
         {
             Booking booking = _db.Bookings.Find(bookingNo);
             booking.Status = 3;
             _db.Bookings.Update(booking);
             _db.SaveChanges();
-            if(!startDate.HasValue || !endDate.HasValue)
+            if (!startDate.HasValue || !endDate.HasValue)
             {
                 var context = new RentCarDbContext();
                 var userString = HttpContext.Session.GetString("User");
@@ -944,7 +936,7 @@ namespace Rental_Car_Demo.Controllers
                 .ToList();
                 ViewBag.SortOrder = "latest";
             }
-            else if(sortOrder == "newest")
+            else if (sortOrder == "newest")
             {
                 ViewBag.Bookings = context.Bookings
                 .Include(b => b.Car)
@@ -953,7 +945,7 @@ namespace Rental_Car_Demo.Controllers
                 .ToList();
                 ViewBag.SortOrder = "newest";
             }
-            else if(sortOrder == "highest")
+            else if (sortOrder == "highest")
             {
                 ViewBag.Bookings = context.Bookings
                 .Include(b => b.Car)
@@ -969,14 +961,14 @@ namespace Rental_Car_Demo.Controllers
                     Status = b.Status,
                     Name = b.Car.Name,
                     BasePrice = b.Car.BasePrice,
-                    
+
                     TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
                 })
                 .OrderByDescending(b => b.TotalCost)
                 .ToList();
                 ViewBag.SortOrder = "highest";
             }
-            else if(sortOrder == "lowest")
+            else if (sortOrder == "lowest")
             {
                 ViewBag.Bookings = context.Bookings
                 .Include(b => b.Car)
