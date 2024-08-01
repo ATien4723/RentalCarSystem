@@ -1,8 +1,0 @@
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\testhost.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\testhost.exe
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.TestPlatform.CoreUtilities.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.TestPlatform.PlatformAbstractions.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.TestPlatform.CommunicationUtilities.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.TestPlatform.CrossPlatEngine.dll
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\Microsoft.VisualStudio.TestPlatform.Common.dll

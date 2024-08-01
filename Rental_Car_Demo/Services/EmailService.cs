@@ -2,7 +2,7 @@
 using System.Net;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
-namespace Rental_Car_Demo.Validation
+namespace Rental_Car_Demo.Services
 {
     public class EmailService : IEmailService
     {

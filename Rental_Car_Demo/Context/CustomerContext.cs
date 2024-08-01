@@ -2,10 +2,9 @@
 
 namespace Rental_Car_Demo.Context
 {
-    public class CustomerContext
+    public class CustomerContext : ICustomerContext
     {
         public RentCarDbContext context = new RentCarDbContext();
-        private readonly ILogger<CustomerContext> _logger;
         public int getCustomerIdByEmail(string email)
         {
             //_logger.LogDebug("Email passed to getCustomerIdByEmail: {Email}", email);

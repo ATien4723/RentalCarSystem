@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Context;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 using Rental_Car_Demo.ViewModel;
 using System.Globalization;
 using System.Text;
@@ -18,18 +18,24 @@ namespace Rental_Car_Demo.Controllers
     public class UsersController : Controller
     {
 
-        public RentCarDbContext context = new RentCarDbContext();
-        public UsersController(RentCarDbContext _context)
-        {
-            context = _context;
-        }
-
-        CustomerContext customerContext = new CustomerContext();
-        TokenGenerator tokenGenerator = new TokenGenerator();
-
+        private readonly RentCarDbContext context;
+        private readonly ICustomerContext _customerContext;
+        private readonly ITokenGenerator _tokenGenerator;
         private readonly IEmailService _emailService;
 
-        UserDAO userDAO;
+        public UsersController(
+            RentCarDbContext _context,
+            ICustomerContext customerContext,
+            ITokenGenerator tokenGenerator,
+            IEmailService emailService)
+        {
+            context = _context;
+            _customerContext = customerContext;
+            _tokenGenerator = tokenGenerator;
+            _emailService = emailService;
+        }
+
+        UserDAO userDAO = new UserDAO();
 
 
         public IActionResult Login()
@@ -223,7 +229,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            TempData["ShowModal"] = "Register";
+            //TempData["ShowModal"] = "Register";
             return View("Guest", model);
         }
 
@@ -235,14 +241,18 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult ResetPassword(ResetPasswordViewModel model)
         {
-            string tokenValue = tokenGenerator.GenerateToken(32);
-            DateTime exTime = tokenGenerator.GetExpirationTime();
-            string em = "";
-            em = model.Email;
+            string tokenValue = _tokenGenerator.GenerateToken(32);
+            DateTime exTime = _tokenGenerator.GetExpirationTime();
 
-            int user = customerContext.getCustomerIdByEmail(model.Email);
+            int user = _customerContext.getCustomerIdByEmail(model.Email);
 
-            if (user != -1) //not found email
+            if (user == -1) //not found email
+            {
+
+                TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
+                
+            }
+            else
             {
                 var token = new TokenInfor()
                 {
@@ -264,15 +274,9 @@ namespace Rental_Car_Demo.Controllers
                 TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
 
             }
-            else
-            {
-                TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
-            }
-
-
-
 
             return View();
+            
         }
 
 
@@ -285,6 +289,7 @@ namespace Rental_Car_Demo.Controllers
             };
 
             var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenValue);
+
 
             if (token == null || token.IsLocked == true || token.ExpirationTime < DateTime.Now)
             {

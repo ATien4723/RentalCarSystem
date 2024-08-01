@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.BookingRepository;
 using Rental_Car_Demo.Repository.CarRepository;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -633,8 +633,6 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-
-
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
             var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
@@ -854,6 +852,7 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
         }
+
         private readonly IEmailService _emailService;
 
         [HttpPost] 

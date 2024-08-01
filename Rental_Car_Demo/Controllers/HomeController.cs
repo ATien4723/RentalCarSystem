@@ -12,14 +12,12 @@ namespace Rental_Car_Demo.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ICarRepository _carRepository;
 
         private RentCarDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ICarRepository carRepository, RentCarDbContext context)
+        public HomeController(ICarRepository carRepository, RentCarDbContext context)
         {
-            _logger = logger;
             _carRepository = carRepository;
             _context = context;
         }
@@ -71,7 +69,6 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
-            _logger.LogInformation($"Search parameters: address={address}");
 
             // Get current date and time
             DateTime currentDateTime = DateTime.Now;
@@ -94,9 +91,9 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffTime = dropoffTime;
 
             IEnumerable<Car> cars = _carRepository.GetAllCars(address);
+
             return View(cars);
         }
-
 
         public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
@@ -116,8 +113,6 @@ namespace Rental_Car_Demo.Controllers
 
             return PartialView("_CarResultsPartial", cars);
         }
-        
-
 
         [HttpGet]
         public JsonResult GetSuggestions(string query)
@@ -148,7 +143,14 @@ namespace Rental_Car_Demo.Controllers
         {
             //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
+
+            if(userString == null)
+            {
+                return RedirectToAction("Guest", "Users");
+            }
+
             User user = null;
+
             if (!string.IsNullOrEmpty(userString))
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
@@ -167,7 +169,6 @@ namespace Rental_Car_Demo.Controllers
             return View(feedbacks);
         }
 
-
         [HttpGet]
         public IActionResult GetCarOwnerFeedbacks(int userId)
         {
@@ -184,7 +185,6 @@ namespace Rental_Car_Demo.Controllers
                 return View("ErrorAuthorization");
             }
 
-
             var feedbacks = _context.Feedbacks
                 .Include(f => f.BookingNoNavigation)
                 .ThenInclude(b => b.Car)
@@ -194,5 +194,7 @@ namespace Rental_Car_Demo.Controllers
             return View(feedbacks);
         }
     }
+
+    
 }
 
