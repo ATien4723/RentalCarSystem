@@ -122,12 +122,14 @@
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
                     <div id="brandsOptions" class="collapse">
+                        <div class="brand-list">
                         @foreach (var brand in Model.Select(c => c.Brand).Distinct())
                         {
-                            <div class="brand-item form-check" onclick="performBrandSearch('@brand.BrandName')">
-                                <img src="@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
+                                <div class="brand-item form-check" onclick="toggleSelection(this)" onclick="performBrandSearch('@brand.BrandName')">
+                                <img src="~/img/@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
                             </div>
                         }
+                         </div>
                     </div>
                 </div>
                 <!-- Other filters can be added here -->

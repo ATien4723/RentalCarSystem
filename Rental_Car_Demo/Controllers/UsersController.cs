@@ -25,21 +25,13 @@ namespace Rental_Car_Demo.Controllers
 
         }
 
-
-        public UsersController(IEmailService emailService)
-        {
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
-        }
-
-
         RentCarDbContext context = new RentCarDbContext();
         CustomerContext customerContext = new CustomerContext();
         TokenGenerator tokenGenerator = new TokenGenerator();
 
         private readonly IEmailService _emailService;
 
-        UserDAO userDAO;
+        UserDAO userDAO = new UserDAO();
 
 
         public IActionResult Login()

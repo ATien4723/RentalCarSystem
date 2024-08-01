@@ -23,116 +23,121 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 232, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .carousel-item {
+            height: 350px;
+        }
+
+        .navbar-custom {
+            background-color: #4a4a4a;
+            color: white;
+            border-bottom: 2px solid #ccc;
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: white;
+            }
+
+            .navbar-custom .navbar-nav .nav-item {
+                position: relative;
+            }
+
+                .navbar-custom .navbar-nav .nav-item::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                    width: 1px;
+                    height: 20px;
+                    background-color: white;
+                }
+
+                .navbar-custom .navbar-nav .nav-item:last-child::after {
+                    display: none;
+                }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .step {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            color: #555;
+            background-color: #e6e6e6;
+            border-radius: 5px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+            .step.active {
+                background-color: #007bff;
+                color: white;
+                font-weight: bold;
+            }
+
+            .step::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: -20px;
+                width: 0;
+                height: 0;
+                border-top: 22px solid transparent;
+                border-bottom: 23px solid transparent;
+                border-left: 23px solid #e6e6e6;
+            }
+
+            .step.active::after {
+                border-left-color: #007bff;
+            }
+
+            .step:last-child {
+                margin-right: 0;
+            }
+
+                .step:last-child::after {
+                    display: none;
+                }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .footer-guest {
+            margin-top: auto;
+            background-color: #f5f5f5;
+            color: black;
+            padding: 10px 0;
+        }
+    </style>
+
 </head>
 
-<style>
-    .hover-shadow:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 232, 0.3);
-        transition: box-shadow 0.3s ease;
-    }
-
-    .navbar-custom {
-        background-color: #4a4a4a;
-        color: white;
-        border-bottom: 2px solid #ccc;
-    }
-
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
-            color: white;
-        }
-
-        .navbar-custom .navbar-nav .nav-item {
-            position: relative;
-        }
-
-            .navbar-custom .navbar-nav .nav-item::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                right: 0;
-                transform: translateY(-50%);
-                width: 1px;
-                height: 20px;
-                background-color: white;
-            }
-
-            .navbar-custom .navbar-nav .nav-item:last-child::after {
-                display: none;
-            }
-
-    .progress-container {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        margin: 20px 0;
-        font-family: Arial, sans-serif;
-    }
-
-    .step {
-        position: relative;
-        flex: 1;
-        text-align: center;
-        padding: 10px;
-        color: #555;
-        background-color: #e6e6e6;
-        border-radius: 5px;
-        margin-right: 20px;
-        cursor: pointer;
-    }
-
-        .step.active {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-
-        .step::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: -20px;
-            width: 0;
-            height: 0;
-            border-top: 22px solid transparent;
-            border-bottom: 23px solid transparent;
-            border-left: 23px solid #e6e6e6;
-        }
-
-        .step.active::after {
-            border-left-color: #007bff;
-        }
-
-        .step:last-child {
-            margin-right: 0;
-        }
-
-            .step:last-child::after {
-                display: none;
-            }
-
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .container {
-        flex: 1;
-    }
-
-    .footer-guest {
-        margin-top: auto;
-        background-color: #d3d3d3;
-        color: black;
-        padding: 10px 0;
-    }
-</style>
 
 <body>
     <header>
