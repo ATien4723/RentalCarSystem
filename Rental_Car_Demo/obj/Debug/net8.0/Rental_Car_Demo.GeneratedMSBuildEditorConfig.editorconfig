@@ -38,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xFZGl0Qm9va2luZ0RldGFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Booking/ErrorAuthorization.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xFcnJvckF1dGhvcml6YXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Booking/ViewBookingList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xWaWV3Qm9va2luZ0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -54,16 +58,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXEVycm9yQXV0aG9yaXphdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Car/tet1.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXHRldDEuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Car/ViewCarDetailsByCustomer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdDYXJEZXRhaWxzQnlDdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Car/ViewMyCars.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyXFZpZXdNeUNhcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Home/ErrorAuthorization.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvckF1dGhvcml6YXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Home/GetCarOwnerFeedbacks.cshtml]
@@ -88,6 +92,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Home/_CarResultsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfQ2FyUmVzdWx0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Payment/ErrorAuthorization.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxFcnJvckF1dGhvcml6YXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Payment/MyWallet.cshtml]
@@ -136,6 +144,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Users/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Users/ErrorAuthorization.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRXJyb3JBdXRob3JpemF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/FULearning/Sem6/GIT6/rental-car/Rental_Car_Demo/Views/Users/Fail.cshtml]
