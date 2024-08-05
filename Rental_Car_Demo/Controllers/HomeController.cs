@@ -7,6 +7,7 @@ using Rental_Car_Demo.Repository.CarRepository;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -66,6 +67,9 @@ namespace Rental_Car_Demo.Controllers
         //    return View(cars);
         //}
 
+
+
+
         [HttpGet]
         public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
@@ -95,47 +99,76 @@ namespace Rental_Car_Demo.Controllers
             return View(cars);
         }
 
-        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
+        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType,bool? fuelType, string brandLogo, string[] priceRange, string address)
         {
-            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType, brandLogo, minPrice, maxPrice, address);
+            decimal? minPrice = null;
+            decimal? maxPrice = null;
 
-            //get user to block customer access this view
-            var userString = HttpContext.Session.GetString("User");
+            if ( priceRange != null && priceRange.Length > 0 ) {
+                foreach ( var range in priceRange ) {
+                    var prices = range.Split ('-');
+                    if ( prices.Length == 2 ) {
+                        if ( decimal.TryParse (prices[0], out decimal min) && decimal.TryParse (prices[1], out decimal max) ) {
+                            if ( minPrice == null || min < minPrice ) minPrice = min;
+                            if ( maxPrice == null || max > maxPrice ) maxPrice = max;
+                        }
+                    }
+                }
+            }
+
+            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType,fuelType, brandLogo, minPrice, maxPrice, address);
+
+            var userString = HttpContext.Session.GetString ("User");
             User user = null;
-            if (!string.IsNullOrEmpty(userString))
-            {
-                user = JsonConvert.DeserializeObject<User>(userString);
+            if ( !string.IsNullOrEmpty (userString) ) {
+                user = JsonConvert.DeserializeObject<User> (userString);
             }
-            if (user.Role == true)
-            {
-                return View("ErrorAuthorization");
+            if ( user != null && user.Role == true ) {
+                return PartialView ("ErrorAuthorization");
             }
 
-            return PartialView("_CarResultsPartial", cars);
+            return PartialView ("_CarResultsPartial", cars);
         }
+
+
 
         [HttpGet]
         public JsonResult GetSuggestions(string query)
         {
+            if ( string.IsNullOrEmpty (query) ) {
+                return Json (new List<string> ());
+            }
+
+            query = query.Trim ();
+
+            if ( query.Length < 2 || query.Length > 100 ) {
+                return Json (new List<string> ());
+            }
+
+            if ( Regex.IsMatch (query, @"[^a-zA-Z0-9\s]") ) {
+                return Json (new List<string> ());
+            }
+
+            // Fetch matching addresses from the database
             var addresses = _context.Cars
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.City)
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.District)
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.Ward)
-                .Where(car => car.Status == 1 &&
-                  (car.Address.District.DistrictName.Contains(query) ||
-                   car.Address.Ward.WardName.Contains(query) ||
-                   car.Address.City.CityProvince.Contains(query) ||
-                   car.Address.HouseNumberStreet.Contains(query)))
-                .Select(car => new
+                .Include (car => car.Address)
+                    .ThenInclude (address => address.City)
+                .Include (car => car.Address)
+                    .ThenInclude (address => address.District)
+                .Include (car => car.Address)
+                    .ThenInclude (address => address.Ward)
+                .Where (car => car.Status == 1 &&
+                    ( car.Address.District.DistrictName.Contains (query) ||
+                     car.Address.Ward.WardName.Contains (query) ||
+                     car.Address.City.CityProvince.Contains (query) ||
+                     car.Address.HouseNumberStreet.Contains (query) ))
+                .Select (car => new
                 {
                     Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
-                .ToList();
+                .ToList ();
 
-            return Json(addresses.Select(a => a.Address).ToList());
+            return Json (addresses.Select (a => a.Address).ToList ());
         }
 
         [HttpGet]

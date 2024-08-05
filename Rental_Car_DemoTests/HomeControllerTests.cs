@@ -191,7 +191,7 @@ namespace Rental_Car_Demo.Tests
         {
             // Arrange
             var userId = 1;
-            var user = new User { UserId = 1, Role = false }; // Authorized user
+            var user = new User { UserId = 1}; // Authorized user
             var userString = JsonConvert.SerializeObject(user);
             _httpContext.Session.SetString("User", userString);
 

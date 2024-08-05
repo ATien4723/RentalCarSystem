@@ -252,12 +252,6 @@
     <header class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Rental <span class="text-danger">Cars</span></h3>
         <div class="top-bar d-flex align-items-center">
-            <div class="input-group me-4">
-                <input type="text" class="form-control" placeholder="Search your ride">
-                <button class="btn btn-outline-secondary" type="button">
-                    <i class="fa-regular fa-magnifying-glass"></i>
-                </button>
-            </div>
             <div class="dropdown">
                 @if (isUserLoggedIn)
                 {
@@ -348,8 +342,12 @@
 
                 var selectedTransmissions = [];
                 $(".transmissionCheckbox:checked").each(function () {
-                    var transmissionValue = ($(this).val() === "true");
-                    selectedTransmissions.push(transmissionValue);
+                    selectedSeats.push($(this).val());
+                });
+
+                var selectedFuel = [];
+                $(".fuleTypeCheckbox:checked").each(function () {
+                    selectedSeats.push($(this).val());
                 });
 
                 var selectedBrandLogos = [];
@@ -359,12 +357,13 @@
 
                 $.ajax({
                     url: "/Home/SearchCar",
-                    type: "GET",
+                    type: "POST",
                     traditional: true,
                     data: {
                         brandName: selectedBrands,
                         seats: selectedSeats,
-                        transmissionType: selectedTransmissions
+                        transmissionType: selectedTransmissions,
+                        fuelType: selectedFuel
                     },
                     success: function (data) {
                         $("#carResults").html(data);
@@ -384,7 +383,7 @@
         function performBrandSearch(brandName) {
             $.ajax({
                 url: "/Home/SearchCar",
-                type: "GET",
+                type: "POST",
                 traditional: true,
                 data: {
                     brandName: brandName
@@ -406,54 +405,26 @@
         });
 
 
-        function performPriceRangeSearch() {
-            var selectedPriceRanges = [];
-            $(".priceRangeCheckbox:checked").each(function () {
-                selectedPriceRanges.push($(this).val());
+
+            $(document).ready(function () {
+                $('.priceRangeCheckbox').change(function () {
+                    var form = $('#priceRangeForm');
+                    $.ajax({
+                    url: "/Home/SearchCar",
+                    type: "POST",
+                        data: form.serialize(),
+                        success: function (result) {
+                        $('#carResults').html(result);
+                        },
+                        error: function () {
+                            alert('Error occurred while fetching data.');
+                        }
+                    });
+                });
             });
-
-            var minPrice = null;
-            var maxPrice = null;
-
-            selectedPriceRanges.forEach(function (range) {
-                var bounds = range.split('-');
-                var lowerBound = parseFloat(bounds[0]);
-                var upperBound = parseFloat(bounds[1]);
-
-                if (minPrice === null || lowerBound < minPrice) {
-                    minPrice = lowerBound;
-                }
-                if (maxPrice === null || upperBound > maxPrice) {
-                    maxPrice = upperBound;
-                }
-            });
-
-            $.ajax({
-                url: "/Home/SearchCar",
-                type: "GET",
-                data: {
-                    minPrice: minPrice,
-                    maxPrice: maxPrice
-                },
-                success: function (data) {
-                    $("#carResults").html(data);
-                },
-                error: function (error) {
-                    console.log("Error performing search: " + error);
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            $(".priceRangeCheckbox").change(function () {
-                performPriceRangeSearch();
-            });
-        });
 
 
         function fetchSuggestions(query, inputId) {
-            if (query.length < 2) return; // Only fetch suggestions if the query is at least 2 characters long
-
             fetch('/Home/GetSuggestions?query=' + encodeURIComponent(query))
                 .then(response => response.json())
                 .then(data => {

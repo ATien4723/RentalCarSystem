@@ -93,27 +93,61 @@
                         }
                     </div>
                 </div>
+
+                <div class="filters mb-3">
+                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                           data-bs-target="#fuleTypeOptions" aria-expanded="false"
+                           aria-controls="fuleTypeOptions">
+                        Fuel Type
+                        <span class="fa-sharp fa-light fa-caret-down"></span>
+                    </label>
+                    <div class="collapse" id="fuleTypeOptions">
+                        <!-- Add Gear Transmission options here -->
+                        @foreach ( var car in Model.Select (c => c.FuelType).Distinct () ) {
+                            <div class="form-check">
+                                <input class="form-check-input fuleTypeCheckbox" type="checkbox" id="transmission-@car" value="@car">
+                                <p class="form-check-label" for="fuelType-@car">@(car ? "Gasoline" : "Diesel")</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
                 <div class="filters mb-3">
                     <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                            data-bs-target="#priceRangeOptions" aria-expanded="false" aria-controls="priceRangeOptions">
                         Price Range
                         <span class="fa-sharp fa-light fa-caret-down"></span>
                     </label>
-                    <div class="collapse" id="priceRangeOptions">
-                        <div class="form-check">
-                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="lowRange" value="0-100">
-                            <p class="form-check-label" for="lowRange">0 - 100VND</p>
+                    <form id="priceRangeForm" method="post" action="/Controller/SearchCar">
+                        <div class="collapse" id="priceRangeOptions">
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="lowRange" name="priceRange" value="0-100000">
+                                <label class="form-check-label" style="font-weight:normal" for="lowRange">0 - 100000VND</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="lowRange" name="priceRange" value="0-500000">
+                                <label class="form-check-label" style="font-weight:normal" for="lowRange">100000 - 500000VND</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="midRange" name="priceRange" value="500000-1000000">
+                                <label class="form-check-label" style="font-weight:normal" for="midRange">500000 - 1000000VND</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="highRange" name="priceRange" value="1000000-5000000">
+                                <label class="form-check-label" style="font-weight:normal" for="highRange">1000000 - 5000000VND</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="highRange" name="priceRange" value="1000000-10000000">
+                                <label class="form-check-label" style="font-weight:normal" for="highRange">5000000 - 10000000VND</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input priceRangeCheckbox" type="checkbox" id="highRange" name="priceRange" value="1000000-100000000">
+                                <label class="form-check-label" style="font-weight:normal" for="highRange">10000000 - 100000000VND</label>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="midRange" value="100-1300">
-                            <p class="form-check-label" for="midRange">100 - 1000VND</p>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input priceRangeCheckbox" type="checkbox" id="highRange" value="1300-2500">
-                            <p class="form-check-label" for="highRange">1300 - 2500VND</p>
-                        </div>
+                    </form>
                     </div>
-                </div>
 
                 <div class="filters mb-3">
                     <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
