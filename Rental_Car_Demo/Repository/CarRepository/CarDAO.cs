@@ -105,7 +105,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             }
         }
 
-        public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
+        public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType,bool? fuelType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
         {
             try {
                 using ( var context = new RentCarDbContext () ) {
@@ -114,11 +114,11 @@ namespace Rental_Car_Demo.Repository.CarRepository
                         .Include (c => c.Model)
                         .Include (c => c.Color)
                         .Include (c => c.Address)
-                            .ThenInclude (a => a.City)
+                        .ThenInclude (a => a.City)
                         .Include (c => c.Address)
-                            .ThenInclude (a => a.District)
+                        .ThenInclude (a => a.District)
                         .Include (c => c.Address)
-                            .ThenInclude (a => a.Ward)
+                        .ThenInclude (a => a.Ward)
                         .Include (c => c.Document)
                         .Include (c => c.Term)
                         .Include (c => c.User)
@@ -127,7 +127,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
                         .AsQueryable ();
 
                     if ( !string.IsNullOrEmpty (brandName) ) {
-                        cars = cars.Where (c => c.Brand.BrandName.Contains (brandName));
+                        cars = cars.Where (c => c.Brand.BrandName.Contains(brandName));
                     }
 
                     if ( seats.HasValue ) {
@@ -136,6 +136,10 @@ namespace Rental_Car_Demo.Repository.CarRepository
 
                     if ( transmissionType.HasValue ) {
                         cars = cars.Where (c => c.TransmissionType == transmissionType.Value);
+                    }
+
+                    if ( fuelType.HasValue ) {
+                        cars = cars.Where (c => c.FuelType == fuelType.Value);
                     }
 
                     if ( !string.IsNullOrEmpty (brandLogo) ) {

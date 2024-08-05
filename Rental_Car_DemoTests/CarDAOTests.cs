@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Moq;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;

@@ -29,7 +29,7 @@ namespace Rental_Car_Demo.Controllers
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
             ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
             var userJson = HttpContext.Session.GetString("User");
-            bool checkRent = false;
+            bool checkRent = false; 
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
@@ -605,6 +605,7 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            ViewBag.CarOwner = _db.Users.FirstOrDefault (x => x.UserId == car.UserId);
             if (car == null)
             {
                 return NotFound();

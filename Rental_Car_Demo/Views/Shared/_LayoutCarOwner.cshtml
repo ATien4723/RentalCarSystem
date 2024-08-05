@@ -23,6 +23,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/stylehome.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Rental_Car_Demo.styles.css" asp-append-version="true" />
+
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-thin.css">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-solid.css">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-regular.css">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-light.css">
+
+
     <style>
         .modal-header-center {
             display: flex;
@@ -46,200 +59,177 @@
             right: 10px;
         }
 
-        .benefit-content {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        .benefits-section {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mb-5 {
-            margin-bottom: 3rem;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .col-md-4 {
-            flex: 1 1 33.333%;
-            box-sizing: border-box;
-        }
-
-        .benefit-box {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            background: #f9f9f9;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        .benefit-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-            .benefit-header i {
-                font-size: 24px;
-                margin-right: 10px;
-            }
-
-        .benefit-box h5 {
-            margin: 0;
-            font-size: 1.25rem;
-        }
-
-        .benefit-box p {
-            margin: 0;
-            font-size: 1rem;
-            color: #555;
-        }
-
-        .benefit-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-            .benefit-button .btn {
-                background-color: #007bff;
-                border-color: #007bff;
-                color: white;
-                font-weight: bold;
-                margin-bottom: 20px;
-            }
-
-                .benefit-button .btn:hover {
-                    background-color: #0056b3;
-                    border-color: #0056b3;
-                }
-
-        .text-car {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        .carousel-control-prev-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-        }
-
-        .carousel-control-next-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
-        }
-
-        .carousel-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-item {
-            height: 320px;
-        }
-
+        
         .d-none {
             display: none;
         }
-
        
-
-      
-
-        .carousel-control-prev-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-        }
-
-        .carousel-control-next-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
-        }
-
-        .carousel-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-item {
-            height: 320px;
-        }
-
-   
-
         .custom-drag-area {
-            margin-top: 1rem; /* Equivalent to mt-3 */
-            width: 250px; /* Equivalent to w-88 */
-            border-radius: 1rem; /* Equivalent to rounded-2xl */
-            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
-            padding: 1.5rem; /* Equivalent to p-6 */
+            margin-top: 1rem; 
+            width: 250px; 
+            border-radius: 1rem; 
+            border: 2px dashed black; 
+            padding: 1.5rem;
             display: flex;
-            flex-direction: column; /* Equivalent to flex-col */
-            align-items: center; /* Equivalent to items-center */
-            justify-content: center; /* Equivalent to justify-content-center */
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
             background-color: white;
             height: 250px;
         }
 
         .custom-drag-area1 {
-            margin-top: 1rem; /* Equivalent to mt-3 */
-            border-radius: 1rem; /* Equivalent to rounded-2xl */
-            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
-            padding: 1.5rem; /* Equivalent to p-6 */
+            margin-top: 1rem; 
+            border-radius: 1rem;
+            border: 2px dashed black;
+            padding: 1.5rem;
             display: flex;
-            flex-direction: column; /* Equivalent to flex-col */
-            align-items: center; /* Equivalent to items-center */
-            justify-content: center; /* Equivalent to justify-content-center */
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center; 
             background-color: white;
         }
 
-        
+        .hero-section {
+            height: 90vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section .background-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* animation: slideShow 10s infinite; */
+        }
+
+        .background-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+
+        .search-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-custom {
+            background-color: #FF5722;
+            border: none;
+            color: white;
+            margin-bottom: 10px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-custom:hover {
+            background-color: #e64a19;
+        }
+
+        .features-section {
+            padding: 50px 0;
+            background: white;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        .feature-box h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feature-box p {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .feature-box {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .separator {
+            border-left: 1px solid #ddd;
+            padding-left: 20px;
+        }
+
+        .feature-box img {
+            width: 50px;
+            margin-bottom: 15px;
+        }
+
+        .feature-box h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feature-box p {
+            font-size: 1rem;
+            color: #777;
+        }
+
 
     </style>
 
     <!-- css My Car -->
     <style>
-        .carousel-control-prev-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-        }
-
-        .carousel-control-next-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
-        }
+      
 
         .carousel-inner img {
             width: 100%;
-            height: 100%;
             object-fit: cover;
         }
 
         .carousel-item {
-            height: 350px;
+            height: 390px;
         }
 
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" fill="%23000000" viewBox="0 0 16 16"%3e%3cpath d="M11.354 1.354a.5.5 0 0 1 0 .707L6.207 7.5l5.147 5.146a.5.5 0 0 1-.708.708l-5.5-5.5a.5.5 0 0 1 0-.708l5.5-5.5a.5.5 0 0 1 .708 0z"/%3e%3c/svg%3e');
+        .carousel-item {
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
-
         .pagination-num.current {
             background-color: blue;
-            color: white; /* Optional: Makes the text color white for better contrast */
-            border: none; /* Optional: Removes the border if you want a cleaner look */
-            padding: 9px 14px; /* Optional: Adjust padding for better spacing */
-            cursor: pointer; /* Optional: Changes the cursor to a pointer to indicate it's clickable */
+            color: white; 
+            border: none; 
+            padding: 9px 14px; /
+            cursor: pointer; 
         }
         .pagination-controls button,
         .pagination-controls select {
@@ -301,7 +291,7 @@
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -358,7 +348,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/editcar.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
 
@@ -367,6 +357,28 @@
             document.getElementById('logoutForm').submit();
         }
     </script>
+
+     <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.background-images img');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000); 
+        showSlide(currentSlide); 
+    </script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -8,7 +8,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
         IEnumerable<Car> GetAllCars(string address);
 
         IEnumerable<Car> GetAllCars();
-        IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address);
+        IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType, bool? fuelType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address);
 
 
     }
