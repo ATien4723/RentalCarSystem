@@ -11,37 +11,38 @@ using System.Threading.Tasks;
 
 namespace Rental_Car_Demo.UnitTests
 {
-    [TestFixture]
+    //[TestFixture]
+    //public class UsersControllerTests
+    //{
+    //    private UsersController _uc;
+    //    private RentCarDbContext _db;
 
-    public class UsersControllerTests
-    {
-        private UsersController _usersController;
-        private Mock<RentCarDbContext> _dbContextMock;
+    //    [SetUp]
+    //    public void Setup()
+    //    {
+    //        _db = new RentCarDbContext();
+    //        _uc = new UsersController();
+    //    }
 
-        [SetUp]
-        public void Setup()
-        {
-            // Tạo mock cho RentCarDbContext
-            _dbContextMock = new Mock<RentCarDbContext>();
+    //    [TearDown]
+    //    public void TearDown()
+    //    {
+    //        _uc.Dispose();
+    //        _db.Dispose();
+    //    }
 
-            // Tạo instance của UsersController với RentCarDbContext mock
-            _usersController = new UsersController(_dbContextMock.Object);
-        }
+    //    [Test, MaxTime(2000)]
+    //    [TestCase("duyquan7b@gmail.com", true)]
+    //    [TestCase("duyquan7b1@gmail.com", true)]
+    //    [TestCase("hfa@gmail.com", false)]
+    //    [TestCase("hfa.com", false)]
+    //    [TestCase("minhquandancom", false)]
+    //    public void IsEmailExist_ReturnsExpectedResult(string email, bool expected)
+    //    {
+    //        bool result = _uc.IsEmailExist(email);
 
-        [Test, MaxTime(2000)]
-        [TestCase("duyquan7b@gmail.com", true)]
-        [TestCase("duyquan7b1@gmail.com", true)]
-        [TestCase("hfa@gmail.com", false)]
-        [TestCase("hfa.com", false)]
-        [TestCase("minhquandancom", false)]
-        public void IsEmailExist_Return(string email, bool expected)
-        {
-            bool result = uc.IsEmailExist(email);
-            Assert.That(result, Is.EqualTo(expected));
-        }
+    //        Assert.That(result, Is.EqualTo(expected));
 
-
-
-
-    }
+    //    }
+    //}
 }

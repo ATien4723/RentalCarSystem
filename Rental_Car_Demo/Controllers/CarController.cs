@@ -12,12 +12,11 @@ namespace Rental_Car_Demo.Controllers
     {
         ICarRepository carRepository = null;
 
-        RentCarDbContext _db = new RentCarDbContext();
-        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
+        RentCarDbContext _db;
+
+        public CarController(RentCarDbContext context)
         {
-            this.carRepository = carRepository;
-            _db = db;
-            _emailService = emailService;
+            this._db = context;
         }
 
         public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
@@ -26,7 +25,20 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.startDate = startDate;
             ViewBag.endDate = endDate;
 
+
+
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+
+            if(car == null)
+            {
+                return NotFound($"No founded car with Id = {CarId} !");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("Date invalid");
+            }
+
             ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;

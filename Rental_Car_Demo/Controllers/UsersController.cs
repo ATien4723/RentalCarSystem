@@ -160,15 +160,8 @@ namespace Rental_Car_Demo.Controllers
 
         UserDAO userDAO;
 
-        public UsersController(IEmailService emailService)
-        {
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
-        }
-
         public UsersController()
         {
-
         }
 
         public IActionResult Register()
