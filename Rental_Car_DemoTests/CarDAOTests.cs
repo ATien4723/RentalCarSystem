@@ -1,142 +1,78 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using NUnit.Framework;
+using Moq;
+using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Rental_Car_Demo.UnitTests
+namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
-    public class CarDaoTests
+    public class CarDAOTests
     {
-        private RentCarDbContext _context;
-        private CarDAO _carDao; // Assuming you have a DAO class for Car with the GetAllCars method
+        private CarDAO _carDao;
+        private Mock<RentCarDbContext> _mockContext;
+        private Mock<DbSet<Car>> _mockCarSet;
 
         [SetUp]
         public void SetUp()
         {
-            var options = new DbContextOptionsBuilder<RentCarDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            _mockContext = new Mock<RentCarDbContext>();
+            _mockCarSet = new Mock<DbSet<Car>>();
 
-            _context = new RentCarDbContext(options);
-            _carDao = new CarDAO();
-
-            SeedDatabase();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
-        }
-
-        private void SeedDatabase()
-        {
-            var city = new City { CityProvince = "SampleCity" };
-            var district = new District { DistrictName = "SampleDistrict" };
-            var ward = new Ward { WardName = "SampleWard" };
-            var address = new Address
+            var carData = new List<Car>
             {
-                HouseNumberStreet = "123 Main St",
-                City = city,
-                District = district,
-                Ward = ward
-            };
-            var cars = new List<Car>
-            {
-               new Car
-               {
-                   CarId = 1,
-                   Address = new Address
-                   {
-                        HouseNumberStreet = "123 Main St",
-                        Ward = new Ward { WardName = "Ward A" },
-                        District = new District { DistrictName = "District B" },
-                        City = new City { CityProvince = "City C" }
-                   },
-                   Status = 1,
-                   BackImage = "backImageUrl",
-                   Description = "Description",
-                   FrontImage = "frontImageUrl",
-                   LeftImage = "leftImageUrl",
-                   LicensePlate = "ABC123",
-                   Name = "Car Name",
-                   RightImage = "rightImageUrl"
-            },
-               new Car
-               {
-                   CarId = 2,
-                   Address = new Address
-                   {
-                       HouseNumberStreet = "456 Another St",
-                       Ward = new Ward { WardName = "Ward D" },
-                       District = new District { DistrictName = "District E" },
-                       City = new City { CityProvince = "City F" }
-                   },
-                   Status = 1,
-                   BackImage = "backImageUrl",
-                   Description = "Description",
-                   FrontImage = "frontImageUrl",
-                   LeftImage = "leftImageUrl",
-                   LicensePlate = "DEF456",
-                   Name = "Another Car Name",
-                   RightImage = "rightImageUrl"
-               }
-            };
+                new Car { CarId = 1, Brand = new CarBrand { BrandName = "Toyota" }, Seats = 4, TransmissionType = true, BasePrice = 100, Status = 1, Address = new Address { HouseNumberStreet = "123 Main St", Ward = new Ward { WardName = "Ward1" }, District = new District { DistrictName = "District1" }, City = new City { CityProvince = "City1" } }},
+                new Car { CarId = 2, Brand = new CarBrand { BrandName = "Honda" }, Seats = 5, TransmissionType = false, BasePrice = 150, Status = 1, Address = new Address { HouseNumberStreet = "456 Main St", Ward = new Ward { WardName = "Ward2" }, District = new District { DistrictName = "District2" }, City = new City { CityProvince = "City2" } }}
+            }.AsQueryable();
 
-            _context.Cars.AddRange(cars);
-            _context.SaveChanges();
+            _mockCarSet.As<IQueryable<Car>>().Setup(m => m.Provider).Returns(carData.Provider);
+            _mockCarSet.As<IQueryable<Car>>().Setup(m => m.Expression).Returns(carData.Expression);
+            _mockCarSet.As<IQueryable<Car>>().Setup(m => m.ElementType).Returns(carData.ElementType);
+            _mockCarSet.As<IQueryable<Car>>().Setup(m => m.GetEnumerator()).Returns(carData.GetEnumerator());
+
+            _mockContext.Setup(c => c.Cars).Returns(_mockCarSet.Object);
+
+            _carDao = CarDAO.Instance;
         }
 
         [Test]
-        public void GetAllCars_WithAddress_ReturnsFilteredCars()
+        public void CreateCar_ShouldAddCar()
         {
-            // Arrange
-            string address = "Main St";
+            var newCar = new Car { CarId = 3, Brand = new CarBrand { BrandName = "Ford" }, Seats = 5, TransmissionType = true, BasePrice = 200, Status = 1, Address = new Address { HouseNumberStreet = "789 Main St", Ward = new Ward { WardName = "Ward3" }, District = new District { DistrictName = "District3" }, City = new City { CityProvince = "City3" } } };
 
-            // Act
+            _carDao.CreateCar(newCar);
+
+            _mockCarSet.Verify(m => m.Add(It.IsAny<Car>()), Times.Once());
+            _mockContext.Verify(m => m.SaveChanges(), Times.Once());
+        }
+
+        [Test]
+        public void GetAllCars_ShouldReturnAllCars()
+        {
+            var cars = _carDao.GetAllCars();
+
+            Assert.AreEqual(2, cars.Count());
+        }
+
+        [Test]
+        public void GetAllCars_WithAddress_ShouldReturnFilteredCars()
+        {
+            var address = "123 Main St";
             var cars = _carDao.GetAllCars(address);
 
-            // Assert
-            Assert.IsNotNull(cars);
-            Assert.IsTrue(cars.Any(), "There should be at least one car in the result.");
-            Assert.IsTrue(cars.All(c => (c.Address.HouseNumberStreet + ", " +
-                                         c.Address.Ward.WardName + ", " +
-                                         c.Address.District.DistrictName + ", " +
-                                         c.Address.City.CityProvince).Contains(address)),
-                            "All cars should match the address filter.");
+            Assert.AreEqual(1, cars.Count());
+            Assert.AreEqual("Toyota", cars.First().Brand.BrandName);
         }
 
         [Test]
-        public void GetAllCars_WithoutAddress_ReturnsAllCars()
+        public void SearchCars_ShouldReturnFilteredCars()
         {
-            // Act
-            var cars = _carDao.GetAllCars(null);
+            var cars = _carDao.SearchCars("Toyota", 4, true, null, 50, 150, null);
 
-            // Assert
-            Assert.IsNotNull(cars);
-            Assert.IsTrue(cars.Any(), "There should be at least one car in the result.");
-        }
-
-        [Test]
-        public void GetAllCars_NoMatchingAddress_ReturnsEmpty()
-        {
-            // Arrange
-            string address = "NonexistentAddress";
-
-            // Act
-            var cars = _carDao.GetAllCars(address);
-
-            // Assert
-            Assert.IsNotNull(cars);
-            Assert.IsFalse(cars.Any(), "There should be no cars matching the non-existent address.");
+            Assert.AreEqual(1, cars.Count());
+            Assert.AreEqual("Toyota", cars.First().Brand.BrandName);
         }
     }
-
 }

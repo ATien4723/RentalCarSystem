@@ -222,7 +222,7 @@ namespace Rental_Car_Demo.Tests
         [Test]
         [TestCase(2, 1, false, "ErrorAuthorization")]
         [TestCase(1, 1, true, "ErrorAuthorization")]
-        [TestCase(2, 1, false, "ErrorAuthorization")]
+        [TestCase(2, 1, true, "ErrorAuthorization")]
 
         public void GetUserFeedbacks_UserLogin_ReturnsErrorAuthorizationView(int userIdFeedback, int loggedId, bool loggedRole, string viewName)
         {

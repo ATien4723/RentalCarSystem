@@ -111,6 +111,76 @@ namespace Rental_Car_Demo.UserControllerTests
             Assert.That(result, Is.EqualTo(expectedResult));
         }
 
+
+
+        [Test]
+        public void Register_ValidModel_ShouldRedirectToGuest()
+        {
+            // Arrange
+            var model = new RegisterAndLoginViewModel
+            {
+                Register = new RegisterViewModel { Email = "hehe123@gmail.com", Password = "hehe123", ConfirmPassword = "hehe123", Name = "hehe123", Phone = "0987654321", Role = "rentCar", AgreeToTerms = true }
+            };
+
+            // Act
+            var result = _controller.Register(model) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Guest", result.ActionName);
+            Assert.AreEqual("Users", result.ControllerName);
+        }
+
+        [Test]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiettttttttttttttttttttttttttttttttttttttttttttttt", "0326713614", "carOwner", true, Description = "1. Name exceed 50 char")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "", "0326713614", "carOwner", true, Description = "2. Name is empty")]
+
+        [TestCase("kietdzne@gmail.com", "", "", "hehe", "0904182483", "rentCar", true, Description = "3. Password is empty")]
+        [TestCase("kietdzne@gmail.com", "hehe12", "hehe12", "hehe", "0904182483", "rentCar", true, Description = "4. Password not have at least 7 char")]
+        [TestCase("kietdzne@gmail.com", "hehehehe", "hehehehe", "hehe", "0904182483", "rentCar", true, Description = "5. Password not have number")]
+        [TestCase("kietdzne@gmail.com", "hehe", "hehe", "hehe", "0904182483", "rentCar", true, Description = "6. Password not have number and not have at least 7 char")]
+        [TestCase("kietdzne@gmail.com", "11111111", "11111111", "hehe", "0904182483", "rentCar", true, Description = "7. Password not have letter")]
+        [TestCase("kietdzne@gmail.com", "1111", "1111", "hehe", "0904182483", "rentCar", true, Description = "8. Password not have letter and not have at least 7 char")]
+        [TestCase("kietdzne@gmail.com", "@@@@@@@@", "@@@@@@@@", "hehe", "0904182483", "rentCar", true, Description = "9. Password not have letter and number")]
+        [TestCase("kietdzne@gmail.com", "@@@@", "@@@@", "hehe", "0904182483", "rentCar", true, Description = "10. Password not have letter and number and not have at least 7 char")]
+
+        [TestCase("kietdzne@gmail.com", "hehehe123", "", "hehe", "0904182483", "rentCar", true, Description = "11. Confirm password is empty")]
+        [TestCase("kietdzne@gmail.com", "hehehe123", "abcxyz123", "hehe", "0904182483", "rentCar", true, Description = "12. Confirm password and password not match")]
+
+        [TestCase("", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "13. Email is empty")]
+        [TestCase("plainaddress", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "14. Email without domain")]
+        [TestCase("@missingusername.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "15. Email missing username")]
+        [TestCase("missingatsign.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "16. Email missing @ sign")]
+        [TestCase("missingdomain@.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "17. Email missing domain name")]
+        [TestCase("missingdot@domaincom", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "18. Email missing dot in domain")]
+        [TestCase("missingtld@domain.", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "19. Email missing top-level domain")]
+        [TestCase("missingsymbol@domain..com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "20. Email with double dot in domain")]
+        [TestCase("contains spaces@domain.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "21. Email with spaces")]
+        [TestCase("specialchars!#$%&'*+/=?^_`{|}~@gmail.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "22. Email with invalid special characters")]
+
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "", "carOwner", true, Description = "23. Phone is empty")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "001203019", "carOwner", true, Description = "24. Phone start with 00")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "011203019", "carOwner", true, Description = "25. Phone start with 01")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "021203019", "carOwner", true, Description = "26. Phone start with 02")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "041203019", "carOwner", true, Description = "27. Phone start with 04")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "061203019", "carOwner", true, Description = "28. Phone start with 06")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "03120301", "carOwner", true, Description = "29. Phone is less than 10 number")]
+        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "0312030111", "carOwner", true, Description = "30. Phone is more than 10 number")]
+        public void Register_InvalidModel_ModelError_CannotSubmitForm(string email, string password, string confirmPassword,string name, string phone, string role, bool agreeTerm)
+        {
+            // Arrange
+            var model = new RegisterAndLoginViewModel
+            {
+                Register = new RegisterViewModel { Email = email, Password = password, ConfirmPassword = confirmPassword, Name = name, Phone = phone, Role = role, AgreeToTerms = agreeTerm }
+            };
+
+            // Act
+            var result = _controller.Register(model) as ViewResult;
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
         [Test]
         public void Register_EmailAlreadyExists_ShouldAddModelError()
         {
@@ -145,38 +215,34 @@ namespace Rental_Car_Demo.UserControllerTests
             Assert.AreEqual("Please agree to this!", result.ViewData.ModelState["Register.AgreeToTerms"].Errors[0].ErrorMessage);
         }
 
-        [Test]
-        public void Register_ValidModel_ShouldRedirectToGuest()
-        {
-            // Arrange
-            var model = new RegisterAndLoginViewModel
-            {
-                Register = new RegisterViewModel { Email = "hehe123@gmail.com", Password = "hehe123", ConfirmPassword = "hehe123", Name = "hehe123", Phone = "0987654321", Role = "rentCar", AgreeToTerms = true }
-            };
-
-            // Act
-            var result = _controller.Register(model) as RedirectToActionResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Guest", result.ActionName);
-            Assert.AreEqual("Users", result.ControllerName);
-        }
 
 
 
         [Test]
-        public void ResetPassword_ExistingEmail_SendsResetLink()
+        [TestCase("nvutuankiet2003@gmail.com", "token01", 1, true, Description = "1. Email existing")]
+        [TestCase("abc@gmail.com", "token02", -1, true, Description = "2. Email not existing")]
+
+        [TestCase("", "token01", -1, false, Description = "3. Email is empty")]
+        [TestCase("plainaddress", "token01", -1, false, Description = "4. Email without domain")]
+        [TestCase("@missingusername.com", "token01", -1, false, Description = "5. Email missing username")]
+        [TestCase("missingatsign.com", "token01", -1, false, Description = "6. Email missing @ sign")]
+        [TestCase("missingdomain@.com", "token01", -1, false, Description = "7. Email missing domain name")]
+        [TestCase("missingdot@domaincom", "token01", -1, false, Description = "8. Email missing dot in domain")]
+        [TestCase("missingtld@domain.", "token01", -1, false, Description = "9. Email missing top-level domain")]
+        [TestCase("missingsymbol@domain..com", "token01", -1, false, Description = "10. Email with double dot in domain")]
+        [TestCase("contains spaces@domain.com", "token01", -1, false, Description = "11. Email with spaces")]
+        [TestCase("specialchars!#$%&'*+/=?^_`{|}~@gmail.com", "token01", -1, false, Description = "12. Email with invalid special characters")]
+        public void ResetPassword_Post_Check_Email(string email, string token, int user, bool emailValid)
         {
             // Arrange
             var model = new ResetPasswordViewModel
             {
-                Email = "nvutuankiet2003@gmail.com"
+                Email = email
             };
 
-            _mockTokenGenerator.Setup(tg => tg.GenerateToken(It.IsAny<int>())).Returns("dummyToken");
+            _mockTokenGenerator.Setup(tg => tg.GenerateToken(It.IsAny<int>())).Returns(token);
             _mockTokenGenerator.Setup(tg => tg.GetExpirationTime()).Returns(DateTime.Now.AddHours(1));
-            _mockCustomerContext.Setup(cc => cc.getCustomerIdByEmail(model.Email)).Returns(1);
+            _mockCustomerContext.Setup(cc => cc.getCustomerIdByEmail(model.Email)).Returns(user);
 
             var mockUrlHelper = new Mock<IUrlHelper>();
             mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("https://example.com/resetpassword");
@@ -191,44 +257,34 @@ namespace Rental_Car_Demo.UserControllerTests
             };
 
             _mockTempData.Setup(td => td["SuccessMessage"]).Returns<string>(key => key == "SuccessMessage" ? "We will send link to reset your password in the email!" : null);
-
-            // Act
-            var result = _controller.ResetPassword(model) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("We will send link to reset your password in the email!", _controller.TempData["SuccessMessage"]);
-        }
-
-        [Test]
-        public void ResetPassword_NonExistingEmail_ShowsErrorMessage()
-        {
-            // Arrange
-            var model = new ResetPasswordViewModel
-            {
-                Email = "nonexistentemail@example.com"
-            };
-
-            _mockCustomerContext.Setup(cc => cc.getCustomerIdByEmail(model.Email)).Returns(-1);
-
-            _mockTempData.Setup(td => td.ContainsKey(It.IsAny<string>())).Returns<string>(key => key == "FailMessage");
             _mockTempData.Setup(td => td["FailMessage"]).Returns<string>(key => key == "FailMessage" ? "Sorry, Your email does not exist in our database!" : null);
 
             // Act
             var result = _controller.ResetPassword(model) as ViewResult;
 
-            // Assert
-            Assert.IsNotNull(result, "The result should not be null");
-            Assert.IsTrue(_controller.TempData.ContainsKey("FailMessage"), "TempData should contain FailMessage");
-            Assert.AreEqual("Sorry, Your email does not exist in our database!", _controller.TempData["FailMessage"], "The FailMessage in TempData is incorrect");
-
+            if (user == 1 && emailValid == true)
+            {
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual("We will send link to reset your password in the email!", _controller.TempData["SuccessMessage"]);
+            }
+            if (user == -1 && emailValid == true)
+            {
+                // Assert
+                Assert.IsNotNull(result, "The result should not be null");
+                Assert.AreEqual("Sorry, Your email does not exist in our database!", _controller.TempData["FailMessage"], "The FailMessage in TempData is incorrect");
+            }
+            if (user == -1 && emailValid == false)
+            {
+                Assert.IsNull(result);
+            }
         }
 
         [Test]
-        [TestCase("validToken", false, false, "ResetPassword2ViewModel", 1)]
+        [TestCase("validToken", false, false, null, 1)]
         [TestCase("expiredToken", true, false, "Fail", 1)]
         [TestCase("lockedToken", false, true, "Fail", 1)]
-        public void ResetPassword2_TokenValidationTests(string tokenValue, bool isExpired, bool isLocked, string expectedViewName, int expectedCustomerId)
+        public void ResetPassword2_TokenValidationTests(string tokenValue, bool isExpired, bool isLocked, string? expectedViewName, int expectedCustomerId)
         {
             // Arrange
             var customerId = 1;
@@ -251,7 +307,7 @@ namespace Rental_Car_Demo.UserControllerTests
             Assert.IsNotNull(result, "The result should not be null");
             Assert.AreEqual(expectedViewName, result.ViewName, "The view name is incorrect");
 
-            if (expectedViewName == "ResetPassword2ViewModel")
+            if (expectedViewName == null)
             {
                 Assert.IsInstanceOf<ResetPassword2ViewModel>(result.Model, "The model should be of type ResetPassword2ViewModel");
                 Assert.AreEqual(expectedCustomerId, ((ResetPassword2ViewModel)result.Model).CustomerId, "The CustomerId in the model should match");
