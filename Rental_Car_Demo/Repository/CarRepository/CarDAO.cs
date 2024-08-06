@@ -105,7 +105,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             }
         }
 
-        public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType,bool? fuelType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
+        public IEnumerable<Car> SearchCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, decimal? minPrice, decimal? maxPrice, string address)
         {
             try {
                 using ( var context = new RentCarDbContext () ) {
@@ -123,27 +123,27 @@ namespace Rental_Car_Demo.Repository.CarRepository
                         .Include (c => c.Term)
                         .Include (c => c.User)
                         .Include (c => c.Bookings)
-                        .Where(c => c.Status != 2)
+                        .Where (c => c.Status != 2)
                         .AsQueryable ();
 
-                    if ( !string.IsNullOrEmpty (brandName) ) {
-                        cars = cars.Where (c => c.Brand.BrandName.Contains(brandName));
+                    if ( brandNames != null && brandNames.Length > 0 ) {
+                        cars = cars.Where (c => brandNames.Contains (c.Brand.BrandName));
                     }
 
-                    if ( seats.HasValue ) {
-                        cars = cars.Where (c => c.Seats == seats);
+                    if ( seats != null && seats.Length > 0 ) {
+                        cars = cars.Where (c => seats.Contains (c.Seats));
                     }
 
-                    if ( transmissionType.HasValue ) {
-                        cars = cars.Where (c => c.TransmissionType == transmissionType.Value);
+                    if ( transmissionTypes != null && transmissionTypes.Length > 0 ) {
+                        cars = cars.Where (c => transmissionTypes.Contains (c.TransmissionType));
                     }
 
-                    if ( fuelType.HasValue ) {
-                        cars = cars.Where (c => c.FuelType == fuelType.Value);
+                    if ( fuelTypes != null && fuelTypes.Length > 0 ) {
+                        cars = cars.Where (c => fuelTypes.Contains (c.FuelType));
                     }
 
-                    if ( !string.IsNullOrEmpty (brandLogo) ) {
-                        cars = cars.Where (c => c.Brand.BrandLogo == brandLogo);
+                    if ( brandLogos != null && brandLogos.Length > 0 ) {
+                        cars = cars.Where (c => brandLogos.Any (logo => c.Brand.BrandLogo.Contains (logo)));
                     }
 
                     if ( minPrice.HasValue ) {
@@ -167,7 +167,6 @@ namespace Rental_Car_Demo.Repository.CarRepository
                 throw new Exception (ex.Message);
             }
         }
-
 
     }
 }

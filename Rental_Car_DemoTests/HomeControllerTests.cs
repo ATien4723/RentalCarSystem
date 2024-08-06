@@ -98,7 +98,7 @@ namespace Rental_Car_Demo.Tests
                 }
             });
 
-            _mockCarRepository.Setup(repo => repo.SearchCars(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
+            _mockCarRepository.Setup(repo => repo.SearchCars(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<bool?>(), It.IsAny<bool?> (), It.IsAny<string>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
             .Returns(cars);
 
 
@@ -128,9 +128,23 @@ namespace Rental_Car_Demo.Tests
 
         [Test]
 
-        [TestCase(null, null, null, null, null, Description = "Default values")]
-        [TestCase("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
-        [TestCase("", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
+        [TestCase (null, null, null, null, null, Description = "Default values")]
+        [TestCase ("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
+        [TestCase ("", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
+        [TestCase ("Another Address", "2024-02-15", "09:00", "2024-02-16", "17:00", Description = "Different address with dates and times")]
+        [TestCase ("Special Address", "2024-03-20", "13:45", "2024-03-21", "15:30", Description = "Special address with specific times")]
+        [TestCase ("Test Address", "2024-04-10", "16:00", "2024-04-12", "10:00", Description = "Test address with different time format")]
+        [TestCase ("No Address", null, null, null, null, Description = "No address with null dates and times")]
+        [TestCase (null, "2024-05-05", "10:00", null, "20:00", Description = "Null address with specified pickup date and time only")]
+        [TestCase (null, null, null, "2024-06-15", "14:00", Description = "Null address with specified dropoff date and time only")]
+        [TestCase ("Address Only", null, null, null, null, Description = "Only address provided")]
+        [TestCase ("Empty Address", "2024-07-01", "12:00", "2024-07-02", "14:00", Description = "Empty address with specific dates and times")]
+        [TestCase ("Complex Address", "2024-08-20", "08:00", "2024-08-25", "22:00", Description = "Complex address with long date range and times")]
+        [TestCase ("Address 1", "2024-09-01", "11:00", "2024-09-01", "13:00", Description = "Same date range with different times")]
+        [TestCase ("Address 2", "2024-10-01", "09:00", "2024-10-02", "21:00", Description = "Different times on consecutive days")]
+        [TestCase ("Address 3", "2024-11-01", "07:00", "2024-11-05", "17:00", Description = "Extended date range with early time")]
+        [TestCase ("Address 4", "2024-12-01", "18:00", "2024-12-10", "06:00", Description = "Extended date range with late pickup time and early dropoff time")]
+
         public void SearchCarForm_Returns_ViewResult_With_Cars(string? address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime)
         {
             // Convert strings to DateOnly and TimeOnly
