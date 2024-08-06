@@ -148,7 +148,7 @@
                         <span asp-validation-for="Address.HouseNumberStreet" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2 row justify-content-center">
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 mt-4 text-center">
                             @if (Model.Role==false)
                             {
                                 <a asp-controller="Users" asp-action="LoginCus" class="btn btn-secondary">Discard</a>
@@ -164,8 +164,8 @@
                 <div class="tab-pane fade text-myfont col-md-12" id="security" role="tabpanel" aria-labelledby="security-tab">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="UserId" />
-                    <div class="mb-5" style="padding-left: 1rem;">
-                        <p class="text-myfont">Change password</p>
+                    <div  style="font-size:30px">
+                        <p class="text-myfont">Change Password</p>
                     </div>
                     @* <div class="form-group col-md-4 mb-3">
                         <label class="control-label">
