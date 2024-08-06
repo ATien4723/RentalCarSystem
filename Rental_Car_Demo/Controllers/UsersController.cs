@@ -216,7 +216,6 @@ namespace Rental_Car_Demo.Controllers
                 context.Add(customer);
                 context.SaveChanges();
 
-
                 // Hiển thị thông báo đăng ký thành công
                 TempData["SuccessMessage"] = "Account created successfully!";
                 return RedirectToAction("Guest", "Users");
@@ -239,18 +238,23 @@ namespace Rental_Car_Demo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(ResetPasswordViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return the model to the view if the model state is invalid
+            }
+
             string tokenValue = _tokenGenerator.GenerateToken(32);
             DateTime exTime = _tokenGenerator.GetExpirationTime();
 
-            int user = _customerContext.getCustomerIdByEmail(model.Email);
+            string email = model.Email;
+            int user = _customerContext.getCustomerIdByEmail(email);
 
-            if (user == -1) //not found email
+            if (user == -1) // not found email
             {
-
-                TempData["FailMessage"] = "Sorry, Your email does not exist in out database!";
-                
+                TempData["FailMessage"] = "Sorry, Your email does not exist in our database!";
             }
             else
             {
@@ -258,7 +262,6 @@ namespace Rental_Car_Demo.Controllers
                 {
                     Token = tokenValue,
                     UserId = user,
-                    //UserId = 1,
                     ExpirationTime = exTime,
                     IsLocked = false
                 };
@@ -272,29 +275,26 @@ namespace Rental_Car_Demo.Controllers
                 string subject = "Link Reset Password";
                 _emailService.SendEmail(model.Email, subject, resetLink);
                 TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
-
             }
 
-            return View();
-            
+            return View(); // Return the view without a model to reset the form
         }
 
 
         public IActionResult ResetPassword2(int customerId, string tokenValue)
         {
 
-            ResetPassword2ViewModel model = new ResetPassword2ViewModel
-            {
-                CustomerId = customerId,
-            };
-
-            var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenValue);
-
+            var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenValue && t.UserId == customerId);
 
             if (token == null || token.IsLocked == true || token.ExpirationTime < DateTime.Now)
             {
                 return View("Fail");
             }
+
+            ResetPassword2ViewModel model = new ResetPassword2ViewModel
+            {
+                CustomerId = customerId,
+            };
 
             token.IsLocked = true;
             context.Update(token);
@@ -322,8 +322,6 @@ namespace Rental_Car_Demo.Controllers
             return View(model);
 
         }
-
-
 
         public bool IsEmailExist(string email)
         {
