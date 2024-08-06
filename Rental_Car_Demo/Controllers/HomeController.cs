@@ -74,18 +74,16 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
 
-            // Get current date and time
             DateTime currentDateTime = DateTime.Now;
 
-            // Set default pickup date to current date if not provided
             pickupDate ??= DateOnly.FromDateTime(currentDateTime);
 
-            // Set default dropoff date to the day after the current date if not provided
             dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
 
-            // Set default time to current time if not provided
             pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
             dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
+
+
 
             // Pass values to ViewBag
             ViewBag.location = address;
@@ -99,7 +97,7 @@ namespace Rental_Car_Demo.Controllers
             return View(cars);
         }
 
-        public IActionResult SearchCar(string brandName, int? seats, bool? transmissionType,bool? fuelType, string brandLogo, string[] priceRange, string address)
+        public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, string[] priceRange, string address)
         {
             decimal? minPrice = null;
             decimal? maxPrice = null;
@@ -116,7 +114,7 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-            IEnumerable<Car> cars = _carRepository.SearchCars(brandName, seats, transmissionType,fuelType, brandLogo, minPrice, maxPrice, address);
+            IEnumerable<Car> cars = _carRepository.SearchCars (brandNames, seats, transmissionTypes, fuelTypes, brandLogos, minPrice, maxPrice, address);
 
             var userString = HttpContext.Session.GetString ("User");
             User user = null;
@@ -131,6 +129,7 @@ namespace Rental_Car_Demo.Controllers
 
             return PartialView ("_CarResultsPartial", cars);
         }
+
 
 
 

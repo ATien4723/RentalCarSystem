@@ -10,7 +10,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
 
         public IEnumerable<Car> GetAllCars() => CarDAO.Instance.GetAllCars();
 
-        public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType , bool? fuelType, string brandLogo, decimal? minPrice, decimal? maxPrice , string address) =>
-          CarDAO.Instance.SearchCars (brandName, seats, transmissionType, fuelType, brandLogo , minPrice , maxPrice , address);
+        public IEnumerable<Car> SearchCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, decimal? minPrice, decimal? maxPrice, string address) =>
+          CarDAO.Instance.SearchCars (brandNames, seats, transmissionTypes, fuelTypes, brandLogos, minPrice , maxPrice, address);
     }
 }
