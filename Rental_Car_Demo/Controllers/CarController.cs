@@ -10,12 +10,12 @@ namespace Rental_Car_Demo.Controllers
 {
     public class CarController : Controller
     {
-        ICarRepository carRepository = null;
-
-        RentCarDbContext _db = new RentCarDbContext();
+        private readonly ICarRepository carRepository;
+        private readonly RentCarDbContext _db;
+        private readonly IEmailService _emailService;
         public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
         {
-            this.carRepository = carRepository;
+            carRepository = carRepository;
             _db = db;
             _emailService = emailService;
         }
@@ -614,6 +614,7 @@ namespace Rental_Car_Demo.Controllers
 
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
+
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
@@ -680,8 +681,6 @@ namespace Rental_Car_Demo.Controllers
                 rating += o.Ratings;
                 nor += 1;
             }
-
-
 
             if (nor > 0)
             {
@@ -853,8 +852,6 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
         }
-
-        private readonly IEmailService _emailService;
 
         [HttpPost] 
         public IActionResult ReturnCar(int carId, int userId, decimal amount)

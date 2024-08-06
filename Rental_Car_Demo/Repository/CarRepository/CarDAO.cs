@@ -7,6 +7,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
         private readonly RentCarDbContext _context;
         private static CarDAO instance;
         public static readonly object instanceLock = new object();
+
         public static CarDAO Instance
         {
             get
@@ -21,6 +22,9 @@ namespace Rental_Car_Demo.Repository.CarRepository
                 }
             }
         }
+
+        
+
         public void CreateCar(Car car)
         {
             try
@@ -105,7 +109,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             }
         }
 
-        public IEnumerable<Car> SearchCars(string brandName, int? seats, bool? transmissionType,bool? fuelType, string brandLogo, decimal? minPrice, decimal? maxPrice, string address)
+        public IEnumerable<Car> SearchCars(string? brandName, int? seats, bool? transmissionType,bool? fuelType, string? brandLogo, decimal? minPrice, decimal? maxPrice, string? address)
         {
             try {
                 using ( var context = new RentCarDbContext () ) {

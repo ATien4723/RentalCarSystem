@@ -22,7 +22,7 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
-        RentCarDbContext _db = new RentCarDbContext();
+        RentCarDbContext _db;
 
 
 

@@ -12,7 +12,7 @@ using Rental_Car_Demo.Context;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Http;
 
-namespace Rental_Car_Demo.UserControllerTests
+namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
     public class UsersControllerTests
@@ -222,7 +222,7 @@ namespace Rental_Car_Demo.UserControllerTests
         [TestCase("nvutuankiet2003@gmail.com", "token01", 1, true, Description = "1. Email existing")]
         [TestCase("abc@gmail.com", "token02", -1, true, Description = "2. Email not existing")]
 
-        [TestCase("", "token01", -1, false, Description = "3. Email is empty")]
+        [TestCase("", "token01", 1, false, Description = "3. Email is empty")]
         [TestCase("plainaddress", "token01", -1, false, Description = "4. Email without domain")]
         [TestCase("@missingusername.com", "token01", -1, false, Description = "5. Email missing username")]
         [TestCase("missingatsign.com", "token01", -1, false, Description = "6. Email missing @ sign")]
@@ -259,40 +259,53 @@ namespace Rental_Car_Demo.UserControllerTests
             _mockTempData.Setup(td => td["SuccessMessage"]).Returns<string>(key => key == "SuccessMessage" ? "We will send link to reset your password in the email!" : null);
             _mockTempData.Setup(td => td["FailMessage"]).Returns<string>(key => key == "FailMessage" ? "Sorry, Your email does not exist in our database!" : null);
 
-            // Act
-            var result = _controller.ResetPassword(model) as ViewResult;
+            
 
-            if (user == 1 && emailValid == true)
+            if (!emailValid)
             {
-                // Assert
+                _controller.ModelState.AddModelError("Email", "Invalid Email");
+                // Act
+                var result = _controller.ResetPassword(model) as ViewResult;
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(model, result.Model);
+            }
+            else if (user == 1)
+            {
+                // Act
+                var result = _controller.ResetPassword(model) as ViewResult;
                 Assert.IsNotNull(result);
                 Assert.AreEqual("We will send link to reset your password in the email!", _controller.TempData["SuccessMessage"]);
             }
-            if (user == -1 && emailValid == true)
+            else if (user == -1)
             {
-                // Assert
-                Assert.IsNotNull(result, "The result should not be null");
-                Assert.AreEqual("Sorry, Your email does not exist in our database!", _controller.TempData["FailMessage"], "The FailMessage in TempData is incorrect");
-            }
-            if (user == -1 && emailValid == false)
-            {
-                Assert.IsNull(result);
+                // Act
+                var result = _controller.ResetPassword(model) as ViewResult;
+                Assert.IsNotNull(result);
+                Assert.AreEqual("Sorry, Your email does not exist in our database!", _controller.TempData["FailMessage"]);
             }
         }
 
         [Test]
-        [TestCase("validToken", false, false, null, 1)]
-        [TestCase("expiredToken", true, false, "Fail", 1)]
-        [TestCase("lockedToken", false, true, "Fail", 1)]
-        public void ResetPassword2_TokenValidationTests(string tokenValue, bool isExpired, bool isLocked, string? expectedViewName, int expectedCustomerId)
+        [TestCase("tokenne", "tokenne", false, false, 1, null, 1)]
+        [TestCase("tokenne", "wrongtoken", false, false, 1, "Fail", 1)]
+        [TestCase("expiredToken", "expiredToken", true, false, 1, "Fail", 1)]
+        [TestCase("lockedToken", "lockedToken", false, true, 1, "Fail", 1)]
+        [TestCase("lockedAndExToken", "lockedAndExToken", true, true, 2, "Fail", 1)]
+        [TestCase("tokenne", "tokenne", false, false, 2, "Fail", 1)]
+        [TestCase("tokenne", "wrongtoken", false, false, 2, "Fail", 1)]
+        [TestCase("expiredToken", "expiredToken", true, false, 2, "Fail", 1)]
+        [TestCase("lockedToken", "lockedToken", false, true, 2, "Fail", 1)]
+
+        public void ResetPassword2_TokenValidationTests(string tokenInDatabase, string tokenValue, bool isExpired, bool isLocked, int customerId, string? expectedViewName, int expectedCustomerId)
         {
             // Arrange
-            var customerId = 1;
+            var userIdOftoken = 1;
 
             var token = new TokenInfor
             {
-                Token = tokenValue,
-                UserId = customerId,
+                Token = tokenInDatabase,
+                UserId = userIdOftoken,
                 ExpirationTime = isExpired ? DateTime.Now.AddHours(-1) : DateTime.Now.AddHours(1),
                 IsLocked = isLocked
             };
@@ -322,7 +335,9 @@ namespace Rental_Car_Demo.UserControllerTests
             var model = new ResetPassword2ViewModel
             {
                 CustomerId = 1,
-                Password = "newPassword123"
+                Password = "newPassword123",
+                ConfirmPassword = "newPassword123"
+
             };
 
             // Act
@@ -335,21 +350,37 @@ namespace Rental_Car_Demo.UserControllerTests
             var user = _context.Users.FirstOrDefault(u => u.UserId == model.CustomerId);
 
             Assert.IsNotNull(user, "User should not be null");
+
+
             Assert.AreEqual(HashPassword(model.Password), user.Password, "The user's password should be updated");
 
             _mockTempData.Setup(td => td["SuccessMessage"]).Returns<string>(key => key == "SuccessMessage" ? "Your password has been reset" : null);
             Assert.AreEqual("Your password has been reset", _controller.TempData["SuccessMessage"], "The success message should be set");
         }
 
+
         [Test]
-        public void ResetPassword2_InvalidModel_ReturnsModel()
+        [TestCase("", "pass01", "Password", Description = "1. Password is empty")]
+        [TestCase("less7", "less7", "Password", Description = "2. Password not have at least 7 char")]
+        [TestCase("nothavenum", "nothavenum", "Password", Description = "3. Password not have number")]
+        [TestCase("noth", "noth", "Password", Description = "4. Password not have number and not have at least 7 char")]
+        [TestCase("1234567", "1234567", "Password", Description = "5. Password not have letter")]
+        [TestCase("1234", "1234", "Password", Description = "6. Password not have letter and less than 7 char")]
+        [TestCase("@@@@@@@@", "@@@@@@@@", "Password", Description = "7. Password not have number and letter")]
+        [TestCase("@@@", "@@@", "Password", Description = "8. Password not have number and letter and less than 7 char")]
+
+        [TestCase("hehehehe123", "", "ConfirmPassword", Description = "9. ConfirmPassword empty")]
+        [TestCase("hehehehe123", "abcxyz123", "ConfirmPassword", Description = "9. ConfirmPassword not match")]
+
+        public void ResetPassword2_InvalidModel_ReturnsModel(string pass, string confirmPass, string modelError)
         {
             // Arrange
-            _controller.ModelState.AddModelError("Password", "Password is required");
+            _controller.ModelState.AddModelError(modelError, "Invalid");
             var model = new ResetPassword2ViewModel
             {
                 CustomerId = 1,
-                Password = "" // Invalid model data
+                Password = pass,
+                ConfirmPassword = confirmPass
             };
 
             // Act

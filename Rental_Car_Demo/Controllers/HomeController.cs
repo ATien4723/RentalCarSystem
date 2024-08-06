@@ -120,11 +120,13 @@ namespace Rental_Car_Demo.Controllers
 
             var userString = HttpContext.Session.GetString ("User");
             User user = null;
+
             if ( !string.IsNullOrEmpty (userString) ) {
                 user = JsonConvert.DeserializeObject<User> (userString);
             }
-            if ( user != null && user.Role == true ) {
-                return PartialView ("ErrorAuthorization");
+
+            if ( user.Role == true ) {
+                return View("ErrorAuthorization");
             }
 
             return PartialView ("_CarResultsPartial", cars);
