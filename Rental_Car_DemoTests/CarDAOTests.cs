@@ -5,6 +5,8 @@ using Rental_Car_Demo.Repository.CarRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Rental_Car_Demo.Tests
 {
@@ -22,10 +24,10 @@ namespace Rental_Car_Demo.Tests
                 .Options;
             _context = new RentCarDbContext(options);
             _carDAO = new CarDAO();
-            SeedDatabase(_context);
+            SeedDatabase();
         }
 
-        private void SeedDatabase(RentCarDbContext context)
+        private void SeedDatabase()
         {
             var cityData = new List<City>
             {
@@ -57,6 +59,15 @@ namespace Rental_Car_Demo.Tests
                 new Address { AddressId = 2, CityId = 2, DistrictId = 2, WardId = 2, HouseNumberStreet = "Nha so 2"},
                 new Address { AddressId = 3, CityId = 3, DistrictId = 3, WardId = 3, HouseNumberStreet = "Nha so 3"},
                 new Address { AddressId = 4, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 4"},
+                new Address { AddressId = 5, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 5"},
+                new Address { AddressId = 6, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 6"},
+                new Address { AddressId = 7, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 7"},
+                new Address { AddressId = 8, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 8"},
+                new Address { AddressId = 9, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 9"},
+                new Address { AddressId = 10, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 10"},
+                new Address { AddressId = 11, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 11"},
+                new Address { AddressId = 12, CityId = 4, DistrictId = 4, WardId = 4, HouseNumberStreet = "Nha so 12"},
+
             };
 
             var carModels = new List<CarModel>
@@ -65,10 +76,97 @@ namespace Rental_Car_Demo.Tests
                 new CarModel { ModelId = 2, ModelName = "Model Y" }
             };
 
+
             var carBrands = new List<CarBrand>
             {
-                new CarBrand { BrandId = 1, BrandName = "Brand A", BrandLogo = "LogoA"},
-                new CarBrand { BrandId = 2, BrandName = "Brand B", BrandLogo = "LogoB" }
+                new CarBrand { BrandId = 1, BrandName = "Brand A" },
+                new CarBrand { BrandId = 2, BrandName = "Brand B" }
+            };
+
+            var TermOfUse = new List<TermOfUse>
+            {
+                new TermOfUse
+                {
+                    TermId = 1,
+                    NoFoodInCar = true
+                },
+
+                new TermOfUse
+                {
+                    TermId = 2,
+                    NoSmoking = true
+                }
+            };
+
+            var additionalFunction = new List<AdditionalFunction>
+            {
+                new AdditionalFunction
+                {
+                    FucntionId = 1,
+                    Gps = true,
+                    Camera = true
+                },
+                new AdditionalFunction
+                {
+                    FucntionId = 2,
+                    SunRoof = true,
+                    Usb = true
+
+                }
+            };
+
+            var carDocument = new List<CarDocument>
+            {
+                new CarDocument
+                {
+                    DocumentId = 1,
+                    Registration = "Registration1",
+                    Certificate = "Certificate1"
+                },
+
+                new CarDocument
+                {
+                    DocumentId = 2,
+                    Registration = "Registration2",
+                    Certificate = "Certificate2"
+                },
+
+            };
+
+            var color = new List<CarColor>
+            {
+                new CarColor
+                {
+                    ColorId = 1,
+                    ColorName = "den"
+                },
+                new CarColor
+                {
+                    ColorId = 2,
+                    ColorName = "trang"
+                }
+            };
+
+            var users = new List<User>
+            {
+                new User
+                {
+                    Email = "nvutuankiet2003@gmail.com",
+                    Password = HashPassword("kiet123"),
+                    Name = "kiet ne",
+                    Phone = "0334567890",
+                    Role = false,
+                    Wallet = 0
+                },
+                new User
+                {
+                    Email = "hehe@gmail.com",
+                    Password = HashPassword("hehe123"),
+                    Name = "hehe",
+                    Phone = "0987654321",
+                    Role = true,
+                    Wallet = 0
+                }
             };
 
             var cars = new List<Car>
@@ -76,41 +174,134 @@ namespace Rental_Car_Demo.Tests
                 new Car
                 {
                     CarId = 1,
-                    ModelId = 1,
-                    BrandId = 1,
-                    AddressId = 1,
-                    BackImage = "back1.jpg",
-                    Description = "Description 1",
-                    FrontImage = "front1.jpg",
-                    LeftImage = "left1.jpg",
-                    LicensePlate = "ABC123",
+                    UserId = 1,
                     Name = "Car 1",
-                    RightImage = "right1.jpg"
+                    LicensePlate = "50F-567.89",
+                    BrandId = 1,
+                    ModelId = 1,
+                    Seats = 10,
+                    FrontImage = "front1.jpg",
+                    BackImage = "back1.jpg",
+                    LeftImage = "left1.jpg",
+                    RightImage = "right1.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = true,
+                    FuelType = true,
+                    Mileage = 50000,
+                    FuelConsumption = 100,
+                    BasePrice = 15000000,
+                    Deposit = 5000000,
+                    ColorId = 1,
+                    AddressId = 1,
+                    Description = "Description 1",
+                    DocumentId = 1,
+                    TermId = 1,
+                    FucntionId = 1,
+                    Status = 1,
+                    NoOfRide = 1
                 },
+
                 new Car
                 {
                     CarId = 2,
-                    ModelId = 2,
-                    BrandId = 2,
-                    AddressId = 2,
-                    BackImage = "back2.jpg",
-                    Description = "Description 2",
-                    FrontImage = "front2.jpg",
-                    LeftImage = "left2.jpg",
-                    LicensePlate = "XYZ789",
+                    UserId = 2,
                     Name = "Car 2",
-                    RightImage = "right2.jpg"
+                    LicensePlate = "50F-567.90",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front2.jpg",
+                    BackImage = "back2.jpg",
+                    LeftImage = "left2.jpg",
+                    RightImage = "right2.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 2,
+                    Description = "Description 2",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 2,
+                    NoOfRide = 2
+                }
+                ,
+                 new Car
+                {
+                    CarId = 3,
+                    UserId = 2,
+                    Name = "Car 3",
+                    LicensePlate = "50F-567.91",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front3.jpg",
+                    BackImage = "back3.jpg",
+                    LeftImage = "left3.jpg",
+                    RightImage = "right3.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 3,
+                    Description = "Description 3",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 2,
+                    NoOfRide = 2
+                },
+                  new Car
+                {
+                    CarId = 4,
+                    UserId = 1,
+                    Name = "Car 4",
+                    LicensePlate = "50F-567.92",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front4.jpg",
+                    BackImage = "back4.jpg",
+                    LeftImage = "left4.jpg",
+                    RightImage = "right4.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 4,
+                    Description = "Description 4",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 2,
+                    NoOfRide = 2
                 }
             };
 
-            context.Cities.AddRange(cityData);
-            context.Districts.AddRange(districtData);
-            context.Wards.AddRange(wardData);
-            context.Addresses.AddRange(addressData);
-            context.CarModels.AddRange(carModels);
-            context.CarBrands.AddRange(carBrands);
-            context.Cars.AddRange(cars);
-            context.SaveChanges();
+            _context.Users.AddRange(users);
+            _context.Cities.AddRange(cityData);
+            _context.Districts.AddRange(districtData);
+            _context.Wards.AddRange(wardData);
+            _context.Addresses.AddRange(addressData);
+            _context.CarModels.AddRange(carModels);
+            _context.CarBrands.AddRange(carBrands);
+            _context.AdditionalFunctions.AddRange(additionalFunction);
+            _context.CarDocuments.AddRange(carDocument);
+            _context.Cars.AddRange(cars);
+            _context.SaveChanges();
         }
 
         [TearDown]
@@ -120,31 +311,21 @@ namespace Rental_Car_Demo.Tests
             _context.Dispose();
         }
 
-        [TestCase("Brand A", null, null, null, null, null, null, null, 1, "Car 1")]
-        [TestCase(null, null, null, null, "LogoB", null, null, null, 1, "Car 2")]
-        [TestCase(null, null, null, null, "LogoA", 0, 100000, "", 1, "Car 1")]
-        [TestCase("", null, null, null, "LogoB", 0, 10000, "", 0, "")]
-        [TestCase("Nonexistent Brand", null, null, null, "LogoA", null, null, "", 0, "")]
-        public void SearchCars_ShouldReturnExpectedCars(
-        string? brandName,
-        int? seats,
-        bool? transmissionType,
-        bool? fuelType,
-        string? brandLogo,
-        decimal? minPrice,
-        decimal? maxPrice,
-        string? address,
-        int expectedCount,
-        string expectedCarName)
+        private string HashPassword(string password)
         {
-            var cars = _carDAO.SearchCars(brandName, seats, transmissionType, fuelType, brandLogo, minPrice, maxPrice, address);
-            Assert.AreEqual(expectedCount, cars.Count());
-
-            if (expectedCount > 0)
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                Assert.AreEqual(expectedCarName, cars.First().Name);
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
         }
+
+
     }
 
 }

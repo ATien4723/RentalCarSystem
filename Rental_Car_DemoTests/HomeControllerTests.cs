@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Castle.Components.DictionaryAdapter.Xml;
+using System.Security.Cryptography;
 
 namespace Rental_Car_Demo.Tests
 {
@@ -31,7 +32,7 @@ namespace Rental_Car_Demo.Tests
 
             _context = new RentCarDbContext(options);
 
-            SeedDatabase(_context);
+            SeedDatabase();
 
             var cityData = new List<City>
             {
@@ -102,7 +103,7 @@ namespace Rental_Car_Demo.Tests
                 }
             });
 
-            _mockCarRepository.Setup(repo => repo.SearchCars(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<bool?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
+            _mockCarRepository.Setup(repo => repo.SearchCars(It.IsAny<string[]>(), It.IsAny<int[]?>(), It.IsAny<bool[]?>(), It.IsAny<bool[]?>(), It.IsAny<string[]>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
             .Returns(cars);
 
 
@@ -131,7 +132,7 @@ namespace Rental_Car_Demo.Tests
             _controller.Dispose();
         }
 
-        private void SeedDatabase(RentCarDbContext context)
+        private void SeedDatabase()
         {
             var cityData = new List<City>
             {
@@ -171,10 +172,97 @@ namespace Rental_Car_Demo.Tests
                 new CarModel { ModelId = 2, ModelName = "Model Y" }
             };
 
+
             var carBrands = new List<CarBrand>
             {
                 new CarBrand { BrandId = 1, BrandName = "Brand A" },
                 new CarBrand { BrandId = 2, BrandName = "Brand B" }
+            };
+
+            var TermOfUse = new List<TermOfUse>
+            {
+                new TermOfUse
+                {
+                    TermId = 1,
+                    NoFoodInCar = true
+                },
+
+                new TermOfUse
+                {
+                    TermId = 2,
+                    NoSmoking = true
+                }
+            };
+
+            var additionalFunction = new List<AdditionalFunction>
+            {
+                new AdditionalFunction
+                {
+                    FucntionId = 1,
+                    Gps = true,
+                    Camera = true
+                },
+                new AdditionalFunction
+                {
+                    FucntionId = 2,
+                    SunRoof = true,
+                    Usb = true
+
+                }
+            };
+
+            var carDocument = new List<CarDocument>
+            {
+                new CarDocument
+                {
+                    DocumentId = 1,
+                    Registration = "Registration1",
+                    Certificate = "Certificate1"
+                },
+
+                new CarDocument
+                {
+                    DocumentId = 2,
+                    Registration = "Registration2",
+                    Certificate = "Certificate2"
+                },
+
+            };
+
+            var color = new List<CarColor>
+            {
+                new CarColor
+                {
+                    ColorId = 1,
+                    ColorName = "den"
+                },
+                new CarColor
+                {
+                    ColorId = 2,
+                    ColorName = "trang"
+                }
+            };
+
+            var users = new List<User>
+            {
+                new User
+                {
+                    Email = "nvutuankiet2003@gmail.com",
+                    Password = HashPassword("kiet123"),
+                    Name = "kiet ne",
+                    Phone = "0334567890",
+                    Role = false,
+                    Wallet = 0
+                },
+                new User
+                {
+                    Email = "hehe@gmail.com",
+                    Password = HashPassword("hehe123"),
+                    Name = "hehe",
+                    Phone = "0987654321",
+                    Role = true,
+                    Wallet = 0
+                }
             };
 
             var cars = new List<Car>
@@ -182,41 +270,89 @@ namespace Rental_Car_Demo.Tests
                 new Car
                 {
                     CarId = 1,
-                    ModelId = 1,
-                    BrandId = 1,
-                    AddressId = 1,
-                    BackImage = "back1.jpg",
-                    Description = "Description 1",
-                    FrontImage = "front1.jpg",
-                    LeftImage = "left1.jpg",
-                    LicensePlate = "ABC123",
+                    UserId = 1,
                     Name = "Car 1",
-                    RightImage = "right1.jpg"
+                    LicensePlate = "50F-567.89",
+                    BrandId = 1,
+                    ModelId = 1,
+                    Seats = 10,
+                    FrontImage = "front1.jpg",
+                    BackImage = "back1.jpg",
+                    LeftImage = "left1.jpg",
+                    RightImage = "right1.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = true,
+                    FuelType = true,
+                    Mileage = 50000,
+                    FuelConsumption = 100,
+                    BasePrice = 15000000,
+                    Deposit = 5000000,
+                    ColorId = 1,
+                    AddressId = 1,
+                    Description = "Description 1",
+                    DocumentId = 1,
+                    TermId = 1,
+                    FucntionId = 1,
+                    Status = 1,
+                    NoOfRide = 1
                 },
+
                 new Car
                 {
                     CarId = 2,
-                    ModelId = 2,
-                    BrandId = 2,
-                    AddressId = 2,
-                    BackImage = "back2.jpg",
-                    Description = "Description 2",
-                    FrontImage = "front2.jpg",
-                    LeftImage = "left2.jpg",
-                    LicensePlate = "XYZ789",
+                    UserId = 2,
                     Name = "Car 2",
-                    RightImage = "right2.jpg"
+                    LicensePlate = "50F-567.90",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front2.jpg",
+                    BackImage = "back2.jpg",
+                    LeftImage = "left2.jpg",
+                    RightImage = "right2.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 2,
+                    Description = "Description 2",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 2,
+                    NoOfRide = 2
                 }
             };
 
-            context.Cities.AddRange(cityData);
-            context.Districts.AddRange(districtData);
-            context.Wards.AddRange(wardData);
-            context.Addresses.AddRange(addressData);
-            context.CarModels.AddRange(carModels);
-            context.CarBrands.AddRange(carBrands);
-            context.Cars.AddRange(cars);
-            context.SaveChanges();
+            _context.Users.AddRange(users);
+            _context.Cities.AddRange(cityData);
+            _context.Districts.AddRange(districtData);
+            _context.Wards.AddRange(wardData);
+            _context.Addresses.AddRange(addressData);
+            _context.CarModels.AddRange(carModels);
+            _context.CarBrands.AddRange(carBrands);
+            _context.AdditionalFunctions.AddRange(additionalFunction);
+            _context.CarDocuments.AddRange(carDocument);
+            _context.Cars.AddRange(cars);
+            _context.SaveChanges();
+        }
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
 
         [Test]
@@ -226,7 +362,7 @@ namespace Rental_Car_Demo.Tests
         [TestCase("", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
         [TestCase("", null, "08:30", "2024-01-03", "18:00", Description = "Empty address, empty pickup date")]
         [TestCase("", "2024-01-01", null, "2024-01-03", "18:00", Description = "Empty address ,empty pickup time")]
-        
+
         public void SearchCarForm_Returns_ViewResult_With_Cars(string? address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime)
         {
             // Convert strings to DateOnly and TimeOnly
@@ -244,7 +380,7 @@ namespace Rental_Car_Demo.Tests
             Assert.IsNotNull(result);
             var model = result.Model as IEnumerable<Car>;
             Assert.IsNotNull(model);
-            
+
         }
 
 
@@ -263,7 +399,7 @@ namespace Rental_Car_Demo.Tests
             //_controller.ControllerContext.HttpContext = _httpContext;
 
             // Act
-            var result = _controller.SearchCar("Brand A", null, null, null, null, null, null);
+            var result = _controller.SearchCar(null, null, null, null, null, null, null);
 
             // Assert
             if (role)
@@ -281,45 +417,119 @@ namespace Rental_Car_Demo.Tests
             }
         }
 
-        [TestCase(new string[] { "0-100000" }, 0, 100000)]
-        [TestCase(new string[] { "100000-500000" }, 100000, 500000)]
-        [TestCase(new string[] { "500000-1000000" }, 500000, 1000000)]
-        [TestCase(new string[] { "1000000-5000000" }, 1000000, 5000000)]
-        [TestCase(new string[] { "5000000-10000000" }, 5000000, 10000000)]
-        [TestCase(new string[] { "10000000-100000000" }, 10000000, 100000000)]
-        [TestCase(new string[] { "0-100000", "100000-500000" }, 0, 500000)]
-        [TestCase(new string[] { "500000-1000000", "1000000-5000000" }, 500000, 5000000)]
-        [TestCase(new string[] { "5000000-10000000", "10000000-100000000" }, 5000000, 100000000)]
-        public void SearchCar_FixedPriceRange_ReturnsCorrectMinMaxPrice(string[] priceRange, decimal? expectedMinPrice, decimal? expectedMaxPrice)
+        [Test]
+        [TestCase(new string[] { "Brand A" }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5, 6 }, new bool[] { true }, new bool[] { false }, new string[] { "LogoA" }, new string[] { }, "nha so 1")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { }, new bool[] { }, new string[] { }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { }, new string[] { }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { false }, new string[] { }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 6 }, new bool[] { false }, new bool[] { true }, new string[] { "LogoA" }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, new bool[] { false }, new string[] { "LogoB" }, new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, new bool[] { false }, new string[] { "LogoB" }, new string[] { "1000000-1000000" }, "nha so 2")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true }, new string[] { "Logo A" }, new string[] { "0-100000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { true }, new string[] { "Logo B" }, new string[] { "100000-500000" }, "Some address")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { false }, new string[] { "Logo A" }, new string[] { "500000-1000000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 4 }, new bool[] { false }, new bool[] { true }, new string[] { "Logo B" }, new string[] { "1000000-5000000" }, "Some address")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true }, new string[] { "Logo A" }, new string[] { "5000000-10000000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { false }, new string[] { "Logo B" }, new string[] { "10000000-100000000" }, "Some address")]
+        public void SearchCar_ValidParameters_ReturnsPartialViewWithCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, string[] priceRange, string address)
         {
             // Arrange
-            var user = new User { Role = false };
+            var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
+
             var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
 
-            _dummySession.Set("User", Encoding.UTF8.GetBytes(userString));
-            _httpContext.Session = _dummySession;
-
-            _controller.ControllerContext.HttpContext = _httpContext;
-
-            // Mocking the SearchCars method to verify the price range is correctly parsed
-            _mockCarRepository
-                .Setup(repo => repo.SearchCars(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<bool?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
-                .Returns(new List<Car>())
-                .Callback<string, int?, bool?, bool?, string, decimal?, decimal?, string>((brand, seats, transmission, fuel, logo, minPrice, maxPrice, address) =>
-                {
-                    Assert.AreEqual(expectedMinPrice, minPrice);
-                    Assert.AreEqual(expectedMaxPrice, maxPrice);
-                });
 
             // Act
-            var result = _controller.SearchCar("Brand A", null, null, null, null, priceRange, null);
+            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as PartialViewResult;
+            var model = result.Model as IEnumerable<Car>;
 
             // Assert
-            var partialViewResult = result as PartialViewResult;
-            Assert.IsNotNull(partialViewResult);
-            Assert.AreEqual("_CarResultsPartial", partialViewResult.ViewName);
-            Assert.IsInstanceOf<IEnumerable<Car>>(partialViewResult.Model);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("_CarResultsPartial", result.ViewName);
+            Assert.IsNotNull(model);
         }
+
+        //[Test]
+        //public void SearchCar_ValidParameters_ReturnsPartialViewWithCars()
+        //{
+        //    // Arrange
+        //    string[] brandNames = { "Brand A" };
+        //    int[] seats = { 4 };
+        //    bool[] transmissionTypes = { true };
+        //    bool[] fuelTypes = { true };
+        //    string[] brandLogos = { "Logo A" };
+        //    string[] priceRange = { "1000000-5000000" };
+        //    string address = "Some address";
+
+        //    var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
+        //    var userString = JsonConvert.SerializeObject(user);
+        //    _dummySession.SetString("User", userString);
+
+        //    _mockCarRepository.Setup(repo => repo.SearchCars(
+        //        It.IsAny<string[]>(),
+        //        It.IsAny<int[]>(),
+        //        It.IsAny<bool[]>(),
+        //        It.IsAny<bool[]>(),
+        //        It.IsAny<string[]>(),
+        //        It.IsAny<decimal?>(),
+        //        It.IsAny<decimal?>(),
+        //        It.IsAny<string>()))
+        //    .Returns(new List<Car>
+        //    {
+        //new Car { CarId = 1, ModelId = 1, BrandId = 1, AddressId = 1, Name = "Car 1", LicensePlate = "ABC123" }
+        //    });
+
+        //    // Act
+        //    var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as PartialViewResult;
+        //    var model = result.Model as IEnumerable<Car>;
+
+        //    // Assert
+        //    Assert.IsNotNull(result);
+        //    Assert.AreEqual("_CarResultsPartial", result.ViewName);
+        //    Assert.IsNotNull(model);
+        //    Assert.AreEqual(1, model.Count());
+        //    Assert.AreEqual("Car 1", model.First().Name);
+        //}
+
+
+        [Test]
+        public void SearchCar_UserIsCarOwner_ReturnsErrorAuthorizationView()
+        {
+            // Arrange
+            string[] brandNames = { "Brand A" };
+            int[] seats = { 4 };
+            bool[] transmissionTypes = { true };
+            bool[] fuelTypes = { true };
+            string[] brandLogos = { "Logo A" };
+            string[] priceRange = { "1000000-5000000" };
+            string address = "Some address";
+
+            var user = new User { UserId = 1, Email = "admin@test.com", Password = "hashedpassword", Role = true };
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+            _mockCarRepository.Setup(repo => repo.SearchCars(
+                It.IsAny<string[]>(),
+                It.IsAny<int[]>(),
+                It.IsAny<bool[]>(),
+                It.IsAny<bool[]>(),
+                It.IsAny<string[]>(),
+                It.IsAny<decimal?>(),
+                It.IsAny<decimal?>(),
+                It.IsAny<string>()))
+            .Returns(new List<Car>());
+
+            // Act
+            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
+        }
+
+
 
 
         [TestCase(null)]
@@ -357,7 +567,7 @@ namespace Rental_Car_Demo.Tests
         {
             // Arrange
             var userId = 1;
-            var user = new User { UserId = 1}; // Authorized user
+            var user = new User { UserId = 1 }; // Authorized user
             var userString = JsonConvert.SerializeObject(user);
             _httpContext.Session.SetString("User", userString);
 
@@ -465,7 +675,37 @@ namespace Rental_Car_Demo.Tests
             Assert.AreEqual("Guest", result.ActionName, "Redirect should go to Guest action");
             Assert.AreEqual("Users", result.ControllerName, "Redirect should go to Users controller");
         }
+
+
+        [Test]
+        public void GetAllCars_NoAddressMatch_ReturnsEmptyList()
+        {
+            // Arrange
+            string address = "Nonexistent address";
+
+            // Act
+            var result = _controller.GetAllCars(address).ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [Test]
+        [TestCase("", 2)]
+        [TestCase("Hà Nội", 1)]
+        public void GetAllCars_EmptyAddress_ReturnsAllAvailableCars(string address, int carCount)
+        {
+
+            // Act
+            var result = _controller.GetAllCars(address).ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(carCount, result.Count());
+        }
     }
+
 
 
 
