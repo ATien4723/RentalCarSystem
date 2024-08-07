@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
-using Rental_Car_Demo.Repository;
 using Rental_Car_Demo.Repository.CarRepository;
-using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace Rental_Car_Demo.Controllers
@@ -92,84 +89,90 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffDate = dropoffDate;
             ViewBag.dropoffTime = dropoffTime;
 
-            IEnumerable<Car> cars = GetAllCars(address);
+            IEnumerable<Car> cars = _carRepository.GetAllCars(address);
 
             return View(cars);
         }
 
-        public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, string[] priceRange, string address)
+        public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
         {
             decimal? minPrice = null;
             decimal? maxPrice = null;
 
-            if ( priceRange != null && priceRange.Length > 0 ) {
-                foreach ( var range in priceRange ) {
-                    var prices = range.Split ('-');
-                    if ( prices.Length == 2 ) {
-                        if ( decimal.TryParse (prices[0], out decimal min) && decimal.TryParse (prices[1], out decimal max) ) {
-                            if ( minPrice == null || min < minPrice ) minPrice = min;
-                            if ( maxPrice == null || max > maxPrice ) maxPrice = max;
+            if (priceRange != null && priceRange.Length > 0)
+            {
+                foreach (var range in priceRange)
+                {
+                    var prices = range.Split('-');
+                    if (prices.Length == 2)
+                    {
+                        if (decimal.TryParse(prices[0], out decimal min) && decimal.TryParse(prices[1], out decimal max))
+                        {
+                            if (minPrice == null || min < minPrice) minPrice = min;
+                            if (maxPrice == null || max > maxPrice) maxPrice = max;
                         }
                     }
                 }
             }
 
-            IEnumerable<Car> cars = SearchCars (brandNames, seats, transmissionTypes, fuelTypes, brandLogos, minPrice, maxPrice, address);
+            IEnumerable<Car> cars = _carRepository.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
 
-            var userString = HttpContext.Session.GetString ("User");
+            var userString = HttpContext.Session.GetString("User");
             User user = null;
 
-            if ( !string.IsNullOrEmpty (userString) ) {
-                user = JsonConvert.DeserializeObject<User> (userString);
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
             }
 
-            if ( user.Role == true ) {
+            if (user.Role == true)
+            {
                 return View("ErrorAuthorization");
             }
 
-            return PartialView ("_CarResultsPartial", cars);
+            return PartialView("_CarResultsPartial", cars);
         }
-
-
-
 
         [HttpGet]
         public JsonResult GetSuggestions(string query)
         {
-            if ( string.IsNullOrEmpty (query) ) {
-                return Json (new List<string> ());
+            if (string.IsNullOrEmpty(query))
+            {
+                return Json(new List<string>());
             }
 
-            query = query.Trim ();
+            query = query.Trim();
 
-            if ( query.Length < 2 || query.Length > 100 ) {
-                return Json (new List<string> ());
+            if (query.Length < 2 || query.Length > 100)
+            {
+                return Json(new List<string>());
             }
 
-            if ( Regex.IsMatch (query, @"[^a-zA-Z0-9\s]") ) {
-                return Json (new List<string> ());
+            if (Regex.IsMatch(query, @"[^a-zA-Z0-9\s]"))
+            {
+                return Json(new List<string>());
             }
 
             // Fetch matching addresses from the database
             var addresses = _context.Cars
-                .Include (car => car.Address)
-                    .ThenInclude (address => address.City)
-                .Include (car => car.Address)
-                    .ThenInclude (address => address.District)
-                .Include (car => car.Address)
-                    .ThenInclude (address => address.Ward)
-                .Where (car => car.Status == 1 &&
-                    ( car.Address.District.DistrictName.Contains (query) ||
-                     car.Address.Ward.WardName.Contains (query) ||
-                     car.Address.City.CityProvince.Contains (query) ||
-                     car.Address.HouseNumberStreet.Contains (query) ))
-                .Select (car => new
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.City)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.District)
+                .Include(car => car.Address)
+                    .ThenInclude(address => address.Ward)
+                .Where(car => car.Status == 1 &&
+                    (car.Address.District.DistrictName.Contains(query) ||
+                     car.Address.Ward.WardName.Contains(query) ||
+                     car.Address.City.CityProvince.Contains(query) ||
+                     car.Address.HouseNumberStreet.Contains(query)))
+                .Select(car => new
                 {
                     Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
-                .ToList ();
+                .ToList();
 
-            return Json (addresses.Select (a => a.Address).ToList ());
+            return Json(addresses.Select(a => a.Address).ToList());
         }
 
         [HttpGet]
@@ -178,7 +181,7 @@ namespace Rental_Car_Demo.Controllers
             //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
 
-            if(userString == null)
+            if (userString == null)
             {
                 return RedirectToAction("Guest", "Users");
             }
@@ -227,160 +230,6 @@ namespace Rental_Car_Demo.Controllers
 
             return View(feedbacks);
         }
-
-
-
-        public IEnumerable<Car> GetAllCars(string address)
-        {
-            try
-            {
-                using (var context = new RentCarDbContext())
-                {
-                    var cars = context.Cars
-                        .Include(c => c.Brand)
-                        .Include(c => c.Model)
-                        .Include(c => c.Color)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.City)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.District)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.Ward)
-                        .Include(c => c.Document)
-                        .Include(c => c.Term)
-                        .Where(c => c.Status != 2)
-                        .Include(c => c.User)
-                        .Include(c => c.Bookings)
-                        .Where(c => c.Status != 2 && c.Status != 3)
-                        .AsQueryable();
-
-                    if (!string.IsNullOrEmpty(address))
-                    {
-                        cars = cars.Where(c => (c.Address.HouseNumberStreet + ", " +
-                                                 c.Address.Ward.WardName + ", " +
-                                                 c.Address.District.DistrictName + ", " +
-                                                 c.Address.City.CityProvince).Contains(address));
-                    }
-
-                    return cars.ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public IEnumerable<Car> GetAllCars()
-        {
-            try
-            {
-                using (var context = new RentCarDbContext())
-                {
-                    var cars = context.Cars
-                        .Include(c => c.Brand)
-                        .Include(c => c.Model)
-                        .Include(c => c.Color)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.City)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.District)
-                        .Include(c => c.Address)
-                            .ThenInclude(a => a.Ward)
-                        .Include(c => c.Document)
-                        .Include(c => c.Term)
-                        .Where(c => c.Status != 2)
-                        .Include(c => c.User)
-                        .Include(c => c.Bookings)
-                        .Where(c => c.Status != 2)
-                        .AsQueryable();
-
-
-                    return cars.ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public IEnumerable<Car> SearchCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, decimal? minPrice, decimal? maxPrice, string address)
-        {
-            try
-            {
-                using (var context = new RentCarDbContext())
-                {
-                    var cars = context.Cars
-                        .Include(c => c.Brand)
-                        .Include(c => c.Model)
-                        .Include(c => c.Color)
-                        .Include(c => c.Address)
-                        .ThenInclude(a => a.City)
-                        .Include(c => c.Address)
-                        .ThenInclude(a => a.District)
-                        .Include(c => c.Address)
-                        .ThenInclude(a => a.Ward)
-                        .Include(c => c.Document)
-                        .Include(c => c.Term)
-                        .Include(c => c.User)
-                        .Include(c => c.Bookings)
-                        .Where(c => c.Status != 2)
-                        .AsQueryable();
-
-                    if (brandNames != null && brandNames.Length > 0)
-                    {
-                        cars = cars.Where(c => brandNames.Contains(c.Brand.BrandName));
-                    }
-
-                    if (seats != null && seats.Length > 0)
-                    {
-                        cars = cars.Where(c => seats.Contains(c.Seats));
-                    }
-
-                    if (transmissionTypes != null && transmissionTypes.Length > 0)
-                    {
-                        cars = cars.Where(c => transmissionTypes.Contains(c.TransmissionType));
-                    }
-
-                    if (fuelTypes != null && fuelTypes.Length > 0)
-                    {
-                        cars = cars.Where(c => fuelTypes.Contains(c.FuelType));
-                    }
-
-                    if (brandLogos != null && brandLogos.Length > 0)
-                    {
-                        cars = cars.Where(c => brandLogos.Any(logo => c.Brand.BrandLogo.Contains(logo)));
-                    }
-
-                    if (minPrice.HasValue)
-                    {
-                        cars = cars.Where(c => c.BasePrice >= minPrice.Value);
-                    }
-
-                    if (maxPrice.HasValue)
-                    {
-                        cars = cars.Where(c => c.BasePrice <= maxPrice.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(address))
-                    {
-                        cars = cars.Where(c => (c.Address.HouseNumberStreet + ", " +
-                                                 c.Address.Ward.WardName + ", " +
-                                                 c.Address.District.DistrictName + ", " +
-                                                 c.Address.City.CityProvince).Contains(address));
-                    }
-
-                    return cars.ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
     }
-
-    
 }
 

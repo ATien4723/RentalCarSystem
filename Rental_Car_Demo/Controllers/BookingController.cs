@@ -20,7 +20,6 @@ namespace Rental_Car_Demo.Controllers
     {
         private readonly IEmailService _emailService;
         BookingDAO bookingDAO = null;
-        CarDAO carDAO = null;
         UserDAO userDAO = null;
         RentCarDbContext _db;
 
@@ -59,7 +58,6 @@ namespace Rental_Car_Demo.Controllers
         {
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
-            carDAO = new CarDAO();
             userDAO = new UserDAO();
         }
 

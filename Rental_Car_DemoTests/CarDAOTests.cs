@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -22,8 +18,11 @@ namespace Rental_Car_Demo.Tests
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
+
             _context = new RentCarDbContext(options);
-            _carDAO = new CarDAO();
+
+            _carDAO = new CarDAO(_context);
+
             SeedDatabase();
         }
 
@@ -227,7 +226,7 @@ namespace Rental_Car_Demo.Tests
                     DocumentId = 2,
                     TermId = 2,
                     FucntionId = 2,
-                    Status = 2,
+                    Status = 1,
                     NoOfRide = 2
                 }
                 ,
@@ -257,7 +256,7 @@ namespace Rental_Car_Demo.Tests
                     DocumentId = 2,
                     TermId = 2,
                     FucntionId = 2,
-                    Status = 2,
+                    Status = 1,
                     NoOfRide = 2
                 },
                   new Car
@@ -286,7 +285,7 @@ namespace Rental_Car_Demo.Tests
                     DocumentId = 2,
                     TermId = 2,
                     FucntionId = 2,
-                    Status = 2,
+                    Status = 1,
                     NoOfRide = 2
                 }
             };
@@ -298,9 +297,12 @@ namespace Rental_Car_Demo.Tests
             _context.Addresses.AddRange(addressData);
             _context.CarModels.AddRange(carModels);
             _context.CarBrands.AddRange(carBrands);
+            _context.CarColors.AddRange(color);
             _context.AdditionalFunctions.AddRange(additionalFunction);
             _context.CarDocuments.AddRange(carDocument);
+            _context.TermOfUses.AddRange(TermOfUse);
             _context.Cars.AddRange(cars);
+
             _context.SaveChanges();
         }
 
@@ -309,6 +311,7 @@ namespace Rental_Car_Demo.Tests
         {
             _context.Database.EnsureDeleted();
             _context.Dispose();
+            
         }
 
         private string HashPassword(string password)
@@ -325,7 +328,50 @@ namespace Rental_Car_Demo.Tests
             }
         }
 
+        [Test]
+        public void GetAllCars_NoAddressMatch_ReturnsEmptyList()
+        {
+            // Arrange
+            string address = "Nonexistent address";
 
+            // Act
+            var result = _carDAO.GetAllCars(address).ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [Test]
+        [TestCase("", 4)]
+        [TestCase("Hà Nội", 1)]
+        public void GetAllCars_EmptyAddress_ReturnsAllAvailableCars(string address, int carCount)
+        {
+            // Act
+            var result = _carDAO.GetAllCars(address).ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(carCount, result.Count());
+        }
+
+        [TestCase(null, null, null, null, null, null, null, 2)]
+        [TestCase(new string[] { "Brand A" }, null, null, null, null, null, null, 1)]
+        [TestCase(null, new int[] { 4 }, null, null, null, null, null, 1)]
+        [TestCase(null, null, new bool[] { true }, null, null, null, null, 1)]
+        [TestCase(null, null, null, new bool[] { true }, null, null, null, 1)]
+        [TestCase(null, null, null, null, 20000000, null, null, 1)]
+        [TestCase(null, null, null, null, null, 20000000, null, 1)]
+        [TestCase(null, null, null, null, null, null, "Nha so 1", 1)]
+        public void SearchCars_TestCases(string[]? brandNames, int[]? seats, bool[]? transmissionTypes, bool[]? fuelTypes, decimal? minPrice, decimal? maxPrice, string? address, int? expectedCount)
+        {
+            // Act
+            var result = _carDAO.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address).ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedCount, result.Count);
+        }
     }
 
 }

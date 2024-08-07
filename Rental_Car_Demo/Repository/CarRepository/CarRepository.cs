@@ -4,13 +4,20 @@ namespace Rental_Car_Demo.Repository.CarRepository
 {
     public class CarRepository : ICarRepository
     {
-        public void AddCar(Car car) => CarDAO.Instance.CreateCar(car);
+        private readonly CarDAO _carDao;
 
-        public IEnumerable<Car> GetAllCars(string address) => CarDAO.Instance.GetAllCars (address);
+        public CarRepository(CarDAO carDao)
+        {
+            _carDao = carDao;
+        }
 
-        public IEnumerable<Car> GetAllCars() => CarDAO.Instance.GetAllCars();
+        public void AddCar(Car car) => _carDao.CreateCar(car);
 
-        public IEnumerable<Car> SearchCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, decimal? minPrice, decimal? maxPrice, string address) =>
-          CarDAO.Instance.SearchCars (brandNames, seats, transmissionTypes, fuelTypes, brandLogos, minPrice , maxPrice, address);
+        public IEnumerable<Car> GetAllCars(string address) => _carDao.GetAllCars(address);
+
+        public IEnumerable<Car> GetAllCars() => _carDao.GetAllCars();
+
+        public IEnumerable<Car> SearchCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, decimal? minPrice, decimal? maxPrice, string address) =>
+            _carDao.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
     }
 }

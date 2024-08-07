@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Rental_Car_Demo.Context;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
 using Rental_Car_Demo.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.CodeAnalysis;
-using Org.BouncyCastle.Tls;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
-namespace Rental_Car_Demo.UnitTests
+namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
     public class CarControllerTests
@@ -25,6 +22,8 @@ namespace Rental_Car_Demo.UnitTests
         private Mock<IEmailService> _mockEmailService;
         private Mock<ITempDataDictionary> _mockTempData;
         private Mock<ICarRepository> _mockCarRepository;
+        private DummySession _dummySession;
+        private DefaultHttpContext _httpContext;
 
 
         [SetUp]
@@ -40,10 +39,19 @@ namespace Rental_Car_Demo.UnitTests
 
             _context = new RentCarDbContext(options);
 
+            // Initialize DummySession
+            _dummySession = new DummySession();
+
+            // Initialize HttpContext and assign DummySession
+            _httpContext = new DefaultHttpContext();
+            _httpContext.Session = _dummySession;
+
             _controller = new CarController(_mockCarRepository.Object,_context, _mockEmailService.Object)
             {
                 TempData = _mockTempData.Object
             };
+
+            _controller.ControllerContext.HttpContext = _httpContext;
 
             SeedDatabase();
 
@@ -101,7 +109,10 @@ namespace Rental_Car_Demo.UnitTests
                 new TermOfUse
                 {
                     TermId = 1,
-                    NoFoodInCar = true
+                    NoFoodInCar = true,
+                    NoSmoking = true,
+                    NoPet = true,
+                   
                 },
 
                 new TermOfUse
@@ -117,7 +128,8 @@ namespace Rental_Car_Demo.UnitTests
                 {
                     FucntionId = 1,
                     Gps = true,
-                    Camera = true
+                    Camera = true,
+                    
                 },
                 new AdditionalFunction
                 {
@@ -253,6 +265,7 @@ namespace Rental_Car_Demo.UnitTests
             _context.CarModels.AddRange(carModels);
             _context.CarBrands.AddRange(carBrands);
             _context.AdditionalFunctions.AddRange(additionalFunction);
+            _context.TermOfUses.AddRange(TermOfUse);
             _context.CarDocuments.AddRange(carDocument);
             _context.Cars.AddRange(cars);
             _context.SaveChanges();
@@ -280,6 +293,176 @@ namespace Rental_Car_Demo.UnitTests
             }
         }
 
+        [Test]
+        public void ChangeCarDetailsByOwner_ShouldReturnNotFound_WhenCarDoesNotExist()
+        {
+            // Arrange
+            var carId = 999; // An ID that does not exist
 
-    }
+            // Act
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            // Assert
+            Assert.AreEqual("NotFound", result.ViewName, "The view name is incorrect");
+        }
+
+        [Test]
+        public void ChangeCarDetailsByOwner_ShouldReturnErrorAuthorization_WhenUserNotAuthorized()
+        {
+            // Arrange
+            var carId = 1;
+            var user = new User { UserId = 2, Email = "test@test.com", Password = "hashedpassword", Role = false };
+
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+
+            // Act
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            // Assert
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
+        }
+
+        [Test]
+        public void ChangeCarDetailsByOwner_ShouldReturnView_WhenAuthorizedAndCarExists_WithRentals()
+        {
+            // Arrange
+            var carId = 1;
+
+
+            var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
+
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+            var bookings = new List<Booking>
+        {
+            new Booking { CarId = carId, UserId = user.UserId, Status = 3 }
+        };
+
+            var feedbacks = new List<Feedback>
+        {
+            new Feedback { FeedbackId = 1, BookingNo = 1, Ratings = 4, Content = "Good", Date = DateTime.Now }
+        };
+            _context.AddRange(feedbacks);
+            _context.AddRange(bookings);
+            _context.SaveChanges();
+
+
+            // Act
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+
+        [Test]
+        [TestCase(false, false, true, "No loud music", 20000000, 5000000)]
+        [TestCase(false, false, false, "abc", 20000000, 5000000)]
+        [TestCase(false, true, true, "xyz", 20000000, 5000000)]
+        [TestCase(true, true, true, "aaa", 20000000, 5000000)]
+        [TestCase(true, false, true, "No loud music", 20000000, 5000000)]
+        [TestCase(true, false, false, "No loud music", 20000000, 5000000)]
+        [TestCase(true, true, false, null, 20000000, 5000000)]
+        [TestCase(false, true, false, null, -20000000, 5000000)]
+
+        public void ChangeCarTermsByOwner_ShouldUpdateCarAndTerms_WhenDataIsValid(bool smoking, bool food, bool pet, string? specify, int basePrice, int deposit)
+        {
+            // Arrange
+            var car = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+
+            car.BasePrice = basePrice;
+            car.Deposit = deposit;
+
+            // Act
+            var result = _controller.ChangeCarTermsByOwner(car, smoking, food, pet, specify) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ChangeCarDetailsByOwner", result.ActionName);
+            Assert.AreEqual(1, result.RouteValues["CarId"]);
+
+            var updatedCar = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+            Assert.IsNotNull(updatedCar);
+            Assert.AreEqual(basePrice, updatedCar.BasePrice);
+            Assert.AreEqual(deposit, updatedCar.Deposit);
+
+            var updatedTerms = _context.TermOfUses.FirstOrDefault(t => t.TermId == updatedCar.TermId);
+            Assert.IsNotNull(updatedTerms);
+            Assert.AreEqual(updatedTerms.NoSmoking, smoking);
+            Assert.AreEqual(updatedTerms.NoFoodInCar, food);
+            Assert.AreEqual(updatedTerms.NoPet, pet);
+            Assert.AreEqual(specify, updatedTerms.Specify);
+        }
+
+
+
+        [Test]
+        [TestCase(1, 2)]
+        [TestCase(2, 1)]
+        public void ChangeCarStatus_ShouldUpdateCarStatus_AndRedirectToChangeCarDetailsByOwner(int carId,int status)
+        {
+
+            var car = new Car
+            {
+                CarId = carId,
+                Status = status 
+            };
+
+            // Act
+            var result = _controller.ChangeCarStatus(car) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ChangeCarDetailsByOwner", result.ActionName);
+            Assert.AreEqual(car.CarId, result.RouteValues["CarId"]);
+
+            var updatedCar = _context.Cars.FirstOrDefault(c => c.CarId == car.CarId);
+            Assert.IsNotNull(updatedCar);
+            Assert.AreEqual(status, updatedCar.Status);
+
+        }
+
+        [Test]
+        public void ConfirmDeposit_ShouldUpdateBookingStatus_AndRedirectToChangeCarDetailsByOwner()
+        {
+            // Arrange
+            var car = new Car
+            {
+                CarId = 1
+            };
+
+            // Ensure the booking exists in the database
+            var existingBooking = new Booking
+            {
+                BookingInfoId = 1,
+                CarId = car.CarId,
+                Status = 1, // Status before confirmation
+                UserId = 1,
+                BookingNo = 1,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
+            };
+
+            _context.Bookings.Add(existingBooking);
+            _context.SaveChanges();
+
+            // Act
+            var result = _controller.ConfirmDeposit(car) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ChangeCarDetailsByOwner", result.ActionName);
+            Assert.AreEqual(car.CarId, result.RouteValues["CarId"]);
+
+            var updatedBooking = _context.Bookings.FirstOrDefault(b => b.BookingInfoId == existingBooking.BookingInfoId);
+            Assert.IsNotNull(updatedBooking);
+            Assert.AreEqual(2, updatedBooking.Status); // Status after confirmation
+        }
+
+
+        }
+
 }
