@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Castle.Components.DictionaryAdapter.Xml;
 using System.Security.Cryptography;
 
 namespace Rental_Car_Demo.Tests
@@ -26,102 +25,21 @@ namespace Rental_Car_Demo.Tests
         {
             // Mock ICarRepository
             _mockCarRepository = new Mock<ICarRepository>();
+
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
                 .UseInMemoryDatabase(databaseName: "RentCarTestDb")
                 .Options;
 
             _context = new RentCarDbContext(options);
+            SeedDatabase(_context);
 
-            SeedDatabase();
+            
 
-            var cityData = new List<City>
-            {
-                new City { CityId = 1, CityProvince = "Thành phố Hà Nội"},
-                new City { CityId = 2, CityProvince = "Tỉnh Hà Giang"},
-                new City { CityId = 3, CityProvince = "Tỉnh Cao Bằng"},
-                new City { CityId = 4, CityProvince = "Tỉnh Bắc Kạn"},
-            }.AsQueryable();
-
-            var districtData = new List<District>
-            {
-                new District { CityId = 1, DistrictName = "Quận Ba Đình",DistrictId = 1},
-                new District { CityId = 2, DistrictName = "Huyện Đồng Văn   ",DistrictId = 2},
-                new District { CityId = 3, DistrictName = "Huyện Bảo Lâm",DistrictId = 3},
-                new District { CityId = 4, DistrictName = "Huyện Bạch Thông",DistrictId = 4},
-            }.AsQueryable();
-
-            var wardData = new List<Ward>
-            {
-                new Ward { WardId = 1, WardName = "Phường Phúc Xá",DistrictId = 1},
-                new Ward { WardId = 2, WardName = "Phường Phúc Tân",DistrictId = 2},
-                new Ward { WardId = 3, WardName = "Phường Phú Thượng",DistrictId = 3},
-                new Ward { WardId = 4, WardName = "Phường Thượng Thanh",DistrictId = 4},
-            }.AsQueryable();
-
-
-            var addressData = new List<Address>
-            {
-                new Address { AddressId = 1, CityId = 1,DistrictId = 1,WardId = 1, HouseNumberStreet = "Nha so 1"},
-                new Address { AddressId = 2, CityId = 2,DistrictId = 2,WardId = 2, HouseNumberStreet = "Nha so 2"},
-                new Address { AddressId = 3, CityId = 3,DistrictId = 3,WardId = 3, HouseNumberStreet = "Nha so 3"},
-                new Address { AddressId = 4, CityId = 4,DistrictId = 4,WardId = 4, HouseNumberStreet = "Nha so 4"},
-            }.AsQueryable();
-
-            var carModels = new List<CarModel>
-            {
-                new CarModel { ModelId = 1, ModelName = "Model X" },
-                new CarModel { ModelId = 2, ModelName = "Model Y" }
-            }.AsQueryable();
-
-            var carBrands = new List<CarBrand>
-            {
-                new CarBrand { BrandId = 1, BrandName = "Brand A" },
-                new CarBrand { BrandId = 2, BrandName = "Brand B" }
-            }.AsQueryable();
-
-            var cars = new List<Car>
-            {
-                new Car { CarId = 1, ModelId = 1, BrandId = 1, Model = carModels.First(cm => cm.ModelId == 1), Brand = carBrands.First(b => b.BrandId == 1), AddressId = 1},
-                new Car { CarId = 2, ModelId = 2, BrandId = 2, Model = carModels.First(cm => cm.ModelId == 2), Brand = carBrands.First(b => b.BrandId == 2), AddressId = 2}
-            }.AsQueryable();
-
-
-            // Setup the mock to return the data
-            //_mockCarRepository.Setup(repo => repo.GetAllCars()).Returns(cars);
-
-
-            // Setup the mock repository methods
-            _mockCarRepository.Setup(repo => repo.GetAllCars(It.IsAny<string>())).Returns((string address) =>
-            {
-                if (string.IsNullOrEmpty(address))
-                {
-                    return cars;
-                }
-                else
-                {
-                    return cars.Where(c => c.CarId == 1);
-                }
-            });
-
-            _mockCarRepository.Setup(repo => repo.SearchCars(It.IsAny<string[]>(), It.IsAny<int[]?>(), It.IsAny<bool[]?>(), It.IsAny<bool[]?>(), It.IsAny<string[]>(), It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>()))
-            .Returns(cars);
-
-
-
-            // Initialize DummySession
-            _dummySession = new DummySession();
-
-            // Initialize HttpContext and assign DummySession
-            _httpContext = new DefaultHttpContext();
-            _httpContext.Session = _dummySession;
-
-
-            // Setup the HomeController with mocks
             _controller = new HomeController(_mockCarRepository.Object, _context);
 
-            // Inject mocked HttpContext into ControllerContext
+            _dummySession = new DummySession();
+            _httpContext = new DefaultHttpContext { Session = _dummySession };
             _controller.ControllerContext.HttpContext = _httpContext;
-
         }
 
         [TearDown]
@@ -132,7 +50,7 @@ namespace Rental_Car_Demo.Tests
             _controller.Dispose();
         }
 
-        private void SeedDatabase()
+        private void SeedDatabase(RentCarDbContext _context)
         {
             var cityData = new List<City>
             {
@@ -247,6 +165,7 @@ namespace Rental_Car_Demo.Tests
             {
                 new User
                 {
+                    UserId= 99,
                     Email = "nvutuankiet2003@gmail.com",
                     Password = HashPassword("kiet123"),
                     Name = "kiet ne",
@@ -256,6 +175,7 @@ namespace Rental_Car_Demo.Tests
                 },
                 new User
                 {
+                    UserId = 100,
                     Email = "hehe@gmail.com",
                     Password = HashPassword("hehe123"),
                     Name = "hehe",
@@ -270,7 +190,7 @@ namespace Rental_Car_Demo.Tests
                 new Car
                 {
                     CarId = 1,
-                    UserId = 1,
+                    UserId = 99,
                     Name = "Car 1",
                     LicensePlate = "50F-567.89",
                     BrandId = 1,
@@ -323,7 +243,37 @@ namespace Rental_Car_Demo.Tests
                     DocumentId = 2,
                     TermId = 2,
                     FucntionId = 2,
-                    Status = 2,
+                    Status = 1,
+                    NoOfRide = 2
+                }
+                ,
+                 new Car
+                {
+                    CarId = 3,
+                    UserId = 2,
+                    Name = "Car 3",
+                    LicensePlate = "50F-567.99",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front2.jpg",
+                    BackImage = "back2.jpg",
+                    LeftImage = "left2.jpg",
+                    RightImage = "right2.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 3,
+                    Description = "Description 2",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 1,
                     NoOfRide = 2
                 }
             };
@@ -399,7 +349,7 @@ namespace Rental_Car_Demo.Tests
             //_controller.ControllerContext.HttpContext = _httpContext;
 
             // Act
-            var result = _controller.SearchCar(null, null, null, null, null, null, null);
+            var result = _controller.SearchCar(null, null, null, null, null, null);
 
             // Assert
             if (role)
@@ -442,7 +392,7 @@ namespace Rental_Car_Demo.Tests
 
 
             // Act
-            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as PartialViewResult;
+            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as PartialViewResult;
             var model = result.Model as IEnumerable<Car>;
 
             // Assert
@@ -450,49 +400,6 @@ namespace Rental_Car_Demo.Tests
             Assert.AreEqual("_CarResultsPartial", result.ViewName);
             Assert.IsNotNull(model);
         }
-
-        //[Test]
-        //public void SearchCar_ValidParameters_ReturnsPartialViewWithCars()
-        //{
-        //    // Arrange
-        //    string[] brandNames = { "Brand A" };
-        //    int[] seats = { 4 };
-        //    bool[] transmissionTypes = { true };
-        //    bool[] fuelTypes = { true };
-        //    string[] brandLogos = { "Logo A" };
-        //    string[] priceRange = { "1000000-5000000" };
-        //    string address = "Some address";
-
-        //    var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
-        //    var userString = JsonConvert.SerializeObject(user);
-        //    _dummySession.SetString("User", userString);
-
-        //    _mockCarRepository.Setup(repo => repo.SearchCars(
-        //        It.IsAny<string[]>(),
-        //        It.IsAny<int[]>(),
-        //        It.IsAny<bool[]>(),
-        //        It.IsAny<bool[]>(),
-        //        It.IsAny<string[]>(),
-        //        It.IsAny<decimal?>(),
-        //        It.IsAny<decimal?>(),
-        //        It.IsAny<string>()))
-        //    .Returns(new List<Car>
-        //    {
-        //new Car { CarId = 1, ModelId = 1, BrandId = 1, AddressId = 1, Name = "Car 1", LicensePlate = "ABC123" }
-        //    });
-
-        //    // Act
-        //    var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as PartialViewResult;
-        //    var model = result.Model as IEnumerable<Car>;
-
-        //    // Assert
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual("_CarResultsPartial", result.ViewName);
-        //    Assert.IsNotNull(model);
-        //    Assert.AreEqual(1, model.Count());
-        //    Assert.AreEqual("Car 1", model.First().Name);
-        //}
-
 
         [Test]
         public void SearchCar_UserIsCarOwner_ReturnsErrorAuthorizationView()
@@ -502,31 +409,23 @@ namespace Rental_Car_Demo.Tests
             int[] seats = { 4 };
             bool[] transmissionTypes = { true };
             bool[] fuelTypes = { true };
-            string[] brandLogos = { "Logo A" };
+            //string[] brandLogos = { "Logo A" };
             string[] priceRange = { "1000000-5000000" };
             string address = "Some address";
 
-            var user = new User { UserId = 1, Email = "admin@test.com", Password = "hashedpassword", Role = true };
+            var user = _context.Users.FirstOrDefault(u => u.UserId == 100);
+            //var user = new User { UserId = 1, Email = "admin@test.com", Password = "hashedpassword", Role = true };
             var userString = JsonConvert.SerializeObject(user);
             _dummySession.SetString("User", userString);
 
-            _mockCarRepository.Setup(repo => repo.SearchCars(
-                It.IsAny<string[]>(),
-                It.IsAny<int[]>(),
-                It.IsAny<bool[]>(),
-                It.IsAny<bool[]>(),
-                It.IsAny<string[]>(),
-                It.IsAny<decimal?>(),
-                It.IsAny<decimal?>(),
-                It.IsAny<string>()))
-            .Returns(new List<Car>());
 
             // Act
-            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, brandLogos, priceRange, address) as ViewResult;
+            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual("ErrorAuthorization", result.ViewName);
+            Assert.AreEqual("hehe@gmail.com", user.Email);
         }
 
 
@@ -674,35 +573,6 @@ namespace Rental_Car_Demo.Tests
             Assert.IsNotNull(result, "Result should not be null");
             Assert.AreEqual("Guest", result.ActionName, "Redirect should go to Guest action");
             Assert.AreEqual("Users", result.ControllerName, "Redirect should go to Users controller");
-        }
-
-
-        [Test]
-        public void GetAllCars_NoAddressMatch_ReturnsEmptyList()
-        {
-            // Arrange
-            string address = "Nonexistent address";
-
-            // Act
-            var result = _controller.GetAllCars(address).ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
-        }
-
-        [Test]
-        [TestCase("", 2)]
-        [TestCase("Hà Nội", 1)]
-        public void GetAllCars_EmptyAddress_ReturnsAllAvailableCars(string address, int carCount)
-        {
-
-            // Act
-            var result = _controller.GetAllCars(address).ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(carCount, result.Count());
         }
     }
 

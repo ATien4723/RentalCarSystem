@@ -605,12 +605,13 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
-            ViewBag.CarOwner = _db.Users.FirstOrDefault (x => x.UserId == car.UserId);
+            
             if (car == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
+            
 
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
@@ -635,6 +636,7 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
+            ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
             var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
@@ -815,28 +817,32 @@ namespace Rental_Car_Demo.Controllers
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
 
-       
-            carrrr.BasePrice = car.BasePrice;
-            carrrr.Deposit = car.Deposit;
-            _db.Update(carrrr);
-            _db.SaveChanges();
-
-
-            var termsOfUse = _db.TermOfUses.FirstOrDefault(terms => terms.TermId == carrrr.TermId);
-
-            termsOfUse.NoSmoking = smoking;
-            termsOfUse.NoFoodInCar = food;
-            termsOfUse.NoPet = pet;
-            if (specify != null)
+            if (ModelState.IsValid)
             {
-                termsOfUse.Specify = specify;
+                carrrr.BasePrice = car.BasePrice;
+                carrrr.Deposit = car.Deposit;
+                _db.Update(carrrr);
+                _db.SaveChanges();
+
+
+                var termsOfUse = _db.TermOfUses.FirstOrDefault(terms => terms.TermId == carrrr.TermId);
+
+                termsOfUse.NoSmoking = smoking;
+                termsOfUse.NoFoodInCar = food;
+                termsOfUse.NoPet = pet;
+                if (specify != null)
+                {
+                    termsOfUse.Specify = specify;
+                }
+
+                _db.Update(termsOfUse);
+                _db.SaveChanges();
+
+
+                return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
             }
-
-            _db.Update(termsOfUse);
-            _db.SaveChanges();
-
-
-            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId});
+            return View();
+            
         }
 
         [HttpPost]
