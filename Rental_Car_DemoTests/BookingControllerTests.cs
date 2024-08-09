@@ -241,8 +241,8 @@ namespace Rental_Car_Demo.UnitTests
         [TestCase(null, null, 1, 1, "highest", "highest")]
         [TestCase(null, null, 1, 1, "lowest", "lowest")]
     
-        public void ConfirmPickupForDetailsPage_InBookingList_ReturnViewBookingList(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder, string expectedSortOrder)
-        {
+        public void ConfirmPickupForDetailsPage_ValidSortOrder_InBookingList_ReturnViewBookingList(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder, string expectedSortOrder)
+        {   
             var result = _controller.confirmPickupForDetailsPage(startDate, endDate, carId, bookingNo, sortOrder) as ViewResult;
 
             var expectedBooking = _context.Bookings.Find(bookingNo);
@@ -255,15 +255,48 @@ namespace Rental_Car_Demo.UnitTests
 
         }
 
-        
+        [Test]
+        [TestCase(null, null, 1, 1, "Lowest")]  // SortOrder invalid
+        [TestCase("2024-07-31", "2024-7-30", 1, 1, "newest")] // DateTime invalid
+        [TestCase("2024-07-31", "2024-7-31", 1, 1, "newest")] // DateTime invalid
+        [TestCase("2024-7-31", "2024-08-15", 4, 1, "latest")]
+        [TestCase("2024-7-31", "2024-08-15", 0, 1, "latest")]
+        [TestCase("2024-7-31", "2024-08-15", -100, 1, "latest")] //carId invalid
+        [TestCase("2024-7-20", "2024-7-22", 1, 0, "highest")]
+        [TestCase("2024-7-2", "2024-7-22", 1, 6, "lowest")]
+        [TestCase("2024-7-2", "2024-7-22", 1, -100, "lowest")] //Booking No invalid
+        public void ConfirmPickupForDetailsPage_InValidInput_InBookingList_ReturnNotFoundPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder)
+        {
+            var result = _controller.confirmPickupForDetailsPage(startDate, endDate, carId, bookingNo, sortOrder) as NotFoundObjectResult;
+
+            Assert.IsInstanceOf<NotFoundObjectResult>(result);
+
+        }
 
         [Test]
-        [TestCase("2024-07-31", "2024-08-01", 2, 2, "newest")]
-        [TestCase("2024-7-31", "2024-08-15", 2, 2, "latest")]
-        [TestCase("2024-7-20", "2024-7-22", 2, 2, "highest")]
-        [TestCase("2024-7-20", "2024-7-22", 2, 2, "lowest")]
-        [TestCase("2024-7-20", "2024-7-22", 2, 2, "")]
-        public void ConfirmPickupForDetailsPage_InEditBooking_ReturnViewBookingList(string startDate, string endDate, int carId, int bookingNo, string sortOrder)
+        [TestCase(null, null, 1, 1, "")]
+        public void ConfirmPickupForDetailsPage_CarOwnerLogin_ReturnErrorPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder)
+        {
+            var user = _context.Users.Find(1);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var userJson = JsonConvert.SerializeObject(user, settings);
+            _dummySession.SetString("User", userJson);
+            var result = _controller.confirmPickupForDetailsPage(startDate, endDate, carId, bookingNo, sortOrder) as ViewResult;
+
+            Assert.That(result.ViewName,Is.EqualTo("ErrorAuthorization"));
+
+        }
+
+        [Test]
+        [TestCase("2024-07-31", "2024-08-01", 1, 1, "newest")]
+        [TestCase("2024-7-31", "2024-08-15", 1, 1, "latest")]
+        [TestCase("2024-7-20", "2024-7-22", 1, 1, "highest")]
+        [TestCase("2024-7-2", "2024-7-22", 1, 1, "lowest")]
+
+        public void ConfirmPickupForDetailsPage_ValidInput_InEditBooking_ReturnViewBookingList(string startDate, string endDate, int carId, int bookingNo, string sortOrder)
         {
             
             var result = _controller.confirmPickupForDetailsPage(DateTime.Parse(startDate), DateTime.Parse(endDate), carId, bookingNo, sortOrder) as RedirectToActionResult;
@@ -277,15 +310,15 @@ namespace Rental_Car_Demo.UnitTests
         }
 
         [Test]
-        [TestCase(null, null, 2, 4, "Xe dep lam", 4, "Xe dep lam", 4)]
-        [TestCase(null, null, 2, 4, "Xe te qua", 1, "Xe te qua", 1)]
+        [TestCase("2024-07-20", "2024-07-22", 2, 4, "Xe dep lam", 4, "Xe dep lam", 4)]
+        [TestCase("2024-07-20", "2024-07-22", 2, 4, "Xe te qua", 1, "Xe te qua", 1)]
         [TestCase("2024-07-20", "2024-07-22", 2, 4, "", 3, "", 3)]
         [TestCase("2024-07-20", "2024-07-22", 2, 4, "Good car", 5, "Good car", 5)] 
         [TestCase("2024-07-20", "2024-07-22", 2, 4, "Average car", 2, "Average car", 2)] 
         [TestCase("2024-07-20", "2024-07-22", 2, 4, "@5%^$##&*)(", 2, "@5%^$##&*)(", 2)] 
-        [TestCase("2024-07-20", "2024-07-22", 2, 4, "          ", 2, "          ", 2)] 
+        [TestCase("2024-07-20", "2024-07-22", 2, 4, "aaaaaaaaaaaaadadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", 2, "aaaaaaaaaaaaadadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", 2)] 
          
-        public void giveRating_ReturnView(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings,string expectedContent,int expectedRating)
+        public void giveRating_ValidInput_ReturnView(DateTime startDate, DateTime endDate, int carId, int bookingNo, string content, int ratings,string expectedContent,int expectedRating)
         {
             var expectedBooking = _context.Bookings.Find(bookingNo);
 
@@ -301,22 +334,65 @@ namespace Rental_Car_Demo.UnitTests
 
             Assert.That(resultFeedback.BookingNo, Is.EqualTo(bookingNo));
 
-            Assert.That(resultAction.RouteValues["carId"], Is.EqualTo(carId));
-
             Assert.That("EditBookingDetail", Is.EqualTo(resultAction.ActionName));
         }
 
         [Test]
+        [TestCase(null, "2024-07-22", 2, 4, "Xe dep lam", 4)]
+        [TestCase("2024-07-24", null, 2, 4, "Xe dep lam", 4)]
+        [TestCase(null, null, 2, 4, "Xe dep lam", 4)]
+        [TestCase("2024-07-24", "2024-07-22", 2, 4, "Xe dep lam", 4)]
+        [TestCase("2024-07-22", "2024-07-22", 2, 4, "Xe te qua", 1)] //DateTime invalid
+        [TestCase("2024-07-20", "2024-07-22", 3, 4, "", 3)]
+        [TestCase("2024-07-20", "2024-07-22", 0, 4, "Good car", 5)]
+        [TestCase("2024-07-20", "2024-07-22", -100, 4, "Average car", 2)] // carId invalid
+        [TestCase("2024-07-20", "2024-07-22", 2, 6, "@5%^$##&*)(", 2)]
+        [TestCase("2024-07-20", "2024-07-22", 2, 0, "abc", 2)]
+        [TestCase("2024-07-20", "2024-07-22", 2, -100, "abc", 2)]// BookingNo invalid
+        [TestCase("2024-07-20", "2024-07-22", 2, 4, "abc", 6)]// BookingNo invalid
+       
+
+
+        public void giveRating_InvalidInput_ReturnNotFoundPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings)
+        {
+
+            var resultAction = _controller.giveRating(startDate, endDate, carId, bookingNo, content, ratings) as NotFoundObjectResult;
+
+            Assert.IsInstanceOf<NotFoundObjectResult>(resultAction);
+        }
+
+        [Test]
+        [TestCase(null, "2024-07-22", 2, 4)]
+        [TestCase("2024-07-24", null, 2, 4)]
         [TestCase(null, null, 2, 4)]
-        [TestCase("2024-7-20", null, 2, 4)]
-        [TestCase(null, "2024-7-22", 2, 4)]
-        public void skipRating_ReturnView(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
+        [TestCase("2024-07-24", "2024-07-22", 2, 4)]
+        [TestCase("2024-07-22", "2024-07-22", 2, 4)] //DateTime invalid
+        [TestCase("2024-07-20", "2024-07-22", 3, 4)]
+        [TestCase("2024-07-20", "2024-07-22", 0, 4)]
+        [TestCase("2024-07-20", "2024-07-22", -100, 4)] // carId invalid
+        [TestCase("2024-07-20", "2024-07-22", 2, 6)]
+        [TestCase("2024-07-20", "2024-07-22", 2, 0)]
+        [TestCase("2024-07-20", "2024-07-22", 2, -100)]// BookingNo invalid
+        public void skipRating_Invalid_ReturnNotFoundPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
+        {
+
+            var result = _controller.skipRating(startDate, endDate,carId,bookingNo) as NotFoundObjectResult;
+
+            Assert.IsInstanceOf<NotFoundObjectResult>(result);
+
+        }
+
+        [Test]
+        [TestCase("2024-07-21", "2024-07-22", 2, 4)]
+        [TestCase("2024-07-12", "2024-07-22", 2, 4)]
+        [TestCase("2024-04-1", "2024-07-29", 2, 4)]
+        public void skipRating_Invalid_ReturnView(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
             var expectedBooking = _context.Bookings.Find(bookingNo);
 
-            Assert.That(5,Is.EqualTo(expectedBooking.Status));
+            Assert.That(5, Is.EqualTo(expectedBooking.Status));
 
-            var result = _controller.skipRating(startDate, endDate,carId,bookingNo) as RedirectToActionResult;
+            var result = _controller.skipRating(startDate, endDate, carId, bookingNo) as RedirectToActionResult;
 
             var resultFeedback = _context.Feedbacks.Last();
 

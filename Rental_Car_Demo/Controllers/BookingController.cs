@@ -26,6 +26,29 @@ namespace Rental_Car_Demo.Controllers
 
         public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
+            var carExists = _db.Cars.Any(c => c.CarId == carId);
+
+            if (!carExists)
+            {
+                return NotFound($"Car with ID {carId} not found.");
+            }
+
+            var bookingExists = _db.Bookings.Any(b => b.BookingNo == bookingNo);
+            if (!bookingExists)
+            {
+                return NotFound($"Booking with number {bookingNo} not found.");
+            }
+
+            if (startDate == null || endDate == null)
+            {
+                return NotFound("Need DateTime!");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+            }
+
             Feedback feedback = new Feedback();
             feedback.BookingNo = bookingNo;
             feedback.Ratings = -1;
@@ -52,10 +75,22 @@ namespace Rental_Car_Demo.Controllers
                 return NotFound($"Booking with number {bookingNo} not found.");
             }
 
+            if (startDate == null || endDate == null)
+            {
+                return NotFound("Need DateTime!");
+            }
+
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+            }
+
+
             Feedback feedback = new Feedback();
             feedback.Content = content;
             feedback.Ratings = ratings;
-            if(ratings <= 0) return NotFound($"Rating must be between 1-5");
+            if (ratings <= 0 || ratings > 5) return NotFound($"Rating must be between 1-5");
             feedback.BookingNo = bookingNo;
             feedback.Date = DateTime.Now;
             _db.Feedbacks.Add(feedback);
@@ -68,7 +103,7 @@ namespace Rental_Car_Demo.Controllers
         {
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
-            carDAO = new CarDAO();
+            carDAO = new CarDAO(rentCarDbContext);
             userDAO = new UserDAO();
             this._db = rentCarDbContext;
         }
@@ -411,20 +446,46 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
         {
+
+            var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+
+            var userId = user.UserId;
+
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             Booking booking = _db.Bookings.Find(bookingNo);
+
+            if (booking == null)
+            {
+                return NotFound($"Cannot find bookingNo {bookingNo} !");
+            }
+
             booking.Status = 3;
             _db.Bookings.Update(booking);
             _db.SaveChanges();
-            if(!startDate.HasValue || !endDate.HasValue)
+            var car = _db.Cars.Find(carId);
+            if (car == null)
             {
-                var context = new RentCarDbContext();
-                var userString = HttpContext.Session.GetString("User");
-                User user = null;
-                if (!string.IsNullOrEmpty(userString))
+                return NotFound($"Cannot find car with Id = {carId} !");
+            }
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+               
+                if (sortOrder != "latest" && sortOrder != "newest" && sortOrder != "highest" && sortOrder != "lowest")
                 {
-                    user = JsonConvert.DeserializeObject<User>(userString);
+                    return NotFound($"Can not find sort order {sortOrder} !");
                 }
-                var userId = user.UserId;
+
+
                 if (sortOrder == "latest")
                 {
                     ViewBag.Bookings = context.Bookings
@@ -494,6 +555,12 @@ namespace Rental_Car_Demo.Controllers
 
                 ViewBag.Count = bookingCount;
                 return View("ViewBookingList");
+            }
+
+            if(startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+
             }
 
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
