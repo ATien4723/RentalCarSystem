@@ -181,6 +181,12 @@
             font-size: 1rem;
         }
 
+        .contact2-btn {
+            width: 100%;
+            font-size: 1rem;
+            background-color: gray;
+        }
+
         .description {
             font-size: 0.9rem;
             margin-top: 20px;
@@ -428,7 +434,7 @@
         {
             <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
         }
-         <a asp-action="SearchCarForm" asp-controller="Home"> > Search Results</a> > <span>Car Details</span>
+         <span>></span> <a asp-action="SearchCarForm" asp-controller="Home">Search Results</a> > <span>Car Details</span>
     </div>
 
     <div class="container mt-4">
@@ -666,8 +672,15 @@
                                     Rent now
                                 </a>
                             }
-                      
-
+                            else
+                            {
+                                <a style="pointer-events: none;" class="btn btn-danger contact2-btn" asp-controller="Booking" asp-action="BookACar" asp-route-location="@ViewBag.location"
+                                   asp-route-startDate="@ViewBag.startDate"
+                                   asp-route-endDate="@ViewBag.endDate"
+                                   asp-route-CarId="@ViewBag.car.CarId">
+                                    Rent now
+                                </a>
+                            }
                         </div>
                         <div class="owner-section mt-4">
                             <h5>Car Owner</h5>
@@ -703,7 +716,7 @@
                                             <div class="star-rating">
                                                 ⭐ @if (c.AverageRating > 0)
                                                 {
-                                                    <span>@c.AverageRating</span>
+                                                    <span>@c.AverageRating.ToString("0.#")</span>
                                                 } else
                                                 {
                                                     <span>No ratings yet</span>
@@ -761,7 +774,7 @@
                             <span class="col-10 fw-bold">
                             </span>
                         }
-                        <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
+                        <span class="text-danger">Note: Full address will be available after you've paid the deposit to rent.</span>
                     </div>
 
                     <div class="row mt-3">

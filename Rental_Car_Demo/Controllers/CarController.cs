@@ -12,12 +12,13 @@ namespace Rental_Car_Demo.Controllers
     {
         ICarRepository carRepository = null;
 
-        RentCarDbContext _db = new RentCarDbContext();
-        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
+        RentCarDbContext _db;
+
+
+
+        public CarController(RentCarDbContext context)
         {
-            this.carRepository = carRepository;
-            _db = db;
-            _emailService = emailService;
+            this._db = context;
         }
 
         public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
@@ -26,17 +27,20 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.startDate = startDate;
             ViewBag.endDate = endDate;
 
-            var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
-            ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
+
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
+                if (user.Role == true)
+                {
+                    return View("ErrorAuthorization");
+                }
                 List<Booking> lBook = _db.Bookings.Where(x => x.CarId == CarId && x.UserId == user.UserId).ToList();
                 foreach (Booking booking in lBook)
                 {
-                    if (booking.Status==2||booking.Status == 3 || booking.Status == 4)
+                    if (booking.Status == 2 || booking.Status == 3 || booking.Status == 4)
                     {
                         checkRent = true;
                         break;
@@ -44,6 +48,21 @@ namespace Rental_Car_Demo.Controllers
                 }
 
             }
+
+            var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+
+            if(car == null)
+            {
+                return NotFound($"No founded car with Id = {CarId} !");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("Date invalid");
+            }
+
+            ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
+            
             var matchedFeedback = (from feedback in _db.Feedbacks
                                    join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
                                    join user in _db.Users on booking.UserId equals user.UserId
@@ -189,11 +208,12 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
+        public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile? insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
             bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            bool smoking, bool food, bool pet, string specify, int city, int district, int ward, string street)
+            bool smoking, bool food, bool pet, string? specify, int city, int district, int ward, string street)
         {
+
 
             var document = new CarDocument();
 
@@ -329,13 +349,11 @@ namespace Rental_Car_Demo.Controllers
             car.UserId = user.UserId;
 
             car.Name = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
-            if (car != null)
-            {
-                _db.Cars.Add(car);
-                _db.SaveChanges();
+            
+                CarDAO carDao = new CarDAO(_db);
+                carDao.CreateCar(car);
                 return RedirectToAction("LoginOwn", "Users");
-            }
-            else return RedirectToAction("Fail", "Users");
+            
         }
 
 

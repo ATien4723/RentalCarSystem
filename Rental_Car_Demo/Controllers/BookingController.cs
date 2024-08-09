@@ -22,19 +22,33 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
-        RentCarDbContext _db = new RentCarDbContext();
-
-       
-        public IActionResult loadRating()
-        {
-            return View();
-        }
+        RentCarDbContext _db;
 
         public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
-            Booking booking = _db.Bookings.Find(bookingNo);
-            booking.Status = 5;
-            _db.Bookings.Update(booking);
+            var carExists = _db.Cars.Any(c => c.CarId == carId);
+
+            if (!carExists)
+            {
+                return NotFound($"Car with ID {carId} not found.");
+            }
+
+            var bookingExists = _db.Bookings.Any(b => b.BookingNo == bookingNo);
+            if (!bookingExists)
+            {
+                return NotFound($"Booking with number {bookingNo} not found.");
+            }
+
+            if (startDate == null || endDate == null)
+            {
+                return NotFound("Need DateTime!");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+            }
+
             Feedback feedback = new Feedback();
             feedback.BookingNo = bookingNo;
             feedback.Ratings = -1;
@@ -48,13 +62,35 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult giveRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings)
         {
-            Booking booking = _db.Bookings.Find(bookingNo);
-            booking.Status = 5;
-            _db.Bookings.Update(booking);
-            _db.SaveChanges();
+            var carExists = _db.Cars.Any(c => c.CarId == carId);
+
+            if (!carExists)
+            {
+                return NotFound($"Car with ID {carId} not found.");
+            }
+
+            var bookingExists = _db.Bookings.Any(b => b.BookingNo == bookingNo);
+            if (!bookingExists)
+            {
+                return NotFound($"Booking with number {bookingNo} not found.");
+            }
+
+            if (startDate == null || endDate == null)
+            {
+                return NotFound("Need DateTime!");
+            }
+
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+            }
+
+
             Feedback feedback = new Feedback();
             feedback.Content = content;
             feedback.Ratings = ratings;
+            if (ratings <= 0 || ratings > 5) return NotFound($"Rating must be between 1-5");
             feedback.BookingNo = bookingNo;
             feedback.Date = DateTime.Now;
             _db.Feedbacks.Add(feedback);
@@ -63,27 +99,20 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
 
-        public BookingController(IEmailService emailService)
+        public BookingController(IEmailService emailService,RentCarDbContext rentCarDbContext)
         {
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
-            carDAO = new CarDAO();
+            carDAO = new CarDAO(rentCarDbContext);
             userDAO = new UserDAO();
+            this._db = rentCarDbContext;
         }
 
         // GET: BookingController/Create
         public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId)
         {
-
-
-
             try
             {
-                //var Booking = new Booking();
-                //var BookingInfo = new BookingInfo();
-
-                //ViewBag.BookingInfo = BookingInfo;
-
                 var userString = HttpContext.Session.GetString("User");
                 User user = null;
                 if (!string.IsNullOrEmpty(userString))
@@ -103,14 +132,50 @@ namespace Rental_Car_Demo.Controllers
                 }
 
                 using var context = new RentCarDbContext();
-                var car = context.Cars.FirstOrDefault(x => x.CarId == CarId);
+                var car = context.Cars.Include(c => c.Address).ThenInclude(c => c.City).ThenInclude(c => c.Districts).ThenInclude(c => c.Wards).FirstOrDefault(x => x.CarId == CarId);
 
-                ViewBag.location = location;
-                ViewBag.startDate = startDate;
-                ViewBag.endDate = endDate;
+                if(car.Status != 1)
+                {
+                    return RedirectToAction("LoginCus", "Users");
+                }
+
+                if(string.IsNullOrEmpty(location))
+                {
+                    ViewBag.location = $"{car.Address.HouseNumberStreet}, {car?.Address?.Ward?.WardName}, {car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
+                }
+                else
+                {
+                    ViewBag.location = location;
+                }
+
+                if (startDate.ToString("yyyy-MM-ddTHH:mm") != "0001-01-01T00:00")
+                {
+                    ViewBag.startDate = startDate;
+                }
+                else
+                {
+                    ViewBag.startDate = DateTime.Now;
+                }
+
+                if (endDate.ToString("yyyy-MM-ddTHH:mm") != "0001-01-01T00:00")
+                {
+                    ViewBag.endDate = endDate;
+                }
+                else
+                {
+                    ViewBag.endDate = DateTime.Now.AddDays(1);
+                }
                 ViewBag.carId = CarId;
 
-                int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
+                int numberOfDays;
+                if (startDate.ToString("yyyy-MM-ddTHH:mm") == "0001-01-01T00:00" || endDate.ToString("yyyy-MM-ddTHH:mm") == "0001-01-01T00:00")
+                {
+                    numberOfDays = 1;
+                }
+                else
+                {
+                    numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays); 
+                }
                 ViewBag.NumberOfDays = numberOfDays;
                 ViewBag.BasePrice = car.BasePrice;
                 ViewBag.Total = numberOfDays * car.BasePrice;
@@ -298,57 +363,51 @@ namespace Rental_Car_Demo.Controllers
                         return RedirectToAction("BookACar", new {location = location, startDate = startDate, endDate = endDate, carId = CarId});
                     }
 
-                    if (viewModel.PaymentMethod == 1)
+                if (viewModel.PaymentMethod == 1)
+                {
+                    user.Wallet -= (numberOfDays * car.Deposit);
+                    carOwner.Wallet += (numberOfDays * car.Deposit);
+                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    _user.Wallet -= (numberOfDays * car.Deposit);
+
+                    var wallet = new Wallet
                     {
-                        user.Wallet -= (numberOfDays * car.Deposit);
-                        carOwner.Wallet += (numberOfDays * car.Deposit);
-                        var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
-                        _user.Wallet -= (numberOfDays * car.Deposit);
-
-                        var wallet = new Wallet
-                        {
-                            UserId = user.UserId,
-                            Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
-                            Type = "Pay Deposit",
-                            CreatedAt = DateTime.Now,
-                            BookingNo = booking.BookingNo,
-                            CarName = car.Name
-                        };
-                        var walletCarOwner = new Wallet
-                        {
-                            UserId = car.User.UserId,
-                            Amount = (numberOfDays * car.Deposit).ToString("N2"),
-                            Type = "Receive Deposit",
-                            CreatedAt = DateTime.Now,
-                            BookingNo = booking.BookingNo,
-                            CarName = car.Name
-                        };
-                        _context.Wallets.Add(wallet);
-                        _context.Wallets.Add(walletCarOwner);
-                        _context.SaveChanges();
-                    }
-
-                    car.Status = 2;
+                        UserId = user.UserId,
+                        Amount = (-(numberOfDays * car.Deposit)).ToString("N2"),
+                        Type = "Pay Deposit",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    var walletCarOwner = new Wallet
+                    {
+                        UserId = car.User.UserId,
+                        Amount = (numberOfDays * car.Deposit).ToString("N2"),
+                        Type = "Receive Deposit",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    _context.Wallets.Add(wallet);
+                    _context.Wallets.Add(walletCarOwner);
                     _context.SaveChanges();
+                }
 
-                    var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                    currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
-                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
+                car.Status = 2;
+                _context.SaveChanges();
 
-                    TempData["CarId"] = car.CarId;
-                    TempData["CarName"] = car.Name;
-                    TempData["StartDate"] = viewModel.StartDate;
-                    TempData["EndDate"] = viewModel.EndDate;
-                    TempData["BookingNo"] = booking.BookingNo;
+                var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+                currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
+                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
 
-                    string email = car.User.Email;
-                    string subject = "Your car has been booked";
-                    string message = $"Congratulations! Your car {car.Name} has been booked at " +
-                     $"{DateTime.Now:dd/MM/yyyy HH:mm}. Please go to your wallet to check " +
-                     $"if the deposit has been paid and go to your car’s details page to confirm " +
-                     $"the deposit. Thank you!";
-                    _emailService.SendEmail(email, subject, message);
-                    return RedirectToAction("BookACarFinish");
+                string email = car.User.Email;
+                string subject = "Your car has been booked";
+                string message = $"Congratulations! Your car {car.Name} has been booked at " +
+                 $"{DateTime.Now:dd/MM/yyyy HH:mm}. Please go to your wallet to check " +
+                 $"if the deposit has been paid and go to your car’s details page to confirm " +
+                 $"the deposit. Thank you!";
+                _emailService.SendEmail(email, subject, message);
+                return RedirectToAction("BookACarFinish", new { carId = car.CarId, carName = car.Name, startDate = viewModel.StartDate, endDate = viewModel.EndDate, bookingNo = booking.BookingNo });
                 //}
                 //return View(viewModel);
             }
@@ -360,13 +419,13 @@ namespace Rental_Car_Demo.Controllers
         }
 
         // GET: BookingController/Create
-        public ActionResult BookACarFinish()
+        public ActionResult BookACarFinish(int? carId, string? carName, DateTime? startDate, DateTime? endDate, int? bookingNo)
         {
-            ViewBag.CarId = TempData["CarId"]?.ToString();
-            ViewBag.CarName = TempData["CarName"]?.ToString();
-            ViewBag.StartDate = TempData["StartDate"];
-            ViewBag.EndDate = TempData["EndDate"];
-            ViewBag.BookingNo = TempData["BookingNo"];
+            ViewBag.CarId = carId;
+            ViewBag.CarName = carName;
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            ViewBag.BookingNo = bookingNo;
 
             //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
@@ -387,20 +446,46 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
         {
+
+            var context = new RentCarDbContext();
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+
+            var userId = user.UserId;
+
+            if (user.Role == true)
+            {
+                return View("ErrorAuthorization");
+            }
+
             Booking booking = _db.Bookings.Find(bookingNo);
+
+            if (booking == null)
+            {
+                return NotFound($"Cannot find bookingNo {bookingNo} !");
+            }
+
             booking.Status = 3;
             _db.Bookings.Update(booking);
             _db.SaveChanges();
-            if(!startDate.HasValue || !endDate.HasValue)
+            var car = _db.Cars.Find(carId);
+            if (car == null)
             {
-                var context = new RentCarDbContext();
-                var userString = HttpContext.Session.GetString("User");
-                User user = null;
-                if (!string.IsNullOrEmpty(userString))
+                return NotFound($"Cannot find car with Id = {carId} !");
+            }
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+               
+                if (sortOrder != "latest" && sortOrder != "newest" && sortOrder != "highest" && sortOrder != "lowest")
                 {
-                    user = JsonConvert.DeserializeObject<User>(userString);
+                    return NotFound($"Can not find sort order {sortOrder} !");
                 }
-                var userId = user.UserId;
+
+
                 if (sortOrder == "latest")
                 {
                     ViewBag.Bookings = context.Bookings
@@ -470,6 +555,12 @@ namespace Rental_Car_Demo.Controllers
 
                 ViewBag.Count = bookingCount;
                 return View("ViewBookingList");
+            }
+
+            if(startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            {
+                return NotFound("DateTime invalid!");
+
             }
 
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
@@ -629,7 +720,6 @@ namespace Rental_Car_Demo.Controllers
                     ViewBag.WardsD = new SelectList(wardD, "WardId", "WardName", addressD.WardId);
                     ViewBag.houseNumberStreetD = addressD.HouseNumberStreet;
                 }
-                TempData["BookingNoC"] = bookingDetail.BookingNo;
                 ViewBag.UserId = new SelectList(userDAO.GetUserList(), "UserId", "Name", user.UserId);
                 return View(bookingDetail);
             }
@@ -729,14 +819,8 @@ namespace Rental_Car_Demo.Controllers
         {
             try
             {
-                var bookingNoStr = TempData["BookingNoC"]?.ToString();
-                int bookingNo;
-                if (!int.TryParse(bookingNoStr, out bookingNo))
-                {
-                    throw new InvalidOperationException("Invalid booking number.");
-                }
                 using RentCarDbContext _context = new RentCarDbContext();
-                var booking = _context.Bookings.Include(b => b.Car).FirstOrDefault(b => b.BookingNo == bookingNo);
+                var booking = _context.Bookings.Include(b => b.Car).FirstOrDefault(b => b.BookingNo == BookingNo);
                 if (booking != null)
                 {
                     booking.Status = 0;
@@ -797,8 +881,11 @@ namespace Rental_Car_Demo.Controllers
                      $"{DateTime.Now:dd/MM/yyyy HH:mm}. The deposit will be returned to the customer's wallet " +
                      $"if the deposit has been paid and go to your car’s details page to confirm";
                     _emailService.SendEmail(email, subject, message);
-
-                    return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = BookingNo });
+                    if (endDate == null)
+                    {
+                        return RedirectToAction("ViewBookingList");
+                    }
+                    return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = booking.EndDate, carId = carId, bookingNo = BookingNo });
                 }
 
                 return RedirectToAction("LoginCus", "Users");
@@ -892,6 +979,7 @@ namespace Rental_Car_Demo.Controllers
 
             var bookings = context.Bookings
             .Include(b => b.Car)
+            .Include(b => b.User)
             .Where(b => b.UserId == userId)
             .OrderByDescending(b => b.BookingNo)
             .ToList();

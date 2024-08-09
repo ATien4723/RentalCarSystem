@@ -1,11 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
+using System.ComponentModel.DataAnnotations;
 namespace Rental_Car_Demo.Repository.CarRepository
 {
     public class CarDAO
     {
         private static CarDAO instance;
         public static readonly object instanceLock = new object();
+        private readonly RentCarDbContext context;
+        public CarDAO(RentCarDbContext _context)
+        {
+            context = _context;
+        }
         public static CarDAO Instance
         {
             get
@@ -14,7 +20,8 @@ namespace Rental_Car_Demo.Repository.CarRepository
                 {
                     if (instance == null)
                     {
-                        instance = new CarDAO();
+                        var context = new RentCarDbContext();
+                        instance = new CarDAO(context);
                     }
                     return instance;
                 }
@@ -22,15 +29,27 @@ namespace Rental_Car_Demo.Repository.CarRepository
         }
         public void CreateCar(Car car)
         {
+            // Perform validation
+            var validationContext = new ValidationContext(car);
+            var validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(car, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                var errors = string.Join("; ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new ValidationException($"Car model validation failed: {errors}");
+            }
+
+            // Proceed to add car if valid
             try
             {
-                var context = new RentCarDbContext();
                 context.Cars.Add(car);
                 context.SaveChanges();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception($"An error occurred while saving the car: {ex.Message}");
             }
         }
 

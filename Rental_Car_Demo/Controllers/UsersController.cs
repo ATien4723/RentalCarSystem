@@ -160,10 +160,8 @@ namespace Rental_Car_Demo.Controllers
 
         UserDAO userDAO;
 
-        public UsersController(IEmailService emailService)
+        public UsersController()
         {
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
         }
 
         public IActionResult Register()
@@ -322,54 +320,7 @@ namespace Rental_Car_Demo.Controllers
             return View(userList);
         }
 
-        // GET: UsersController/Details/5
-        public ActionResult Details(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = userDAO.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }
-
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View();
-            }
-        }
-
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    userDAO.Create(user);
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View(user);
-            }
-        }
+       
 
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)

@@ -126,11 +126,11 @@
                 <strong>Pick-up location:</strong> <span id="pickupLocationText">@ViewBag.location</span>
             </li>
             <li>
-                <strong>Pick-up date and time:</strong> <span id="startDateText">@ViewBag.startDate.ToString("dd/MM/yyyy - HH:mm tt")</span>
+                <strong>Pick-up date and time:</strong> <span id="startDateText">@ViewBag.startDate.ToString("dd/MM/yyyy - hh:mm tt")</span>
                 <input type="hidden" id="hiddenStartDate" class="form-control" value="@ViewBag.startDate.ToString("yyyy-MM-ddTHH:mm")" />
             </li>
             <li>
-                <strong>Return date and time:</strong> <span id="endDateText">@ViewBag.endDate.ToString("dd/MM/yyyy - HH:mm tt")</span>
+                <strong>Return date and time:</strong> <span id="endDateText">@ViewBag.endDate.ToString("dd/MM/yyyy - hh:mm tt")</span>
                 <input type="hidden" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate.ToString("yyyy-MM-ddTHH:mm")" />
             </li>
         </ul>
@@ -251,10 +251,10 @@
                 </div>
                 <hr style="width: 80%; margin-left: auto;">
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0") VND</label>
                 </div>
                 <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0 VND")</label>
+                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0") VND</label>
                 </div>
                 </div>
             </div>
@@ -299,7 +299,7 @@
                     <div class="col-md-6">
                         <div class="form-group col-md-8 mb-3">
                             <label asp-for="BookingInfo.RenterDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                        <input asp-for="BookingInfo.RenterDob" class="form-control" type="date" value="@ViewBag.dob" required/>
+                            <input asp-for="BookingInfo.RenterDob" class="form-control" type="date" value="@ViewBag.dob" required/>
                             <span asp-validation-for="BookingInfo.RenterDob" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8 mb-3">
@@ -371,7 +371,7 @@
                 <h4 class="mb-4">Driver's information</h4>
                 <div class="form-group mb-3">
                     <div class="checkbox">
-                        <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent"/><span style="font-weight: 400;"> Same with Renter's information</span></input>
+                        <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent" checked/><span style="font-weight: 400;"> Same with Renter's information</span></input>
                         <span asp-validation-for="BookingInfo.IsDifferent" class="text-danger"></span>
                     </div>
                 </div>
@@ -525,7 +525,7 @@
                         style="padding: 0;text-decoration: underline;border: none;">
                         Cancel
                     </a>
-                    <button type="submit" onclick="nextStep();" class="btn btn-primary ms-5">Confirm payment</button>
+                    <button type="submit" id="submitButton" onclick="nextStep();" class="btn btn-primary ms-5">Confirm payment</button>
                 </div>
             </div>
         </div>
@@ -538,7 +538,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
+@* <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Hide all steps initially
         document.getElementById('step1').style.display = 'none';
@@ -607,7 +607,7 @@
     function goToStep1() {
         navigateTo(0); // Navigate to Step 1 (0-indexed)
     }
-</script>
+</script> *@
 
 
 
@@ -939,19 +939,19 @@
 
             // Validate start date and time is greater than current date and time
             if (!isStartDateGreaterThanCurrentDate(newStartDate)) {
-                alert('Start date and time must be greater than the current date and time.');
+                alert('Pick-up date and time must be greater than the current date and time.');
                 return;
             }
 
             // Validate end date and time is greater than start date and time
             if (!isEndDateGreaterThanStartDate(newStartDate, newEndDate)) {
-                alert('End date and time must be greater than start date and time.');
+                alert('Return date and time must be greater than start date and time.');
                 return;
             }
 
             // Validate end date and time is greater than start date and time and at least 1 day later
             if (!isEndDateValid(newStartDate, newEndDate)) {
-                alert('End date and time must be at least 1 day greater than start date and time.');
+                alert('Return date and time must be at least half of a day greater than pick-up date and time.');
                 return;
             }
 
@@ -1020,7 +1020,7 @@
         function isEndDateValid(startDate, endDate) {
             var startDateTime = new Date(startDate).getTime();
             var endDateTime = new Date(endDate).getTime();
-            var oneDayInMillis = 24 * 60 * 60 * 1000; // One day in milliseconds
+            var oneDayInMillis = 12 * 60 * 60 * 1000; // One day in milliseconds
 
             return endDateTime > startDateTime && (endDateTime - startDateTime) >= oneDayInMillis;
         }
@@ -1029,8 +1029,8 @@
 
 
     <script>
-    $(document).ready(function () {
-    // Lưu trữ tùy chọn ban đầu của dropdown
+$(document).ready(function () {
+    // Store the original options of the dropdowns
     var originalDistrictOptions = $('#BookingInfo_DriverAddress_DistrictId').html();
     var originalWardOptions = $('#BookingInfo_DriverAddress_WardId').html();
 
@@ -1040,6 +1040,13 @@
     // Toggle driver's information fields based on checkbox state
     $('input[name="BookingInfo.IsDifferent"]').change(function () {
         toggleDriverFields();
+    });
+
+    // Update driver's information when renter's information changes
+    $('#BookingInfo_RenterName, #BookingInfo_RenterPhone, #BookingInfo_RenterNationalId, #BookingInfo_RenterDob, #BookingInfo_RenterEmail, #fileName, #BookingInfo_RenterAddress_CityId, #BookingInfo_RenterAddress_DistrictId, #BookingInfo_RenterAddress_WardId, #BookingInfo_RenterAddress_HouseNumberStreet').on('input', function () {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
     });
 
     function toggleDriverFields() {
@@ -1057,25 +1064,123 @@
             $('#BookingInfo_DriverAddress_WardId').val('').find('option:not(:first)').remove(); // Clear WardId dropdown options
             $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
         } else {
-            // Copy renter's information to driver's information fields
-            originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
-            originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
-            $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
-            $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
-            $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
-            $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
-            $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
-            $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
-            $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
-            $('#fileName2').val($('#fileName').val());
-            $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
-            $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
-            $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
-            $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
+            // Update driver's information fields with renter's data
+            updateDriverFields();
         }
+    }
+
+    function updateDriverFields() {
+        originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+        originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
+        $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
+        $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
+        $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
+        $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
+        $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
+        $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
+        $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
+        $('#fileName2').val($('#fileName').val());
+        $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
+        $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
+        $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
+        $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
     }
 });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Hide all steps initially
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'none';
+
+        // Show the initial step (for example, Step 1)
+        navigateTo(0); // Adjust index based on your steps (0-indexed)
+    });
+
+    function navigateTo(stepIndex) {
+        // Hide all steps
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'none';
+
+        // Show the selected step
+        document.getElementById('step' + (stepIndex + 1)).style.display = 'block';
+
+        // Optionally, update the active state of your step indicators if needed
+        const steps = document.querySelectorAll('.step');
+        steps.forEach((step, index) => {
+            if (index === stepIndex) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+    }
+
+    function validateStep1() {
+        const requiredFields = document.querySelectorAll('#step1 .form-control[required]');
+        let valid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                valid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        // Check for any visible .text-danger elements
+        const errorMessages = document.querySelectorAll('#step1 .text-danger');
+        errorMessages.forEach(error => {
+            if (error.innerHTML.trim() !== '') {
+                valid = false;
+            }
+        });
+
+        // Check the age validity for Renter and Driver
+        const renterDob = new Date(document.querySelector('input[name="BookingInfo.RenterDob"]').value);
+        const driverDob = new Date(document.querySelector('input[name="BookingInfo.DriverDob"]').value);
+        const minAge = 18; // Minimum age in years
+
+        if (!isValidAge(renterDob, minAge) || !isValidAge(driverDob, minAge)) {
+            valid = false;
+            alert("Both the renter and driver must be at least 18 years old.");
+        }
+
+        return valid;
+    }
+
+    function isValidAge(dateOfBirth, minAge) {
+        const today = new Date();
+        const age = today.getFullYear() - dateOfBirth.getFullYear();
+        const monthDiff = today.getMonth() - dateOfBirth.getMonth();
+        const dayDiff = today.getDate() - dateOfBirth.getDate();
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            return age - 1 >= minAge;
+        }
+        return age >= minAge;
+    }
+
+    // Function to navigate to the next step
+    function nextStep() {
+        // Validate Step 1 before proceeding to Step 2
+        if (validateStep1()) {
+            // Example: Navigate to Step 2
+            navigateTo(1); // Adjust index based on your steps (0-indexed)
+        } else {
+            alert("Please fill in all required fields with valid values!");
+        }
+    }
+
+    function goToStep1() {
+        navigateTo(0); // Navigate to Step 1 (0-indexed)
+    }
+</script>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1106,4 +1211,11 @@
         </script>
     }
 
+    <script>
+    document.getElementById('Form').addEventListener('submit', function () {
+        var submitButton = document.getElementById('submitButton');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+    });
+</script>
 }

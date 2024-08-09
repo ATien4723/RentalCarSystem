@@ -18,7 +18,8 @@ public partial class BookingInfo
 
     public DateOnly RenterDob { get; set; }
 
-    public int RenterNationalId { get; set; }
+    [RegularExpression(@"^\d{12}$", ErrorMessage = "National ID must be 12 digits.")]
+    public string? RenterNationalId { get; set; }
 
     [Required(ErrorMessage = "This field is required.")]
     [RegularExpression(@"^0[35789]\d{8}$", ErrorMessage = "Phone number invalid!")]
@@ -40,7 +41,8 @@ public partial class BookingInfo
 
     public DateOnly DriverDob { get; set; }
 
-    public int DriverNationalId { get; set; }
+    [RegularExpression(@"^\d{12}$", ErrorMessage = "National ID must be 12 digits.")]
+    public string? DriverNationalId { get; set; }
 
     [Required(ErrorMessage = "This field is required.")]
     [RegularExpression(@"^0[35789]\d{8}$", ErrorMessage = "Phone number invalid!")]

@@ -500,30 +500,137 @@
                 .catch(error => console.error('Error searching cars:', error));
         }
 
-
-        document.addEventListener("DOMContentLoaded", function () {
-
-            let currentDate = new Date();
-
-
-            let formattedDate = currentDate.toISOString().slice(0, 10);
-            let formattedTime = currentDate.toTimeString().slice(0, 5);
-
-
-            document.getElementById("pickupDateInput").value = formattedDate;
-            document.getElementById("pickupTimeInput").value = formattedTime;
-            document.getElementById("dropDateInput").value = formattedDate;
-            document.getElementById("dropTimeInput").value = formattedTime;
-        });
-
         function toggleSelection(element) {
             element.classList.toggle('selected');
         }
-
-
-
-
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const pickupDateInput = document.getElementById("pickupDateInput");
+            const pickupTimeInput = document.getElementById("pickupTimeInput");
+            const dropDateInput = document.getElementById("dropDateInput");
+            const dropTimeInput = document.getElementById("dropTimeInput");
+
+            function getCurrentDateTime() {
+                const now = new Date();
+                now.setDate(now.getDate() + 1); // Add 1 day to correct the -1 day issue
+                return {
+                    date: now.toISOString().split('T')[0],
+                    time: now.toTimeString().split(' ')[0].substring(0, 5)
+                };
+            }
+
+            function validatePickupDateTime() {
+                const currentDateTime = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+
+                if (pickupDateTime < currentDateTime) {
+                    alert("Pickup date and time must be equal to or greater than the current date and time.");
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                    return false;
+                }
+                return true;
+            }
+
+            function validateDropoffDateTime() {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const dropDateTime = new Date(`${dropDateInput.value}T${dropTimeInput.value}`);
+                const halfDayInMilliseconds = 12 * 60 * 60 * 1000;
+
+                if ((dropDateTime - pickupDateTime) < halfDayInMilliseconds) {
+                    alert("Drop-off date and time must be greater than the pickup date and time by at least half a day.");
+
+                    // Adjust dropoff time to be 12 hours after pickup time
+                    let adjustedDropoffDateTime = new Date(pickupDateTime.getTime() + halfDayInMilliseconds);
+
+                    // Check if adjusted dropoff time is still on the same day as pickupDateTime
+                    if (adjustedDropoffDateTime.toDateString() === pickupDateTime.toDateString()) {
+                        // Add an extra day to dropDateInput
+                        adjustedDropoffDateTime.setDate(adjustedDropoffDateTime.getDate() + 1);
+                    }
+
+                    // Set the adjusted date and time for dropoff
+                    dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
+                    dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+
+                    return false;
+                }
+                return true;
+            }
+
+            function updatePickupTime() {
+                const now = new Date();
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+
+                if (pickupDateTime <= now) {
+                    const currentTime = now.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
+                    pickupTimeInput.value = currentTime;
+                }
+            }
+
+            function updateDropoffMin() {
+                const pickupDate = pickupDateInput.value;
+                const pickupTime = pickupTimeInput.value;
+
+                if (pickupDate && pickupTime) {
+                    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+                    const halfDayLater = new Date(pickupDateTime.getTime() + 12 * 60 * 60 * 1000);
+                    const formattedHalfDayLaterDate = halfDayLater.toISOString().split('T')[0];
+                    const formattedHalfDayLaterTime = halfDayLater.toTimeString().split(' ')[0].substring(0, 5);
+
+                    dropDateInput.setAttribute('min', formattedHalfDayLaterDate);
+                    dropTimeInput.setAttribute('min', formattedHalfDayLaterTime);
+                }
+            }
+
+            // Initialize dropoff min values
+            updateDropoffMin();
+
+            // Update pickupTime every minute if needed
+            setInterval(function () {
+                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const now = new Date();
+                if (pickupDateTime <= now) {
+                    updatePickupTime();
+                }
+            }, 60000); // 60000 ms = 1 minute
+
+            pickupDateInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            pickupTimeInput.addEventListener("change", function () {
+                if (!validatePickupDateTime()) {
+                    const currentDateTimeStr = getCurrentDateTime();
+                    pickupDateInput.value = currentDateTimeStr.date;
+                    pickupTimeInput.value = currentDateTimeStr.time;
+                }
+                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
+            });
+
+            dropDateInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
+
+            dropTimeInput.addEventListener("change", function () {
+                if (!validateDropoffDateTime()) {
+                    // The values are already set inside validateDropoffDateTime
+                }
+            });
+        });
+    </script>
+
+
 
     <script>
         function navigateToCarDetails(carId) {
