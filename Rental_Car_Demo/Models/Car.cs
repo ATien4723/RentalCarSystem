@@ -38,16 +38,16 @@ public partial class Car
 
     public bool FuelType { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "Mileage can not less than 0")]
+    [Range(1, double.MaxValue, ErrorMessage = "Mileage can not less than 0")]
     public double Mileage { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "FuelConsumption must be greater than 0!")]
+    [Range(1, double.MaxValue, ErrorMessage = "FuelConsumption must be greater than 0!")]
     public double FuelConsumption { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "BasePrice must be greater than 0.")]
+    [Range(1, double.MaxValue, ErrorMessage = "BasePrice must be greater than 0.")]
     public decimal BasePrice { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "Deposit must be a positive number.")]
+    [Range(1, double.MaxValue, ErrorMessage = "Deposit must be a positive number.")]
     public decimal Deposit { get; set; }
 
     public int AddressId { get; set; }

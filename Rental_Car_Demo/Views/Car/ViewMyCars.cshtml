@@ -271,7 +271,7 @@
                         <i class="fa-sharp fa-solid fa-person-seat"></i> @c.Seats seats
                         <i class="fa fa-cogs"></i> @(c.TransmissionType ? "Automatic" : "Manual")
                         <i class="fa-regular fa-roller-coaster"></i> @c.NoOfRide No of ride
-                        <i class="fa fa-gas-pump"></i> Diesel
+                        <i class="fa fa-gas-pump"></i> @(c.FuelType ? "Gasoline" : "Diesel")
                     </p>
                     <p class="price">Price: @((c.BasePrice ).ToString("N0")) VND</p>
                     <p class="category"><i class="fa-regular fa-map-location"></i>Location: @c.Address.District.DistrictName, @c.Address.City.CityProvince</p>

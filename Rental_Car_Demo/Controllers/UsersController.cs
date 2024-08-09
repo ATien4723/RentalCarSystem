@@ -22,6 +22,7 @@ namespace Rental_Car_Demo.Controllers
     {
 
         RentCarDbContext db = new RentCarDbContext();
+
         public IActionResult Login()
         {
             string culture = "or-IN";
@@ -164,11 +165,6 @@ namespace Rental_Car_Demo.Controllers
         {
             this._emailService = emailService;
             this.userDAO = new UserDAO();
-        }
-
-        public UsersController()
-        {
-
         }
 
         public IActionResult Register()
