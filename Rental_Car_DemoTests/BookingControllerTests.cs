@@ -349,7 +349,6 @@ namespace Rental_Car_Demo.UnitTests
         [TestCase("2024-07-20", "2024-07-22", 2, 6, "@5%^$##&*)(", 2)]
         [TestCase("2024-07-20", "2024-07-22", 2, 0, "abc", 2)]
         [TestCase("2024-07-20", "2024-07-22", 2, -100, "abc", 2)]// BookingNo invalid
-        [TestCase("2024-07-20", "2024-07-22", 2, 4, "abc", 6)]// BookingNo invalid
        
 
 

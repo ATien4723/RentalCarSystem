@@ -21,7 +21,13 @@ namespace Rental_Car_Demo.Controllers
     public class UsersController : Controller
     {
 
-        RentCarDbContext db = new RentCarDbContext();
+        private readonly RentCarDbContext db;
+        public UsersController(IEmailService emailService, RentCarDbContext context)
+        {
+            this._emailService = emailService;
+            this.db = context;
+            this.userDAO = new UserDAO();
+        }
         public IActionResult Login()
         {
             string culture = "or-IN";
@@ -40,20 +46,30 @@ namespace Rental_Car_Demo.Controllers
 
             if (Request.Cookies.TryGetValue("UserEmail", out string rememberMeValue))
             {
-                var values = rememberMeValue.Split('|');
-                if (values.Length == 2)
+                try
                 {
-                    viewModel.User = new User
+                    var values = rememberMeValue.Split('|');
+                    if (values.Length == 2)
                     {
-                        Email = values[0],
-                        Password = values[1],
-                        RememberMe = true
-                    };
+                        viewModel.User = new User
+                        {
+                            Email = values[0],
+                            Password = values[1],
+                            RememberMe = true
+                        };
+                    }
+                }
+                catch (Exception)
+                {
+                    viewModel.User.Email = null;
+                    viewModel.User.Password = null;
+                    viewModel.User.RememberMe = false;
                 }
             }
 
             return View(viewModel);
         }
+
 
         [HttpPost]
         public IActionResult Login(RegisterAndLoginViewModel userLogin)
@@ -61,8 +77,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email)
-            && x.Password.Equals(hashedPassword)).FirstOrDefault();
+                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email) && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
                 {
@@ -70,8 +85,11 @@ namespace Rental_Car_Demo.Controllers
 
                     if (userLogin.User.RememberMe)
                     {
-                        Response.Cookies.Append("UserEmail", $"{userLogin.User.Email}|{userLogin.User.Password}", new
-                            CookieOptions
+
+                        string rememberMeValue = $"{userLogin.User.Email}|{userLogin.User.Password}";
+                        string encodedRememberMeValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(rememberMeValue));
+
+                        Response.Cookies.Append("UserEmail", encodedRememberMeValue, new CookieOptions
                         {
                             Expires = DateTime.UtcNow.AddDays(30),
                             HttpOnly = true,
@@ -95,7 +113,7 @@ namespace Rental_Car_Demo.Controllers
 
             return View();
         }
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -160,9 +178,6 @@ namespace Rental_Car_Demo.Controllers
 
         UserDAO userDAO;
 
-        public UsersController()
-        {
-        }
 
         public IActionResult Register()
         {

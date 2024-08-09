@@ -12,13 +12,12 @@ namespace Rental_Car_Demo.Controllers
     {
         ICarRepository carRepository = null;
 
-        RentCarDbContext _db;
-
-
-
-        public CarController(RentCarDbContext context)
+        RentCarDbContext _db = new RentCarDbContext();
+        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
         {
-            this._db = context;
+            this.carRepository = carRepository;
+            _db = db;
+            _emailService = emailService;
         }
 
         public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
@@ -874,14 +873,14 @@ namespace Rental_Car_Demo.Controllers
         }
         private readonly IEmailService _emailService;
 
-        [HttpPost] 
+        [HttpPost]
         public IActionResult ReturnCar(int carId, int userId, decimal amount)
         {
             var booking = _db.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
             var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
             var car = _db.Cars.FirstOrDefault(c => c.CarId == carId);
             var carOwner = _db.Users.FirstOrDefault(u => u.UserId == car.UserId);
-            if (user != null)
+            if (user != null && booking != null)
             {
                 if ((-amount) > user.Wallet)
                 {

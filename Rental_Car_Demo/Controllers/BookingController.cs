@@ -90,7 +90,7 @@ namespace Rental_Car_Demo.Controllers
             Feedback feedback = new Feedback();
             feedback.Content = content;
             feedback.Ratings = ratings;
-            if (ratings <= 0 || ratings > 5) return NotFound($"Rating must be between 1-5");
+           
             feedback.BookingNo = bookingNo;
             feedback.Date = DateTime.Now;
             _db.Feedbacks.Add(feedback);
@@ -472,11 +472,7 @@ namespace Rental_Car_Demo.Controllers
             booking.Status = 3;
             _db.Bookings.Update(booking);
             _db.SaveChanges();
-            var car = _db.Cars.Find(carId);
-            if (car == null)
-            {
-                return NotFound($"Cannot find car with Id = {carId} !");
-            }
+           
             if (!startDate.HasValue || !endDate.HasValue)
             {
                
@@ -557,7 +553,13 @@ namespace Rental_Car_Demo.Controllers
                 return View("ViewBookingList");
             }
 
-            if(startDate.HasValue && endDate.HasValue && startDate >= endDate)
+            var car = _db.Cars.Find(carId);
+            if (car == null)
+            {
+                return NotFound($"Cannot find car with Id = {carId} !");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate >= endDate)
             {
                 return NotFound("DateTime invalid!");
 

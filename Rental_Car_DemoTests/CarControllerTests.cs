@@ -17,6 +17,9 @@ using Moq;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Rental_Car_Demo.Repository.CarRepository;
 
 namespace Rental_Car_Demo.UnitTests
 {
@@ -27,12 +30,19 @@ namespace Rental_Car_Demo.UnitTests
         private RentCarDbContext _context;
         private DummySession _dummySession;
         private DefaultHttpContext _httpContext;
+        private Mock<IEmailService> _emailServiceMock;
+        private Mock<SmtpClient> _smtpClientMock;
         [SetUp]
         public void SetUp()
         {
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase")
             .Options;
+
+            _smtpClientMock = new Mock<SmtpClient>();
+
+            _emailServiceMock = new Mock<IEmailService>();
+            var carRepositoryMock = new Mock<ICarRepository>();
 
             _context = new RentCarDbContext(options);
 
@@ -43,7 +53,7 @@ namespace Rental_Car_Demo.UnitTests
                 Session = _dummySession
             };
 
-            _controller = new CarController(_context)
+            _controller = new CarController(carRepositoryMock.Object, _context, _emailServiceMock.Object)
             { 
                 ControllerContext = new ControllerContext
                 {
@@ -223,7 +233,49 @@ namespace Rental_Car_Demo.UnitTests
             _context.Bookings.AddRange(bookingData);
             _context.Feedbacks.AddRange(feedbackData);
             _context.SaveChanges();
-
+            var user = new User
+            {
+                UserId = 4,
+                Email = "user@test.com",
+                Wallet = 1000,
+                Name = "Test User",
+                Password = "hashedpassword",
+                Phone = "1234567890"
+            };
+            var carOwner = new User
+            {
+                UserId = 5,
+                Email = "owner@test.com",
+                Wallet = 2000,
+                Name = "Car Owner",
+                Password = "hashedpassword",
+                Phone = "0987654321"
+            };
+            var car1 = new Car
+            {
+                CarId = 4,
+                Name = "Test Car",
+                UserId = carOwner.UserId,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking1 = new Booking
+            {
+                BookingNo = 5,
+                CarId = car1.CarId,
+                UserId = user.UserId,
+                Status = 3
+            };
+            _context.Users.AddRange(user, carOwner);
+            _context.Cars.Add(car1);
+            _context.Bookings.Add(booking1);
+            _context.SaveChanges();
         }
 
 
@@ -551,7 +603,951 @@ namespace Rental_Car_Demo.UnitTests
             Assert.AreEqual(basePrice, expectedCar.BasePrice);
             Assert.AreEqual(deposit, expectedCar.Deposit);
         }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_ReturnBookingListView(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+            int carId = 5;
 
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ViewBookingList", result.ActionName);
+            Assert.AreEqual("Booking", result.ControllerName);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_UpdatesUserBalance(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+            decimal? curBalance = user.Wallet;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var carOwner = _context.Users.Find(5);
+
+            Assert.AreEqual(amount + curBalance, user.Wallet);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_UpdatesCarOwnerBalance(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+            var carOwner = _context.Users.Find(5);
+            decimal? curBalance = carOwner.Wallet;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var car = _context.Cars.Find(carId);
+
+            Assert.AreEqual(curBalance - amount, carOwner.Wallet);
+
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_UpdatesBookingStatus(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var booking = _context.Bookings.Find(6);
+
+            Assert.AreEqual(5, booking.Status);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_UpdatesNoOfRide(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var car = _context.Cars.Find(carId);
+
+            Assert.AreEqual(1, car.NoOfRide);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCar_WithSufficientFunds_SendReturnEmail(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+
+            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
+        }
+        [Test]
+        public void ReturnCar_WithInsufficientFunds_UpdatesBookingStatus()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+            new DefaultHttpContext(),
+            Mock.Of<ITempDataProvider>()
+            );
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+            var booking = _context.Bookings.Find(5);
+            Assert.AreEqual(4, booking.Status);
+
+        }
+
+        [Test]
+        public void ReturnCar_WithInsufficientFunds_RedirectToView()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+               new DefaultHttpContext(),
+               Mock.Of<ITempDataProvider>()
+           );
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ViewBookingList", result.ActionName);
+            Assert.AreEqual("Booking", result.ControllerName);
+        }
+        [Test]
+        public void ReturnCar_WithInsufficientFunds_SendErrorMessage()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+               new DefaultHttpContext(),
+               Mock.Of<ITempDataProvider>()
+           );
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            Assert.IsNotNull(_controller.TempData["ErrorMessage"]);
+            Assert.AreEqual("Your wallet doesn’t have enough balance. Please top-up your wallet and try again", _controller.TempData["ErrorMessage"]);
+        }
+        [Test]
+        [TestCase("500")]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCar_CreatesWalletTransactionsForUser(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionUser = _context.Wallets.FirstOrDefault(w => w.UserId == userId && w.BookingNo == bookingNo);
+
+            Assert.IsNotNull(transactionUser);
+            Assert.AreEqual(userId, transactionUser.UserId);
+            Assert.AreEqual(string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount), transactionUser.Amount);
+            Assert.AreEqual("Offset final payment", transactionUser.Type);
+            Assert.AreEqual(bookingNo, transactionUser.BookingNo);
+            Assert.AreEqual(carName, transactionUser.CarName);
+
+        }
+
+        [Test]
+        [TestCase("500")]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCar_CreatesWalletTransactionsForCarOwner(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+
+            Assert.IsNotNull(transactionCarOwner);
+            Assert.AreEqual(carOwner.UserId, transactionCarOwner.UserId);
+            Assert.AreEqual(string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount), transactionCarOwner.Amount);
+            Assert.AreEqual(bookingNo, transactionCarOwner.BookingNo);
+            Assert.AreEqual(carName, transactionCarOwner.CarName);
+        }
+
+        [Test]
+        [TestCase("500")]
+        public void ReturnCar_PositiveAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+            Assert.AreEqual("Return Transaction", transactionCarOwner.Type);
+        }
+        [Test]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCar_NegativeOrZeroAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCar(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+            Assert.AreEqual("Receive Transaction", transactionCarOwner.Type);
+        }
+
+        [Test]
+        [TestCase("-500", "1")]
+        [TestCase("-500", "2")]
+        [TestCase("-500", "5")]
+        public void ReturnCar_WithInvalidStatus_StatusNotChange(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+            int carId = 5;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+            var booking = _context.Bookings.Find(6);
+
+            Assert.AreEqual(bStatus, booking.Status);
+        }
+        [Test]
+        [TestCase("-500", "1")]
+        [TestCase("-500", "2")]
+        [TestCase("-500", "5")]
+        public void ReturnCar_WithInvalidStatus_NoOfRideNotChange(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+            int carId = 5;
+
+            var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
+            var car = _context.Cars.Find(5);
+
+            Assert.AreEqual(0, car.NoOfRide);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_ReturnEditBookingDetailView(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+            int carId = 5;
+
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("EditBookingDetail", result.ActionName);
+            Assert.AreEqual("Booking", result.ControllerName);
+        }
+
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_ReturnRouteValues(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus,
+                StartDate = new DateTime(2024, 8, 1),
+                EndDate = new DateTime(2024, 8, 7)
+
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+            int carId = 5;
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.RouteValues["carId"]);
+            Assert.AreEqual(6, result.RouteValues["bookingNo"]);
+            Assert.AreEqual(booking.StartDate, result.RouteValues["startDate"]);
+            Assert.AreEqual(booking.EndDate, result.RouteValues["endDate"]);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_UpdatesUserBalance(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+            decimal? curBalance = user.Wallet;
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var carOwner = _context.Users.Find(5);
+
+            Assert.AreEqual(amount + curBalance, user.Wallet);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_UpdatesCarOwnerBalance(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+            var carOwner = _context.Users.Find(5);
+            decimal? curBalance = carOwner.Wallet;
+
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var car = _context.Cars.Find(carId);
+
+            Assert.AreEqual(curBalance - amount, carOwner.Wallet);
+
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_UpdatesBookingStatus(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var booking = _context.Bookings.Find(6);
+
+            Assert.AreEqual(5, booking.Status);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_UpdatesNoOfRide(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+            var car = _context.Cars.Find(carId);
+
+            Assert.AreEqual(1, car.NoOfRide);
+        }
+        [Test]
+        [TestCase("-500", "3")]
+        [TestCase("500", "3")]
+        [TestCase("0", "3")]
+        [TestCase("-500", "4")]
+        [TestCase("500", "4")]
+        [TestCase("0", "4")]
+        public void ReturnCarInDetail_WithSufficientFunds_SendReturnEmail(decimal amount, int bStatus)
+        {
+            var user = _context.Users.Find(4);
+            var car2 = new Car
+            {
+                CarId = 5,
+                Name = "Test Car 2",
+                UserId = 5,
+                NoOfRide = 0,
+                Status = 2,
+                BackImage = "back.jpg",
+                Description = "Test car description",
+                FrontImage = "front.jpg",
+                LeftImage = "left.jpg",
+                RightImage = "right.jpg",
+                LicensePlate = "TEST123"
+            };
+            var booking2 = new Booking
+            {
+                BookingNo = 6,
+                CarId = car2.CarId,
+                UserId = user.UserId,
+                Status = bStatus
+            };
+            _context.Cars.Add(car2);
+            _context.Bookings.Add(booking2);
+            _context.SaveChanges();
+
+            int carId = 5;
+
+            var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
+
+            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
+        }
+        [Test]
+        public void ReturnCarInDetail_WithInsufficientFunds_UpdatesBookingStatus()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+            new DefaultHttpContext(),
+            Mock.Of<ITempDataProvider>()
+            );
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+            var booking = _context.Bookings.Find(5);
+            Assert.AreEqual(4, booking.Status);
+
+        }
+
+        [Test]
+        public void ReturnCarInDetail_WithInsufficientFunds_RedirectToView()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+               new DefaultHttpContext(),
+               Mock.Of<ITempDataProvider>()
+           );
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("EditBookingDetail", result.ActionName);
+            Assert.AreEqual("Booking", result.ControllerName);
+        }
+        [Test]
+        public void ReturnCarInDetail_WithInsufficientFunds_SendErrorMessage()
+        {
+
+            int carId = 4;
+            int userId = 4;
+            decimal amount = -1500;
+
+            _controller.TempData = new TempDataDictionary(
+               new DefaultHttpContext(),
+               Mock.Of<ITempDataProvider>()
+           );
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            Assert.IsNotNull(_controller.TempData["ErrorMessage"]);
+            Assert.AreEqual("Your wallet doesn’t have enough balance. Please top-up your wallet and try again", _controller.TempData["ErrorMessage"]);
+        }
+        [Test]
+        [TestCase("500")]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCarInDetail_CreatesWalletTransactionsForUser(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionUser = _context.Wallets.FirstOrDefault(w => w.UserId == userId && w.BookingNo == bookingNo);
+
+            Assert.IsNotNull(transactionUser);
+            Assert.AreEqual(userId, transactionUser.UserId);
+            Assert.AreEqual(string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount), transactionUser.Amount);
+            Assert.AreEqual("Offset final payment", transactionUser.Type);
+            Assert.AreEqual(bookingNo, transactionUser.BookingNo);
+            Assert.AreEqual(carName, transactionUser.CarName);
+
+        }
+
+        [Test]
+        [TestCase("500")]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCarInDetail_CreatesWalletTransactionsForCarOwner(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+
+            Assert.IsNotNull(transactionCarOwner);
+            Assert.AreEqual(carOwner.UserId, transactionCarOwner.UserId);
+            Assert.AreEqual(string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount), transactionCarOwner.Amount);
+            Assert.AreEqual(bookingNo, transactionCarOwner.BookingNo);
+            Assert.AreEqual(carName, transactionCarOwner.CarName);
+        }
+
+        [Test]
+        [TestCase("500")]
+        public void ReturnCarInDetail_PositiveAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+            Assert.AreEqual("Return Transaction", transactionCarOwner.Type);
+        }
+        [Test]
+        [TestCase("-500")]
+        [TestCase("0")]
+        public void ReturnCarInDetail_NegativeOrZeroAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
+        {
+            int carId = 4;
+            int userId = 4;
+
+            var car = _context.Cars.Find(carId);
+            var carOwner = _context.Users.Find(car.UserId);
+
+            var booking = _context.Bookings.SingleOrDefault(b => b.CarId == carId && (b.Status == 3 || b.Status == 4));
+            var bookingNo = booking.BookingNo;
+            var carName = car.Name;
+
+            var result = _controller.ReturnCarInDetail(carId, userId, amount) as RedirectToActionResult;
+
+            var transactionCarOwner = _context.Wallets.FirstOrDefault(w => w.UserId == carOwner.UserId && w.BookingNo == bookingNo);
+            Assert.AreEqual("Receive Transaction", transactionCarOwner.Type);
+        }
     }
 }
 
