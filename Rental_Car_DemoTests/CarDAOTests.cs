@@ -15,15 +15,15 @@ namespace Rental_Car_Demo.Tests
         [SetUp]
         public void SetUp()
         {
-            var options = new DbContextOptionsBuilder<RentCarDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+            var options = new DbContextOptionsBuilder<RentCarDbContext> ()
+                .UseInMemoryDatabase (databaseName: "TestDatabase")
                 .Options;
 
-            _context = new RentCarDbContext(options);
+            _context = new RentCarDbContext (options);
 
-            _carDAO = new CarDAO(_context);
+            _carDAO = new CarDAO (_context);
 
-            SeedDatabase();
+            SeedDatabase ();
         }
 
         private void SeedDatabase()
@@ -72,14 +72,17 @@ namespace Rental_Car_Demo.Tests
             var carModels = new List<CarModel>
             {
                 new CarModel { ModelId = 1, ModelName = "Model X" },
-                new CarModel { ModelId = 2, ModelName = "Model Y" }
+                new CarModel { ModelId = 2, ModelName = "Model Y" },
+                new CarModel { ModelId = 3, ModelName = "Model Z" }
             };
 
 
             var carBrands = new List<CarBrand>
             {
                 new CarBrand { BrandId = 1, BrandName = "Brand A" },
-                new CarBrand { BrandId = 2, BrandName = "Brand B" }
+                new CarBrand { BrandId = 2, BrandName = "Brand B" },
+                new CarBrand { BrandId = 3, BrandName = "Brand C" }
+
             };
 
             var TermOfUse = new List<TermOfUse>
@@ -150,18 +153,18 @@ namespace Rental_Car_Demo.Tests
             {
                 new User
                 {
-                    Email = "nvutuankiet2003@gmail.com",
-                    Password = HashPassword("kiet123"),
-                    Name = "kiet ne",
-                    Phone = "0334567890",
+                    Email = "tiendz@gmail.com",
+                    Name = "tien dz",
+                    Password = "tien123",
+                    Phone = "0999999999",
                     Role = false,
                     Wallet = 0
                 },
                 new User
                 {
                     Email = "hehe@gmail.com",
-                    Password = HashPassword("hehe123"),
                     Name = "hehe",
+                    Password = "tien123",
                     Phone = "0987654321",
                     Role = true,
                     Wallet = 0
@@ -188,7 +191,7 @@ namespace Rental_Car_Demo.Tests
                     FuelType = true,
                     Mileage = 50000,
                     FuelConsumption = 100,
-                    BasePrice = 15000000,
+                    BasePrice = 50000,
                     Deposit = 5000000,
                     ColorId = 1,
                     AddressId = 1,
@@ -218,7 +221,7 @@ namespace Rental_Car_Demo.Tests
                     FuelType = false,
                     Mileage = 30000,
                     FuelConsumption = 200,
-                    BasePrice = 35000000,
+                    BasePrice = 500000,
                     Deposit = 3000000,
                     ColorId = 2,
                     AddressId = 2,
@@ -244,11 +247,11 @@ namespace Rental_Car_Demo.Tests
                     LeftImage = "left3.jpg",
                     RightImage = "right3.jpg",
                     ProductionYear = 2024,
-                    TransmissionType = false,
-                    FuelType = false,
+                    TransmissionType = true,  // true la auto
+                    FuelType = false, // true la xang
                     Mileage = 30000,
                     FuelConsumption = 200,
-                    BasePrice = 35000000,
+                    BasePrice = 5000000,
                     Deposit = 3000000,
                     ColorId = 2,
                     AddressId = 3,
@@ -273,11 +276,11 @@ namespace Rental_Car_Demo.Tests
                     LeftImage = "left4.jpg",
                     RightImage = "right4.jpg",
                     ProductionYear = 2024,
-                    TransmissionType = false,
+                    TransmissionType = true,
                     FuelType = false,
                     Mileage = 30000,
                     FuelConsumption = 200,
-                    BasePrice = 35000000,
+                    BasePrice = 100000000,
                     Deposit = 3000000,
                     ColorId = 2,
                     AddressId = 4,
@@ -287,81 +290,133 @@ namespace Rental_Car_Demo.Tests
                     FucntionId = 2,
                     Status = 1,
                     NoOfRide = 2
+                },
+
+                   new Car
+                {
+                    CarId = 5,
+                    UserId = 1,
+                    Name = "Car 5",
+                    LicensePlate = "50F-567.93",
+                    BrandId = 3,
+                    ModelId = 2,
+                    Seats = 5,
+                    FrontImage = "front5.jpg",
+                    BackImage = "back5.jpg",
+                    LeftImage = "left5.jpg",
+                    RightImage = "right5.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 100000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 4,
+                    Description = "Description 5",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 1,
+                    NoOfRide = 2
                 }
             };
 
-            _context.Users.AddRange(users);
-            _context.Cities.AddRange(cityData);
-            _context.Districts.AddRange(districtData);
-            _context.Wards.AddRange(wardData);
-            _context.Addresses.AddRange(addressData);
-            _context.CarModels.AddRange(carModels);
-            _context.CarBrands.AddRange(carBrands);
-            _context.CarColors.AddRange(color);
-            _context.AdditionalFunctions.AddRange(additionalFunction);
-            _context.CarDocuments.AddRange(carDocument);
-            _context.TermOfUses.AddRange(TermOfUse);
-            _context.Cars.AddRange(cars);
+            _context.Users.AddRange (users);
+            _context.Cities.AddRange (cityData);
+            _context.Districts.AddRange (districtData);
+            _context.Wards.AddRange (wardData);
+            _context.Addresses.AddRange (addressData);
+            _context.CarModels.AddRange (carModels);
+            _context.CarBrands.AddRange (carBrands);
+            _context.CarColors.AddRange (color);
+            _context.AdditionalFunctions.AddRange (additionalFunction);
+            _context.CarDocuments.AddRange (carDocument);
+            _context.TermOfUses.AddRange (TermOfUse);
+            _context.Cars.AddRange (cars);
 
-            _context.SaveChanges();
+            _context.SaveChanges ();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
-            
+            _context.Database.EnsureDeleted ();
+            _context.Dispose ();
+
         }
 
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
+
+
+
 
         [Test]
-        public void GetAllCars_NoAddressMatch_ReturnsEmptyList()
-        {
-            // Arrange
-            string address = "Nonexistent address";
 
-            // Act
-            var result = _carDAO.GetAllCars(address).ToList();
+        [TestCase (null, null, null, null, null, null, null, 5)] // search bthg k giatri
+        [TestCase(new string[] { "Brand A" }, null, null, null, null, null, null, 1)] //search car brandname
+        [TestCase (new string[] { "Brand A" , "Brand B" }, null, null, null, null, null, null, 4)] //search car nhieu brandname
+        [TestCase(null, new int[] { 4 }, null, null, null, null, null, 3)] // chon mot 1 loai cho
+        [TestCase (null, new int[] { 4 , 5 }, null, null, null, null, null, 4)] // search nhieu hon 1 loai cho
+        [TestCase(null, null, new bool[] { true }, null, null, null, null, 3)] // xe tu dong
+        [TestCase (null, null, new bool[] { false }, null, null, null, null, 2)]// xe so thuong
+        [TestCase (null, null, new bool[] { false , true }, null, null, null, null, 5)] // ca tu dong ca thuong
+        [TestCase(null, null, null, new bool[] { true }, null, null, null, 1)] // xe xang
+        [TestCase (null, null, null, new bool[] { false }, null, null, null, 4)] //xe dau
+        [TestCase (null, null, null, new bool[] { true , false }, null, null, null, 5)] // ca xang va dau
+        [TestCase (null, new int[] { 4 }, null, new bool[] { false }, null, null, null, 3)] // seats + dau
+        [TestCase (null, new int[] { 4 }, null, new bool[] { true }, null, null, null, 0)] // seats + xang
+        [TestCase (null, new int[] { 4 }, new bool[] { false }, null, null, null, null, 1)] // seats + xe so thuong
+        [TestCase (null, new int[] { 4 }, new bool[] { true }, null, null, null, null, 2)] // seats + xe tu dong
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, null, null, null, 0)] //search car brandname + cho ngoi
+        [TestCase (new string[] { "Brand B" }, new int[] { 4 , 5 }, null, null, null, null, null, 3)] //search car brandname + nhieu cho ngoi
+        [TestCase (new string[] { "Brand A" }, null, new bool[] { true }, null, null, null, null, 1)] // search car brandname + xe so tu dong
+        [TestCase (new string[] { "Brand A" }, null, new bool[] { false }, null, null, null, null, 0)] // search car brandname + xe so thuong
+        [TestCase (new string[] { "Brand A" }, null, new bool[] { true , false }, null, null, null, null, 1)] // search car brandname + xe so tu dong , so thuong
+        [TestCase (new string[] { "Brand B" }, null, null, new bool[] { true }, null, null, null, 0)] //search car brandname + xang
+        [TestCase (new string[] { "Brand B" }, null, null, new bool[] { false }, null, null, null, 3)] //search car brandname + dau
+        [TestCase (new string[] { "Brand B" }, null, null, new bool[] { true , false }, null, null, null, 3)] //search car brandname + xang , dau
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, null, null, null, 0)] //search car brandname + seats
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 }, null, null, null, null, null, 3)] //search car nhieu brandname + seats 
+        [TestCase (new string[] { "Brand B" }, new int[] { 4 , 5 }, null, null, null, null, null, 3)] //search car brandname + nhieu seats 
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 , 5 }, null, null, null, null, null, 3)] //search car nhieu brandname + nhieu seats 
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, null, null, null, null, 0)] //search car brandname + seats + so thuong
+        [TestCase (new string[] { "Brand B" }, new int[] { 4 }, new bool[] { true }, null, null, null, null, 2)] //search car brandname + seats + so tu dong
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 }, new bool[] { true , false }, null, null, null, null, 3)] //search car brandname + seats + so tu dong , thuong
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 , 5 }, new bool[] { false }, null, null, null, null, 1)] //search car nhieu brandname + nhieu seats + so thuong
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 , 5 }, new bool[] { true }, null, null, null, null, 2)] //search car nhieu brandname + nhieu seats + so tu dong
+        [TestCase (new string[] { "Brand A", "Brand B" }, new int[] { 4 , 5 }, new bool[] { true, false }, null, null, null, null, 3)] //search car nhieu brandname + nhieu seats + so thuong , tu dong
+        [TestCase (new string[] { "Brand A"}, new int[] { 4, 5 }, new bool[] { false }, null, null, null, null, 0)] //search car brandname + nhieu seats + so thuong
+        [TestCase (new string[] { "Brand A"}, new int[] { 4, 5 }, new bool[] { true }, null, null, null, null, 0)] //search car brandname + nhieu seats + so tu dong
+        [TestCase (new string[] { "Brand A" }, new int[] { 4, 5 }, new bool[] { true , false }, null, null, null, null, 0)] //search car brandname + nhieu seats + so tu dong , thuong
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, new bool[] { true }, null, null, null, 0)] //search car brandname + seats + xang
+        [TestCase (new string[] { "Brand B" }, new int[] { 4 }, null, new bool[] { false }, null, null, null, 3)] //search car brandname + seats + dau
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, new bool[] { true , false }, null, null, null, 0)] //search car brandname + seats + xang , dau
+        [TestCase (new string[] { "Brand B" , "Brand A" }, new int[] { 4 }, null, new bool[] { true }, null, null, null, 0)] //search car nhieu brandname + seats + xang
+        [TestCase (new string[] { "Brand B" , "Brand A" }, new int[] { 4 }, null, new bool[] { false }, null, null, null, 3)] //search car nhieu brandname + seats + dau
+        [TestCase (new string[] { "Brand B" , "Brand A" }, new int[] { 4 }, null, new bool[] { true , false }, null, null, null, 3)] //search car nhieu brandname + seats + xang , dau
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 , 5 }, null, new bool[] { true }, null, null, null, 0)] //search car brandname + nhieu seats + xang
+        [TestCase (new string[] { "Brand B" }, new int[] { 4 , 5 }, null, new bool[] { false }, null, null, null, 3)] //search car brandname + nhieu seats + dau
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 , 5 }, null, new bool[] { true, false }, null, null, null, 0)] //search car brandname + nhieu seats + xang , dau
+        [TestCase (new string[] { "Brand A , Brand B" }, new int[] { 4, 5 }, null, new bool[] { true }, null, null, null, 0)] //search nhieu car brandname + nhieu seats + xang 
+        [TestCase (new string[] { "Brand A , Brand B" }, new int[] { 4, 5 }, null, new bool[] { false }, null, null, null, 0)] //search nhieu car brandname + nhieu seats + dau
+        [TestCase (new string[] { "Brand A , Brand B" }, new int[] { 4, 5 }, null, new bool[] { true , false }, null, null, null, 0)] //search nhieu car brandname + nhieu seats + xang , dau
+        [TestCase (new string[] { "Brand A" }, null, null, null, 0, 100000, null, 1)] //search car brandname + price 0->100000
+        [TestCase (new string[] { "Brand A" }, null, null, null, 100000, 500000, null, 0)] //search car brandname + price 100000->500000
+        [TestCase (new string[] { "Brand A" }, null, null, null, 500000, 1000000, null, 0)] //search car brandname + price 500000->100000
+        [TestCase (new string[] { "Brand A" }, null, null, null, 1000000, 5000000, null, 0)] //search car brandname + price 1000000->5000000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 0, 100000, null, 0)] //search car brandname + seat + price 0->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 100000, 500000, null, 0)] //search car brandname + seat + price 100000->500000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 500000, 1000000, null, 0)] //search car brandname + seat + price 500000->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 1000000, 5000000, null, 0)] //search car brandname + seat + price 1000000->5000000
 
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
-        }
 
-        [Test]
-        [TestCase("", 4)]
-        [TestCase("Hà Nội", 1)]
-        public void GetAllCars_EmptyAddress_ReturnsAllAvailableCars(string address, int carCount)
-        {
-            // Act
-            var result = _carDAO.GetAllCars(address).ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(carCount, result.Count());
-        }
-
-        [TestCase(null, null, null, null, null, null, null, 2)]
-        [TestCase(new string[] { "Brand A" }, null, null, null, null, null, null, 1)]
-        [TestCase(null, new int[] { 4 }, null, null, null, null, null, 1)]
-        [TestCase(null, null, new bool[] { true }, null, null, null, null, 1)]
-        [TestCase(null, null, null, new bool[] { true }, null, null, null, 1)]
-        [TestCase(null, null, null, null, 20000000, null, null, 1)]
-        [TestCase(null, null, null, null, null, 20000000, null, 1)]
+        [TestCase (null, null, null, null, 0, 100000, null, 1)]
+        [TestCase (null, null, null, null, 100000, 500000, null, 1)]
+        [TestCase (null, null, null, null, 500000, 1000000, null, 1)]
+        [TestCase (null, null, null, null, 1000000, 5000000, null, 1)]
+        [TestCase (null, null, null, null, 5000000, 10000000, null, 1)]
+        [TestCase(null, null, null, null, 10000000, 100000000, null, 2)]
         [TestCase(null, null, null, null, null, null, "Nha so 1", 1)]
         public void SearchCars_TestCases(string[]? brandNames, int[]? seats, bool[]? transmissionTypes, bool[]? fuelTypes, decimal? minPrice, decimal? maxPrice, string? address, int? expectedCount)
         {

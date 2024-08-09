@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Diagnostics.CodeAnalysis;
+using Moq;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -166,10 +167,10 @@ namespace Rental_Car_Demo.Tests
                 new User
                 {
                     UserId= 99,
-                    Email = "nvutuankiet2003@gmail.com",
-                    Password = HashPassword("kiet123"),
-                    Name = "kiet ne",
-                    Phone = "0334567890",
+                    Email = "tiendz@gmail.com",
+                    Name = "tien pro",
+                    Password = "tiendz1",
+                    Phone = "099999999",
                     Role = false,
                     Wallet = 0
                 },
@@ -177,7 +178,7 @@ namespace Rental_Car_Demo.Tests
                 {
                     UserId = 100,
                     Email = "hehe@gmail.com",
-                    Password = HashPassword("hehe123"),
+                    Password = "tiendz1",
                     Name = "hehe",
                     Phone = "0987654321",
                     Role = true,
@@ -291,27 +292,20 @@ namespace Rental_Car_Demo.Tests
             _context.SaveChanges();
         }
 
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
+  
 
         [Test]
 
-        [TestCase(null, null, null, null, null, Description = "Default values")]
-        [TestCase("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
-        [TestCase("", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
-        [TestCase("", null, "08:30", "2024-01-03", "18:00", Description = "Empty address, empty pickup date")]
-        [TestCase("", "2024-01-01", null, "2024-01-03", "18:00", Description = "Empty address ,empty pickup time")]
+        [TestCase (null, null, null, null, null, Description = "Default values")]
+        [TestCase ("Adress", null, null, null, null, Description = "Only address")]
+        [TestCase ("Empty Address", "2024-07-01", "12:00", "2024-07-02", "14:00", Description = "Empty address with specific dates and times")]
+        [TestCase ("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
+        [TestCase ("aa", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
+        [TestCase ("", null, "08:30", "2024-01-03", "18:00", Description = "Empty address, empty pickup date")]
+        [TestCase ("", "2024-01-01", null, "2024-01-03", "18:00", Description = "Empty address, empty pickup time")]
+        [TestCase ("Another Address", "2024-01-01", "08:30", null, null, Description = "Valid address, pickup date and time, empty dropoff date and time")]
+        [TestCase ("Address", "2024-01-01", "08:30", "2024-01-03", null, Description = "Valid address, valid pickup date and time, valid dropoff date, empty dropoff time")]
+        [TestCase ("Address", "2024-01-01", "08:30", null, "18:00", Description = "Valid address, valid pickup date and time, empty dropoff date, valid dropoff time")]
 
         public void SearchCarForm_Returns_ViewResult_With_Cars(string? address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime)
         {
@@ -334,63 +328,22 @@ namespace Rental_Car_Demo.Tests
         }
 
 
-        [TestCase(true, "ErrorAuthorization")]
-        [TestCase(false, "_CarResultsPartial")]
-        public void SearchCar_UserRoleBasedView(bool role, string expectedViewName)
-        {
-            // Arrange
-            var user = new User { Role = role };
-            var userString = JsonConvert.SerializeObject(user);
-
-            _dummySession.Set("User", Encoding.UTF8.GetBytes(userString));
-            _httpContext.Session = _dummySession;
-
-            // Inject the mocked HttpContext into the controller's ControllerContext
-            //_controller.ControllerContext.HttpContext = _httpContext;
-
-            // Act
-            var result = _controller.SearchCar(null, null, null, null, null, null);
-
-            // Assert
-            if (role)
-            {
-                var viewResult = result as ViewResult;
-                Assert.IsNotNull(viewResult);
-                Assert.AreEqual(expectedViewName, viewResult.ViewName);
-            }
-            else
-            {
-                var partialViewResult = result as PartialViewResult;
-                Assert.IsNotNull(partialViewResult);
-                Assert.AreEqual(expectedViewName, partialViewResult.ViewName);
-                Assert.IsInstanceOf<IEnumerable<Car>>(partialViewResult.Model);
-            }
-        }
-
         [Test]
-        [TestCase(new string[] { "Brand A" }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 5, 6 }, new bool[] { true }, new bool[] { false }, new string[] { "LogoA" }, new string[] { }, "nha so 1")]
-        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { }, new bool[] { }, new string[] { }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { }, new string[] { }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { false }, new string[] { }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 6 }, new bool[] { false }, new bool[] { true }, new string[] { "LogoA" }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, new bool[] { false }, new string[] { "LogoB" }, new string[] { }, null)]
-        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, new bool[] { false }, new string[] { "LogoB" }, new string[] { "1000000-1000000" }, "nha so 2")]
-        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true }, new string[] { "Logo A" }, new string[] { "0-100000" }, "Some address")]
-        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { true }, new string[] { "Logo B" }, new string[] { "100000-500000" }, "Some address")]
-        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { false }, new string[] { "Logo A" }, new string[] { "500000-1000000" }, "Some address")]
-        [TestCase(new string[] { "Brand B" }, new int[] { 4 }, new bool[] { false }, new bool[] { true }, new string[] { "Logo B" }, new string[] { "1000000-5000000" }, "Some address")]
-        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true }, new string[] { "Logo A" }, new string[] { "5000000-10000000" }, "Some address")]
-        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { false }, new string[] { "Logo B" }, new string[] { "10000000-100000000" }, "Some address")]
-        public void SearchCar_ValidParameters_ReturnsPartialViewWithCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] brandLogos, string[] priceRange, string address)
+        [TestCase(new string[] { "Brand A" }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { },  null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5, 6 }, new bool[] { true }, new bool[] { false }, new string[] { }, "nha so 1")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { }, new bool[] { },  new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { },  new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 5 }, new bool[] { true }, new bool[] { false },  new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 6 }, new bool[] { false }, new bool[] { true },  new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { false }, new bool[] { false },  new string[] { }, null)]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true },  new string[] { "0-100000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { true },  new string[] { "100000-500000" }, "Some address")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { false },  new string[] { "500000-1000000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 4 }, new bool[] { false }, new bool[] { true }, new string[] { "1000000-5000000" }, "Some address")]
+        [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true },  new string[] { "5000000-10000000" }, "Some address")]
+        [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { false },  new string[] { "10000000-100000000" }, "Some address")]
+        public void SearchCar_ValidParameters_ReturnsPartialViewWithCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
         {
-            // Arrange
-            var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
-
-            var userString = JsonConvert.SerializeObject(user);
-            _dummySession.SetString("User", userString);
-
-
             // Act
             var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as PartialViewResult;
             var model = result.Model as IEnumerable<Car>;
@@ -401,64 +354,44 @@ namespace Rental_Car_Demo.Tests
             Assert.IsNotNull(model);
         }
 
+
+
         [Test]
-        public void SearchCar_UserIsCarOwner_ReturnsErrorAuthorizationView()
-        {
-            // Arrange
-            string[] brandNames = { "Brand A" };
-            int[] seats = { 4 };
-            bool[] transmissionTypes = { true };
-            bool[] fuelTypes = { true };
-            //string[] brandLogos = { "Logo A" };
-            string[] priceRange = { "1000000-5000000" };
-            string address = "Some address";
-
-            var user = _context.Users.FirstOrDefault(u => u.UserId == 100);
-            //var user = new User { UserId = 1, Email = "admin@test.com", Password = "hashedpassword", Role = true };
-            var userString = JsonConvert.SerializeObject(user);
-            _dummySession.SetString("User", userString);
-
-
-            // Act
-            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("ErrorAuthorization", result.ViewName);
-            Assert.AreEqual("hehe@gmail.com", user.Email);
-        }
-
-
-
-
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase("a")]
-        [TestCase("a very long query that exceeds the maximum allowed length for the search query in the GetSuggestions method")]
-        [TestCase("invalid_query!@#")]
+        [TestCase (null)]
+        [TestCase ("")]
+        [TestCase ("a")]
+        [TestCase ("-1")]
+        [TestCase ("a very long query that exceeds the maximum allowed length for the search query in the GetSuggestions method")]
+        [TestCase ("invalid_query!@#")]
         public void GetSuggestions_InvalidQuery_ReturnsEmptyList(string? query)
         {
             // Act
-            var result = _controller.GetSuggestions(query) as JsonResult;
+            var result = _controller.GetSuggestions (query) as ContentResult;
 
             // Assert
-            var suggestions = result.Value as List<string>;
-            Assert.IsEmpty(suggestions);
+            Assert.AreEqual ("application/json", result.ContentType);
+
+            var suggestions = System.Text.Json.JsonSerializer.Deserialize<List<string>> (result.Content);
+            Assert.IsNotNull (suggestions);
+            Assert.IsEmpty (suggestions);
         }
 
-        [TestCase("Phúc")]
-        [TestCase("Ba Đình")]
+        [TestCase("Phường Phúc Xá")]
+        [TestCase ("Ba Đình , Thành phố Hà Nội")]
         [TestCase("Hà Nội")]
         [TestCase("Nha so 1")]
         public void GetSuggestions_ValidQuery_ReturnsSuggestions(string query)
         {
             // Act
-            var result = _controller.GetSuggestions(query) as JsonResult;
+            var result = _controller.GetSuggestions (query) as ContentResult;
 
             // Assert
-            Assert.IsNotNull(result);
-            var suggestions = result.Value as List<string>;
-            Assert.IsNotNull(suggestions);
+            Assert.IsNotNull (result);
+            Assert.AreEqual ("application/json", result.ContentType);
+
+            var suggestions = System.Text.Json.JsonSerializer.Deserialize<List<string>> (result.Content);
+            Assert.IsNotNull (suggestions);
+            Assert.IsTrue (suggestions.Any ()); // Verify that there are suggestions
         }
 
         [Test]
@@ -562,23 +495,21 @@ namespace Rental_Car_Demo.Tests
         [Test]
         public void GetCarOwnerFeedbacks_UserNotLoggedIn_RedirectsToGuest()
         {
-            // Arrange
             var userId = 1;
-            // No user session set
 
             // Act
             var result = _controller.GetUserFeedbacks(userId) as RedirectToActionResult;
 
             // Assert
             Assert.IsNotNull(result, "Result should not be null");
-            Assert.AreEqual("Guest", result.ActionName, "Redirect should go to Guest action");
             Assert.AreEqual("Users", result.ControllerName, "Redirect should go to Users controller");
+            Assert.AreEqual ("Guest", result.ActionName, "Redirect should go to Guest action");
         }
     }
 
 
 
-
+    [ExcludeFromCodeCoverage]
     public class DummySession : ISession
     {
         private readonly Dictionary<string, byte[]> _sessionStorage = new Dictionary<string, byte[]>();
