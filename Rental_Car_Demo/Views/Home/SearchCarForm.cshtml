@@ -87,8 +87,8 @@
                         @foreach (var car in Model.Select(c => c.TransmissionType).Distinct())
                         {
                             <div class="form-check">
-                                <input class="form-check-input transmissionCheckbox" type="checkbox" id="transmission-@car" value="@car">
-                                <p class="form-check-label" for="transmission-@car">@(car ? "Automatic" : "Manual")</p>
+                                <input class="form-check-input transmissionCheckbox" type="checkbox" id="transmission-@car" value="@car.ToString().ToLower()">
+                                <p class="form-check-label" for="transmission-@car">@(( car ? "Automatic" : "Manual" ))</p>
                             </div>
                         }
                     </div>
@@ -105,8 +105,8 @@
                         <!-- Add Gear Transmission options here -->
                         @foreach ( var car in Model.Select (c => c.FuelType).Distinct () ) {
                             <div class="form-check">
-                                <input class="form-check-input fuleTypeCheckbox" type="checkbox" id="transmission-@car" value="@car">
-                                <p class="form-check-label" for="fuelType-@car">@(car ? "Gasoline" : "Diesel")</p>
+                                <input class="form-check-input fuleTypeCheckbox" type="checkbox" id="fuelType-@car" value="@car.ToString().ToLower()">
+                                <p class="form-check-label" for="fuelType-@car">@(( car ? "Gasoline" : "Diesel" ))</p>
                             </div>
                         }
                     </div>
@@ -149,22 +149,7 @@
                     </form>
                     </div>
 
-                <div class="filters mb-3">
-                    <label class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                           data-bs-target="#brandsOptions" aria-expanded="false" aria-controls="brandsOptions">
-                        Brands
-                        <span class="fa-sharp fa-light fa-caret-down"></span>
-                    </label>
-                    <div id="brandsOptions" class="collapse">
-                        <div class="brand-list">
-                            @foreach ( var brand in Model.Select (c => c.Brand).Distinct () ) {
-                                <div class="brand-item form-check brandLogoCheckbox" id="logo-@brand.BrandName">
-                                    <img src="~/img/@brand.BrandLogo" alt="@brand.BrandName" class="img-thumbnail" />
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
+          
                 <!-- Other filters can be added here -->
             </div>
             <div class="col-md-9">
@@ -190,7 +175,6 @@
                    
 
                 </div>
-
 
                 <div id="carResults" class="row">
                     @foreach (var car in Model)

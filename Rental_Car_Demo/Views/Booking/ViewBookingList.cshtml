@@ -247,14 +247,14 @@
                             </div>
                         } else if ( b.Status == 2 ) {
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary mt-2 w-100 custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
+                                <div class="col-sm-4">
+                                    <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
                                 </div>
-                                <div class="col-sm-3">
-                                    <a id="cancelButton_@b.BookingNo" class="btn btn-danger mt-2 w-100 cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
+                                <div class="col-sm-4">
+                                    <a id="cancelButton_@b.BookingNo" class="btn btn-danger cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
                                 </div>
                             </div>
                         } else if ( b.Status == 4 || b.Status == 3 ) {

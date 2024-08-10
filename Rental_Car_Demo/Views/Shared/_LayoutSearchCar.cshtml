@@ -327,7 +327,6 @@
             element.classList.toggle('selected');
         }
         $(document).ready(function () {
-           
         });
 
         $(document).ready(function () {
@@ -345,23 +344,18 @@
 
                 var selectedTransmissions = [];
                 $(".transmissionCheckbox:checked").each(function () {
-                    selectedTransmissions.push($(this).val());
+                    selectedTransmissions.push($(this).val() === "true");
                 });
 
                 var selectedFuel = [];
                 $(".fuleTypeCheckbox:checked").each(function () {
-                    selectedFuel.push($(this).val());
+                    selectedFuel.push($(this).val() === "true");
                 });
 
-                var selectedBrandLogos = [];
-                $(".brandLogoCheckbox img").each(function () {
-                    var altText = $(this).attr("alt");
-                    if ($(this).parent().hasClass("selected")) {
-                        selectedBrandLogos.push(altText);
-                    }
-                });
+               
 
-                console.log("Selected logo:", selectedBrandLogos);  // Debug log
+                console.log("Selected trasss:", selectedTransmissions);  // Debug log
+                console.log("Selected trasss:", selectedFuel);
 
                 $.ajax({
                     url: "/Home/SearchCar",
@@ -371,12 +365,10 @@
                         brandNames: selectedBrands,
                         seats: selectedSeats,
                         transmissionTypes: selectedTransmissions,
-                        fuelTypes: selectedFuel,
-                        brandLogos: selectedBrandLogos
-
+                        fuelTypes: selectedFuel
                     },
                     success: function (data) {
-                        console.log("Data Received:", data); 
+                      //  console.log("Data Received:", data); 
                         $("#carResults").html(data);
                     },
                     error: function (error) {
@@ -385,15 +377,11 @@
                 });
             }
 
-            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox, .fuleTypeCheckbox , .brandLogoCheckbox").change(function (event) {
+            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox, .fuleTypeCheckbox").change(function (event) {
                 event.preventDefault();
                 performSearch();
             });
 
-            $(".brandLogoCheckbox").click(function () {
-                $(this).toggleClass("selected");
-                performSearch();
-            });
         });
 
         // function performBrandSearch(brandNames) {

@@ -6,19 +6,10 @@ using Rental_Car_Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository;
 using Rental_Car_Demo.Context;
-using System.Net.Mail;
-using System.Net;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddTransient<SmtpClient>(provider => new SmtpClient
-{
-    Host = "smtp.gmail.com",
-    Port = 587,
-    EnableSsl = true,
-    //DeliveryMethod = SmtpDeliveryMethod.Network,
-    //UseDefaultCredentials = false,
-    Credentials = new NetworkCredential("kietnvt2705@gmail.com", "ueku bgbu qacj murs")
-});
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ICustomerContext, CustomerContext>();
 builder.Services.AddTransient<ITokenGenerator, TokenGenerator>();
@@ -29,12 +20,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<RentCarDbContext>(options 
     => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-
 builder.Services.AddSession();
 builder.Services.AddScoped<ICarRepository, CarRepository> ();
 builder.Services.AddScoped<AddressRepository> ();
 
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    options.SlidingExpiration = true;
+                }
+                );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

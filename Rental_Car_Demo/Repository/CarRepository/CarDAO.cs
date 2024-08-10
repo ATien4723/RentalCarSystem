@@ -4,25 +4,26 @@ namespace Rental_Car_Demo.Repository.CarRepository
 {
     public class CarDAO
     {
-        private readonly RentCarDbContext _context;
         private static CarDAO instance;
-        public static readonly object instanceLock = new object();
-        public CarDAO(RentCarDbContext context)
+        public static readonly object instanceLock = new object ();
+        private readonly RentCarDbContext context;
+        public CarDAO(RentCarDbContext _context)
         {
-            _context = context;
+            context = _context;
         }
-
-        public static CarDAO GetInstance(RentCarDbContext context)
+        public static CarDAO Instance
         {
-            lock (instanceLock)
-            {
-                if (instance == null)
-                {
-                    instance = new CarDAO(context);
+            get {
+                lock ( instanceLock ) {
+                    if ( instance == null ) {
+                        var context = new RentCarDbContext ();
+                        instance = new CarDAO (context);
+                    }
+                    return instance;
                 }
-                return instance;
             }
         }
+
         public void CreateCar(Car car)
         {
             try
@@ -43,7 +44,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             {
                 //using (var context = new RentCarDbContext())
                 //{
-                var cars = _context.Cars
+                var cars = context.Cars
                     .Include(c => c.Brand)
                     .Include(c => c.Model)
                     .Include(c => c.Color)
@@ -61,12 +62,14 @@ namespace Rental_Car_Demo.Repository.CarRepository
                     .Where(c => c.Status != 2 && c.Status != 3)
                     .AsQueryable();
 
-                if (!string.IsNullOrEmpty(address))
-                {
-                    cars = cars.Where(c => (c.Address.HouseNumberStreet + ", " +
+                if ( !string.IsNullOrEmpty (address) ) {
+                    address = address.Trim ().ToLower ();
+
+                    cars = cars.Where (c => ( c.Address.HouseNumberStreet + ", " +
                                             c.Address.Ward.WardName + ", " +
                                             c.Address.District.DistrictName + ", " +
-                                            c.Address.City.CityProvince).Contains(address));
+                                            c.Address.City.CityProvince ).Trim ().ToLower().Contains (address));
+
                 }
 
                 return cars.ToList();
@@ -84,7 +87,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             {
                 //using (var context = new RentCarDbContext())
                 //{
-                var cars = _context.Cars
+                var cars = context.Cars
                     .Include(c => c.Brand)
                     .Include(c => c.Model)
                     .Include(c => c.Color)
@@ -118,7 +121,7 @@ namespace Rental_Car_Demo.Repository.CarRepository
             {
                 //using (var context = new RentCarDbContext())
                 //{
-                var cars = _context.Cars
+                var cars = context.Cars
                     .Include(c => c.Brand)
                     .Include(c => c.Model)
                     .Include(c => c.Color)

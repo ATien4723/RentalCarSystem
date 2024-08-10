@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
@@ -20,21 +20,12 @@ namespace Rental_Car_Demo.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
 
 
         //[HttpGet]
@@ -80,8 +71,7 @@ namespace Rental_Car_Demo.Controllers
             pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
             dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
 
-
-
+        
             // Pass values to ViewBag
             ViewBag.location = address;
             ViewBag.pickupDate = pickupDate;
@@ -89,9 +79,10 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffDate = dropoffDate;
             ViewBag.dropoffTime = dropoffTime;
 
-            IEnumerable<Car> cars = _carRepository.GetAllCars(address);
+            // Fetch the cars based on the address
+            IEnumerable<Car> cars = _carRepository.GetAllCars (address);
 
-            return View(cars);
+            return View (cars);
         }
 
         public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
@@ -117,63 +108,49 @@ namespace Rental_Car_Demo.Controllers
 
             IEnumerable<Car> cars = _carRepository.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
 
-            var userString = HttpContext.Session.GetString("User");
-            User user = null;
-
-            if (!string.IsNullOrEmpty(userString))
-            {
-                user = JsonConvert.DeserializeObject<User>(userString);
-            }
-
-            if (user.Role == true)
-            {
-                return View("ErrorAuthorization");
-            }
-
             return PartialView("_CarResultsPartial", cars);
         }
 
         [HttpGet]
-        public JsonResult GetSuggestions(string query)
+        public IActionResult GetSuggestions(string query)
         {
-            if (string.IsNullOrEmpty(query))
-            {
-                return Json(new List<string>());
+            if ( string.IsNullOrEmpty (query) ) {
+                return Content ("[]", "application/json");
             }
 
-            query = query.Trim();
+            query = query.Trim ();
 
-            if (query.Length < 2 || query.Length > 100)
-            {
-                return Json(new List<string>());
+            if ( query.Length < 2 || query.Length > 100 ) {
+                return Content ("[]", "application/json");
             }
 
-            if (Regex.IsMatch(query, @"[^a-zA-Z0-9\s]"))
-            {
-                return Json(new List<string>());
+            if ( Regex.IsMatch (query, @"[^a-zA-Z0-9\s,àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]") ) {
+                return Content ("[]", "application/json");
             }
 
             // Fetch matching addresses from the database
             var addresses = _context.Cars
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.City)
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.District)
-                .Include(car => car.Address)
-                    .ThenInclude(address => address.Ward)
-                .Where(car => car.Status == 1 &&
-                    (car.Address.District.DistrictName.Contains(query) ||
-                     car.Address.Ward.WardName.Contains(query) ||
-                     car.Address.City.CityProvince.Contains(query) ||
-                     car.Address.HouseNumberStreet.Contains(query)))
-                .Select(car => new
+                .Include (car => car.Address)
+                .ThenInclude (address => address.City)
+                .Include (car => car.Address)
+                .ThenInclude (address => address.District)
+                .Include (car => car.Address)
+                .ThenInclude (address => address.Ward)
+                .Where (car => car.Status == 1 &&
+                               ( car.Address.District.DistrictName.Contains (query) ||
+                                 car.Address.Ward.WardName.Contains (query) ||
+                                 car.Address.City.CityProvince.Contains (query) ||
+                                 car.Address.HouseNumberStreet.Contains (query) ))
+                .Select (car => new
                 {
                     Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
-                .ToList();
+                .ToList ();
 
-            return Json(addresses.Select(a => a.Address).ToList());
+            var json = System.Text.Json.JsonSerializer.Serialize (addresses.Select (a => a.Address).ToList ());
+            return Content (json, "application/json");
         }
+
 
         [HttpGet]
         public IActionResult GetUserFeedbacks(int userId)

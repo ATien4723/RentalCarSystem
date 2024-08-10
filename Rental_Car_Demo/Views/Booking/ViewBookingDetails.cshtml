@@ -1,0 +1,1780 @@
+﻿@model Rental_Car_Demo.Models.Booking
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@using Rental_Car_Demo.Repository.BookingRepository
+@{
+    var userString = Context.Session.GetString("User");
+    User user = null;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        user = JsonConvert.DeserializeObject<User>(userString);
+    }
+}
+
+@{
+    ViewData["Title"] = "EditBookingDetail";
+    Layout = "~/Views/Shared/_LayoutRentCar.cshtml";
+}
+
+<style>
+     .booking-details-card {
+        background-color: #4e4e4e;
+        color: white;
+        padding: 20px 20px 20px 60px;
+        margin: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .booking-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .booking-header h3 {
+            margin: 0;
+        }
+
+    .change-details-link {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+        .change-details-link i {
+            margin-right: 5px;
+        }
+
+    .booking-info {
+        list-style: disc;
+        padding-left: 60px;
+    }
+
+        .booking-info li {
+            margin: 10px 0;
+        }
+
+        .booking-info strong {
+            font-weight: 400;
+        }
+
+    .text-myfont {
+        font-weight: 500;
+    }
+</style>
+
+<style>
+
+    .looking {
+        display: none;
+    }
+
+         .main-image-container {
+     width: 100%;
+     height: 400px; /* Fixed height */
+ }
+
+ .main-image {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+ }
+
+ .thumbnail-image {
+     width: 100%;
+     height: 100px; /* Fixed height */
+     object-fit: cover;
+ }
+
+ .thumbnail-container {
+     margin-top: 10px;
+ }
+
+      .carousel {
+            position: relative;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 115%;
+            object-fit: cover;
+        }
+
+
+    .d-none {
+        display: none;
+    }
+
+    .star {
+        color: lightgray;
+    }
+
+    .filled {
+        color: gold;
+    }
+
+    .half-filled {
+        background: linear-gradient(90deg, gold 50%, lightgray 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+
+</style>
+
+<style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .rating-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            flex-direction: row-reverse;
+        }
+
+        .rating-0 {
+            filter: grayscale(100%);
+        }
+
+        .star-rating > input {
+            display: none;
+        }
+
+        .star-rating > label {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 76%;
+            transition: .3s;
+        }
+
+        .star-rating > input:checked ~ label,
+        .star-rating > input:checked ~ label ~ label {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+
+        .star-rating > input:not(:checked) ~ label:hover,
+        .star-rating > input:not(:checked) ~ label:hover ~ label {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23d8b11e' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+
+        .feedback {
+            max-width: 360px;
+            background-color: white;
+            width: 100%;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,.05);
+        }
+
+        .hover-shadow:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 232, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        
+        .carousel-control-prev {
+            left: 10px;
+        }
+
+        .carousel-control-next {
+            right: 10px;
+        }
+
+    </style>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+<div class="mt-2 mb-2">
+    <a asp-controller="Users" asp-action="LoginCus">Home</a> ><a href="~/Booking/ViewBookingList">My Bookings</a> > <span class="fw-bold">Book Details</span>
+</div>
+
+<div class="container-fluid">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class=" row mt-3" >
+          <div class="col-md-6">
+        <div id="demo" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators/dots -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+            </div>
+
+            <!-- The slideshow/carousel -->
+           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner main-image-container">
+                <div class="carousel-item active">
+                    <img class="d-block w-100 main-image" id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                </div>
+                <div class="carousel-item ">
+                    <img class="d-block w-100 main-image" id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img">
+                </div>
+                <div class="carousel-item ">
+                    <img class="d-block w-100 main-image" id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img">
+                </div>
+                <div class="carousel-item ">
+                    <img class="d-block w-100 main-image" id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img">
+                </div>
+            </div>
+
+            <!-- Left and right controls/icons -->
+        
+                        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                </div>
+            </div>
+        </div>
+
+
+           <div class="col-md-6">
+                        <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
+               <ul class="row mt-2 fs-6 text-success">
+                <li>
+                    <label style="font-weight: 500;">From: @ViewBag.startDate.ToString("dd/MM/yyyy - HH:mm tt")</label>
+                </li>
+                <li>
+                    <label style="font-weight: 500;">To: @ViewBag.endDate.ToString("dd/MM/yyyy - HH:mm tt")</label>
+                </li>
+            </ul>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Number of days:</th>
+                                    <td>@ViewBag.NumberOfDays</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Base price:</th>
+                                    <td>@((ViewBag.car.BasePrice).ToString("N0")) VND/day</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Deposit:</th>
+                                    <td>@((ViewBag.car.BasePrice).ToString("N0")) VND/day</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total:</th>
+                                    <td class="text-success fw-bold">@ViewBag.Total.ToString("N0") VND</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Booking no:</th>
+                                    <td>@Model.BookingNo</td>
+                                </tr>
+                                <tr>
+                                    <th style="border-bottom: none;" scope="row">Booking status:</th>
+                                    <td style="border-bottom: none;">
+                                         @if (Model.Status == 0)
+                {
+                    <label class="col-5 fw-bold text-success">Cancelled</label>
+                }
+                else if (Model.Status == 1)
+                {
+                    <label class="col-5 fw-bold text-danger">Pending Deposit</label>
+                }
+                else if (Model.Status == 2)
+                {
+                    <label class="col-5 fw-bold text-success">Confirm</label>
+                }
+                else if (Model.Status == 3)
+                {
+                    <label class="col-5 fw-bold text-warning">In-Progress</label>
+                }
+                else if (Model.Status == 4)
+                {
+                    <label class="col-5 fw-bold text-danger">Pending Payment</label>
+                }
+                else if (Model.Status == 5)
+                {
+                    <label class="col-5 fw-bold text-primary">Completed</label>
+                }
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                      @*   <div class="row">
+                       <div class="col-6">
+                <a style="width: 80%;" class="btn btn-primary p-2 " asp-controller="Car" asp-action="ViewCarDetailsByCustomer" asp-route-location="@ViewBag.location" 
+                asp-route-startDate="@ViewBag.startDate" 
+                asp-route-endDate="@ViewBag.endDate" 
+                asp-route-CarId="@ViewBag.car.CarId">View details</a>
+                   </div>
+                   <div class="col-6">
+                    @if (Model.Status == 1||Model.Status == 2)
+                   {
+                    <a style="width: 140px;" class="btn btn-danger p-2" id="cancelButton">Cancel booking</a>
+                  }
+                  </div>
+                  </div>
+
+                      @if(Model.Status==2){
+                     <div class="mt-3">
+                    <button type="button" style="width: 140px;" class="btn btn-secondary p-2" data-bs-toggle="modal" data-bs-target="#confirm-pickup"data-bs-toggle="modal" data-bs-target="#confirm-pickup">
+                        Confirm Pick-up
+                    </button>
+                </div>
+            }
+            @if (Model.Status == 3 || Model.Status ==4)
+            {
+            <div class="mt-3">
+                <a style="width: 140px;" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return Car</a>
+            </div>   *@
+            }
+
+           
+            <form asp-controller="Booking" asp-action="CancelBooking" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+                <input name="startDate" value="@ViewBag.startDate" hidden/>
+                <input name="endDate" value="@ViewBag.endDate" hidden/>
+                <input name="carId" value="@ViewBag.carId" hidden/>
+                <input name="bookingNo" value="@ViewBag.bookingNo" hidden/>
+
+                <!-- Modal -->
+                <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="cancelModalLabel">Confirm Cancellation</h5>
+                                <button type="button" class="close" id="closeModalButton" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to cancel this booking?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="closeModal">Close</button>
+                                <input type="submit" value="Yes" id="confirmCancel" class="btn btn-danger">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            @if (Model.Status == 5 && (int)((DateTime.Now-ViewBag.endDate).TotalDays) <= 7 && !ViewBag.checkFbExisted)
+            {
+            <div class="mt-3">
+                <button style="width: 140px;" type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#rating">
+                Give rating
+                </button>
+            </div>  
+            }
+                   </div>
+             </div>
+  
+    
+    
+    <form asp-controller="Booking" asp-action="EditBookingDetail" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+        <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#home">Booking Information</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#menu1">Car Information</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#menu2">Payment Information</a>
+                </li>
+        </ul>
+        <div class="tab-content">
+            <div id="home" class="row container-fluid tab-pane active">
+                <div class="cont" id="step1">
+                    <div style="margin-left: 64px;">
+                        <div class="form-group" hidden>
+                            <label asp-for="UserId" class="control-label"></label>
+                            <input asp-for="UserId" class="form-control" value="@user.UserId" readonly>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label asp-for="CarId" class="control-label"></label>
+                            <input asp-for="CarId" class="form-control" value="@ViewBag.carId" readonly>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label asp-for="Status" class="control-label"></label>
+                            <input asp-for="Status" class="form-control" readonly/>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <input type="datetime" asp-for="StartDate" id="hiddenStartDate" class="form-control" value="@ViewBag.startDate" hidden/>
+                        <input type="datetime" asp-for="EndDate" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate" hidden/>
+            
+                        <div class="row text-myfont mt-2 pt-2">
+                            <h4 class="mb-4">Renter's information</h4>
+                            <div class="col-md-6">
+                                <div class="form-group col-md-8 mb-3">
+                                    <label asp-for="BookingInfo.RenterName" class="control-label">Full Name: <span style="color: red;">*</span></label>
+                                    <input asp-for="BookingInfo.RenterName" class="form-control" required/>
+                                    <span asp-validation-for="BookingInfo.RenterName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-8 mb-3">
+                                    <label asp-for="BookingInfo.RenterPhone" class="control-label">
+                                        Phone number: <span style="color: red;">*</span>
+                                    </label>
+                                <input asp-for="BookingInfo.RenterPhone" class="form-control" required/>
+                                    <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-8 mb-3">
+                                    <label asp-for="BookingInfo.RenterNationalId" class="control-label">
+                                        National ID No: <span style="color: red;">*</span>
+                                    </label>
+                                <input asp-for="BookingInfo.RenterNationalId" class="form-control" required />
+                                    <span asp-validation-for="BookingInfo.RenterNationalId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group col-md-8 mb-3">
+                                    <label asp-for="BookingInfo.RenterDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
+                                <input asp-for="BookingInfo.RenterDob" class="form-control" id="renterDob" type="date" required/>
+                                    <span asp-validation-for="BookingInfo.RenterDob" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-8 mb-3">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <label asp-for="BookingInfo.RenterEmail" class="control-label">
+                                        Email address: <span style="color: red;">*</span>
+                                    </label>
+                                    <input asp-for="BookingInfo.RenterEmail" class="form-control" required/>
+                                    <span asp-validation-for="BookingInfo.RenterEmail" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-8 mb-3">
+                                    <label asp-for="BookingInfo.RenterDrivingLicense" class="control-label">Driving license:</label>
+                                    <div class="input-group">
+                                        <input asp-for="BookingInfo.RenterDrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
+                                        <input asp-for="BookingInfo.RenterDrivingLicense" type="text" id="fileName" class="form-control" readonly />
+                                        <div class="input-group-append">
+                                            <button asp-for="BookingInfo.RenterDrivingLicense" type="button" id="chooseFileBtn" class="btn btn-outline-secondary">Upload</button>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="BookingInfo.RenterDrivingLicense" class="text-danger"></span>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <!-- Add modal-lg class -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="imageModalLabel">Driving Lience</h5>
+                                                <button type="button" class="close" id="closeModalBtn1" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img id="modalImage" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-myfont col-md-6 mb-3">
+                            <label asp-for="BookingInfo.RenterAddress.CityId" class="control-label mb-1">Address:</label>
+                            <select asp-for="BookingInfo.RenterAddress.CityId" class="form-control form-select" asp-items="ViewBag.CitiesR">
+                                <option value="">-- Select City --</option>
+                            </select>
+                            <span asp-validation-for="BookingInfo.RenterAddress.CityId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-myfont col-md-6 mb-3">
+                            <select asp-for="BookingInfo.RenterAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.DistrictsR">
+                                <option value="">-- Select District --</option>
+                            </select>
+                            <span asp-validation-for="BookingInfo.RenterAddress.DistrictId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-myfont col-md-6 mb-3">
+                            <select asp-for="BookingInfo.RenterAddress.WardId" class="form-control form-select" asp-items="ViewBag.WardsR">
+                                <option value="">-- Select Ward --</option>
+                            </select>
+                            <span asp-validation-for="BookingInfo.RenterAddress.WardId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-myfont col-md-6 mb-3">
+                        <input asp-for="BookingInfo.RenterAddress.HouseNumberStreet" class="form-control" value="@ViewBag.houseNumberStreetR" placeholder="House number, Street" />
+                            <span asp-validation-for="BookingInfo.RenterAddress.HouseNumberStreet" class="text-danger"></span>
+                        </div>
+                
+
+
+                            @* --------------------driver's info------------------------ *@
+
+                        <h4 class="mb-4">Driver's information</h4>
+                        <div class="form-group mb-3">
+                            <div class="checkbox">
+                                <input id="isDifferentCheckbox" asp-for="BookingInfo.IsDifferent" /><span style="font-weight: 400;"> Same with Renter's information</span></input>
+                                <span asp-validation-for="BookingInfo.IsDifferent" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="driver-info-container">
+                            <div class="row text-myfont mt-2 pt-2">
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label asp-for="BookingInfo.DriverName" class="control-label">Full Name: <span style="color: red;">*</span></label>
+                                        <input asp-for="BookingInfo.DriverName" class="form-control" required/>
+                                        <span asp-validation-for="BookingInfo.DriverName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label asp-for="BookingInfo.DriverPhone" class="control-label">
+                                            Phone number: <span style="color: red;">*</span>
+                                        </label>
+                                        <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
+                                        <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label asp-for="BookingInfo.DriverNationalId" class="control-label">
+                                            National ID No: <span style="color: red;">*</span>
+                                        </label>
+                                        <input asp-for="BookingInfo.DriverNationalId" class="form-control" required />
+                                        <span asp-validation-for="BookingInfo.DriverNationalId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label asp-for="BookingInfo.DriverDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
+                                        <input asp-for="BookingInfo.DriverDob" class="form-control" id="driverDob" type="date" required/>
+                                        <span asp-validation-for="BookingInfo.DriverDob" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-8 mb-3">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <label asp-for="BookingInfo.DriverEmail" class="control-label">
+                                            Email address: <span style="color: red;">*</span>
+                                        </label>
+                                        <input asp-for="BookingInfo.DriverEmail" class="form-control" required/>
+                                        <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-md-8 mb-3">
+                                        <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
+                                        <div class="input-group">
+                                            <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
+                                            <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" readonly />
+                                            <div class="input-group-append">
+                                                <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="BookingInfo.DriverDrivingLicense" class="text-danger"></span>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="imageModal2" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <!-- Add modal-lg class -->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="imageModalLabel2">Driving Lience</h5>
+                                                    <button type="button" class="close2" id="closeModalBtn2" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="modalImage2" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <label asp-for="BookingInfo.DriverAddress.CityId" class="control-label mb-1">Address:</label>
+                                <select asp-for="BookingInfo.DriverAddress.CityId" class="form-control form-select" asp-items="ViewBag.CitiesD">
+                                    <option value="">-- Select City --</option>
+                                </select>
+                                <span asp-validation-for="BookingInfo.DriverAddress.CityId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <select asp-for="BookingInfo.DriverAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.DistrictsD">
+                                    <option value="">-- Select District --</option>
+                                </select>
+                                <span asp-validation-for="BookingInfo.DriverAddress.DistrictId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <select asp-for="BookingInfo.DriverAddress.WardId" class="form-control form-select" asp-items="ViewBag.WardsD">
+                                    <option value="">-- Select Ward --</option>
+                                </select>
+                                <span asp-validation-for="BookingInfo.DriverAddress.WardId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, StreetD" />
+                                <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <input asp-for="BookingInfo.RenterAddressId" class="form-control" hidden/>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <input asp-for="BookingInfo.DriverAddressId" class="form-control" hidden/>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <input asp-for="BookingInfoId" class="form-control" hidden/>
+                            </div>
+                            <div class="form-group text-myfont col-md-6 mb-3">
+                                <input asp-for="BookingNo" class="form-control" hidden/>
+                            </div>
+                        </div>
+                        @if(@Model.Status == 1 || @Model.Status == 2)
+                        {
+                            <div class="d-flex justify-content-center align-items-center mt-3">
+                                <a asp-controller="Users" asp-action="LoginCus" type="button" class="btn btn-outline-secondary"
+                                    style="padding: 0;text-decoration: underline;border: none;">
+                                    Cancel
+                                </a>
+                                <input type="submit" value="Save" id="submitbutton" class="btn btn-primary ms-5">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="menu1" class="row container tab-pane fade" style="margin-left: 64px;">
+                <br>
+                <div class="row">
+                    <label class="col-2 fw-bold">License plate:</label>
+                    <span class="col-2" style="margin-left:-5%">@ViewBag.car.LicensePlate</span>
+                    <label class="col-1 fw-bold">Color:</label>
+                    <span class="col-2 ">@ViewBag.color.ColorName</span>
+                </div>
+
+                <div class="row mt-3">
+                    <label class="col-2 fw-bold">Brand name:</label>
+                    <span class="col-2" style="margin-left:-5%">@ViewBag.brand.BrandName</span>
+                    <label class="col-1 fw-bold">Model:</label>
+                    <span class="col-2 ">@ViewBag.model.ModelName</span>
+                </div>
+
+                <div class="row mt-3">
+                    <label class="col-2 fw-bold">Production Year:</label>
+                    <span class="col-2" style="margin-left:-5%">@ViewBag.car.ProductionYear</span>
+                    <label class="col-2 fw-bold">No. of seat:</label>
+                    <span class="col-2 " style="margin-left:-8%">@ViewBag.car.Seats</span>
+                </div>
+
+                <div class="row mt-3">
+                    <label class="col-2 fw-bold">Transmission:</label>
+                    <span class="col-2 " style="margin-left:-5%">
+                        @(ViewBag.car.TransmissionType == true ? "Automatic" : "Manual")
+                    </span>
+                    <label class="col-1 fw-bold">Fuel:</label>
+                    <span class="col-2">@(ViewBag.car.FuelType == true ? "Gasoline" : "Diesel")</span>
+                </div>
+                <div class="row mt-3">
+                    <label class="fw-bold">Documents:</label>
+                    <div class="col-5 mt-2">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Registration paper</td>
+                                    @if (ViewBag.checkRent)
+                                    {
+                                        <td>
+                                            <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>Verified</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Certificate of Inspection</td>
+                                    @if (ViewBag.checkRent)
+                                    {
+                                        <td>
+                                            <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>Verified</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Insurance</td>
+                                    @if (ViewBag.document.Insurance == null)
+                                    {
+                                        <td>Not available</td>
+                                    }
+                                    else if (!ViewBag.checkRent)
+                                    {
+                                        <td>Verified</td>
+                                    }
+                                    else if (ViewBag.checkRent)
+                                    {
+                                        <td>
+                                            <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    @if (!ViewBag.checkRent)
+                    {
+                        <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
+                    }
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="imageModal0" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel">File Preview</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img id="modalImage0" src="" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="modal-footer">
+                                <a id="downloadLink0" href="" download="" class="btn btn-primary">Download</a>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+                    <label class="col-1 fw-bold">Mileage:</label>
+                    <span class="col-2" style="margin-left:-2%">@ViewBag.car.Mileage</span>
+
+                </div>
+                <div class="row mt-3">
+                    <label class="col-2 fw-bold">Fuel consumption:</label>
+                    <span class="col-4" style="margin-left:-5%"> @ViewBag.car.FuelConsumption liter/100 km</span>
+                </div>
+                <div class="row mt-3">
+                    <label class="col-1 fw-bold">Address:</label>
+                    @if (ViewBag.checkRent)
+                    {
+                        <span class="col-10" style="margin-left:-2%">
+                            @ViewBag.address.HouseNumberStreet,
+                            @ViewBag.ward.WardName, @ViewBag.district.DistrictName, @ViewBag.city.CityProvince
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="col-10 fw-bold">
+                        </span>
+                    }
+                    @if (!ViewBag.checkRent)
+                    {
+                        <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
+                    }
+                </div>
+                <div class="row mt-3">
+                    <label class="col-1 fw-bold">Description:</label><br />
+                    <span class="col-10">@ViewBag.car.Description</span>
+                </div>
+                <div class="row mt-3">
+                    <label class="fw-bold">Additional functions:</label><br />
+                    <table class="col-md-2 bg-white ms-5 mt-3">
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-bluetooth" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                            d="m8.543 3.948 1.316 1.316L8.543 6.58zm0 8.104 1.316-1.316L8.543 9.42zm-1.41-4.043L4.275 5.133l.827-.827L7.377 6.58V1.128l4.137 4.136L8.787 8.01l2.745 2.745-4.136 4.137V9.42l-2.294 2.274-.827-.827zM7.903 16c3.498 0 5.904-1.655 5.904-8.01 0-6.335-2.406-7.99-5.903-7.99S2 1.655 2 8.01C2 14.344 4.407 16 7.904 16Z" />
+                                </svg>
+                                Bluetooth
+                            </td>
+                            <td class="col-md-3">
+                                <input @(ViewBag.function.Bluetooth == true ? "checked" : "") disabled type="checkbox" name="Bluetooth" value="true" />
+                            </td>
+                        </tr>
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-map-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                            d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.5.5 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.5.5 0 0 0-.196 0zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1z" />
+                                </svg>
+                                GPS
+                            </td>
+                            <td class="col-md-3">
+                                <input @(ViewBag.function.Gps == true ? "checked" : "") disabled type="checkbox" name="GPS" value="true" />
+                            </td>
+                        </tr>
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-camera-fill" viewBox="0 0 16 16">
+                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0" />
+                                </svg>
+                                Camera
+                            </td>
+                            <td class="col-md-3">
+                                <input @(ViewBag.function.Camera == true ? "checked" : "") disabled type="checkbox" name="Camera" value="true" />
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="col-md-2">
+                    </div>
+                    <table class="col-md-2 bg-white mt-3">
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-sun" viewBox="0 0 16 16">
+                                    <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+                                </svg>
+                                Sunroof
+                            </td>
+                            <td class="col-md-3">
+                                <input @(ViewBag.function.SunRoof == true ? "checked" : "") disabled type="checkbox" name="Sunroof" value="true" />
+                            </td>
+                        </tr>
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+                                </svg>
+                                Child lock
+                            </td>
+                            <td class="col-md-3">
+                                <input disabled type="checkbox" name="Childlock" value="true" @(ViewBag.function.ChildLock == true ? "checked" : "") />
+                            </td>
+                        </tr>
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-person-arms-up" viewBox="0 0 16 16">
+                                    <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                                    <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z" />
+                                </svg>
+                                Child seat
+                            </td>
+                            <td class="col-md-3">
+                                <input disabled type="checkbox" name="Childseat" value="true" @(ViewBag.function.ChildSeat == true ? "checked" : "") />
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="col-md-2"></div>
+                    <table class="col-md-2 bg-white mt-3">
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-speaker" viewBox="0 0 16 16">
+                                    <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                    <path d="M8 4.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M8 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4m0 3a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-3.5 1.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                </svg>
+                                DVD
+                            </td>
+                            <td class="col-md-3">
+                                <input disabled type="checkbox" name="DVD" value="true" @(ViewBag.function.Dvd == true ? "checked" : "") />
+                            </td>
+                        </tr>
+                        <tr class="row flex items-center">
+                            <td class="flex items-center col-md-9">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-usb-symbol" viewBox="0 0 16 16">
+                                    <path d="m7.792.312-1.533 2.3A.25.25 0 0 0 6.467 3H7.5v7.319a2.5 2.5 0 0 0-.515-.298L5.909 9.56A1.5 1.5 0 0 1 5 8.18v-.266a1.5 1.5 0 1 0-1 0v.266a2.5 2.5 0 0 0 1.515 2.298l1.076.461a1.5 1.5 0 0 1 .888 1.129 2.001 2.001 0 1 0 1.021-.006v-.902a1.5 1.5 0 0 1 .756-1.303l1.484-.848A2.5 2.5 0 0 0 11.995 7h.755a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25h.741a1.5 1.5 0 0 1-.747 1.142L8.76 8.99a3 3 0 0 0-.26.17V3h1.033a.25.25 0 0 0 .208-.389L8.208.312a.25.25 0 0 0-.416 0" />
+                                </svg>
+                                USB
+                            </td>
+                            <td class="col-md-3">
+                                <input disabled type="checkbox" name="USB" value="true" @(ViewBag.function.Usb == true ? "checked" : "") />
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="mt-5">
+                    <label class="fw-bold">Term of use</label>
+                    <div class="row mt-2">
+                        <!-- First Row of Checkboxes -->
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="form-check">
+                                <input disabled class="ms-2" type="checkbox" id="check1" name="smoking" value="true" @(ViewBag.term.NoSmoking == true ? "checked" : "") />
+                                <label class="ms-2" for="check1">No smoking</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="form-check" style="margin-left: -50%;">
+                                <input disabled class="ms-2" type="checkbox" id="check2" name="food" value="true" @(ViewBag.term.NoFoodInCar == true ? "checked" : "") />
+                                <label class=" ms-2" for="check2">No food in car</label>
+                            </div>
+                        </div>
+                        <!-- Second Row of Checkboxes -->
+                        <div class="col-md-6 d-flex align-items-center mt-3">
+                            <div class="form-check">
+                                <input disabled class="ms-2" type="checkbox" id="check3" name="pet" value="true" @(ViewBag.term.NoPet == true ? "checked" : "") />
+                                <label class=" ms-2" for="check3">No pet</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-start mt-3">
+                            <div class="form-check" style="margin-left: -50%;">
+                                <input disabled class="ms-2" type="checkbox" id="check4" name="t4" value="Other" @(ViewBag.term.Specify != null ? "checked" : "") />
+                                <label class="ms-2" for="check4">Other</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-start mt-3">
+                            <div class="form-check">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 d-flex align-items-start mt-3 @(ViewBag.term.Specify ==null?"d-none":"")">
+                            <div class="form-check" style="margin-left: -50%;">
+                                <!-- Text field for Other -->
+                                <div id="otherTextField" class="ms-2">
+                                    <textarea disabled name="specify" style="height: 120px;width: 300px;" class="form-control mt-2">@ViewBag.term.Specify</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menu2" class="row container tab-pane fade">
+                <div class="form-group">
+                    @* <div style="margin-left: 20px; margin-top: 10px;">
+                        <p class="control-label"><strong>Please select your payment method</strong></p><br>
+                    </div> *@
+                    @if (@Model.PaymentMethod == 1) {
+                        <div style="margin-left: 70px; margin-top: 28px;">
+                        @{
+                            var wallet = ViewBag.wallet ?? 0;
+                            var deposit = ViewBag.Deposit ?? 0;
+                        }
+                        <label>
+                            <input id="pm1" type="radio" asp-for="@Model.PaymentMethod" value="1" checked/> My wallet<br>
+                            <p>Current balance: <span style="color: yellowgreen;">@String.Format("{0:#,##0}", wallet) VND&nbsp;&nbsp;&nbsp;&nbsp;
+                                    @if(wallet < deposit)
+                                    {
+                                        <span id="insufficient" style="color: yellowgreen;">insufficient</span>
+                                    }
+                                </span></p>
+                        </label>
+                        <p>Please make sure to have sufficient balance when you return the car.</p>
+                        <p>Go to <a asp-controller="Payment" asp-action="MyWallet" asp-route-userid="@user.UserId">My wallet</a></p>
+                        </div>
+                    } else if (Model.PaymentMethod == 2)
+                    {
+                        <div style="margin-left: 70px; margin-top: 28px;">
+                        <label>
+                            <input type="radio" asp-for="@Model.PaymentMethod" value="2" /> Cash<br>
+                                @if (@Model.Status == 1 || @Model.Status == 4)
+                                {
+                                    <p>Our operator will contact you for further instruction</p>
+                                } else
+                                {
+                                    <p>Payment fullfilled</p>
+                                }
+                            </label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin-left: 70px; margin-top: 28px;">
+                        <label>
+                            <input type="radio" asp-for="@Model.PaymentMethod" value="3" /> Bank transfer<br>
+                            @if (@Model.Status == 1 || @Model.Status == 4)
+                                {
+                                    <p>Our operator will contact you for further instruction</p>
+                                } else
+                                {
+                                    <p>Payment fullfilled</p>
+                                }
+                        </label>
+                        </div>
+                    }
+                    <span asp-validation-for="@Model.PaymentMethod" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+    <div class="modal" id="confirm-pickup">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <form asp-controller="Booking" asp-action="confirmPickupForDetailsPage" method="post">
+                <div class="modal-content">
+                    <!-- Modal body -->
+                    <div class="modal-body rating-body">
+                        <h6 class="text-center fw-bold text-danger w-100">
+                            Are you sure you want to confirm pick-up?
+                        </h6>
+
+                        <input type="hidden" name="startDate" value="@ViewBag.startDate" />
+                        <input type="hidden" name="endDate" value="@ViewBag.endDate" />
+                        <input type="hidden" name="carId" value="@ViewBag.car.CarId" />
+                        <input type="hidden" name="bookingNo" value="@Model.BookingNo" />
+
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer " style="padding:0;">
+                        <div class="d-flex w-100 justify-content-center align-items-center" style="margin:0">
+                            <button type="button" data-bs-dismiss="modal" class="btn w-100 hover-shadow">No</button>
+                            <div class="vr mx-1"></div>
+                            <button type="submit" class="btn w-100 hover-shadow">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+	    <!--Return Modal-->
+        <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCarInDetail" 
+            asp-route-carId="@ViewBag.car.CarId" asp-route-userId="@user.UserId"
+            asp-route-amount="@(((DateTime.Today > @ViewBag.startDate && DateTime.Today < @ViewBag.endDate)||DateTime.Today<@ViewBag.startDate)
+                 ? BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) - BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)
+                 : BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) - BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date))"
+            method="post" style="display: none;">
+                <input type="hidden" name="returnUrl" value="~/">
+            </form>
+            <div class="modal fade" id="returnCarModal" tabindex="-1" aria-labelledby="returnCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-center">
+                            <h5 class="modal-title" id="logoutModalLabel">Return Car</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-body-center">
+                            @if ((DateTime.Today > @ViewBag.startDate && DateTime.Today < @ViewBag.endDate) || DateTime.Today < @ViewBag.startDate)
+                            {
+                                @if (BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.                                      
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalPrice(@ViewBag.car.BasePrice, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                    </p>
+
+                                }
+                            } else if (DateTime.Today > @ViewBag.endDate)
+                            {
+                                @if (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date) > BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate))
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                         <br />
+                                        You returned the car @((DateTime.Today.Date - @ViewBag.endDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.endDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The remaining amount of @(
+                            (BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date) -
+                            BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate)).ToString("N0")
+                            ) VND will be deducted from your wallet.
+                                    </p>
+
+                                }
+                                else
+                                {
+                                    <p class="text-center w-100">
+                                        Please confirm to return the car.
+                                        <br />
+                                        You returned the car @((DateTime.Today.Date - @ViewBag.endDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.endDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        The exceeding amount of @(
+                            (BookingHelper.GetTotalDeposit(@ViewBag.car.Deposit, @ViewBag.startDate, @ViewBag.endDate) -
+                            BookingHelper.GetTotalPriceFromToday(@ViewBag.car.BasePrice, @ViewBag.startDate, DateTime.Today.Date)).ToString("N0")
+                            ) VND will be returned to your wallet.
+                                    </p>
+
+                                }
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex w-100 justify-content-center align-items-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <div class="vr mx-3"></div>
+                                <button type="button" class="btn btn-primary" onclick="submitReturn()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	
+    <!--Rating modal-->
+        <div class="modal" id="rating">
+        
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <form asp-controller="Booking" asp-action="giveRating" method="post">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center w-100">Rate your trip</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body rating-body">
+                        <h6 class="text-center w-100">
+                            Do you enjoy your trip? Please let us know what you think
+                        </h6>
+
+                        <input type="hidden" name="startDate" value="@ViewBag.startDate" />
+                        <input type="hidden" name="endDate" value="@ViewBag.endDate" />
+                        <input type="hidden" name="carId" value="@ViewBag.car.CarId" />
+                        <input type="hidden" name="bookingNo" value="@Model.BookingNo" />
+
+                        <div class="star-rating">
+                            <input type="radio" name="ratings" id="rating-5" value="5">
+                            <label for="rating-5"></label>
+                            <input type="radio" name="ratings" id="rating-4" value="4">
+                            <label for="rating-4"></label>
+                            <input type="radio" name="ratings" id="rating-3" value="3">
+                            <label for="rating-3"></label>
+                            <input type="radio" name="ratings" id="rating-2" value="2">
+                            <label for="rating-2"></label>
+                            <input type="radio" checked name="ratings" id="rating-1" value="1">
+                            <label for="rating-1"></label>
+                        </div>
+                        <div class="">
+                            <textarea name="content" placeholder=""
+                                      style="height: 180px;width: 400px; border-color: black; border-radius: 0%;"
+                                      class="form-control mt-2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer " style="padding:0;">
+                        <div class="d-flex w-100 justify-content-center align-items-center" style="margin:0">
+                            <a href="@Url.Action("skipRating", "Booking", new { startDate = ViewBag.startDate, endDate = ViewBag.endDate, carId = ViewBag.car.CarId, bookingNo = Model.BookingNo})" type="button" class="btn w-100 hover-shadow" >Skip</a>
+                            <div class="vr mx-1"></div>
+                            <button type="submit" class="btn w-100 hover-shadow">Send Review</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+	function submitReturn() {
+                document.getElementById('returnCarForm').submit();
+            }
+</script>
+<script>
+    $(document).ready(function () {
+        // Fetch and populate districts when a city is selected
+        $('#BookingInfo_RenterAddress_CityId').change(function () {
+            var cityId = $(this).val();
+            var districtSelect = $('#BookingInfo_RenterAddress_DistrictId');
+            var wardSelect = $('#BookingInfo_RenterAddress_WardId');
+
+            districtSelect.empty();
+            wardSelect.empty();
+            
+            if (cityId) {
+                $.getJSON('/Booking/GetDistricts', { cityId: cityId }, function (data) {
+                    districtSelect.append('<option value="">-- Select District --</option>');
+                    $.each(data, function (index, district) {
+                        districtSelect.append('<option value="' + district.districtId + '">' + district.districtName + '</option>');
+                    });
+                });
+            } else {
+                districtSelect.append('<option value="">-- Select District --</option>');
+            }
+            wardSelect.append('<option value="">-- Select Ward --</option>');
+        });
+
+        // Fetch and populate wards when a district is selected
+        $('#BookingInfo_RenterAddress_DistrictId').change(function () {
+            var districtId = $(this).val();
+            var wardSelect = $('#BookingInfo_RenterAddress_WardId');
+            wardSelect.empty();
+
+            if (districtId) {
+                $.getJSON('/Booking/GetWards', { districtId: districtId }, function (data) {
+                    wardSelect.append('<option value="">-- Select Ward --</option>');
+                    $.each(data, function (index, ward) {
+                        wardSelect.append('<option value="' + ward.wardId + '">' + ward.wardName + '</option>');
+                    });
+                });
+            } else {
+                wardSelect.append('<option value="">-- Select Ward --</option>');
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Fetch and populate districts when a city is selected
+        $('#BookingInfo_DriverAddress_CityId').change(function () {
+            var cityId = $(this).val();
+            var districtSelect = $('#BookingInfo_DriverAddress_DistrictId');
+            var wardSelect = $('#BookingInfo_DriverAddress_WardId');
+
+            districtSelect.empty();
+            wardSelect.empty();
+            
+            if (cityId) {
+                $.getJSON('/Booking/GetDistricts', { cityId: cityId }, function (data) {
+                    districtSelect.append('<option value="">-- Select District --</option>');
+                    $.each(data, function (index, district) {
+                        districtSelect.append('<option value="' + district.districtId + '">' + district.districtName + '</option>');
+                    });
+                });
+            } else {
+                districtSelect.append('<option value="">-- Select District --</option>');
+            }
+            wardSelect.append('<option value="">-- Select Ward --</option>');
+        });
+
+        // Fetch and populate wards when a district is selected
+        $('#BookingInfo_DriverAddress_DistrictId').change(function () {
+            var districtId = $(this).val();
+            var wardSelect = $('#BookingInfo_DriverAddress_WardId');
+            wardSelect.empty();
+
+            if (districtId) {
+                $.getJSON('/Booking/GetWards', { districtId: districtId }, function (data) {
+                    wardSelect.append('<option value="">-- Select Ward --</option>');
+                    $.each(data, function (index, ward) {
+                        wardSelect.append('<option value="' + ward.wardId + '">' + ward.wardName + '</option>');
+                    });
+                });
+            } else {
+                wardSelect.append('<option value="">-- Select Ward --</option>');
+            }
+        });
+    });
+</script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const chooseFileBtn = document.getElementById('chooseFileBtn');
+    const fileInput = document.getElementById('fileInput');
+    const fileNameInput = document.getElementById('fileName');
+    const modalImage = document.getElementById('modalImage');
+    const defaultImage = '@Url.Content("~/img/" + Model?.BookingInfo?.RenterDrivingLicense)'; // Ensure correct path
+
+    chooseFileBtn.addEventListener('click', function () {
+        fileInput.click(); // Simulate click on file input
+    });
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            fileNameInput.value = file.name; // Display file name
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            fileNameInput.value = ''; // Clear file name if no file selected
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    fileNameInput.addEventListener('click', function () {
+        const file = fileInput.files[0];
+        if (file) {
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    function showImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            modalImage.src = reader.result;
+            $('#imageModal').modal('show'); // Show the modal with the image
+        };
+        reader.readAsDataURL(file);
+    }
+
+    const closeModalBtn = document.getElementById('closeModalBtn1'); // Get the close button element
+    closeModalBtn.addEventListener('click', function () {
+        $('#imageModal').modal('hide'); // Hide the modal
+    });
+
+    // Conditionally define the showDefaultImage function
+    @if (ViewBag.DrivingLience != null) {
+        <text>
+        function showDefaultImage() {
+            modalImage.src = defaultImage;
+            $('#imageModal').modal('show'); // Show the modal with the default image
+        }
+        </text>
+    } else {
+        <text>
+        function showDefaultImage() {
+            // No action if there's no default image
+        }
+        </text>
+    }
+});
+</script>
+<script>
+    $(document).ready(function () {
+    const fileInput = document.getElementById('fileInput');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            uploadFile(file); // Call function to upload file
+        }
+    });
+
+    function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/Booking/UploadImage', // Replace with your controller method to handle file upload
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log('File uploaded successfully');
+                // Optionally update UI or handle success
+            },
+            error: function () {
+                console.log('Error uploading file');
+                // Handle error if needed
+            }
+        });
+    }
+});
+</script>
+@* ------------------------------------------- *@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const chooseFileBtn = document.getElementById('chooseFileBtn2');
+    const fileInput = document.getElementById('fileInput2');
+    const fileNameInput = document.getElementById('fileName2');
+    const modalImage = document.getElementById('modalImage2');
+    // const defaultImage = '@Url.Content("~/img/" + ViewBag.DrivingLience)';
+
+
+    chooseFileBtn.addEventListener('click', function () {
+        fileInput.click(); // Simulate click on file input
+    });
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            fileNameInput.value = file.name; // Display file name
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            fileNameInput.value = ''; // Clear file name if no file selected
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    fileNameInput.addEventListener('click', function () {
+        const file = fileInput.files[0];
+        if (file) {
+            showImagePreview(file); // Show preview of selected file
+        } else {
+            showDefaultImage(); // Show default image when no file selected
+        }
+    });
+
+    function showImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            modalImage.src = reader.result;
+            $('#imageModal2').modal('show'); // Show the modal with the image
+        };
+        reader.readAsDataURL(file);
+    }
+
+    const closeModalBtn = document.getElementById('closeModalBtn2'); // Get the close button element
+    closeModalBtn.addEventListener('click', function () {
+        $('#imageModal2').modal('hide'); // Hide the modal
+    });
+
+    // Conditionally define the showDefaultImage function
+    function showDefaultImage() {
+        var isDifferent = document.getElementById('isDifferentCheckbox').checked;
+        if (!isDifferent) {
+            if (fileNameInput.value && !fileInput.files[0]) {
+            alert('The same file with renter driving lience.');
+        }
+        } else {
+            // No action if there's no default image
+        }
+
+        $('input[name="BookingInfo.IsDifferent"]').change(function () {
+            if ($(this).is(':checked')) {
+                // Assuming `fileInput` is your file input element
+                fileInput.value = ''; // Clear the value of the file input
+            }
+        });
+    }
+
+    // Call showDefaultImage() function when the checkbox state changes
+    // document.getElementById('isDifferentCheckbox').addEventListener('change', showDefaultImage);
+});
+</script>
+<script>
+    $(document).ready(function () {
+    const fileInput = document.getElementById('fileInput2');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            uploadFile(file); // Call function to upload file
+        }
+    });
+
+    function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/Booking/UploadImage', // Replace with your controller method to handle file upload
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log('File uploaded successfully');
+                // Optionally update UI or handle success
+            },
+            error: function () {
+                console.log('Error uploading file');
+                // Handle error if needed
+            }
+        });
+    }
+});
+</script>
+
+     
+    <script>
+        function setRating(rating) {
+            const stars = document.querySelectorAll('#rating .star');
+            stars.forEach((star, index) => {
+                star.classList.remove('filled', 'half-filled');
+                if (rating >= index + 1) {
+                    star.classList.add('filled');
+                } else if (rating > index && rating < index + 1) {
+                    star.classList.add('half-filled');
+                }
+            });
+        }
+
+        const ratingFromViewBag = parseFloat('@ViewBag.Rating'.replace(',', '.'));
+        setRating(ratingFromViewBag);
+    </script>
+
+
+    <script>
+    $(document).ready(function () {
+        $('#changeDetailsLink').click(function (e) {
+            e.preventDefault();
+            $('#editBookingModal').modal('toggle');
+        });
+
+        $('#closeModalBtn, #closeModal').click(function () {
+            $('#editBookingModal').modal('hide');
+        });
+
+        $('#saveChangesBtn').click(function () {
+            var newLocation = $('#modalPickupLocation').val();
+            var newStartDate = $('#modalStartDate').val();
+            var newEndDate = $('#modalEndDate').val();
+            var newCarId = $('#modalCarId').val();
+
+            // Validate start date and time is greater than current date and time
+            if (!isStartDateGreaterThanCurrentDate(newStartDate)) {
+                alert('Start date and time must be greater than the current date and time.');
+                return;
+            }
+
+            // Validate end date and time is greater than start date and time
+            if (!isEndDateGreaterThanStartDate(newStartDate, newEndDate)) {
+                alert('End date and time must be greater than start date and time.');
+                return;
+            }
+
+            // Format dates to desired format
+            var formattedStartDate = formatDate(newStartDate);
+            var formattedEndDate = formatDate(newEndDate);
+
+            // Update booking details display
+            $('#pickupLocationText').text(newLocation);
+            $('#startDateText').text(formattedStartDate);
+            $('#endDateText').text(formattedEndDate);
+            $('#CarIdText').text(newCarId);
+
+            // Optionally update hidden input values
+            $('#hiddenStartDate').val(newStartDate);
+            $('#hiddenEndDate').val(newEndDate);
+
+            // Construct the URL with updated parameters
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname +
+                '?location=' + encodeURIComponent(newLocation) +
+                '&startDate=' + encodeURIComponent(newStartDate) +
+                '&endDate=' + encodeURIComponent(newEndDate) +
+                '&CarId=' + encodeURIComponent(newCarId);
+
+            // Redirect to the new URL
+            window.location.href = newUrl;
+        });
+
+        // Function to format date to dd/MM/yyyy - HH:mm tt
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var formattedDate = date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Ensure "AM" or "PM" is in uppercase
+            formattedDate = formattedDate.replace(/\b([ap])m\b/g, function (match) {
+                return match.toUpperCase();
+            });
+
+            return formattedDate;
+        }
+
+        // Function to check if start date and time is greater than current date and time
+        function isStartDateGreaterThanCurrentDate(startDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var currentDateTime = new Date().getTime();
+
+            return startDateTime > currentDateTime;
+        }
+
+        // Function to check if end date and time is greater than start date and time
+        function isEndDateGreaterThanStartDate(startDate, endDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var endDateTime = new Date(endDate).getTime();
+
+            return endDateTime > startDateTime;
+        }
+    });
+</script>
+
+
+    <script>
+    $(document).ready(function () {
+    // Lưu trữ tùy chọn ban đầu của dropdown
+    var originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+    var originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
+
+    // Initially hide driver's information fields
+    toggleDriverFields();
+
+    // Toggle driver's information fields based on checkbox state
+    $('input[name="BookingInfo.IsDifferent"]').change(function () {
+        toggleDriverFields();
+    });
+
+    $('#BookingInfo_RenterName, #BookingInfo_RenterPhone, #BookingInfo_RenterNationalId, #BookingInfo_RenterDob, #BookingInfo_RenterEmail, #fileName, #BookingInfo_RenterAddress_CityId, #BookingInfo_RenterAddress_DistrictId, #BookingInfo_RenterAddress_WardId, #BookingInfo_RenterAddress_HouseNumberStreet').on('input', function () {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
+    });
+
+    // function toggleDriverFields() {
+    //     var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
+
+    //     // Kiểm tra xem checkbox có thuộc tính data-first-load không
+    //     var isFirstLoad = $('input[name="BookingInfo.IsDifferent"]').data('first-load');
+
+    //     if (isFirstLoad !== 'done') {
+    //         // Đánh dấu lần đầu đã hoàn thành
+    //         $('input[name="BookingInfo.IsDifferent"]').data('first-load', 'done');
+    //         return; // Không làm gì nếu là lần đầu
+    //     }
+    function toggleDriverFields() {
+        var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
+        if (!isChecked) {
+            // Clear driver's information fields
+            // $('#BookingInfo_DriverName').val('');
+            // $('#BookingInfo_DriverPhone').val('');
+            // $('#BookingInfo_DriverNationalId').val('');
+            // $('#BookingInfo_DriverDob').val('');
+            // $('#BookingInfo_DriverEmail').val('');
+            // $('#fileName2').val('');
+            // $('#BookingInfo_DriverAddress_CityId').val('');
+            // $('#BookingInfo_DriverAddress_DistrictId').val('').find('option:not(:first)').remove(); // Clear DistrictId dropdown options
+            // $('#BookingInfo_DriverAddress_WardId').val('').find('option:not(:first)').remove(); // Clear WardId dropdown options
+            // $('#BookingInfo_DriverAddress_HouseNumberStreet').val('');
+        } else {
+            // Update driver's information fields with renter's data
+            updateDriverFields();
+        }
+    }
+
+    function updateDriverFields() {
+        originalDistrictOptions = $('#BookingInfo_RenterAddress_DistrictId').html();
+        originalWardOptions = $('#BookingInfo_RenterAddress_WardId').html();
+        $('#BookingInfo_DriverAddress_DistrictId').html(originalDistrictOptions);
+        $('#BookingInfo_DriverAddress_WardId').html(originalWardOptions);
+        $('#BookingInfo_DriverName').val($('#BookingInfo_RenterName').val());
+        $('#BookingInfo_DriverPhone').val($('#BookingInfo_RenterPhone').val());
+        $('#BookingInfo_DriverNationalId').val($('#BookingInfo_RenterNationalId').val());
+        $('#BookingInfo_DriverDob').val($('#BookingInfo_RenterDob').val());
+        $('#BookingInfo_DriverEmail').val($('#BookingInfo_RenterEmail').val());
+        $('#fileName2').val($('#fileName').val());
+        $('#BookingInfo_DriverAddress_CityId').val($('#BookingInfo_RenterAddress_CityId').val());
+        $('#BookingInfo_DriverAddress_DistrictId').val($('#BookingInfo_RenterAddress_DistrictId').val());
+        $('#BookingInfo_DriverAddress_WardId').val($('#BookingInfo_RenterAddress_WardId').val());
+        $('#BookingInfo_DriverAddress_HouseNumberStreet').val($('#BookingInfo_RenterAddress_HouseNumberStreet').val());
+    }
+});
+</script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('isDifferentCheckbox');
+        const driverInfoContainer = document.querySelector('.driver-info-container');
+        
+        // Function to toggle visibility
+        function toggleDriverInfo() {
+            if (checkbox.checked) {
+                driverInfoContainer.style.display = 'none';
+            } else {
+                driverInfoContainer.style.display = 'block';
+            }
+        }
+
+        // Initialize visibility based on the initial checkbox state
+        toggleDriverInfo();
+
+        // Add event listener to the checkbox
+        checkbox.addEventListener('change', toggleDriverInfo);
+    });
+</script>
+    
+    <script>
+        function showImageAndDownload(imagePath, fileName) {
+            document.getElementById('modalImage0').src = imagePath;
+            document.getElementById('downloadLink0').href = imagePath;
+            document.getElementById('downloadLink0').download = fileName;
+            $('#imageModal0').modal('show');
+        }
+    </script>
+
+    <script>
+    // Function to show the modal
+    function showModal() {
+        $('#cancelModal').modal('show');
+    }
+
+    // Function to hide the modal
+    function hideModal() {
+        $('#cancelModal').modal('hide');
+    }
+
+    // Check the button's style and handle click event accordingly
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        var button = document.getElementById('cancelButton');
+        if (@Model.Status == 1 || @Model.Status == 2) {
+            showModal();
+        }
+    });
+
+    document.getElementById('closeModal').addEventListener('click', hideModal);
+    document.getElementById('closeModalButton').addEventListener('click', hideModal);
+</script>
+
+<script>
+    document.getElementById('Form').addEventListener('submit', function () {
+        var submitButton = document.getElementById('confirmCancel');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+    });
+</script>
+
+<script>
+    var previousRenterDob = '';
+    var previousDriverDob = '';
+
+    document.getElementById('renterDob').addEventListener('focus', function(event) {
+        previousRenterDob = event.target.value;
+    });
+
+    document.getElementById('driverDob').addEventListener('focus', function(event) {
+        previousDriverDob = event.target.value;
+    });
+
+    document.getElementById('renterDob').addEventListener('change', function(event) {
+        validateAge(event, previousRenterDob);
+        synchronizeDriverDob();
+    });
+
+    document.getElementById('driverDob').addEventListener('change', function(event) {
+        validateAge(event, previousDriverDob);
+    });
+
+    document.querySelector('input[name="BookingInfo.IsDifferent"]').addEventListener('change', function(event) {
+        synchronizeDriverDob();
+    });
+
+    function validateAge(event, previousValue) {
+        var dob = new Date(event.target.value);
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+
+        var monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert("The selected date makes the user under 18 years old. Please select a valid date.");
+            event.target.value = previousValue;  // Revert to the previous valid date
+        }
+    }
+
+    function synchronizeDriverDob() {
+        var isDifferent = document.querySelector('input[name="BookingInfo.IsDifferent"]').checked;
+        if (!isDifferent) {
+            var renterDob = document.getElementById('renterDob').value;
+            document.getElementById('driverDob').value = renterDob;
+            document.getElementById('driverDob').dispatchEvent(new Event('change'));
+        }
+    }
+</script>
+
+
+
+}

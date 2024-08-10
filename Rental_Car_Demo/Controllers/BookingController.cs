@@ -59,6 +59,7 @@ namespace Rental_Car_Demo.Controllers
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
             userDAO = new UserDAO();
+            _db = new RentCarDbContext();
         }
 
         // GET: BookingController/Create
