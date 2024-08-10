@@ -57,6 +57,7 @@ namespace Rental_Car_Demo.Controllers
             if (Request.Cookies.TryGetValue("UserEmail", out string rememberMeValue))
             {
                 var values = rememberMeValue.Split('|');
+
                 if (values.Length == 2)
                 {
                     viewModel.User = new User
@@ -210,8 +211,6 @@ namespace Rental_Car_Demo.Controllers
                 Role = isCarOwner
             };
 
-            try
-            {
                 // Thêm customer vào context và lưu thay đổi
                 context.Add(customer);
                 context.SaveChanges();
@@ -219,12 +218,7 @@ namespace Rental_Car_Demo.Controllers
                 // Hiển thị thông báo đăng ký thành công
                 TempData["SuccessMessage"] = "Account created successfully!";
                 return RedirectToAction("Guest", "Users");
-            }
-            catch (Exception ex)
-            {
-                // Ghi log lỗi nếu xảy ra
-                ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
-            }
+
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi

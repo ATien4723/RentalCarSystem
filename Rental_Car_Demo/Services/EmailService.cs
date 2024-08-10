@@ -4,26 +4,21 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 
 namespace Rental_Car_Demo.Services
 {
-    public class EmailService : IEmailService
+    public class 
+        EmailService : IEmailService
     {
+
+        private readonly SmtpClient _smtpClient;
+
+        public EmailService(SmtpClient smtpClient)
+        {
+            _smtpClient = smtpClient;
+        }
+
         public void SendEmail(string email, string subject, string message)
         {
-
-            // Cấu hình thông tin SMTP
-            var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-
-                Credentials = new NetworkCredential("kietnvt2705@gmail.com", "ueku bgbu qacj murs")
-            };
-
-            client.Send(
-               new MailMessage(from: "kietnvt2705@gmail.com",
-                               to: email,
-                               subject,
-                               message
-                               ));
-
+            var mailMessage = new MailMessage("kietnvt2705@gmail.com", email, subject, message);
+            _smtpClient.Send(mailMessage);
         }
 
 

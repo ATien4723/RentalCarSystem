@@ -100,6 +100,26 @@ namespace Rental_Car_Demo.Tests
 
 
         [Test]
+        public void Register_ReturnsViewResult()
+        {
+            // Act
+            var result = _controller.Register();
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
+        [Test]
+        public void ResetPass_ReturnsViewResult()
+        {
+            // Act
+            var result = _controller.ResetPassword();
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
+        [Test]
         [TestCase("nvutuankiet2003@gmail.com", true)]
         [TestCase("hehe123@gmail.com", false)]
         public void IsEmailExist_ShouldReturnExpectedResult(string email, bool expectedResult)

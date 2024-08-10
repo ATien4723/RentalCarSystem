@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rental_Car_Demo.Tests
 {
@@ -46,7 +47,7 @@ namespace Rental_Car_Demo.Tests
             _httpContext = new DefaultHttpContext();
             _httpContext.Session = _dummySession;
 
-            _controller = new CarController(_mockCarRepository.Object,_context, _mockEmailService.Object)
+            _controller = new CarController(_mockCarRepository.Object, _context, _mockEmailService.Object)
             {
                 TempData = _mockTempData.Object
             };
@@ -112,7 +113,7 @@ namespace Rental_Car_Demo.Tests
                     NoFoodInCar = true,
                     NoSmoking = true,
                     NoPet = true,
-                   
+
                 },
 
                 new TermOfUse
@@ -129,7 +130,7 @@ namespace Rental_Car_Demo.Tests
                     FucntionId = 1,
                     Gps = true,
                     Camera = true,
-                    
+
                 },
                 new AdditionalFunction
                 {
@@ -172,10 +173,29 @@ namespace Rental_Car_Demo.Tests
                 }
             };
 
+            var feedbacks = new List<Feedback>
+            {
+                new Feedback { FeedbackId = 1, BookingNo = 1, Ratings = 3, Content = "Good", Date = DateTime.Now },
+                new Feedback { FeedbackId = 2, BookingNo = 2, Ratings = 5, Content = "Good", Date = DateTime.Now },
+                new Feedback { FeedbackId = 3, BookingNo = 4, Ratings = -1, Content = "Good", Date = DateTime.Now }
+
+            };
+
+
+
+            var bookings = new List<Booking>
+            {
+                new Booking { BookingNo = 1, UserId = 2, CarId = 1, StartDate = DateTime.Now, EndDate = DateTime.Now },
+                new Booking { BookingNo = 2, UserId = 3, CarId = 1, StartDate = DateTime.Now, EndDate = DateTime.Now },
+                new Booking { BookingNo = 3, UserId = 1, CarId = 3, StartDate = DateTime.Now, EndDate = DateTime.Now },
+                new Booking { BookingNo = 4, UserId = 2, CarId = 3, StartDate = DateTime.Now, EndDate = DateTime.Now }
+            };
+
             var users = new List<User>
             {
                 new User
                 {
+                    UserId = 1,
                     Email = "nvutuankiet2003@gmail.com",
                     Password = HashPassword("kiet123"),
                     Name = "kiet ne",
@@ -185,8 +205,19 @@ namespace Rental_Car_Demo.Tests
                 },
                 new User
                 {
+                    UserId = 2,
                     Email = "hehe@gmail.com",
                     Password = HashPassword("hehe123"),
+                    Name = "hehe",
+                    Phone = "0987654321",
+                    Role = true,
+                    Wallet = 0
+                },
+                new User
+                {
+                    UserId = 3,
+                    Email = "kakaka@gmail.com",
+                    Password = HashPassword("kaka123"),
                     Name = "hehe",
                     Phone = "0987654321",
                     Role = true,
@@ -223,7 +254,7 @@ namespace Rental_Car_Demo.Tests
                     TermId = 1,
                     FucntionId = 1,
                     Status = 1,
-                    NoOfRide = 1
+                    NoOfRide = 0
                 },
 
                 new Car
@@ -253,8 +284,38 @@ namespace Rental_Car_Demo.Tests
                     TermId = 2,
                     FucntionId = 2,
                     Status = 2,
-                    NoOfRide = 2
+                    NoOfRide = 0
+                },
+                new Car
+                {
+                    CarId = 3,
+                    UserId = 3,
+                    Name = "Car 3",
+                    LicensePlate = "50F-567.92",
+                    BrandId = 2,
+                    ModelId = 2,
+                    Seats = 4,
+                    FrontImage = "front3.jpg",
+                    BackImage = "back3.jpg",
+                    LeftImage = "left3.jpg",
+                    RightImage = "right3.jpg",
+                    ProductionYear = 2024,
+                    TransmissionType = false,
+                    FuelType = false,
+                    Mileage = 30000,
+                    FuelConsumption = 200,
+                    BasePrice = 35000000,
+                    Deposit = 3000000,
+                    ColorId = 2,
+                    AddressId = 2,
+                    Description = "Description 3",
+                    DocumentId = 2,
+                    TermId = 2,
+                    FucntionId = 2,
+                    Status = 2,
+                    NoOfRide = 0
                 }
+
             };
 
             _context.Users.AddRange(users);
@@ -268,6 +329,9 @@ namespace Rental_Car_Demo.Tests
             _context.TermOfUses.AddRange(TermOfUse);
             _context.CarDocuments.AddRange(carDocument);
             _context.Cars.AddRange(cars);
+            _context.Feedbacks.AddRange(feedbacks);
+            _context.Bookings.AddRange(bookings);
+
             _context.SaveChanges();
         }
 
@@ -311,7 +375,25 @@ namespace Rental_Car_Demo.Tests
         {
             // Arrange
             var carId = 1;
-            var user = new User { UserId = 2, Email = "test@test.com", Password = "hashedpassword", Role = false };
+            var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
+
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+
+            // Act
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            // Assert
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
+        }
+
+        [Test]
+        public void ChangeCarDetailsByOwner_ShouldReturnErrorAuthorization_WhenUserNotOwnCar()
+        {
+            // Arrange
+            var carId = 1;
+            var user = new User { UserId = 2, Email = "test@test.com", Password = "hashedpassword", Role = true };
 
             var userString = JsonConvert.SerializeObject(user);
             _dummySession.SetString("User", userString);
@@ -328,27 +410,13 @@ namespace Rental_Car_Demo.Tests
         public void ChangeCarDetailsByOwner_ShouldReturnView_WhenAuthorizedAndCarExists_WithRentals()
         {
             // Arrange
-            var carId = 1;
+            var carId = 3;
 
 
-            var user = new User { UserId = 1, Email = "test@test.com", Password = "hashedpassword", Role = false };
+            var user = new User { UserId = 3, Email = "test@test.com", Password = "hashedpassword", Role = true };
 
             var userString = JsonConvert.SerializeObject(user);
             _dummySession.SetString("User", userString);
-
-            var bookings = new List<Booking>
-        {
-            new Booking { CarId = carId, UserId = user.UserId, Status = 3 }
-        };
-
-            var feedbacks = new List<Feedback>
-        {
-            new Feedback { FeedbackId = 1, BookingNo = 1, Ratings = 4, Content = "Good", Date = DateTime.Now }
-        };
-            _context.AddRange(feedbacks);
-            _context.AddRange(bookings);
-            _context.SaveChanges();
-
 
             // Act
             var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
@@ -357,6 +425,45 @@ namespace Rental_Car_Demo.Tests
             Assert.IsNotNull(result);
         }
 
+        [Test]
+        public void ChangeCarDetailsByOwner_ShouldReturnView()
+        {
+            // Arrange
+            var carId = 2;
+
+
+            var user = new User { UserId = 2, Email = "test@test.com", Password = "hashedpassword", Role = true };
+
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+            // Act
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        [TestCase(3, 3)]
+        [TestCase(1, 1)]
+        [TestCase(2, 2)]
+
+        public void ChangeCarDetailsByOwner_checkViewbag(int carId, int userId)
+        {
+
+            var user = new User { UserId = userId, Name = "kiet ne", Email = "test@test.com", Password = "hashedpassword", Role = true };
+            var userString = JsonConvert.SerializeObject(user);
+            _dummySession.SetString("User", userString);
+
+            var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
+
+            Assert.NotNull(result);
+
+            var carOwner = _controller.ViewBag.CarOwner as User;
+            Assert.NotNull(carOwner);
+            Assert.AreEqual(user.UserId, carOwner.UserId);
+        }
 
         [Test]
         [TestCase(false, false, true, "No loud music", 20000000, 5000000)]
@@ -366,7 +473,7 @@ namespace Rental_Car_Demo.Tests
         [TestCase(true, false, true, "No loud music", 20000000, 5000000)]
         [TestCase(true, false, false, "No loud music", 20000000, 5000000)]
         [TestCase(true, true, false, null, 20000000, 5000000)]
-        [TestCase(false, true, false, null, -20000000, 5000000)]
+        [TestCase(false, true, false, null, 20000000, 5000000)]
 
         public void ChangeCarTermsByOwner_ShouldUpdateCarAndTerms_WhenDataIsValid(bool smoking, bool food, bool pet, string? specify, int basePrice, int deposit)
         {
@@ -398,17 +505,36 @@ namespace Rental_Car_Demo.Tests
         }
 
 
+        [Test]
+        [TestCase(false, false, true, "No loud music", -20000000, 5000000)]
+        [TestCase(false, false, true, "No loud music", -20000000, -5000000)]
+        [TestCase(false, false, true, "No loud music", 20000000, -5000000)]
+        public void ChangeCarTermsByOwner_ShouldUpdateCarAndTerms_WhenDataIsInValid(bool smoking, bool food, bool pet,
+            string? specify, int basePrice, int deposit)
+        {
+            // Arrange
+            var car = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+
+            car.BasePrice = basePrice;
+            car.Deposit = deposit;
+
+            // Act
+            var result = _controller.ChangeCarTermsByOwner(car, smoking, food, pet, specify) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(null, result.ViewName);
+        }
 
         [Test]
         [TestCase(1, 2)]
         [TestCase(2, 1)]
-        public void ChangeCarStatus_ShouldUpdateCarStatus_AndRedirectToChangeCarDetailsByOwner(int carId,int status)
+        public void ChangeCarStatus_ShouldUpdateCarStatus_AndRedirectToChangeCarDetailsByOwner(int carId, int status)
         {
 
             var car = new Car
             {
                 CarId = carId,
-                Status = status 
+                Status = status
             };
 
             // Act
@@ -441,7 +567,7 @@ namespace Rental_Car_Demo.Tests
                 CarId = car.CarId,
                 Status = 1, // Status before confirmation
                 UserId = 1,
-                BookingNo = 1,
+                BookingNo = 5,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now
             };
@@ -463,6 +589,231 @@ namespace Rental_Car_Demo.Tests
         }
 
 
+
+
+        [Test]
+        
+        public async Task ChangeCarDetailsByOwner_ValidRequest_UpdatesCarDetails([Values("front.jpg")] string frontFileName, [Values("back.jpg")] string backFileName, [Values("left.jpg")] string leftFileName, [Values("right.jpg")] string rightFileName,
+            [Values(true, false)] bool Bluetooth,
+            [Values(true, false)] bool GPS,
+            [Values(true, false)] bool Camera,
+            [Values(true, false)] bool Sunroof,
+            [Values(true, false)] bool Childlock,
+            [Values(true, false)] bool Childseat,
+            [Values(true)] bool DVD, [Values(true)] bool USB,
+            [Values(2)] int city, [Values(2)] int district, [Values(2)] int ward, [Values("456 Main St")] string street, [Values(true)] bool TransmissionType, [Values(true)] bool FuelType, [Values(15000)] double Mileage, [Values(15000)] double FuelConsumption, [Values(15000)] decimal BasePrice, [Values(15000)] decimal Deposit, [Values("NOG NOG")] string description)
+        {
+
+            var directoryPath = @"D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\wwwroot\img\";
+            //if (!Directory.Exists(directoryPath))
+            //{
+            //    Directory.CreateDirectory(directoryPath);
+            //}
+
+            // Arrange
+            IFormFile CreateMockFormFile(string fileName)
+            {
+                var mockFile = new Mock<IFormFile>();
+                var content = "Fake file content";
+                var ms = new MemoryStream();
+                var writer = new StreamWriter(ms);
+                writer.Write(content);
+                writer.Flush();
+                ms.Position = 0;
+
+                mockFile.Setup(f => f.FileName).Returns(fileName);
+                mockFile.Setup(f => f.Length).Returns(ms.Length);
+                mockFile.Setup(f => f.OpenReadStream()).Returns(ms);
+                mockFile.Setup(f => f.ContentDisposition).Returns($"inline; filename={fileName}");
+                return mockFile.Object;
+            }
+
+            var front = CreateMockFormFile(frontFileName);
+            var back = CreateMockFormFile(backFileName);
+            var left = CreateMockFormFile(leftFileName);
+            var right = CreateMockFormFile(rightFileName);
+
+
+            var updatedCar = new Car
+            {
+                CarId = 1,
+                Mileage = Mileage,
+                FuelConsumption = FuelConsumption,
+                BasePrice = BasePrice,
+                Deposit = Deposit,
+                Description = description
+            }; 
+
+
+            // Act
+            var result = await _controller.ChangeCarDetailsByOwner(
+                updatedCar,
+                front,
+                back,
+                left,
+                right,
+                Bluetooth, GPS, Camera, Sunroof, Childlock, Childseat, DVD, USB,
+                city, district, ward, street) as RedirectToActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("ChangeCarDetailsByOwner", result.ActionName);
+            Assert.AreEqual(1, result.RouteValues["CarId"]);
+
+            var carFromDb = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+            Assert.NotNull(carFromDb);
+
+            Assert.AreEqual(Mileage, carFromDb.Mileage);
+            Assert.AreEqual(FuelConsumption, carFromDb.FuelConsumption);
+            Assert.AreEqual(description, carFromDb.Description);
+            Assert.AreEqual(frontFileName, carFromDb.FrontImage);
+            Assert.AreEqual(backFileName, carFromDb.BackImage);
+            Assert.AreEqual(leftFileName, carFromDb.LeftImage);
+            Assert.AreEqual(rightFileName, carFromDb.RightImage);
+
+            var addressFromDb = _context.Addresses.FirstOrDefault(a => a.AddressId == carFromDb.AddressId);
+
+            Assert.NotNull(addressFromDb);
+            Assert.AreEqual(city, addressFromDb.CityId);
+            Assert.AreEqual(district, addressFromDb.DistrictId);
+            Assert.AreEqual(ward, addressFromDb.WardId);
+            Assert.AreEqual(street, addressFromDb.HouseNumberStreet);
+
+            var additionalFunctionFromDb = _context.AdditionalFunctions.FirstOrDefault(f => f.FucntionId == carFromDb.FucntionId);
+            Assert.NotNull(additionalFunctionFromDb);
+            Assert.AreEqual(Bluetooth, additionalFunctionFromDb.Bluetooth);
+            Assert.AreEqual(GPS, additionalFunctionFromDb.Gps);
+            Assert.AreEqual(Camera, additionalFunctionFromDb.Camera);
+            Assert.AreEqual(Sunroof, additionalFunctionFromDb.SunRoof);
+            Assert.AreEqual(Childlock, additionalFunctionFromDb.ChildLock);
+            Assert.AreEqual(Childseat, additionalFunctionFromDb.ChildSeat);
+            Assert.AreEqual(DVD, additionalFunctionFromDb.Dvd);
+            Assert.AreEqual(USB, additionalFunctionFromDb.Usb);
         }
+
+        private List<ValidationResult> ValidateModel(Car car)
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(car, serviceProvider: null, items: null);
+            Validator.TryValidateObject(car, validationContext, validationResults, true);
+            return validationResults;
+        }
+
+
+        [Test]
+        [TestCase("front.jpg", "back.jpg", "left.jpg", "right.jpg", true, true, true, true, true, true, true, true,
+    2, 2, 2, "456 Test St", true, true, -100, 100, 100, 100, "abc", "Mileage can not less than 0")]
+        [TestCase("front.jpg", "back.jpg", "left.jpg", "right.jpg", true, true, true, true, true, true, true, true,
+    2, 2, 2, "456 Test St", true, true, 100, -100, 100, 100, "abbbc", "FuelConsumption must be greater than 0!")]
+        [TestCase("front.jpg", "back.jpg", "left.jpg", "right.jpg", true, true, true, true, true, true, true, true,
+    2, 2, 2, "456 Test St", true, true, 100, 100, -100, 100, "asdf", "BasePrice must be greater than 0.")]
+        [TestCase("front.jpg", "back.jpg", "left.jpg", "right.jpg", true, true, true, true, true, true, true, true,
+    2, 2, 2, "456 Test St", true, true, 100, 100, 100, -100, "efwefa", "Deposit must be a positive number.")]
+        [TestCase("front.jpg", "back.jpg", "left.jpg", "right.jpg", true, true, true, true, true, true, true, true,
+    2, 2, 2, "456 Test St", true, true, 100, 100, 100, 100, "", "Description is not empty!")]
+        public async Task ChangeCarDetailsByOwner_InvalidValues_ReturnsValidationError(
+    string frontFileName, string backFileName, string leftFileName, string rightFileName,
+    bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
+    int city, int district, int ward, string street, bool TransmissionType, bool FuelType,
+    double mileage, double fuelConsumption, decimal basePrice, decimal deposit, string description,
+    string expectedErrorMessage)
+        {
+            //var directoryPath = @"D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_DemoTests\bin\Debug\net8.0\wwwroot\img\";
+            //if (!Directory.Exists(directoryPath))
+            //{
+            //    Directory.CreateDirectory(directoryPath);
+            //}
+
+            // Arrange
+            IFormFile CreateMockFormFile(string fileName)
+            {
+                var mockFile = new Mock<IFormFile>();
+                var content = "Fake file content";
+                var ms = new MemoryStream();
+                var writer = new StreamWriter(ms);
+                writer.Write(content);
+                writer.Flush();
+                ms.Position = 0;
+
+                mockFile.Setup(f => f.FileName).Returns(fileName);
+                mockFile.Setup(f => f.Length).Returns(ms.Length);
+                mockFile.Setup(f => f.OpenReadStream()).Returns(ms);
+                mockFile.Setup(f => f.ContentDisposition).Returns($"inline; filename={fileName}");
+                return mockFile.Object;
+            }
+
+            var front = CreateMockFormFile(frontFileName);
+            var back = CreateMockFormFile(backFileName);
+            var left = CreateMockFormFile(leftFileName);
+            var right = CreateMockFormFile(rightFileName);
+
+            var updatedCar = new Car
+            {
+                CarId = 1,
+                Mileage = mileage,
+                FuelConsumption = fuelConsumption,
+                BasePrice = basePrice,
+                Deposit = deposit,
+                Description = description,
+                LicensePlate = "50F-567.89"
+            };
+
+            var initialCarState = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+
+            // Act
+            var validationResults = ValidateModel(updatedCar);
+
+            // Assert
+            Assert.IsTrue(validationResults.Any(vr => vr.ErrorMessage == expectedErrorMessage),
+                          $"Expected validation error: {expectedErrorMessage}");
+
+            // Verify that the car's details have not changed
+            var carFromDb = _context.Cars.FirstOrDefault(c => c.CarId == 1);
+            Assert.AreEqual(initialCarState.Mileage, carFromDb.Mileage);
+            Assert.AreEqual(initialCarState.FuelConsumption, carFromDb.FuelConsumption);
+            Assert.AreEqual(initialCarState.BasePrice, carFromDb.BasePrice);
+            Assert.AreEqual(initialCarState.Deposit, carFromDb.Deposit);
+            Assert.AreEqual(initialCarState.Description, carFromDb.Description);
+        }
+    }
+
+    public class DummySession : ISession
+    {
+        private readonly Dictionary<string, byte[]> _sessionStorage = new Dictionary<string, byte[]>();
+
+        public bool IsAvailable => true;
+        public string Id => Guid.NewGuid().ToString();
+        public IEnumerable<string> Keys => _sessionStorage.Keys;
+
+        public void Clear()
+        {
+            _sessionStorage.Clear();
+        }
+
+        public Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task LoadAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.CompletedTask;
+        }
+
+        public void Remove(string key)
+        {
+            _sessionStorage.Remove(key);
+        }
+
+        public void Set(string key, byte[] value)
+        {
+            _sessionStorage[key] = value;
+        }
+
+        public bool TryGetValue(string key, out byte[] value)
+        {
+            return _sessionStorage.TryGetValue(key, out value);
+        }
+    }
 
 }
