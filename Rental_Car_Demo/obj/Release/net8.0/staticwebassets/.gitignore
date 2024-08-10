@@ -1,0 +1,4 @@
+/msbuild.Rental_Car_Demo.Microsoft.AspNetCore.StaticWebAssets.props
+/msbuild.build.Rental_Car_Demo.props
+/msbuild.buildMultiTargeting.Rental_Car_Demo.props
+/msbuild.buildTransitive.Rental_Car_Demo.props
