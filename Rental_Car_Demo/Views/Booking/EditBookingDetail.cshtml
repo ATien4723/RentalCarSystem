@@ -391,7 +391,7 @@
                                     <label asp-for="BookingInfo.RenterPhone" class="control-label">
                                         Phone number: <span style="color: red;">*</span>
                                     </label>
-                                <input asp-for="BookingInfo.RenterPhone" class="form-control" required/>
+                                <input asp-for="BookingInfo.RenterPhone" type="number" class="form-control" required/>
                                     <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
                                 </div>
 
@@ -495,7 +495,7 @@
                                         <label asp-for="BookingInfo.DriverPhone" class="control-label">
                                             Phone number: <span style="color: red;">*</span>
                                         </label>
-                                        <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
+                                        <input asp-for="BookingInfo.DriverPhone" type="number" class="form-control" required/>
                                         <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
                                     </div>
 
@@ -522,7 +522,7 @@
                                         <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-md-8 mb-3">
-                                        <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
+                                        <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license: <span style="color: red;">*</span></label>
                                         <div class="input-group">
                                             <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
                                             <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" readonly />

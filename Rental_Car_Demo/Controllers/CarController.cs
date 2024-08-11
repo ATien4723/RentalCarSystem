@@ -13,11 +13,9 @@ namespace Rental_Car_Demo.Controllers
         ICarRepository carRepository = null;
 
         RentCarDbContext _db = new RentCarDbContext();
-        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
+        public CarController()
         {
-            this.carRepository = carRepository;
-            _db = db;
-            _emailService = emailService;
+
         }
 
         public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)

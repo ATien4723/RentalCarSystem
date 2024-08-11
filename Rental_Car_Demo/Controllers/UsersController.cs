@@ -14,6 +14,8 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -160,15 +162,11 @@ namespace Rental_Car_Demo.Controllers
 
         UserDAO userDAO;
 
-        public UsersController(IEmailService emailService)
+        public UsersController(RentCarDbContext _context, IEmailService emailService)
         {
+            context = _context;
             this._emailService = emailService;
             this.userDAO = new UserDAO();
-        }
-
-        public UsersController()
-        {
-
         }
 
         public IActionResult Register()
@@ -188,7 +186,7 @@ namespace Rental_Car_Demo.Controllers
                 return View("Guest", model);
             }
 
-            if(model.Register.AgreeToTerms == false)
+            if (model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
                 return View("Guest", model);
@@ -198,35 +196,35 @@ namespace Rental_Car_Demo.Controllers
             // Kiểm tra tính hợp lệ của ModelState
             //if (ModelState.IsValid)
             //{
-                // Hash mật khẩu
-                var hashedPassword = HashPassword(model.Register.Password);
-                bool isCarOwner = model.Register.Role == "carOwner";
+            // Hash mật khẩu
+            var hashedPassword = HashPassword(model.Register.Password);
+            bool isCarOwner = model.Register.Role == "carOwner";
 
-                var customer = new User
-                {
-                    Email = model.Register.Email,
-                    Password = hashedPassword,
-                    Name = model.Register.Name,
-                    Phone = model.Register.Phone,
-                    Role = isCarOwner
-                };
+            var customer = new User
+            {
+                Email = model.Register.Email,
+                Password = hashedPassword,
+                Name = model.Register.Name,
+                Phone = model.Register.Phone,
+                Role = isCarOwner
+            };
 
-                try
-                {
-                    // Thêm customer vào context và lưu thay đổi
-                    context.Add(customer);
-                    context.SaveChanges();
+            try
+            {
+                // Thêm customer vào context và lưu thay đổi
+                context.Add(customer);
+                context.SaveChanges();
 
 
-                    // Hiển thị thông báo đăng ký thành công
-                    TempData["SuccessMessage"] = "Account created successfully!";
-                    return RedirectToAction("Guest", "Users");
-                }
-                catch (Exception ex)
-                {
-                    // Ghi log lỗi nếu xảy ra
-                    ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
-                }
+                // Hiển thị thông báo đăng ký thành công
+                TempData["SuccessMessage"] = "Account created successfully!";
+                return RedirectToAction("Guest", "Users");
+            }
+            catch (Exception ex)
+            {
+                // Ghi log lỗi nếu xảy ra
+                ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
+            }
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
@@ -288,7 +286,7 @@ namespace Rental_Car_Demo.Controllers
             context.Update(token);
             context.SaveChanges();
 
-            
+
 
             return View(model);
         }
@@ -327,141 +325,156 @@ namespace Rental_Car_Demo.Controllers
             return View(userList);
         }
 
-       
 
-        // GET: UsersController/Edit/5
+
         public ActionResult Edit(int id)
         {
-            //get user to block customer access this view
             var userString = HttpContext.Session.GetString("User");
             User userLogged = null;
             if (!string.IsNullOrEmpty(userString))
             {
                 userLogged = JsonConvert.DeserializeObject<User>(userString);
             }
+            if (userLogged == null)
+            {
+                return RedirectToAction("Login", "Users");
+            }
             if (userLogged.UserId != id)
             {
                 return View("ErrorAuthorization");
             }
+            var user = context.Users
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.District)
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Ward)
+                .SingleOrDefault(u => u.UserId == id);
 
-            var user = userDAO.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var address = userDAO.GetAddressById(user.AddressId);
+            var address = user.Address;
 
             if (address == null)
             {
-                ViewBag.Cities = new SelectList(userDAO.GetCityList(), "CityId", "CityProvince");
-                //ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
-                //ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
+                ViewBag.Cities = new SelectList(context.Cities.ToList(), "CityId", "CityProvince");
             }
             else
             {
-                var city = userDAO.GetCityList();
-                var district = userDAO.GetDistrictListByCity(address.CityId);
-                var ward = userDAO.GetWardListByDistrict(address.DistrictId);
+                var city = context.Cities.ToList();
+                var district = context.Districts.Where(d => d.CityId == address.CityId).ToList();
+                var ward = context.Wards.Where(d => d.DistrictId == address.DistrictId).ToList();
 
                 ViewBag.Cities = new SelectList(city, "CityId", "CityProvince", address.CityId);
                 ViewBag.Districts = new SelectList(district, "DistrictId", "DistrictName", address.DistrictId);
                 ViewBag.Wards = new SelectList(ward, "WardId", "WardName", address.WardId);
-                ViewBag.Addresses = new SelectList(userDAO.GetAddress(), "AddressId", "HouseNumberStreet", user.AddressId);
             }
-
+            
             return View(user);
         }
 
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, User user, string CurrentPassword, string NewPassword, string ConfirmPassword)
+        public ActionResult Edit(User user, string? NewPassword, string? ConfirmPassword, string? CurrentPassword)
         {
-            try
+            var address = user.Address;
+
+            if (address == null)
             {
-                if (id != user.UserId)
-                {
-                    return NotFound();
-                }
+                ViewBag.Cities = new SelectList(context.Cities.ToList(), "CityId", "CityProvince");
+            }
+            else
+            {
+                var city = context.Cities.ToList();
+                var district = context.Districts.Where(d => d.CityId == address.CityId).ToList();
+                var ward = context.Wards.Where(d => d.DistrictId == address.DistrictId).ToList();
 
-                if (!string.IsNullOrEmpty(NewPassword))
-                {
-                    user.Password = HashPassword(NewPassword);
-                }
-                else
-                {
-                    user.Password = userDAO.GetUserById(user.UserId).Password;
-                }
+                ViewBag.Cities = new SelectList(city, "CityId", "CityProvince", address.CityId);
+                ViewBag.Districts = new SelectList(district, "DistrictId", "DistrictName", address.DistrictId);
+                ViewBag.Wards = new SelectList(ward, "WardId", "WardName", address.WardId);
+            }
 
-                var userString = HttpContext.Session.GetString("User");
-                User _user = null;
-                if (!string.IsNullOrEmpty(userString))
+            var saveUser = context.Users.SingleOrDefault(u => u.UserId == user.UserId);
+            var isPasswordChange = false;
+
+            var passwordPattern = @"^(?=.*[A-Za-z])(?=.*\d).{7,}$";
+            var regex = new Regex(passwordPattern);
+
+            if (string.IsNullOrEmpty(CurrentPassword))
+            {
+                if (!string.IsNullOrEmpty(NewPassword) || !string.IsNullOrEmpty(ConfirmPassword))
                 {
-                    _user = JsonConvert.DeserializeObject<User>(userString);
+                    ModelState.AddModelError("", "Please enter current password before enter new password!");
+                    return View(user);
                 }
-
-                var address = userDAO.GetAddressById(_user.AddressId);
-
-                if (address == null)
+            }
+            else
+            {
+                if (HashPassword(CurrentPassword) == saveUser.Password)
                 {
-                    ViewBag.Cities = new SelectList(userDAO.GetCityList(), "CityId", "CityProvince");
-                    ViewBag.Districts = new SelectList(userDAO.GetDistrictList(), "DistrictId", "DistrictName");
-                    ViewBag.Wards = new SelectList(userDAO.GetWardList(), "WardId", "WardName");
-                }
-                else
-                {
-                    var city = userDAO.GetCityList();
-                    var district = userDAO.GetDistrictListByCity(address.CityId);
-                    var ward = userDAO.GetWardListByDistrict(address.DistrictId);
-
-                    ViewBag.Cities = new SelectList(city, "CityId", "CityProvince", address.CityId);
-                    ViewBag.Districts = new SelectList(district, "DistrictId", "DistrictName", address.DistrictId);
-                    ViewBag.Wards = new SelectList(ward, "WardId", "WardName", address.WardId);
-                    ViewBag.Addresses = new SelectList(userDAO.GetAddress(), "AddressId", "HouseNumberStreet", user.AddressId);
-                }
-
-                string errorMessage = userDAO.Edit(user);
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    if (errorMessage.Contains("Email"))
+                    if (!string.IsNullOrEmpty(NewPassword) && !string.IsNullOrEmpty(ConfirmPassword))
                     {
-                        ModelState.AddModelError("Email", errorMessage);
+                        if (NewPassword == ConfirmPassword && regex.IsMatch(NewPassword))
+                        {
+                            saveUser.Password = HashPassword(NewPassword);
+                            isPasswordChange = true;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "New password must be matched with Confirm new password and contains at least seven characters long include at least one letter and one number!");
+                            return View(user);
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("", errorMessage);
+                        ModelState.AddModelError("", "Please enter both new password and confirm new password!");
+                        return View(user);
                     }
-                    return View(user);
-                }
-
-                //if (ModelState.IsValid)
-                //{
-                //    userDAO.Edit(user);
-                //    return RedirectToAction("LoginCus", "Verify");
-                //}
-
-                var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
-                currentUser.Name = user.Name; // Assuming UserName is the property you want to update
-                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
-                if (!String.IsNullOrEmpty(NewPassword))
-                {
-                    return RedirectToAction("Logout", "Users");
-                }
-                if(currentUser.Role == false)
-                {
-                    return RedirectToAction("LoginCus", "Users");
                 }
                 else
                 {
-                    return RedirectToAction("LoginOwn", "Users");
+                    ModelState.AddModelError("", "Current password is not correct!");
+                    return View(user);
                 }
-                
             }
-            catch (Exception ex)
+
+            
+            bool emailExists = context.Users.Any(u => u.Email == user.Email && u.UserId != user.UserId);
+            if (emailExists)
             {
-                ViewBag.Message = ex.Message;
+                ModelState.AddModelError("Email", "Email already existed. Please try another email.");
                 return View(user);
+            }
+
+            saveUser.Email = user.Email;
+            saveUser.RememberMe = user.RememberMe;
+            saveUser.Role = user.Role;
+            saveUser.Name = user.Name;
+            saveUser.Dob = user.Dob;
+            saveUser.NationalId = user.NationalId;
+            saveUser.Phone = user.Phone;
+            saveUser.AddressId = user.AddressId;
+            saveUser.DrivingLicense = user.DrivingLicense;
+            saveUser.Wallet = user.Wallet;
+            saveUser.Address = user.Address;
+            saveUser.Bookings = user.Bookings;
+            saveUser.Cars = user.Cars;
+
+            context.SaveChanges();
+
+            var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
+            currentUser.Name = user.Name;
+            HttpContext.Session.SetString("User", JsonConvert.SerializeObject(currentUser));
+
+            if (isPasswordChange)
+            {
+                return RedirectToAction("Logout", "Users");
+            }
+            if (currentUser.Role == false)
+            {
+                return RedirectToAction("LoginCus", "Users");
+            }
+            else
+            {
+                return RedirectToAction("LoginOwn", "Users");
             }
         }
 
@@ -501,14 +514,14 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public JsonResult GetDistricts(int cityId)
         {
-            var districts = userDAO.GetDistrictListByCity(cityId);
+            var districts = context.Districts.Where(d => d.CityId == cityId);
             return Json(districts);
         }
 
         [HttpGet]
         public JsonResult GetWards(int districtId)
         {
-            var wards = userDAO.GetWardListByDistrict(districtId);
+            var wards = context.Wards.Where(w => w.DistrictId == districtId);
             return Json(wards);
         }
 

@@ -284,7 +284,7 @@
                             <label asp-for="BookingInfo.RenterPhone" class="control-label">
                                 Phone number: <span style="color: red;">*</span>
                             </label>
-                        <input asp-for="BookingInfo.RenterPhone" class="form-control" value="@ViewBag.user.Phone" required/>
+                        <input asp-for="BookingInfo.RenterPhone" type="number" class="form-control" value="@ViewBag.user.Phone" required/>
                             <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
                         </div>
 
@@ -387,7 +387,7 @@
                                 <label asp-for="BookingInfo.DriverPhone" class="control-label">
                                     Phone number: <span style="color: red;">*</span>
                                 </label>
-                                <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
+                                <input asp-for="BookingInfo.DriverPhone" type="number" class="form-control" required/>
                                 <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
                             </div>
 
@@ -414,10 +414,10 @@
                                 <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3">
-                                <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
+                                <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license: <span style="color: red;">*</span></label>
                                 <div class="input-group">
                                     <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
-                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
+                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly required/>
                                     <div class="input-group-append">
                                         <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
                                     </div>
@@ -951,7 +951,7 @@
 
             // Validate end date and time is greater than start date and time and at least 1 day later
             if (!isEndDateValid(newStartDate, newEndDate)) {
-                alert('Return date and time must be at least half of a day greater than pick-up date and time.');
+                alert('Return date and time must be at least a hour greater than pick-up date and time.');
                 return;
             }
 
@@ -1013,14 +1013,14 @@
             var startDateTime = new Date(startDate).getTime();
             var endDateTime = new Date(endDate).getTime();
 
-            return endDateTime > startDateTime;
+            return endDateTime >= startDateTime;
         }
 
-        // Function to check if end date and time is at least 1 day greater than start date and time
+        // Function to check if end date and time is at least 1 hour greater than start date and time
         function isEndDateValid(startDate, endDate) {
             var startDateTime = new Date(startDate).getTime();
             var endDateTime = new Date(endDate).getTime();
-            var oneDayInMillis = 12 * 60 * 60 * 1000; // One day in milliseconds
+            var oneDayInMillis = 1 * 60 * 60 * 1000; // One day in milliseconds
 
             return endDateTime > startDateTime && (endDateTime - startDateTime) >= oneDayInMillis;
         }
@@ -1048,6 +1048,12 @@ $(document).ready(function () {
             updateDriverFields();
         }
     });
+
+    setInterval(function() {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
+    }, 100);
 
     function toggleDriverFields() {
         var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');

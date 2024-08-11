@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {}
+    "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {}
   },
   "projects": {
-    "D:\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {
+    "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
+        "projectUniqueName": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
         "projectName": "Rental_Car_Demo.UnitTests",
-        "projectPath": "D:\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
-        "packagesPath": "C:\\Users\\FPT SHOP\\.nuget\\packages\\",
-        "outputPath": "D:\\rental-car\\Rental_Car_DemoTests\\obj\\",
+        "projectPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
+        "packagesPath": "C:\\Users\\decid\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_DemoTests\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\FPT SHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\decid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,15 +26,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
-                "projectPath": "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj"
+              "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+                "projectPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj"
               }
             }
           }
@@ -50,9 +53,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.8.0, )"
+              "version": "[17.0.0, )"
             },
             "Moq": {
               "target": "Package",
@@ -60,7 +71,7 @@
             },
             "NUnit": {
               "target": "Package",
-              "version": "[3.14.0, )"
+              "version": "[3.13.2, )"
             },
             "NUnit.Analyzers": {
               "target": "Package",
@@ -68,11 +79,17 @@
             },
             "NUnit3TestAdapter": {
               "target": "Package",
-              "version": "[4.5.0, )"
+              "version": "[4.0.0, )"
+            },
+            "ReportGenerator": {
+              "target": "Package",
+              "version": "[5.3.8, )"
             },
             "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[6.0.2, )"
             }
           },
           "imports": [
@@ -95,17 +112,21 @@
         }
       }
     },
-    "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "projectName": "Rental_Car_Demo",
-        "projectPath": "D:\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
-        "packagesPath": "C:\\Users\\FPT SHOP\\.nuget\\packages\\",
-        "outputPath": "D:\\rental-car\\Rental_Car_Demo\\obj\\",
+        "projectPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "packagesPath": "C:\\Users\\decid\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\decid\\OneDrive\\Desktop\\PojectFsoft\\rental-car\\Rental_Car_Demo\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\FPT SHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\decid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -113,7 +134,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
