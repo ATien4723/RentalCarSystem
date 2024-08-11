@@ -2,7 +2,7 @@
 using System.Net;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
-namespace Rental_Car_Demo.Validation
+namespace Rental_Car_Demo.Services
 {
     public class EmailService : IEmailService
     {
@@ -25,6 +25,8 @@ namespace Rental_Car_Demo.Validation
                                ));
 
         }
+
+
         private readonly string fromAddress = "kietnvt2705@gmail.com";
         private readonly string fromPassword = "ueku bgbu qacj murs";
         private readonly string smtpHost = "smtp.gmail.com";

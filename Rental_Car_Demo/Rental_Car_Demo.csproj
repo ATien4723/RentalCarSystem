@@ -7,14 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Car\NotFound.cshtml" />
     <Content Remove="web.config" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Car\NotFound.cshtml" />
     <_ContentIncludedByDefault Remove="web.config" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\login.css" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Car\NotFound.cshtml" />
     <None Include="web.config" />
   </ItemGroup>
 
@@ -54,7 +58,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
@@ -62,6 +65,10 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Car\NotFound.cshtml" />
   </ItemGroup>
 
 </Project>

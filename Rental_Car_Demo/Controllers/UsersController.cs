@@ -23,7 +23,26 @@ namespace Rental_Car_Demo.Controllers
     public class UsersController : Controller
     {
 
-        RentCarDbContext db = new RentCarDbContext();
+        private readonly RentCarDbContext context;
+        private readonly ICustomerContext _customerContext;
+        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IEmailService _emailService;
+
+        public UsersController(
+            RentCarDbContext _context,
+            ICustomerContext customerContext,
+            ITokenGenerator tokenGenerator,
+            IEmailService emailService)
+        {
+            context = _context;
+            _customerContext = customerContext;
+            _tokenGenerator = tokenGenerator;
+            _emailService = emailService;
+        }
+
+        UserDAO userDAO = new UserDAO();
+
+
         public IActionResult Login()
         {
             string culture = "or-IN";
@@ -63,7 +82,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email)
+                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email)
             && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
@@ -92,10 +111,11 @@ namespace Rental_Car_Demo.Controllers
                 if (user == null && !string.IsNullOrEmpty(userLogin.User.Email) && !string.IsNullOrEmpty(userLogin.User.Password))
                 {
                     ViewBag.Error = "Either email address or password is incorrect. Please try again";
+
                 }
             }
-
-            return View();
+            TempData["ShowModal"] = "SignIn"; // Set flag to show sign-in modal
+            return View("Guest", userLogin);
         }
         private string HashPassword(string password)
         {
@@ -154,20 +174,6 @@ namespace Rental_Car_Demo.Controllers
             return View();
         }
 
-        RentCarDbContext context = new RentCarDbContext();
-        CustomerContext customerContext = new CustomerContext();
-        TokenGenerator tokenGenerator = new TokenGenerator();
-
-        private readonly IEmailService _emailService;
-
-        UserDAO userDAO;
-
-        public UsersController(RentCarDbContext _context, IEmailService emailService)
-        {
-            context = _context;
-            this._emailService = emailService;
-            this.userDAO = new UserDAO();
-        }
 
         public IActionResult Register()
         {
@@ -179,6 +185,7 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult Register(RegisterAndLoginViewModel model)
         {
             var checkMail = IsEmailExist(model.Register.Email);
+
             // Kiểm tra email trùng lặp
             if (checkMail == true)
             {
@@ -192,7 +199,6 @@ namespace Rental_Car_Demo.Controllers
                 return View("Guest", model);
             }
 
-            var check = ModelState;
             // Kiểm tra tính hợp lệ của ModelState
             //if (ModelState.IsValid)
             //{
@@ -215,7 +221,6 @@ namespace Rental_Car_Demo.Controllers
                 context.Add(customer);
                 context.SaveChanges();
 
-
                 // Hiển thị thông báo đăng ký thành công
                 TempData["SuccessMessage"] = "Account created successfully!";
                 return RedirectToAction("Guest", "Users");
@@ -228,6 +233,7 @@ namespace Rental_Car_Demo.Controllers
             //}
 
             // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
+            //TempData["ShowModal"] = "Register";
             return View("Guest", model);
         }
 
@@ -237,56 +243,67 @@ namespace Rental_Car_Demo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(ResetPasswordViewModel model)
         {
-            string tokenValue = tokenGenerator.GenerateToken(32);
-            DateTime exTime = tokenGenerator.GetExpirationTime();
-            string em = "";
-            em = model.Email;
-
-            var token = new TokenInfor()
+            if (!ModelState.IsValid)
             {
-                Token = tokenValue,
-                UserId = customerContext.getCustomerIdByEmail(model.Email),
-                //UserId = 1,
-                ExpirationTime = exTime,
-                IsLocked = false
-            };
+                return View(model); // Return the model to the view if the model state is invalid
+            }
 
-            context.Add(token);
-            context.SaveChanges();
+            string tokenValue = _tokenGenerator.GenerateToken(32);
+            DateTime exTime = _tokenGenerator.GetExpirationTime();
 
-            int? customerId = token.UserId;
+            string email = model.Email;
+            int user = _customerContext.getCustomerIdByEmail(email);
 
-            string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
-            string subject = "Link Reset Password";
-            _emailService.SendEmail(model.Email, subject, resetLink);
-            TempData["SuccessMessage"] = "We will send link to reset your password if your email exist in out database!";
+            if (user == -1) // not found email
+            {
+                TempData["FailMessage"] = "Sorry, Your email does not exist in our database!";
+            }
+            else
+            {
+                var token = new TokenInfor()
+                {
+                    Token = tokenValue,
+                    UserId = user,
+                    ExpirationTime = exTime,
+                    IsLocked = false
+                };
 
-            return View();
+                context.Add(token);
+                context.SaveChanges();
+
+                int? customerId = token.UserId;
+
+                string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
+                string subject = "Link Reset Password";
+                _emailService.SendEmail(model.Email, subject, resetLink);
+                TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
+            }
+
+            return View(); // Return the view without a model to reset the form
         }
 
 
         public IActionResult ResetPassword2(int customerId, string tokenValue)
         {
 
-            ResetPassword2ViewModel model = new ResetPassword2ViewModel
-            {
-                CustomerId = customerId,
-            };
-
-            var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenValue);
+            var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenValue && t.UserId == customerId);
 
             if (token == null || token.IsLocked == true || token.ExpirationTime < DateTime.Now)
             {
                 return View("Fail");
             }
 
+            ResetPassword2ViewModel model = new ResetPassword2ViewModel
+            {
+                CustomerId = customerId,
+            };
+
             token.IsLocked = true;
             context.Update(token);
             context.SaveChanges();
-
-
 
             return View(model);
         }
@@ -311,19 +328,11 @@ namespace Rental_Car_Demo.Controllers
 
         }
 
-
-
         public bool IsEmailExist(string email)
         {
             return context.Users.Any(u => u.Email == email);
         }
 
-        // GET: UsersController
-        public ActionResult Index()
-        {
-            var userList = userDAO.GetUserList();
-            return View(userList);
-        }
 
 
 
@@ -479,37 +488,6 @@ namespace Rental_Car_Demo.Controllers
         }
 
 
-        // GET: UsersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var user = userDAO.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                userDAO.Delete(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = ex.Message;
-                return View();
-            }
-        }
 
         [HttpGet]
         public JsonResult GetDistricts(int cityId)

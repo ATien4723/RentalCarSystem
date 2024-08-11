@@ -364,6 +364,12 @@
                 return true;
             }
 
+            const currentDateTime = getCurrentDateTime();
+            pickupDateInput.value = currentDateTime.date;
+            pickupTimeInput.value = currentDateTime.time;
+            dropoffDateInput.value = currentDateTime.date;
+            dropoffTimeInput.value = currentDateTime.time;
+
             function validateDropoffDateTime() {
                 const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
                 const dropoffDateTime = new Date(`${dropoffDateInput.value}T${dropoffTimeInput.value}`);

@@ -13,10 +13,11 @@
     }
 }
 
+
 /* Phan login */
 .main-content {
     background-color: #e7e7e7;
-    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu là 100% chiều cao màn hình */
+    min-height: 100vh;  /*Đảm bảo chiều cao tối thiểu là 100% chiều cao màn hình */
 }
 
 .navbar-custom {
@@ -90,7 +91,7 @@
     font-weight: bold;
 }
 
-.toggle-password {
+/*.toggle-password {
     position: absolute;
     top: 50%;
     right: 1rem;
@@ -112,7 +113,7 @@
     right: 1rem;
     transform: translateY(-50%);
     cursor: pointer;
-}
+}*/
 
 /* Phan Reset password */
 .card {
@@ -155,3 +156,5 @@
 .fa-lock {
     margin-right: 10px;
 }
+
+

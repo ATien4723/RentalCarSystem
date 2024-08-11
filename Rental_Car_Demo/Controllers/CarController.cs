@@ -4,18 +4,20 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.BookingRepository;
 using Rental_Car_Demo.Repository.CarRepository;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.Controllers
 {
     public class CarController : Controller
     {
-        ICarRepository carRepository = null;
-
-        RentCarDbContext _db = new RentCarDbContext();
-        public CarController()
+        private readonly ICarRepository carRepository;
+        private readonly RentCarDbContext _db;
+        private readonly IEmailService _emailService;
+        public CarController(ICarRepository carRepository, RentCarDbContext db, IEmailService emailService)
         {
-
+            carRepository = carRepository;
+            _db = db;
+            _emailService = emailService;
         }
 
         public IActionResult ViewCarDetailsByCustomer(int CarId, string? location, DateTime? startDate, DateTime? endDate)
@@ -27,7 +29,7 @@ namespace Rental_Car_Demo.Controllers
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
             ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
             var userJson = HttpContext.Session.GetString("User");
-            bool checkRent = false;
+            bool checkRent = false; 
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
@@ -603,14 +605,17 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
+            
             if (car == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
+            
 
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;
+
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
@@ -631,8 +636,7 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-
-
+            ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
             var document = _db.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
@@ -679,8 +683,6 @@ namespace Rental_Car_Demo.Controllers
                 rating += o.Ratings;
                 nor += 1;
             }
-
-
 
             if (nor > 0)
             {
@@ -815,28 +817,32 @@ namespace Rental_Car_Demo.Controllers
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
 
-       
-            carrrr.BasePrice = car.BasePrice;
-            carrrr.Deposit = car.Deposit;
-            _db.Update(carrrr);
-            _db.SaveChanges();
-
-
-            var termsOfUse = _db.TermOfUses.FirstOrDefault(terms => terms.TermId == carrrr.TermId);
-
-            termsOfUse.NoSmoking = smoking;
-            termsOfUse.NoFoodInCar = food;
-            termsOfUse.NoPet = pet;
-            if (specify != null)
+            if (ModelState.IsValid)
             {
-                termsOfUse.Specify = specify;
+                carrrr.BasePrice = car.BasePrice;
+                carrrr.Deposit = car.Deposit;
+                _db.Update(carrrr);
+                _db.SaveChanges();
+
+
+                var termsOfUse = _db.TermOfUses.FirstOrDefault(terms => terms.TermId == carrrr.TermId);
+
+                termsOfUse.NoSmoking = smoking;
+                termsOfUse.NoFoodInCar = food;
+                termsOfUse.NoPet = pet;
+                if (specify != null)
+                {
+                    termsOfUse.Specify = specify;
+                }
+
+                _db.Update(termsOfUse);
+                _db.SaveChanges();
+
+
+                return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
             }
-
-            _db.Update(termsOfUse);
-            _db.SaveChanges();
-
-
-            return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId});
+            return View();
+            
         }
 
         [HttpPost]
@@ -852,7 +858,6 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
 
         }
-        private readonly IEmailService _emailService;
 
         [HttpPost] 
         public IActionResult ReturnCar(int carId, int userId, decimal amount)

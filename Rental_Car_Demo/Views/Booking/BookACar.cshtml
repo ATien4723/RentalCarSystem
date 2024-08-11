@@ -17,12 +17,18 @@
 
 <style>
      .booking-details-card {
-        background-color: #4e4e4e;
-        color: white;
-        padding: 20px 20px 20px 60px;
-        margin: auto;
-        width: 100%;
-        max-width: 100%;
+      border: 1px solid #eaeaea;
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+      color: black;
+    padding: 20px 20px 20px 60px;
+    margin-left: 20px;
+    width: 95%;
+    max-width: 100%;
+    border-radius: 40px;
     }
 
     .booking-header {
@@ -105,15 +111,46 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+
+     .carousel-item {
+            height: 350px;
+        }
+
+        
+        .main-image-container {
+            width: 100%;
+            height: 400px; /* Fixed height */
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100px; /* Fixed height */
+            object-fit: cover;
+        }
+
+        .thumbnail-container {
+            margin-top: 10px;
+        }
+
 </style>
 
 
 <div class="mt-2 mb-2">
-    <a asp-controller="Users" asp-action="LoginCus">Home</a> > Book car
+    <a asp-controller="Users" asp-action="LoginCus">Home</a> > <a asp-controller="Car" asp-action="ViewCarDetailsByCustomer">Car Details</a> > <span class="fw-bold">Book Car</span>
 </div>
+
+
+  
 
 <div class="row">
     @* <div class="container" id="step0"></div> *@
+    <div class="col-6">
     <div class="booking-details-card">
         <div class="booking-header">
             <h3>Booking Details</h3>
@@ -134,7 +171,17 @@
                 <input type="hidden" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate.ToString("yyyy-MM-ddTHH:mm")" />
             </li>
         </ul>
+        </div>
     </div>
+     <div class="col-6">
+    <div class="col- progress-container">
+      <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
+      <div class="step">Step 2: Payment</div>
+      <div class="step">Step 3: Finish</div>
+  </div>
+  </div>
+    </div>
+
 
     <div class="modal" id="editBookingModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -174,27 +221,40 @@
     </div>
 
 
-    <div class="progress-container">
-        <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
-        <div class="step">Step 2: Payment</div>
-        <div class="step">Step 3: Finish</div>
-    </div>
+  
 
     <form asp-controller="Booking" asp-action="BookACar" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class=" row mt-2" style="border:1px solid;">
-            <div id="demo" class="col-md-6 carousel slide ms-4" data-bs-ride="carousel">
-                <!-- The slideshow/carousel -->
-                <div style="margin-left: 9%;">
-                    <div class="carousel-inner" style="height: 50%" >
+       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                  <div class="carousel-inner" >
                         <div class="carousel-item active">
-                            <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                            <img class="d-block w-100 main-image" id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                        </div>
+                        </div>
+                          <div class="row thumbnail-container">
+                        <div class="col-4">
+                            <img id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img" class="thumbnail-image">
                         </div>
                     </div>
-                    <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
-                    <div class="row">
-                        <label class="col-5 fw-bold  fs-6">Ratings:</label>
-                        <label class="col-5 d-flex fs-6" id="rating">
+                    </div>
+
+            <div class="col-md-6">
+                <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Ratings:</th>
+                            <td>   
+                             <label class="fw-bold  fs-6">Ratings:</label>
+                             <label class="d-flex fs-6" id="rating">
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
@@ -203,64 +263,73 @@
                         </label>
                         @if (ViewBag.car.NoOfRide == 0)
                         {
-                            <label class="col-5"></label>
-                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                            <span class="fw-bold">(No ratings yet)</span>
                         }
-                    </div>
-
-                    <div class="row fs-6 mt-2">
-                        <label class="col-5 fw-bold">No. of rides:</label>
-                        <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Locations:</label>
-                        <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
-                    </div>
-
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Status:</label>
-                        @if (@ViewBag.car.Status == 1)
+                        </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">No of rides:</th>
+                            <td>@ViewBag.car.NoOfRide</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Price:</th>
+                            <td>@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Locations:</th>
+                            <td>@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status:</th>
+                            <td>
+                                 @if (@ViewBag.car.Status == 1)
                         {
-                            <label class="col-5 fw-bold text-warning">Available</label>
+                            <label class="fw-bold text-warning">Available</label>
                         }
                         else if (@ViewBag.car.Status == 2)
                         {
-                            <label class="col-5 fw-bold text-primary">Booked</label>
+                            <label class="fw-bold text-primary">Booked</label>
                         }
                         else
                         {
-                            <label class="col-5 fw-bold text-danger">Stopped</label>
+                            <label class="fw-bold txt-danger">Stopped</label>
                         }
+                            </td>
+                        </tr>
+                          <tr>
+                            <th scope="row">Number of days:</th>
+                            <td>@ViewBag.NumberOfDays</td>
+                        </tr>
+                         <tr>
+                            <th style="border-bottom: none;" scope="row">Price per day:</th>
+                            <td style="border-bottom: none;">@ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <!-- Booking summary -->
+                <div class="offer-section mt-2">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold" id="offer-tab" data-toggle="tab" href="#offer" role="tab" aria-controls="offer" aria-selected="true">Booking Summary</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="offer" role="tabpanel" aria-labelledby="offer-tab">
+                            <div class="form-group mt-3" style="margin-left:10px">
+                                <label class="fw-bold ">Total: <span class="text-success">@ViewBag.Total.ToString("N0") VND</span></label> <br />
+                                 <label class="fw-bold mt-3 mb-3">Deposit: <span class="text-danger">@ViewBag.Deposit.ToString("N0") VND</span></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Booking summary -->
-            <div class="col-md-5 d-flex flex-column" style="border-left: 1px solid;">
-                <div class="mt-3 flex-grow-1">
-                    <h4 class="fw-bold">Booking Summary</h4>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Number of days: @ViewBag.NumberOfDays</label>
-                </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></label>
-                </div>
-                <hr style="width: 80%; margin-left: auto;">
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0") VND</label>
-                </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0") VND</label>
-                </div>
-                </div>
-            </div>
         </div>
-        <div class="cont" id="step1">
-            <div style="margin-left: 64px;">
+        </div>
+
+
+
+        <div class="container-fluid" id="step1">
+            <div >
                 <div class="form-group" hidden>
                     <label asp-for="UserId" class="control-label"></label>
                     <input asp-for="UserId" class="form-control" value="@user.UserId" readonly>
@@ -531,7 +600,6 @@
         </div>
         <div class="cont mt-4" id="step3"></div>
     </form>
-</div>
 
 
 
