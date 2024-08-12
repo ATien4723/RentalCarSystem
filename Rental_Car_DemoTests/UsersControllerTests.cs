@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Newtonsoft.Json;
+using Rental_Car_Demo.Context;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
@@ -28,6 +29,8 @@ namespace Rental_Car_Demo.UnitTests
         private DummyCookies _dummyCookies;
         private DefaultHttpContext _httpContext;
         private RentCarDbContext _context;
+        private Mock<ITokenGenerator> _mockTokenGenerator;
+        private Mock<ICustomerContext> _mockCustomerContext;
 
         [SetUp]
         public void SetUp()
@@ -50,7 +53,7 @@ namespace Rental_Car_Demo.UnitTests
 
 
 
-            _controller = new UsersController(_emailServiceMock.Object, _context)
+            _controller = new UsersController(_context, _mockCustomerContext.Object, _mockTokenGenerator.Object, _emailServiceMock.Object)
             {
                 ControllerContext = new ControllerContext
                 {
