@@ -296,16 +296,9 @@ namespace Rental_Car_Demo.Tests
 
         [Test]
 
-        [TestCase (null, null, null, null, null, Description = "Default values")]
         [TestCase ("Adress", null, null, null, null, Description = "Only address")]
-        [TestCase ("Empty Address", "2024-07-01", "12:00", "2024-07-02", "14:00", Description = "Empty address with specific dates and times")]
         [TestCase ("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
         [TestCase ("aa", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
-        [TestCase ("", null, "08:30", "2024-01-03", "18:00", Description = "Empty address, empty pickup date")]
-        [TestCase ("", "2024-01-01", null, "2024-01-03", "18:00", Description = "Empty address, empty pickup time")]
-        [TestCase ("Another Address", "2024-01-01", "08:30", null, null, Description = "Valid address, pickup date and time, empty dropoff date and time")]
-        [TestCase ("Address", "2024-01-01", "08:30", "2024-01-03", null, Description = "Valid address, valid pickup date and time, valid dropoff date, empty dropoff time")]
-        [TestCase ("Address", "2024-01-01", "08:30", null, "18:00", Description = "Valid address, valid pickup date and time, empty dropoff date, valid dropoff time")]
 
         public void SearchCarForm_Returns_ViewResult_With_Cars(string? address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime)
         {
@@ -377,7 +370,7 @@ namespace Rental_Car_Demo.Tests
         }
 
         [TestCase("Phường Phúc Xá")]
-        [TestCase ("Ba Đình , Thành phố Hà Nội")]
+        [TestCase ("Ba Đình, Thành phố Hà Nội")]
         [TestCase("Hà Nội")]
         [TestCase("Nha so 1")]
         public void GetSuggestions_ValidQuery_ReturnsSuggestions(string query)

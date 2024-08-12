@@ -436,7 +436,7 @@
                                     <div class="mb-3 d-flex">
                                         <input asp-for="Register.AgreeToTerms" class="" type="checkbox" id="terms" style="width: 16px;">
                                         <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
-                                            I have read and agree with the <a href="#" class="text-decoration-none ps-3">
+                                            I have read and agree with the <a href="@Url.Action("TermsAndConditions", "Home")" class="text-decoration-none ps-3">
                                                 <u>
                                                     Terms and
                                                     Conditions
