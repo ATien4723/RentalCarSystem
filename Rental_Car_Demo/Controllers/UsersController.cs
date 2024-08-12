@@ -46,24 +46,15 @@ namespace Rental_Car_Demo.Controllers
 
             if (Request.Cookies.TryGetValue("UserEmail", out string rememberMeValue))
             {
-                try
+                var values = rememberMeValue.Split('|');
+                if (values.Length == 2)
                 {
-                    var values = rememberMeValue.Split('|');
-                    if (values.Length == 2)
+                    viewModel.User = new User
                     {
-                        viewModel.User = new User
-                        {
-                            Email = values[0],
-                            Password = values[1],
-                            RememberMe = true
-                        };
-                    }
-                }
-                catch (Exception)
-                {
-                    viewModel.User.Email = null;
-                    viewModel.User.Password = null;
-                    viewModel.User.RememberMe = false;
+                        Email = values[0],
+                        Password = values[1],
+                        RememberMe = true
+                    };
                 }
             }
 
@@ -86,16 +77,14 @@ namespace Rental_Car_Demo.Controllers
                     if (userLogin.User.RememberMe)
                     {
 
-                        string rememberMeValue = $"{userLogin.User.Email}|{userLogin.User.Password}";
-                        string encodedRememberMeValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(rememberMeValue));
-
-                        Response.Cookies.Append("UserEmail", encodedRememberMeValue, new CookieOptions
-                        {
-                            Expires = DateTime.UtcNow.AddDays(30),
-                            HttpOnly = true,
-                            Secure = true,
-                            SameSite = SameSiteMode.None
-                        });
+                        Response.Cookies.Append("UserEmail", $"{userLogin.User.Email}|{userLogin.User.Password}", new
+                            CookieOptions
+                            {
+                                Expires = DateTime.UtcNow.AddDays(30),
+                                HttpOnly = true,
+                                Secure = true,
+                                SameSite = SameSiteMode.None
+                            });
                     }
                     else
                     {
