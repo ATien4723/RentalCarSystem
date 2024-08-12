@@ -22,7 +22,10 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
-        RentCarDbContext _db;
+        RentCarDbContext _db = new RentCarDbContext();
+        private readonly RentCarDbContext context;
+
+
 
         public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
@@ -99,13 +102,13 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
 
-        public BookingController(IEmailService emailService,RentCarDbContext rentCarDbContext)
+        public BookingController(IEmailService emailService, RentCarDbContext _context)
         {
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
-            carDAO = new CarDAO(rentCarDbContext);
+            carDAO = new CarDAO(context);
             userDAO = new UserDAO();
-            this._db = rentCarDbContext;
+            context = _context;
         }
 
         // GET: BookingController/Create
@@ -962,14 +965,16 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public ActionResult ViewBookingList()
         {
-            using var context = new RentCarDbContext();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
             //get user to block customer access this view
             if (user.Role == true)
             {
@@ -999,7 +1004,6 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public ActionResult ViewBookingList(string sortOrder)
         {
-            var context = new RentCarDbContext();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
@@ -1007,75 +1011,61 @@ namespace Rental_Car_Demo.Controllers
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
             var userId = user.UserId;
+
+            var bookingsQuery = context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.UserId == userId)
+                .AsQueryable();
+
             if (sortOrder == "latest")
             {
-                ViewBag.Bookings = context.Bookings
-                .Include(b => b.Car)
-                .Where(b => b.UserId == userId)
-                .ToList();
                 ViewBag.SortOrder = "latest";
             }
-            else if(sortOrder == "newest")
+            else if (sortOrder == "newest")
             {
-                ViewBag.Bookings = context.Bookings
-                .Include(b => b.Car)
-                .Where(b => b.UserId == userId)
-                .OrderByDescending(b => b.BookingNo)
-                .ToList();
+                bookingsQuery = bookingsQuery.OrderByDescending(b => b.BookingNo);
                 ViewBag.SortOrder = "newest";
             }
-            else if(sortOrder == "highest")
+            else if (sortOrder == "highest")
             {
-                ViewBag.Bookings = context.Bookings
-                .Include(b => b.Car)
-                .Where(b => b.UserId == userId)
-                .Select(b => new
-                {
-                    Booking = b,
-                    Car = b.Car,
-                    CarId = b.Car.CarId,
-                    StartDate = b.StartDate,
-                    EndDate = b.EndDate,
-                    BookingNo = b.BookingNo,
-                    Status = b.Status,
-                    Name = b.Car.Name,
-                    BasePrice = b.Car.BasePrice,
-                    
-                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
-                })
-                .OrderByDescending(b => b.TotalCost)
-                .ToList();
+                bookingsQuery = bookingsQuery
+                    .AsEnumerable()
+                    .Select(b => new
+                    {
+                        Booking = b,
+                        TotalCost = (b.EndDate - b.StartDate).Days * b.Car.BasePrice
+                    })
+                    .OrderByDescending(b => b.TotalCost)
+                    .Select(b => b.Booking)
+                    .AsQueryable();
                 ViewBag.SortOrder = "highest";
             }
-            else if(sortOrder == "lowest")
+            else if (sortOrder == "lowest")
             {
-                ViewBag.Bookings = context.Bookings
-                .Include(b => b.Car)
-                .Where(b => b.UserId == userId)
-                .Select(b => new
-                {
-                    Booking = b,
-                    Car = b.Car,
-                    CarId = b.Car.CarId,
-                    StartDate = b.StartDate,
-                    EndDate = b.EndDate,
-                    BookingNo = b.BookingNo,
-                    Status = b.Status,
-                    Name = b.Car.Name,
-                    BasePrice = b.Car.BasePrice,
-
-                    TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
-                })
-                .OrderBy(b => b.TotalCost)
-                .ToList();
+                bookingsQuery = bookingsQuery
+                    .AsEnumerable()
+                    .Select(b => new
+                    {
+                        Booking = b,
+                        TotalCost = (b.EndDate - b.StartDate).Days * b.Car.BasePrice
+                    })
+                    .OrderBy(b => b.TotalCost)
+                    .Select(b => b.Booking)
+                    .AsQueryable();
                 ViewBag.SortOrder = "lowest";
             }
-            var bookingCount = context.Bookings
-            .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
-            .Count();
 
+            var bookings = bookingsQuery.ToList();
+
+            var bookingCount = context.Bookings
+                .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+                .Count();
+
+            ViewBag.Bookings = bookings;
             ViewBag.Count = bookingCount;
+
             return View();
         }
+
     }
 }

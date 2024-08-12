@@ -169,7 +169,6 @@ namespace Rental_Car_Demo.Controllers
         }
         public ActionResult AddACar()
         {
-            var context = new RentCarDbContext();
             List<int> year = new List<int>();
             for (int i = 1990; i <= 2030; i++)
             {
@@ -192,7 +191,11 @@ namespace Rental_Car_Demo.Controllers
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
-            if(user.Role == false)
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
+            if (user.Role == false)
             {
                 return View("ErrorAuthorization");
             }
@@ -203,12 +206,11 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile? insurance,
+        public async Task<IActionResult> AddACarAsync(Car car, IFormFile registration, IFormFile certificate, IFormFile insurance,
             IFormFile front, IFormFile back, IFormFile left, IFormFile right,
             bool Bluetooth, bool GPS, bool Camera, bool Sunroof, bool Childlock, bool Childseat, bool DVD, bool USB,
-            bool smoking, bool food, bool pet, string? specify, int city, int district, int ward, string street)
+            bool smoking, bool food, bool pet, string specify, int city, int district, int ward, string street)
         {
-
 
             var document = new CarDocument();
 
@@ -244,8 +246,8 @@ namespace Rental_Car_Demo.Controllers
                 document.Insurance = fileNameInsurance;
             }
 
-            _db.CarDocuments.Add(document);
-            _db.SaveChanges();
+            context.CarDocuments.Add(document);
+            context.SaveChanges();
 
             car.DocumentId = document.DocumentId;
 
@@ -255,8 +257,8 @@ namespace Rental_Car_Demo.Controllers
             address.WardId = ward;
             address.HouseNumberStreet = street;
 
-            _db.Addresses.Add(address);
-            _db.SaveChanges();
+            context.Addresses.Add(address);
+            context.SaveChanges();
             car.AddressId = address.AddressId;
 
             if (front != null)
@@ -316,8 +318,8 @@ namespace Rental_Car_Demo.Controllers
             additionalFunction.Dvd = DVD;
             additionalFunction.Usb = USB;
 
-            _db.AdditionalFunctions.Add(additionalFunction);
-            _db.SaveChanges();
+            context.AdditionalFunctions.Add(additionalFunction);
+            context.SaveChanges();
             car.FucntionId = additionalFunction.FucntionId;
 
             car.Status = 1;
@@ -331,8 +333,8 @@ namespace Rental_Car_Demo.Controllers
             {
                 termsOfUse.Specify = specify;
             }
-            _db.TermOfUses.Add(termsOfUse);
-            _db.SaveChanges();
+            context.TermOfUses.Add(termsOfUse);
+            context.SaveChanges();
             car.TermId = termsOfUse.TermId;
 
             var userString = HttpContext.Session.GetString("User");
@@ -343,24 +345,29 @@ namespace Rental_Car_Demo.Controllers
             }
             car.UserId = user.UserId;
 
-            car.Name = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
-            
+            car.Name = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
+            if (car != null)
+            {
                 CarDAO carDao = new CarDAO(_db);
                 carDao.CreateCar(car);
                 return RedirectToAction("LoginOwn", "Users");
-            
+            }
+            else return RedirectToAction("Fail", "Users");
         }
 
 
         [HttpGet]
         public ActionResult ViewMyCars()
         {
-            var context = new RentCarDbContext();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
             {
                 user = JsonConvert.DeserializeObject<User>(userString);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
             }
             var userId = user.UserId;
             ViewBag.Cars = context.Cars
@@ -422,7 +429,6 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public ActionResult ViewMyCars(string sortOrder)
         {
-            var context = new RentCarDbContext();
             ViewBag.Bookings = context.Bookings
            .Include(b => b.Car) // Include the Car navigation property
            .ToList();
@@ -618,7 +624,6 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
-            
             if (car == null)
             {
                 return View("ErrorAuthorization");
