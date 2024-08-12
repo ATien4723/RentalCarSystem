@@ -22,7 +22,7 @@ using Rental_Car_Demo.Validation;
 namespace Rental_Car_Demo.UnitTests
 {
     [TestFixture]
-    public class CarControllerTests
+    public class CarControllerTestsBach
     {
         private CarController _carController;
         private RentCarDbContext _dbContext;
