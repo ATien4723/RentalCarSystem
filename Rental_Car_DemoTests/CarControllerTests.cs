@@ -861,7 +861,7 @@ namespace Rental_Car_Demo.UnitTests
 
             var result = _controller.ReturnCar(carId, user.UserId, amount) as RedirectToActionResult;
 
-            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
+            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), amount), Times.Once);
         }
         [Test]
         public void ReturnCar_WithInsufficientFunds_UpdatesBookingStatus()
@@ -1396,7 +1396,7 @@ namespace Rental_Car_Demo.UnitTests
 
             var result = _controller.ReturnCarInDetail(carId, user.UserId, amount) as RedirectToActionResult;
 
-            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
+            _emailServiceMock.Verify(e => e.SendReturnEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), amount), Times.Once);
         }
         [Test]
         public void ReturnCarInDetail_WithInsufficientFunds_UpdatesBookingStatus()

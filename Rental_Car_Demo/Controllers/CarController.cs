@@ -918,7 +918,7 @@ namespace Rental_Car_Demo.Controllers
                 _db.Update(car);
                 _db.Update(booking);
                 _db.SaveChanges();
-                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now, amount);
             }
             return RedirectToAction("ViewBookingList", "Booking");
         }
@@ -969,7 +969,7 @@ namespace Rental_Car_Demo.Controllers
                 _db.Update(car);
                 _db.Update(booking);
                 _db.SaveChanges();
-                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now, amount);
             }
             return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
         }
