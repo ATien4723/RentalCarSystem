@@ -80,7 +80,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email) && x.Password.Equals(hashedPassword)).FirstOrDefault();
+                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email) && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
                 {
@@ -104,7 +104,7 @@ namespace Rental_Car_Demo.Controllers
                     {
                         Response.Cookies.Delete("UserEmail");
                     }
-
+                    TempData["ShowModal"] = "no";
                     return (bool)user.Role ? RedirectToAction("LoginOwn", "Users") : RedirectToAction("LoginCus", "Users");
                 }
 
@@ -114,8 +114,10 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-            return View();
+            TempData["ShowModal"] = "yes";
+            return View("Guest");
         }
+
         public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
@@ -188,12 +190,16 @@ namespace Rental_Car_Demo.Controllers
             if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
+                TempData["ShowModal"] = "yes";
+                TempData["ShowPanel"] = "register";
                 return View("Guest", model);
             }
 
             if (model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
+                TempData["ShowModal"] = "yes";
+                TempData["ShowPanel"] = "register";
                 return View("Guest", model);
             }
 
@@ -219,6 +225,7 @@ namespace Rental_Car_Demo.Controllers
 
                 // Hiển thị thông báo đăng ký thành công
                 TempData["SuccessMessage"] = "Account created successfully!";
+                TempData["ShowModal"] = "no";
                 return RedirectToAction("Guest", "Users");
 
             //}
@@ -313,7 +320,7 @@ namespace Rental_Car_Demo.Controllers
 
                 TempData["SuccessMessage"] = "Your password has been reset";
 
-                return View("Login");
+                return View("Guest");
             }
             return View(model);
 

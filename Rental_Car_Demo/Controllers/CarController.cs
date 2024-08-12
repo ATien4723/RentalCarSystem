@@ -83,10 +83,6 @@ namespace Rental_Car_Demo.Controllers
             double rating = 0, nor = 0;
             foreach (var o in matchedFeedback)
             {
-                if (o.Ratings < 0)
-                {
-                    continue;
-                }
                 rating += o.Ratings;
                 nor += 1;
             }
@@ -625,7 +621,7 @@ namespace Rental_Car_Demo.Controllers
             
             if (car == null)
             {
-                return View("NotFound");
+                return View("ErrorAuthorization");
             }
 
             var userJson = HttpContext.Session.GetString("User");
@@ -832,7 +828,7 @@ namespace Rental_Car_Demo.Controllers
                 return RedirectToAction("ChangeCarDetailsByOwner", new { CarId = car.CarId });
             }
 
-            return View();
+            return View("ErrorAuthorization");
             
         }
 
@@ -895,7 +891,7 @@ namespace Rental_Car_Demo.Controllers
                 _db.Update(car);
                 _db.Update(booking);
                 _db.SaveChanges();
-                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now, amount);
             }
             return RedirectToAction("ViewBookingList", "Booking");
         }
@@ -946,7 +942,7 @@ namespace Rental_Car_Demo.Controllers
                 _db.Update(car);
                 _db.Update(booking);
                 _db.SaveChanges();
-                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now);
+                _emailService.SendReturnEmail(carOwner.Email, car.Name, DateTime.Now, amount);
             }
             return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
         }

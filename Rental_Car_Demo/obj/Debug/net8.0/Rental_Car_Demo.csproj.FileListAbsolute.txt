@@ -1485,11 +1485,3 @@ E:\Learn\VS\rental-car.git\Rental_Car_Demo\bin\Debug\net8.0\Controllers\BookingC
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\bin\Debug\net8.0\System.Formats.Asn1.dll
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\bin\Debug\net8.0\System.Text.Json.dll
 E:\Learn\VS\rental-car.git\Rental_Car_Demo\obj\Debug\net8.0\scopedcss\Views\Shared\_LayoutRentCar.cshtml.rz.scp.css
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.csproj.AssemblyReference.cache
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.GeneratedMSBuildEditorConfig.editorconfig
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.AssemblyInfoInputs.cache
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.AssemblyInfo.cs
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.csproj.CoreCompileInputs.cache
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.MvcApplicationPartsAssemblyInfo.cache
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.RazorAssemblyInfo.cache
-D:\FSOFTASSignment\Project_RentalCar\rental-car\Rental_Car_Demo\obj\Debug\net8.0\Rental_Car_Demo.RazorAssemblyInfo.cs

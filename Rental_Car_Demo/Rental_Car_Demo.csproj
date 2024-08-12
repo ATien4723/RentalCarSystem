@@ -9,17 +9,20 @@
   <ItemGroup>
     <Content Remove="Views\Car\NotFound.cshtml" />
     <Content Remove="web.config" />
+    <Content Remove="wwwroot\js\error.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Car\NotFound.cshtml" />
     <_ContentIncludedByDefault Remove="web.config" />
     <_ContentIncludedByDefault Remove="wwwroot\css\login.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\error.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\Car\NotFound.cshtml" />
     <None Include="web.config" />
+    <None Include="wwwroot\js\error.js" />
   </ItemGroup>
 
   <ItemGroup>

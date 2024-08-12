@@ -386,7 +386,7 @@
                                                     <td>
                                                         <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
 
-                                                        }
+                                                        
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -691,6 +691,9 @@
                             <label asp-for="Deposit" class="col-2 fw-bold">Required deposit:</label>
                             <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" class="col-3 changekk" required style=" width:10%" min="0" />
                             <span class="fw-bold ms-2">VND</span>
+                            <div>
+                                <span asp-validation-for="Deposit" id="" class="fw-bold text-danger"></span>
+                            </div>
                         </div>
 
                         <div class="mt-5">

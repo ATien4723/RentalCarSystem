@@ -484,7 +484,7 @@
                                 <p>OR</p>
                                 <a id="selectfile4" href=""
                                    style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                <input asp-for="FrontImage" onchange="previewImage(event, 'frontImg')" type="file" hidden name="front" id="fileInput4" required />
+                                <input asp-for="FrontImage" onchange="previewImage(event, 'frontImg')" type="file" hidden name="front" id="fileInput4" required accept=".jpg,.jpeg,.png,.gif" />
                             </div>
                         </div>
 
@@ -502,7 +502,7 @@
                                 <p>OR</p>
                                 <a id="selectfile5" href=""
                                    style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                <input asp-for="BackImage" type="file" onchange="previewImage(event, 'backImg')" hidden name="back" id="fileInput5" required />
+                                <input asp-for="BackImage" type="file" onchange="previewImage(event, 'backImg')" hidden name="back" id="fileInput5" required  accept=".jpg,.jpeg,.png,.gif" />
                             </div>
                         </div>
                     </div>
@@ -520,7 +520,7 @@
                                 <p>OR</p>
                                 <a id="selectfile6" href=""
                                    style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                <input asp-for="LeftImage" type="file" onchange="previewImage(event, 'leftImg')" hidden name="left" id="fileInput6" required />
+                                <input asp-for="LeftImage" type="file" onchange="previewImage(event, 'leftImg')" hidden name="left" id="fileInput6" required accept=".jpg,.jpeg,.png,.gif" />
                             </div>
 
                         </div>
@@ -538,7 +538,7 @@
                                 <p>OR</p>
                                 <a id="selectfile7" href=""
                                    style="color: rgb(98, 122, 239); text-decoration: underline;">Select file</a>
-                                <input asp-for="RightImage" onchange="previewImage(event, 'rightImg')" type="file" hidden name="right" id="fileInput7" required />
+                                <input asp-for="RightImage" onchange="previewImage(event, 'rightImg')" type="file" hidden name="right" id="fileInput7" required accept=".jpg,.jpeg,.png,.gif" />
                             </div>
                         </div>
                     </div>

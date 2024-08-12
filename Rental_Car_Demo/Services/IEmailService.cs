@@ -3,6 +3,6 @@
     public interface IEmailService
     {
         void SendEmail(string email, string subject, string message);
-        void SendReturnEmail(string ownerEmail, string carName, DateTime returnDate);
+        void SendReturnEmail(string ownerEmail, string carName, DateTime returnDate, decimal amount);
     }
 }
