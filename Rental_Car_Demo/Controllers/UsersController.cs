@@ -10,7 +10,9 @@ using Rental_Car_Demo.ViewModel;
 using System.Globalization;
 using System.Text;
 using System.Security.Cryptography;
-
+using Newtonsoft.Json;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -78,8 +80,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email)
-            && x.Password.Equals(hashedPassword)).FirstOrDefault();
+                var user = db.Users.Where(x => x.Email.Equals(userLogin.User.Email) && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
                 {
@@ -87,8 +88,11 @@ namespace Rental_Car_Demo.Controllers
 
                     if (userLogin.User.RememberMe)
                     {
-                        Response.Cookies.Append("UserEmail", $"{userLogin.User.Email}|{userLogin.User.Password}", new
-                            CookieOptions
+
+                        string rememberMeValue = $"{userLogin.User.Email}|{userLogin.User.Password}";
+                        string encodedRememberMeValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(rememberMeValue));
+
+                        Response.Cookies.Append("UserEmail", encodedRememberMeValue, new CookieOptions
                         {
                             Expires = DateTime.UtcNow.AddDays(30),
                             HttpOnly = true,
@@ -107,13 +111,12 @@ namespace Rental_Car_Demo.Controllers
                 if (user == null && !string.IsNullOrEmpty(userLogin.User.Email) && !string.IsNullOrEmpty(userLogin.User.Password))
                 {
                     ViewBag.Error = "Either email address or password is incorrect. Please try again";
-
                 }
             }
-            TempData["ShowModal"] = "SignIn"; // Set flag to show sign-in modal
-            return View("Guest", userLogin);
+
+            return View();
         }
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -181,7 +184,6 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult Register(RegisterAndLoginViewModel model)
         {
             var checkMail = IsEmailExist(model.Register.Email);
-
             // Kiểm tra email trùng lặp
             if (checkMail == true)
             {

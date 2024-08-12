@@ -1,53 +1,65 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Newtonsoft.Json;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
+using Rental_Car_Demo.Repository.UserRepository;
 using Rental_Car_Demo.Services;
 using Rental_Car_Demo.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Rental_Car_Demo.Context;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Rental_Car_Demo.Tests
+namespace Rental_Car_Demo.UnitTests
 {
     [TestFixture]
     public class UsersControllerTests
     {
         private UsersController _controller;
+        private Mock<IEmailService> _emailServiceMock;
+        private InMemoryUserDAO _userDao;
+        private DummySession _dummySession;
+        private DummyCookies _dummyCookies;
+        private DefaultHttpContext _httpContext;
         private RentCarDbContext _context;
-        private Mock<IEmailService> _mockEmailService;
-        private Mock<ITempDataDictionary> _mockTempData;
-        private Mock<ITokenGenerator> _mockTokenGenerator;
-        private Mock<ICustomerContext> _mockCustomerContext;
 
         [SetUp]
         public void SetUp()
         {
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-
-            _mockEmailService = new Mock<IEmailService>();
-            _mockTokenGenerator = new Mock<ITokenGenerator>();
-            _mockCustomerContext = new Mock<ICustomerContext>();
-            _mockTempData = new Mock<ITempDataDictionary>();
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
 
             _context = new RentCarDbContext(options);
 
-
-
-            _controller = new UsersController(_context, _mockCustomerContext.Object, _mockTokenGenerator.Object, _mockEmailService.Object)
+            _emailServiceMock = new Mock<IEmailService>();
+            _userDao = new InMemoryUserDAO();
+            _dummySession = new DummySession();
+            _dummyCookies = new DummyCookies();
+            _httpContext = new DefaultHttpContext
             {
-                TempData = _mockTempData.Object
+                Session = _dummySession,
+                Request = { Cookies = _dummyCookies }
             };
-            SeedDatabase();
-            
-        }
 
+
+
+            _controller = new UsersController(_emailServiceMock.Object, _context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = _httpContext
+                }
+            };
+
+            SeedDatabase();
+        }
         [TearDown]
         public void TearDown()
         {
@@ -59,32 +71,573 @@ namespace Rental_Car_Demo.Tests
         private void SeedDatabase()
         {
             var users = new List<User>
-            {
-                new User
-                {
-                    Email = "nvutuankiet2003@gmail.com",
-                    Password = HashPassword("kiet123"),
-                    Name = "kiet ne",
-                    Phone = "0334567890",
-                    Role = false,
-                    Wallet = 0
-                },
-                new User
-                {
-                    Email = "hehe@gmail.com",
-                    Password = HashPassword("hehe123"),
-                    Name = "hehe",
-                    Phone = "0987654321",
-                    Role = true,
-                    Wallet = 0
-                }
-            };
+         {
+             new User
+             {
+                 Email = "kiet123@gmail.com",
+                 Password = HashPassword("kiet123"),
+                 Name = "kiet ne",
+                 Phone = "0334567890",
+                 Role = false,
+                 Wallet = 0,
+                 RememberMe= false,
+             },
+             new User
+             {
+                 Email = "hehe@gmail.com",
+                 Password = HashPassword("hehe123"),
+                 Name = "hehe",
+                 Phone = "0987654321",
+                 Role = true,
+                 Wallet = 0,
+                 RememberMe= true,
+             }
+         };
 
             _context.Users.AddRange(users);
             _context.SaveChanges();
         }
 
-        private string HashPassword(string password)
+        [Test]
+        public void Login_SetsDefaultCultureCookie()
+        {
+
+            var expectedCulture = "or-IN";
+
+            var result = _controller.Login();
+
+            Assert.AreEqual(expectedCulture, CultureInfo.CurrentCulture.Name);
+        }
+        [Test]
+        public void Login_InitializesViewModel()
+        {
+            var result = _controller.Login() as ViewResult;
+
+            var viewModel = result?.Model as RegisterAndLoginViewModel;
+            Assert.IsNotNull(viewModel);
+            Assert.IsNotNull(viewModel.Register);
+            Assert.IsNotNull(viewModel.User);
+        }
+
+        [Test]
+        public void Login_NoRememberMeCookie_SetsUserDefaults()
+        {
+            var result = _controller.Login() as ViewResult;
+
+            var viewModel = result?.Model as RegisterAndLoginViewModel;
+            Assert.IsNotNull(viewModel);
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+        [Test]
+        [TestCase("UserEmail", "invalidFormat")]
+        public void Login_InvalidCookieFormat_DoesNotSetUserDetails(string sessionkey, string sessionvalue)
+        {
+
+            _dummyCookies.Append(sessionkey, sessionvalue);
+
+
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+
+        [Test]
+        [TestCase("UserEmail", "|mquan123")]
+        [TestCase("UserEmail", "mquan19022k3@gmail.com|")]
+        [TestCase("UserEmail", "|")]
+        public void Login_SessionNotNull(string sessionkey, string sessionvalue)
+        {
+
+            _dummyCookies.Append(sessionkey, sessionvalue);
+
+
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+
+            Assert.IsNotNull(viewModel.User.Email);
+            Assert.IsNotNull(viewModel.User.Password);
+        }
+        [Test]
+        public void Login_CookieContainsExtraSeparator_SplitsIncorrectly()
+        {
+
+            _dummyCookies.Append("UserEmail", "test@example.com|password123|extra");
+
+
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+
+        [Test]
+        public void Login_ExpiredCultureCookie_ResetsToDefaultCulture()
+        {
+
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+
+
+            var result = _controller.Login() as ViewResult;
+
+
+            Assert.AreEqual("or-IN", CultureInfo.CurrentCulture.Name);
+        }
+        [Test]
+        public void Login_ExpiredCookie_NoUserDetailsSet()
+        {
+
+            _dummyCookies.Append("UserEmail", "test@gmail.com|password123");
+
+            _dummyCookies.Delete("UserEmail");
+
+
+            var result = _controller.Login() as ViewResult;
+
+
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+            Assert.IsNotNull(viewModel);
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+        }
+
+        [Test]
+        public void Login_ReturnsLoginView()
+        {
+
+            var result = _controller.Login() as ViewResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Login", result.ViewName ?? "Login");
+        }
+
+        [Test]
+        public void Login_WithRememberMeCookie_ReturnsViewWithUserDetails()
+        {
+
+            var cookieValue = "test@example.com|password123";
+            var encodedCookieValue = System.Web.HttpUtility.UrlEncode(cookieValue);
+            _httpContext.Request.Headers["Cookie"] = $"UserEmail={encodedCookieValue}";
+
+
+            var result = _controller.Login() as ViewResult;
+
+            Assert.IsNotNull(result);
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual("test@example.com", viewModel.User.Email);
+            Assert.AreEqual("password123", viewModel.User.Password);
+        }
+        [Test]
+        public void Login_ValidCookie_DoesNotOverwriteValidUserDetails()
+        {
+
+            string rememberMeValue = "kiet123@gmail.com|kiet123";
+            _dummyCookies.Append("UserEmail", rememberMeValue);
+
+
+            var firstLoginResult = _controller.Login() as ViewResult;
+            var firstViewModel = firstLoginResult.Model as RegisterAndLoginViewModel;
+
+
+            string newRememberMeValue = "hehe@gmail.com|hehe123";
+            _dummyCookies.Append("UserEmail", newRememberMeValue);
+
+
+            var secondLoginResult = _controller.Login() as ViewResult;
+            var secondViewModel = secondLoginResult.Model as RegisterAndLoginViewModel;
+
+
+            Assert.AreEqual("hehe@gmail.com", secondViewModel.User.Email);
+            Assert.AreEqual("hehe123", secondViewModel.User.Password);
+            Assert.IsTrue(secondViewModel.User.RememberMe);
+        }
+        [Test]
+        public void Login_EmptyCookie_DoesNotSetUserDetails()
+        {
+
+            _dummyCookies.Append("UserEmail", string.Empty);
+
+
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+        [Test]
+        public void Login_ValidUser_LogsInSuccessfully()
+        {
+
+            _dummyCookies.Append("UserEmail", "kiet123@gmail.com|kiet123");
+
+
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+
+            Assert.AreEqual("kiet123@gmail.com", viewModel.User.Email);
+            Assert.AreEqual("kiet123", viewModel.User.Password);
+            Assert.IsTrue(viewModel.User.RememberMe);
+        }
+        [Test]
+        public void Login_CultureAlreadySet_DoesNotChangeCulture()
+        {
+            // Arrange
+            CultureInfo.CurrentCulture = new CultureInfo("or-IN");
+
+            // Act
+            var result = _controller.Login() as ViewResult;
+
+            // Assert
+            Assert.AreEqual("or-IN", CultureInfo.CurrentCulture.Name);
+        }
+
+        [Test]
+        public void Login_NullCookieValue_DoesNotSetUserDetails()
+        {
+            // Arrange
+            _dummyCookies.Append("UserEmail", null);
+
+            // Act
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+            // Assert
+            Assert.IsNotNull(viewModel);
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+
+        [Test]
+        public void Login_MultipleCookiesWithSameKey_UsesLatestValue()
+        {
+            // Arrange
+            _dummyCookies.Append("UserEmail", "old@example.com|oldpassword");
+            _dummyCookies.Append("UserEmail", "new@example.com|newpassword");
+
+            // Act
+            var result = _controller.Login() as ViewResult;
+            var viewModel = result.Model as RegisterAndLoginViewModel;
+
+            // Assert
+            Assert.AreEqual("new@example.com", viewModel.User.Email);
+            Assert.AreEqual("newpassword", viewModel.User.Password);
+        }
+
+        [Test]
+        [TestCase("", "mquan123")]
+        [TestCase("", "")]
+        [TestCase("mquan19022k3@gmail.com", "")]
+        [TestCase("mquan19022k3gmail.com", "")]
+        [TestCase("mquan19022k3@", "")]
+        [TestCase("mquan19022k3", "")]
+        [TestCase("mquan19022k3.com", "")]
+        public void Login_Post_ValidFormat_RedirectToLogin(string email, string password)
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = email, Password = password }
+            };
+
+            var result = _controller.Login(viewModel) as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Login", result.ViewName ?? "Login");
+
+        }
+        [Test]
+        public void Login_Post_NoRememberMe()
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "kiet123@gmail.com", Password = "kiet123", RememberMe = false }
+            };
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(_httpContext.Request.Cookies.ContainsKey("UserEmail"));
+        }
+
+        [Test]
+        public void Login_Post_IncorrectEmailandPassword_ReturnLoginPage()
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "invalid@example.com", Password = "wrongpassword" }
+            };
+
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Login", result.ViewName ?? "Login");
+        }
+        [Test]
+        public void Login_Post_WrongPassword_ErrorNotNull()
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "invalid@example.com", Password = "wrongpassword" }
+            };
+
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.ViewBag.Error != null);
+        }
+        [Test]
+        public void Login_Post_WrongPassword_ReturnErrorMessage()
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "kiet123@example.com", Password = "wrongpassword" }
+            };
+
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Either email address or password is incorrect. Please try again", result.ViewData["Error"]);
+        }
+        [Test]
+        public void Login_UserDoesNotExist_ErrorNotNull()
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "notexist@gmail.com", Password = "123aad" }
+            };
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.ViewBag.Error != null);
+        }
+        [Test]
+        public void Login_UserDoesNotExist_ReturnErrorMessage()
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "notexist@gmail.com", Password = "123aad" }
+            };
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Either email address or password is incorrect. Please try again", _controller.ViewBag.Error);
+        }
+        [Test]
+        public void Login_Post_ValidUser_RedirectsToLoginOwn()
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "hehe@gmail.com", Password = "hehe123" }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("LoginOwn", result.ActionName);
+        }
+        [Test]
+        [TestCase("hehe@gmail.com", "hehe123")]
+        [TestCase("kiet123@gmail.com", "kiet123")]
+        public void Login_Post_ValidUser_RedirectsToUserAction(string email, string password)
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = email, Password = password }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Users", result.ControllerName);
+        }
+        [Test]
+        [TestCase("hehe@gmail.com", "hehe123")]
+        [TestCase("kiet123@gmail.com", "kiet123")]
+        public void Login_Post_ValidUser_SaveSession(string email, string password)
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = email, Password = password }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_dummySession.TryGetValue("User", out _));
+        }
+        [Test]
+        [TestCase("heheafaf12@gmail.com", "hehe123")]
+        [TestCase("kiet123aaff@gmail.com", "kiet123")]
+        [TestCase("kiet123aaffgmail.com", "kiet123")]
+        [TestCase("kiet123aaffgmail.com", "")]
+        [TestCase("", "kiet123")]
+        [TestCase("", "")]
+        [TestCase("kiet123aaff@gmail", "")]
+        public void Login_Post_WrongEmailAndPassword_DontSaveSession(string email, string password)
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = email, Password = password }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            Assert.IsFalse(_dummySession.TryGetValue("User", out _));
+        }
+        [Test]
+        public void Login_Post_ValidCustomer_RedirectsToLoginCus()
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "kiet123@gmail.com", Password = "kiet123" }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("LoginCus", result.ActionName);
+        }
+        [Test]
+        public void Login_Post_RememberMeUnchecked_DeletesCookie()
+        {
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "kiet123@gmail.com", Password = "kiet123" }
+            };
+
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(_httpContext.Request.Cookies.ContainsKey("UserEmail"));
+        }
+        [Test]
+        public void Login_Post_ExistingSession_ReturnsViewResult()
+        {
+            // Arrange
+            var user = new User { Email = "test@example.com", Password = "password" };
+            _httpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "test@example.com", Password = "password" }
+            };
+
+            // Act
+            var result = _controller.Login(viewModel);
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+        [Test]
+        public void Login_Post_RememberMeChecked_SetsCookie()
+        {
+            // Arrange
+            var user = new User { Email = "test@example.com", Password = HashPassword("password"), Name = "Quan", Phone = "0815284412", Role = false };
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "test@example.com", Password = "password", RememberMe = true }
+            };
+
+            // Act
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("LoginCus", result.ActionName);
+            Assert.IsTrue(_httpContext.Response.Headers.ContainsKey("Set-Cookie"));
+        }
+
+        [Test]
+        public void Login_Post_RememberMe_SetsEncodedCookie()
+        {
+            // Arrange
+            var user = new User { Email = "test@example.com", Password = HashPassword("password"), Name = "Quan", Phone = "0815284412", Role = false };
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "test@example.com", Password = "password", RememberMe = true }
+            };
+
+            // Act
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("LoginCus", result.ActionName);
+
+            var setCookieHeader = _httpContext.Response.Headers["Set-Cookie"].ToString();
+            Assert.IsTrue(setCookieHeader.Contains("UserEmail"));
+        }
+        [Test]
+        public void Login_Post_NoRememberMe_DontSetsCookieWithCorrectOptions()
+        {
+            // Arrange
+            var user = new User { Email = "test@example.com", Password = HashPassword("password"), Name = "Quan", Phone = "0815284412", Role = false };
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "test@example.com", Password = "password", RememberMe = false }
+            };
+
+            // Act
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            var setCookieHeader = _httpContext.Response.Headers["Set-Cookie"].ToString();
+            Assert.IsFalse(setCookieHeader.Contains("HttpOnly"));
+            Assert.IsFalse(setCookieHeader.Contains("Secure"));
+            Assert.IsFalse(setCookieHeader.Contains("SameSite=None"));
+            Assert.IsFalse(setCookieHeader.Contains("Expires="));
+        }
+        public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -97,318 +650,322 @@ namespace Rental_Car_Demo.Tests
                 return builder.ToString();
             }
         }
-
-
         [Test]
-        public void Register_ReturnsViewResult()
+        [TestCase("en-US")]
+        [TestCase("fr-FR")]
+        public void Login_Post_DifferentCultures_LoginWorks(string culture)
         {
-            // Act
-            var result = _controller.Register();
+            var cultureInfo = new CultureInfo(culture);
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
-            // Assert
-            Assert.IsInstanceOf<ViewResult>(result);
-        }
-
-        [Test]
-        public void ResetPass_ReturnsViewResult()
-        {
-            // Act
-            var result = _controller.ResetPassword();
-
-            // Assert
-            Assert.IsInstanceOf<ViewResult>(result);
-        }
-
-        [Test]
-        [TestCase("nvutuankiet2003@gmail.com", true)]
-        [TestCase("hehe123@gmail.com", false)]
-        public void IsEmailExist_ShouldReturnExpectedResult(string email, bool expectedResult)
-        {
-            // Act
-            var result = _controller.IsEmailExist(email);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(expectedResult));
-        }
-
-
-
-        [Test]
-        public void Register_ValidModel_ShouldRedirectToGuest()
-        {
-            // Arrange
-            var model = new RegisterAndLoginViewModel
+            var viewModel = new RegisterAndLoginViewModel
             {
-                Register = new RegisterViewModel { Email = "hehe123@gmail.com", Password = "hehe123", ConfirmPassword = "hehe123", Name = "hehe123", Phone = "0987654321", Role = "rentCar", AgreeToTerms = true }
+                User = new User { Email = "hehe@gmail.com", Password = "hehe123" }
             };
 
-            // Act
-            var result = _controller.Register(model) as RedirectToActionResult;
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
 
-            // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Guest", result.ActionName);
-            Assert.AreEqual("Users", result.ControllerName);
+            Assert.AreEqual("LoginOwn", result.ActionName);
         }
-
         [Test]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiettttttttttttttttttttttttttttttttttttttttttttttt", "0326713614", "carOwner", true, Description = "1. Name exceed 50 char")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "", "0326713614", "carOwner", true, Description = "2. Name is empty")]
-
-        [TestCase("kietdzne@gmail.com", "", "", "hehe", "0904182483", "rentCar", true, Description = "3. Password is empty")]
-        [TestCase("kietdzne@gmail.com", "hehe12", "hehe12", "hehe", "0904182483", "rentCar", true, Description = "4. Password not have at least 7 char")]
-        [TestCase("kietdzne@gmail.com", "hehehehe", "hehehehe", "hehe", "0904182483", "rentCar", true, Description = "5. Password not have number")]
-        [TestCase("kietdzne@gmail.com", "hehe", "hehe", "hehe", "0904182483", "rentCar", true, Description = "6. Password not have number and not have at least 7 char")]
-        [TestCase("kietdzne@gmail.com", "11111111", "11111111", "hehe", "0904182483", "rentCar", true, Description = "7. Password not have letter")]
-        [TestCase("kietdzne@gmail.com", "1111", "1111", "hehe", "0904182483", "rentCar", true, Description = "8. Password not have letter and not have at least 7 char")]
-        [TestCase("kietdzne@gmail.com", "@@@@@@@@", "@@@@@@@@", "hehe", "0904182483", "rentCar", true, Description = "9. Password not have letter and number")]
-        [TestCase("kietdzne@gmail.com", "@@@@", "@@@@", "hehe", "0904182483", "rentCar", true, Description = "10. Password not have letter and number and not have at least 7 char")]
-
-        [TestCase("kietdzne@gmail.com", "hehehe123", "", "hehe", "0904182483", "rentCar", true, Description = "11. Confirm password is empty")]
-        [TestCase("kietdzne@gmail.com", "hehehe123", "abcxyz123", "hehe", "0904182483", "rentCar", true, Description = "12. Confirm password and password not match")]
-
-        [TestCase("", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "13. Email is empty")]
-        [TestCase("plainaddress", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "14. Email without domain")]
-        [TestCase("@missingusername.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "15. Email missing username")]
-        [TestCase("missingatsign.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "16. Email missing @ sign")]
-        [TestCase("missingdomain@.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "17. Email missing domain name")]
-        [TestCase("missingdot@domaincom", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "18. Email missing dot in domain")]
-        [TestCase("missingtld@domain.", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "19. Email missing top-level domain")]
-        [TestCase("missingsymbol@domain..com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "20. Email with double dot in domain")]
-        [TestCase("contains spaces@domain.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "21. Email with spaces")]
-        [TestCase("specialchars!#$%&'*+/=?^_`{|}~@gmail.com", "kiet123", "kiet123", "kiet", "0326713614", "carOwner", true, Description = "22. Email with invalid special characters")]
-
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "", "carOwner", true, Description = "23. Phone is empty")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "001203019", "carOwner", true, Description = "24. Phone start with 00")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "011203019", "carOwner", true, Description = "25. Phone start with 01")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "021203019", "carOwner", true, Description = "26. Phone start with 02")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "041203019", "carOwner", true, Description = "27. Phone start with 04")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "061203019", "carOwner", true, Description = "28. Phone start with 06")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "03120301", "carOwner", true, Description = "29. Phone is less than 10 number")]
-        [TestCase("kietdzne@gmail.com", "kiet123", "kiet123", "kiet", "0312030111", "carOwner", true, Description = "30. Phone is more than 10 number")]
-        public void Register_InvalidModel_ModelError_CannotSubmitForm(string email, string password, string confirmPassword,string name, string phone, string role, bool agreeTerm)
+        public void Login_Post_ValidUser_UsesHashedPassword()
         {
-            // Arrange
-            var model = new RegisterAndLoginViewModel
-            {
-                Register = new RegisterViewModel { Email = email, Password = password, ConfirmPassword = confirmPassword, Name = name, Phone = phone, Role = role, AgreeToTerms = agreeTerm }
-            };
-
-            // Act
-            var result = _controller.Register(model) as ViewResult;
-
-            // Assert
-            Assert.IsNull(result);
-        }
-
-        [Test]
-        public void Register_EmailAlreadyExists_ShouldAddModelError()
-        {
-            // Arrange
-            var model = new RegisterAndLoginViewModel
-            {
-                Register = new RegisterViewModel { Email = "nvutuankiet2003@gmail.com", Password = "kiet123", ConfirmPassword="kiet123", Name="kiet ne", Phone= "0334567890",Role= "carOwner", AgreeToTerms = true }
-            };
-
-            // Act
-            var result = _controller.Register(model) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Email already existed. Please try another email.", result.ViewData.ModelState["Register.Email"].Errors[0].ErrorMessage);
-        }
-
-        [Test]
-        public void Register_AgreeToTermsIsFalse_ShouldAddModelError()
-        {
-            // Arrange
-            var model = new RegisterAndLoginViewModel
-            {
-                Register = new RegisterViewModel { Email = "hehehe@gmail.com", Password = "hehe", ConfirmPassword = "hehe123", Name = "hehe", Phone = "0987654321", Role = "rentCar", AgreeToTerms = false }
-            };
-
-            // Act
-            var result = _controller.Register(model) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Please agree to this!", result.ViewData.ModelState["Register.AgreeToTerms"].Errors[0].ErrorMessage);
-        }
-
-
-
-
-        [Test]
-        [TestCase("nvutuankiet2003@gmail.com", "token01", 1, true, Description = "1. Email existing")]
-        [TestCase("abc@gmail.com", "token02", -1, true, Description = "2. Email not existing")]
-
-        [TestCase("", "token01", 1, false, Description = "3. Email is empty")]
-        [TestCase("plainaddress", "token01", -1, false, Description = "4. Email without domain")]
-        [TestCase("@missingusername.com", "token01", -1, false, Description = "5. Email missing username")]
-        [TestCase("missingatsign.com", "token01", -1, false, Description = "6. Email missing @ sign")]
-        [TestCase("missingdomain@.com", "token01", -1, false, Description = "7. Email missing domain name")]
-        [TestCase("missingdot@domaincom", "token01", -1, false, Description = "8. Email missing dot in domain")]
-        [TestCase("missingtld@domain.", "token01", -1, false, Description = "9. Email missing top-level domain")]
-        [TestCase("missingsymbol@domain..com", "token01", -1, false, Description = "10. Email with double dot in domain")]
-        [TestCase("contains spaces@domain.com", "token01", -1, false, Description = "11. Email with spaces")]
-        [TestCase("specialchars!#$%&'*+/=?^_`{|}~@gmail.com", "token01", -1, false, Description = "12. Email with invalid special characters")]
-        public void ResetPassword_Post_Check_Email(string email, string token, int user, bool emailValid)
-        {
-            // Arrange
-            var model = new ResetPasswordViewModel
-            {
-                Email = email
-            };
-
-            _mockTokenGenerator.Setup(tg => tg.GenerateToken(It.IsAny<int>())).Returns(token);
-            _mockTokenGenerator.Setup(tg => tg.GetExpirationTime()).Returns(DateTime.Now.AddHours(1));
-            _mockCustomerContext.Setup(cc => cc.getCustomerIdByEmail(model.Email)).Returns(user);
-
-            var mockUrlHelper = new Mock<IUrlHelper>();
-            mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("https://example.com/resetpassword");
-
-            _controller.Url = mockUrlHelper.Object;
-
-            var mockHttpContext = new DefaultHttpContext();
-            mockHttpContext.Request.Scheme = "https";
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = mockHttpContext
-            };
-
-            _mockTempData.Setup(td => td["SuccessMessage"]).Returns<string>(key => key == "SuccessMessage" ? "We will send link to reset your password in the email!" : null);
-            _mockTempData.Setup(td => td["FailMessage"]).Returns<string>(key => key == "FailMessage" ? "Sorry, Your email does not exist in our database!" : null);
-
-            
-
-            if (!emailValid)
-            {
-                _controller.ModelState.AddModelError("Email", "Invalid Email");
-                // Act
-                var result = _controller.ResetPassword(model) as ViewResult;
-
-                Assert.IsNotNull(result);
-                Assert.AreEqual(model, result.Model);
-            }
-            else if (user == 1)
-            {
-                // Act
-                var result = _controller.ResetPassword(model) as ViewResult;
-                Assert.IsNotNull(result);
-                Assert.AreEqual("We will send link to reset your password in the email!", _controller.TempData["SuccessMessage"]);
-            }
-            else if (user == -1)
-            {
-                // Act
-                var result = _controller.ResetPassword(model) as ViewResult;
-                Assert.IsNotNull(result);
-                Assert.AreEqual("Sorry, Your email does not exist in our database!", _controller.TempData["FailMessage"]);
-            }
-        }
-
-        [Test]
-        [TestCase("tokenne", "tokenne", false, false, 1, null, 1)]
-        [TestCase("tokenne", "wrongtoken", false, false, 1, "Fail", 1)]
-        [TestCase("expiredToken", "expiredToken", true, false, 1, "Fail", 1)]
-        [TestCase("lockedToken", "lockedToken", false, true, 1, "Fail", 1)]
-        [TestCase("lockedAndExToken", "lockedAndExToken", true, true, 2, "Fail", 1)]
-        [TestCase("tokenne", "tokenne", false, false, 2, "Fail", 1)]
-        [TestCase("tokenne", "wrongtoken", false, false, 2, "Fail", 1)]
-        [TestCase("expiredToken", "expiredToken", true, false, 2, "Fail", 1)]
-        [TestCase("lockedToken", "lockedToken", false, true, 2, "Fail", 1)]
-
-        public void ResetPassword2_TokenValidationTests(string tokenInDatabase, string tokenValue, bool isExpired, bool isLocked, int customerId, string? expectedViewName, int expectedCustomerId)
-        {
-            // Arrange
-            var userIdOftoken = 1;
-
-            var token = new TokenInfor
-            {
-                Token = tokenInDatabase,
-                UserId = userIdOftoken,
-                ExpirationTime = isExpired ? DateTime.Now.AddHours(-1) : DateTime.Now.AddHours(1),
-                IsLocked = isLocked
-            };
-
-            _context.TokenInfors.Add(token);
+            var password = "testPassword";
+            var hashedPassword = HashPassword(password);
+            var user = new User { Email = "test@example.com", Password = hashedPassword, Name = "quan", Phone = "0815232213", Role = true };
+            _context.Users.Add(user);
             _context.SaveChanges();
 
-            // Act
-            var result = _controller.ResetPassword2(customerId, tokenValue) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result, "The result should not be null");
-            Assert.AreEqual(expectedViewName, result.ViewName, "The view name is incorrect");
-
-            if (expectedViewName == null)
+            var viewModel = new RegisterAndLoginViewModel
             {
-                Assert.IsInstanceOf<ResetPassword2ViewModel>(result.Model, "The model should be of type ResetPassword2ViewModel");
-                Assert.AreEqual(expectedCustomerId, ((ResetPassword2ViewModel)result.Model).CustomerId, "The CustomerId in the model should match");
+                User = new User { Email = "test@example.com", Password = password }
+            };
+
+            var result = _controller.Login(viewModel) as RedirectToActionResult;
+
+            Assert.IsNotNull(result);
+        }
+        [Test]
+        public void Login_Post_InvalidUser_ErrorMessageDoesNotContainHtml()
+        {
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                User = new User { Email = "<script>alert('xss')</script>", Password = "password" }
+            };
+
+            var result = _controller.Login(viewModel) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(_controller.ViewBag.Error);
+            Assert.IsFalse(_controller.ViewBag.Error.Contains("<script>"));
+        }
+        [Test]
+        public void HashPassword_ValidInput_ReturnsNonEmptyString()
+        {
+            string result = _controller.HashPassword("password123");
+            Assert.IsNotEmpty(result);
+        }
+        [Test]
+        public void HashPassword_NullInput_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => _controller.HashPassword(null));
+        }
+        [Test]
+        [TestCase("")]
+        [TestCase("!@#$%^&*()_+{}|:<>?")]
+        [TestCase("パスワード")]
+        [TestCase("\n")]
+        public void HashPassword_SpecialPassword_ReturnsValidHash(string password)
+        {
+            string result = _controller.HashPassword(password);
+            Assert.IsNotEmpty(result);
+            Assert.AreEqual(64, result.Length);
+        }
+        [Test]
+        public void HashPassword_LongInput_ReturnsValidHash()
+        {
+            string longInput = new string('a', 10000);
+            string result = _controller.HashPassword(longInput);
+            Assert.IsNotEmpty(result);
+            Assert.AreEqual(64, result.Length);
+        }
+        [Test]
+        public void HashPassword_ConsistentLength_ReturnsHashOf64Characters()
+        {
+            string[] inputs = { "a", "ab", "abc", "abcd", "abcde" };
+            foreach (var input in inputs)
+            {
+                string result = _controller.HashPassword(input);
+                Assert.AreEqual(64, result.Length);
+            }
+        }
+        [Test]
+        public void HashPassword_OnlyHexCharacters_InOutput()
+        {
+            string result = _controller.HashPassword("testPassword");
+            Assert.IsTrue(System.Text.RegularExpressions.Regex.IsMatch(result, "^[a-fA-F0-9]+$"));
+        }
+        [Test]
+        public void HashPassword_PerformanceTest()
+        {
+            string input = "performance test password";
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            _controller.HashPassword(input);
+            watch.Stop();
+            Assert.Less(watch.ElapsedMilliseconds, 100, "Hashing took too long");
+        }
+
+        [Test]
+        public void HashPassword_ValidPassword_ReturnsExpectedHash()
+        {
+
+            string password = "testpassword";
+            string expectedHash = "9f735e0df9a1ddc702bf0a1a7b83033f9f7153a00c29de82cedadc9957289b05";
+
+
+
+            string actualHash = _controller.HashPassword(password);
+
+
+            Assert.AreEqual(expectedHash, actualHash);
+        }
+
+        [Test]
+        public void HashPassword_DifferentPasswords_ReturnDifferentHashes()
+        {
+
+            string password1 = "password1";
+            string password2 = "password2";
+
+
+            string hash1 = _controller.HashPassword(password1);
+            string hash2 = _controller.HashPassword(password2);
+
+
+            Assert.AreNotEqual(hash1, hash2);
+        }
+        [Test]
+        public void HashPassword_DifferentCase_ReturnsDifferentHashes()
+        {
+            string inputLower = "password";
+            string inputUpper = "PASSWORD";
+
+            string hashLower = _controller.HashPassword(inputLower);
+            string hashUpper = _controller.HashPassword(inputUpper);
+
+            Assert.AreNotEqual(hashLower, hashUpper);
+        }
+        [Test]
+        public void HashPassword_ValidInput_NoExceptions()
+        {
+            Assert.DoesNotThrow(() => _controller.HashPassword("safeInput"));
+        }
+
+        [Test]
+        public void HashPassword_SameInputTwice_ReturnsSameHash()
+        {
+            string input = "testPassword";
+            string hash1 = _controller.HashPassword(input);
+            string hash2 = _controller.HashPassword(input);
+            Assert.AreEqual(hash1, hash2);
+        }
+
+
+        [Test]
+        public void LoginCus_UserIsOwner_ReturnsErrorAuthorizationView()
+        {
+
+            var user = new User { Role = true };
+            _dummySession.Set("User", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
+
+
+            var result = _controller.LoginCus() as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
+        }
+
+        [Test]
+        public void LoginCus_UserIsCustomer_ReturnsLoginCusView()
+        {
+
+            var user = new User { Role = false };
+            _dummySession.Set("User", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
+
+
+            var result = _controller.LoginCus() as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
+        [Test]
+        public void LoginOwn_UserIsCustomer_ReturnsErrorAuthorizationView()
+        {
+
+            var user = new User { Role = false };
+            _dummySession.Set("User", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
+
+            var result = _controller.LoginOwn() as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
+        }
+
+        [Test]
+        public void LoginOwn_UserIsOwner_ReturnsLoginOwnView()
+        {
+
+            var user = new User { Role = true };
+            _dummySession.Set("User", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
+
+
+            var result = _controller.LoginOwn() as ViewResult;
+
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
+        [Test]
+        public void Logout_RedirectsToGuest()
+        {
+
+            _dummySession.Set("User", new byte[0]);
+
+            var result = _controller.Logout();
+
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var redirectResult = result as RedirectToActionResult;
+            Assert.AreEqual("Guest", redirectResult.ActionName);
+            Assert.AreEqual("Users", redirectResult.ControllerName);
+        }
+        [Test]
+        public void Logout_RemoveSession()
+        {
+
+            _dummySession.Set("User", new byte[0]);
+
+
+            var result = _controller.Logout();
+
+
+            Assert.IsFalse(_dummySession.TryGetValue("User", out _));
+        }
+        [Test]
+        public void Guest_ReturnsView()
+        {
+
+            var result = _controller.Guest();
+
+
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+    }
+    
+    public class DummyCookies : IRequestCookieCollection, IResponseCookies
+    {
+        private readonly Dictionary<string, string> _cookiesStore = new Dictionary<string, string>();
+        private readonly List<string> _deletedCookies = new List<string>();
+
+        public string this[string key] => _cookiesStore.ContainsKey(key) ? _cookiesStore[key] : null;
+
+        public int Count => _cookiesStore.Count;
+
+        public ICollection<string> Keys => _cookiesStore.Keys;
+
+        public bool ContainsKey(string key) => _cookiesStore.ContainsKey(key);
+
+        public bool TryGetValue(string key, out string value) => _cookiesStore.TryGetValue(key, out value);
+
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => _cookiesStore.GetEnumerator();
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => _cookiesStore.GetEnumerator();
+
+        public IReadOnlyList<string> DeletedCookies => _deletedCookies.AsReadOnly();
+
+        public void Append(string key, string value, CookieOptions options)
+        {
+            _cookiesStore[key] = value;
+        }
+
+        public void Append(string key, string value)
+        {
+            _cookiesStore[key] = value;
+        }
+
+        public void Delete(string key)
+        {
+            if (_cookiesStore.ContainsKey(key))
+            {
+                _cookiesStore.Remove(key);
+                _deletedCookies.Add(key);
             }
         }
 
-
-        [Test]
-        public void ResetPassword2_ValidModel_ResetsPasswordAndReturnsLoginView()
+        public void Delete(string key, CookieOptions options)
         {
-            // Arrange
-            var model = new ResetPassword2ViewModel
-            {
-                CustomerId = 1,
-                Password = "newPassword123",
-                ConfirmPassword = "newPassword123"
-
-            };
-
-            // Act
-            var result = _controller.ResetPassword2(model) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result, "The result should not be null");
-            Assert.AreEqual("Login", result.ViewName, "The view name should be 'Login'");
-
-            var user = _context.Users.FirstOrDefault(u => u.UserId == model.CustomerId);
-
-            Assert.IsNotNull(user, "User should not be null");
-
-
-            Assert.AreEqual(HashPassword(model.Password), user.Password, "The user's password should be updated");
-
-            _mockTempData.Setup(td => td["SuccessMessage"]).Returns<string>(key => key == "SuccessMessage" ? "Your password has been reset" : null);
-            Assert.AreEqual("Your password has been reset", _controller.TempData["SuccessMessage"], "The success message should be set");
-        }
-
-
-        [Test]
-        [TestCase("", "pass01", "Password", Description = "1. Password is empty")]
-        [TestCase("less7", "less7", "Password", Description = "2. Password not have at least 7 char")]
-        [TestCase("nothavenum", "nothavenum", "Password", Description = "3. Password not have number")]
-        [TestCase("noth", "noth", "Password", Description = "4. Password not have number and not have at least 7 char")]
-        [TestCase("1234567", "1234567", "Password", Description = "5. Password not have letter")]
-        [TestCase("1234", "1234", "Password", Description = "6. Password not have letter and less than 7 char")]
-        [TestCase("@@@@@@@@", "@@@@@@@@", "Password", Description = "7. Password not have number and letter")]
-        [TestCase("@@@", "@@@", "Password", Description = "8. Password not have number and letter and less than 7 char")]
-
-        [TestCase("hehehehe123", "", "ConfirmPassword", Description = "9. ConfirmPassword empty")]
-        [TestCase("hehehehe123", "abcxyz123", "ConfirmPassword", Description = "9. ConfirmPassword not match")]
-
-        public void ResetPassword2_InvalidModel_ReturnsModel(string pass, string confirmPass, string modelError)
-        {
-            // Arrange
-            _controller.ModelState.AddModelError(modelError, "Invalid");
-            var model = new ResetPassword2ViewModel
-            {
-                CustomerId = 1,
-                Password = pass,
-                ConfirmPassword = confirmPass
-            };
-
-            // Act
-            var result = _controller.ResetPassword2(model) as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result, "The result should not be null");
-            Assert.AreEqual(model, result.Model, "The model should be returned with errors");
+            Delete(key);
         }
     }
+
+
+    public class InMemoryUserDAO : UserDAO
+    {
+        private readonly List<User> _users = new List<User>();
+
+        public void AddUser(User user)
+        {
+            _users.Add(user);
+        }
+
+        public List<User> GetUserList()
+        {
+            return _users;
+        }
+    }
+
 }
+
