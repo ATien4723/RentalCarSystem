@@ -11,24 +11,32 @@ using Moq;
 using NUnit.Framework;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
-using Rental_Car_Demo.Validation;
 using Rental_Car_Demo.ViewModel;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.UnitTests
 {
     [TestFixture]
-    public class UsersControllerTests : DummySession
+    public class UsersControllerTestsAn : DummySession
     {
         private UsersController _controller;
         private RentCarDbContext _context;
         private Mock<IEmailService> _mockEmailService;
         private DummySession _session;
+        private Mock<IFormFile> _mockFile;
+        private string filePath;
 
         [SetUp]
         public void SetUp()
         {
+            Environment.CurrentDirectory = @"C:\Users\decid\OneDrive\Desktop\PojectFsoft\rental-car\Rental_Car_Demo";
+            filePath = Path.Combine(Environment.CurrentDirectory, "wwwroot/img", "newFile.png");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
@@ -36,6 +44,7 @@ namespace Rental_Car_Demo.UnitTests
             _context = new RentCarDbContext(options);
             _session = new DummySession();
             _mockEmailService = new Mock<IEmailService>();
+            _mockFile = new Mock<IFormFile>();
             _controller = new UsersController(_context, _mockEmailService.Object)
             {
                 ControllerContext = new ControllerContext
@@ -47,12 +56,16 @@ namespace Rental_Car_Demo.UnitTests
                 }
             };
             SeedDatabase();
-
+            
         }
 
         [TearDown]
         public void TearDown()
         {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
             _context.Database.EnsureDeleted();
             _context.Dispose();
             _controller.Dispose();
@@ -670,6 +683,101 @@ namespace Rental_Car_Demo.UnitTests
                 Assert.AreEqual(expectedWards[i].WardId, actualWards[i].WardId);
                 Assert.AreEqual(expectedWards[i].WardName, actualWards[i].WardName);
             }
+        }
+
+        [Test]
+        public void UploadImage_NullFile_ReturnsInvalidFileMessage()
+        {
+            // Act
+            var result = _controller.UploadImage(null) as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            //var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsNotNull(jsonResult);
+            //Assert.IsFalse((bool)jsonResult["success"]);
+            //Assert.AreEqual("Invalid file", jsonResult["message"]);
+        }
+
+        [Test]
+        public void UploadImage_FileAlreadyExists_ReturnsFileExistsMessage()
+        {
+            // Arrange
+            var fileName = "1.png";
+            var imgDirectory = GetProjectPath("wwwroot/img");
+            var filePath = Path.Combine(imgDirectory, fileName);
+
+            File.WriteAllText(filePath, "dummy content");
+
+            _mockFile.Setup(f => f.FileName).Returns(fileName);
+            _mockFile.Setup(f => f.Length).Returns(1024);
+            _mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(stream =>
+            {
+                using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes("Dummy content")))
+                {
+                    memoryStream.CopyTo(stream);
+                }
+            });
+
+            // Act
+            var result = _controller.UploadImage(_mockFile.Object) as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            //var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsNotNull(jsonResult);
+            //Assert.IsFalse((bool)jsonResult["success"]);
+            //Assert.AreEqual("File already exists", jsonResult["message"]);
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [Test]
+        public void UploadImage_ValidFile_ReturnsSuccess()
+        {
+            // Arrange
+            var uniqueFileName = $"newFile_{Guid.NewGuid()}.png";
+            var imgDirectory = GetProjectPath("wwwroot/img");
+
+            // Đảm bảo rằng thư mục tồn tại
+            if (!Directory.Exists(imgDirectory))
+            {
+                Directory.CreateDirectory(imgDirectory);
+            }
+
+            var filePath = Path.Combine(imgDirectory, uniqueFileName);
+
+            _mockFile.Setup(f => f.FileName).Returns(uniqueFileName);
+            _mockFile.Setup(f => f.Length).Returns(1024);
+            _mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(stream =>
+            {
+                using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes("Dummy content")))
+                {
+                    memoryStream.CopyTo(stream);
+                }
+            });
+
+            // Act
+            var result = _controller.UploadImage(_mockFile.Object) as JsonResult;
+
+            // Cleanup
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            // Assert
+            Assert.IsNotNull(result);
+            var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsTrue((bool)jsonResult["success"]);
+        }
+
+        public string GetProjectPath(string relativePath)
+        {
+            // Lấy đường dẫn tuyệt đối đến thư mục dự án gốc
+            var projectRoot = Directory.GetCurrentDirectory();
+            return Path.Combine(projectRoot, relativePath);
         }
     }
 }

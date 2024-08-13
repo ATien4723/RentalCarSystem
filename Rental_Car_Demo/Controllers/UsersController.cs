@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Context;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
-using Rental_Car_Demo.Validation;
 using Rental_Car_Demo.ViewModel;
 using System.Globalization;
 using System.Text;
@@ -16,6 +15,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Rental_Car_Demo.Services;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -27,16 +27,15 @@ namespace Rental_Car_Demo.Controllers
         private readonly ICustomerContext _customerContext;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IEmailService _emailService;
+        private readonly IFormFile _file;
 
         public UsersController(
             RentCarDbContext _context,
-            ICustomerContext customerContext,
-            ITokenGenerator tokenGenerator,
             IEmailService emailService)
         {
             context = _context;
-            _customerContext = customerContext;
-            _tokenGenerator = tokenGenerator;
+            //_customerContext = customerContext;
+            //_tokenGenerator = tokenGenerator;
             _emailService = emailService;
         }
 

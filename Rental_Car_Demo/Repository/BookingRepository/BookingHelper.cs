@@ -1,4 +1,6 @@
-﻿namespace Rental_Car_Demo.Repository.BookingRepository
+﻿using Rental_Car_Demo.Models;
+
+namespace Rental_Car_Demo.Repository.BookingRepository
 {
     public static class BookingHelper
     {
@@ -6,6 +8,52 @@
         {
             TimeSpan difference = endDate - startDate;
             return (int)Math.Ceiling(difference.TotalDays);
+        }
+        public static string NumberOfDays (DateTime startDate, DateTime endDate)
+        {
+            string result = "";
+            int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
+            var totalHours = (int)Math.Ceiling((endDate - startDate).TotalHours);
+            if (totalHours < 12)
+            {
+                result = "Half a day";
+            }
+            else
+            {
+                result = $"{numberOfDays}";
+            }
+            return result;
+        }
+        public static decimal TotalPrice(decimal baseprice, DateTime startDate, DateTime endDate)
+        {
+            decimal result = 0;
+            int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
+            var totalHours = (int)Math.Ceiling((endDate - startDate).TotalHours);
+            if (totalHours < 12)
+            {
+                result = baseprice * 0.5m;
+            }
+            else
+            {
+                result = numberOfDays * baseprice;
+            }
+            return result;
+        }
+
+        public static decimal TotalDeposit(decimal deposit, DateTime startDate, DateTime endDate)
+        {
+            decimal result = 0;
+            int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
+            var totalHours = (int)Math.Ceiling((endDate - startDate).TotalHours);
+            if (totalHours < 12)
+            {
+                result = deposit * 0.5m;
+            }
+            else
+            {
+                result = numberOfDays * deposit;
+            }
+            return result;
         }
         public static decimal GetTotalPrice(decimal baseprice, DateTime startDate, DateTime endDate)
         {

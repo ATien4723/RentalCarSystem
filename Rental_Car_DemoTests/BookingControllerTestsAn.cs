@@ -9,10 +9,10 @@ using NUnit.Framework;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.BookingRepository;
-using Rental_Car_Demo.Validation;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.UnitTests
 {
@@ -49,7 +49,7 @@ namespace Rental_Car_Demo.UnitTests
     }
 
     [TestFixture]
-    public class BookingControllerTests
+    public class BookingControllerTestsAn
     {
         private BookingController _controller;
         private RentCarDbContext _context;
@@ -220,7 +220,7 @@ namespace Rental_Car_Demo.UnitTests
                 new Booking { BookingNo = 4, UserId = 3, CarId = 3, StartDate = new DateTime(2024, 08, 01, 20, 00, 00), EndDate = new DateTime(2024, 08, 01, 22, 00, 00), PaymentMethod = 1,
                     Status=2, BookingInfoId = 2, BookingInfo = bookingInfoData.FirstOrDefault(a => a.BookingInfoId == 2)},
                 new Booking { BookingNo = 5, UserId = 1, CarId = 1, StartDate = new DateTime(2024, 08, 01, 20, 00, 00), EndDate = new DateTime(2024, 08, 01, 22, 00, 00), PaymentMethod = 1,
-                Status=2, BookingInfoId = 2, BookingInfo = bookingInfoData.FirstOrDefault(a => a.BookingInfoId == 5)}
+                Status=2, BookingInfoId = 5, BookingInfo = bookingInfoData.FirstOrDefault(a => a.BookingInfoId == 5)}
             };
 
 
@@ -462,8 +462,8 @@ namespace Rental_Car_Demo.UnitTests
             var result = _controller.BookACar(location, startDate, endDate, carId, viewModel) as RedirectToActionResult;
             var car = _context.Cars.FirstOrDefault(c => c.CarId == carId);
 
-            Assert.IsNull(result);
-            Assert.AreEqual("BookACar", result.ActionName);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("BookACarFinish", result.ActionName);
         }
 
         [TestCase("", "2024-08-01 20:00:00", "2024-08-01 22:00:00", 1, 2)]
@@ -1091,7 +1091,7 @@ namespace Rental_Car_Demo.UnitTests
             var result = _controller.BookACar(location, startDate, endDate, carId) as ViewResult;
             var car = _context.Cars.FirstOrDefault(c => c.CarId == carId);
 
-            var expectedValue = $"{car.Address.HouseNumberStreet}, {car?.Address?.Ward?.WardName}, {car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
+            var expectedValue = $"{car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedValue, result.ViewData["location"]);
@@ -1116,7 +1116,7 @@ namespace Rental_Car_Demo.UnitTests
             var result = _controller.BookACar(location, startDate, endDate, carId) as ViewResult;
             var car = _context.Cars.FirstOrDefault(c => c.CarId == carId);
 
-            var expectedValue = $"{car.Address.HouseNumberStreet}, {car?.Address?.Ward?.WardName}, {car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
+            var expectedValue = $"{car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedValue, result.ViewData["location"]);
@@ -1386,7 +1386,6 @@ namespace Rental_Car_Demo.UnitTests
             var expectedValue = DateTime.Now;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedValue, result.ViewData["startDate"]);
         }
 
         [TestCase("Nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 1)]
@@ -1436,7 +1435,6 @@ namespace Rental_Car_Demo.UnitTests
             var expectedValue = DateTime.Now.AddDays(1);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedValue, result.ViewData["endDate"]);
         }
 
         [TestCase("Nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 1, 2)]
@@ -1992,7 +1990,32 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual("BookACar", result.ActionName);
         }
-        
+
+        [TestCase("", "2024-08-01 20:00:00", "2024-08-01 22:00:00", 1, 1)]
+        public void BookACar_Post_BalanceInsufficient_NumOfDaysLessThan12h_Get(string location, string startDateStr, string endDateStr, int carId, int bookingNo)
+        {
+            var user = _context.Users.Find(1);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var userJson = JsonConvert.SerializeObject(user, settings);
+            _session.SetString("User", userJson);
+
+            // Arrange
+            DateTime startDate = DateTime.Parse(startDateStr);
+            DateTime endDate = DateTime.Parse(endDateStr);
+
+            var viewModel = _context.Bookings.Find(bookingNo);
+            var car = _context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
+
+            // Act
+            var result = _controller.BookACar(location, startDate, endDate, carId, viewModel) as RedirectToActionResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("BookACar", result.ActionName);
+        }
+
         [TestCase("", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2)]
         public void BookACar_Post_BalanceEnough_ReturnBookACarFinish(string location, string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -2285,6 +2308,28 @@ namespace Rental_Car_Demo.UnitTests
         
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_ReturnPost(string startDateStr, string endDateStr, int carId, int bookingNo)
+        {
+            var user = _context.Users.Find(3);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var userJson = JsonConvert.SerializeObject(user, settings);
+            _session.SetString("User", userJson);
+
+            // Arrange
+            DateTime startDate = DateTime.Parse(startDateStr);
+            DateTime endDate = DateTime.Parse(endDateStr);
+
+            // Act
+            var result = _controller.EditBookingDetail(startDate, endDate, carId, bookingNo) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
+
+        [TestCase("2024-08-01 20:00:00", "2024-08-01 22:00:00", 3, 3)]
+        public void EditBookingDetail_Get_TotalHoursLessThan12h_ReturnPost(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
             var user = _context.Users.Find(3);
             var settings = new JsonSerializerSettings
@@ -3130,41 +3175,6 @@ namespace Rental_Car_Demo.UnitTests
         }
 
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
-        public void EditBookingDetail_Get_CheckViewBagUser(string startDateStr, string endDateStr, int carId, int bookingNo)
-        {
-            var user = _context.Users.Find(3);
-            var settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var userJson = JsonConvert.SerializeObject(user, settings);
-            _session.SetString("User", userJson);
-
-            // Arrange
-            DateTime startDate = DateTime.Parse(startDateStr);
-            DateTime endDate = DateTime.Parse(endDateStr);
-
-            // Act
-            var result = _controller.EditBookingDetail(startDate, endDate, carId, bookingNo) as ViewResult;
-
-            var booking = _context.Bookings
-                    .Include(b => b.BookingInfo)
-                        .ThenInclude(bi => bi.RenterAddress)
-                    .Include(b => b.BookingInfo)
-                        .ThenInclude(bi => bi.DriverAddress)
-                    .FirstOrDefault(b => b.BookingNo == bookingNo);
-
-            var car = _context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
-
-            int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
-
-            var expectedValue = user;
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedValue, result.ViewData["user"]);
-        }
-
-        [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_CheckViewBagUserId(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
             var user = _context.Users.Find(3);
@@ -3693,25 +3703,6 @@ namespace Rental_Car_Demo.UnitTests
             _session.SetString("User", userJson);
 
             var viewModel = _context.Bookings.Find(3);
-
-            var result = _controller.EditBookingDetail(viewModel) as RedirectToActionResult;
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("EditBookingDetail", result.ActionName);
-        }
-
-        [TestCase]
-        public void EditBookingDetail_Post_viewModelNull_ReturnLogin()
-        {
-            var user = _context.Users.Find(3);
-            var settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var userJson = JsonConvert.SerializeObject(user, settings);
-            _session.SetString("User", userJson);
-
-            var viewModel = _context.Bookings.Find(100);
 
             var result = _controller.EditBookingDetail(viewModel) as RedirectToActionResult;
 

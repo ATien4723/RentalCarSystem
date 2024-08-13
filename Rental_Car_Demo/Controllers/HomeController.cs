@@ -143,7 +143,7 @@ namespace Rental_Car_Demo.Controllers
                                  car.Address.HouseNumberStreet.Contains (query) ))
                 .Select (car => new
                 {
-                    Address = $"{car.Address.HouseNumberStreet}, {car.Address.Ward.WardName}, {car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
+                    Address = $"{car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
                 .ToList ();
 

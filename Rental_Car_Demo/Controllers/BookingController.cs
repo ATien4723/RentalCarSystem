@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Repository.UserRepository;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Rental_Car_Demo.Validation;
 using Microsoft.CodeAnalysis;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.Controllers
 {
@@ -70,8 +70,6 @@ namespace Rental_Car_Demo.Controllers
             this._context = _context;
             this._emailService = emailService;
             bookingDAO = new BookingDAO();
-            carDAO = new CarDAO();
-            userDAO = new UserDAO();
         }
 
         public ActionResult BookACar(string? location, DateTime startDate, DateTime endDate, int CarId)
@@ -111,7 +109,7 @@ namespace Rental_Car_Demo.Controllers
 
                 if (string.IsNullOrEmpty(location))
                 {
-                    ViewBag.location = $"{car.Address.HouseNumberStreet}, {car?.Address?.Ward?.WardName}, {car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
+                    ViewBag.location = $"{car?.Address?.District?.DistrictName}, {car?.Address?.City?.CityProvince}";
                 }
                 else
                 {
@@ -147,6 +145,7 @@ namespace Rental_Car_Demo.Controllers
                     numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
                 }
                 var totalHours = (int)Math.Ceiling((endDate - startDate).TotalHours);
+                ViewBag.TotalHours = totalHours;
                 if (totalHours < 12)
                 {
                     ViewBag.Total = (decimal) car.BasePrice * 0.5m;
@@ -253,15 +252,32 @@ namespace Rental_Car_Demo.Controllers
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
 
+            var userCheckWallet = _context.Users.SingleOrDefault(u => u.UserId == user.UserId);
             var car = _context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
             var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
             int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
 
-            if (viewModel.PaymentMethod == 1 && user.Wallet < (car.Deposit * numberOfDays))
+            var checkTimeRent = (int)Math.Ceiling((endDate - startDate).TotalHours);
+            if (checkTimeRent < 12)
             {
-                TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
-                return RedirectToAction("BookACar", new { location = location, startDate = startDate, endDate = endDate, carId = CarId });
+                if (viewModel.PaymentMethod == 1 && (userCheckWallet.Wallet * 2) < (car.Deposit * numberOfDays))
+                {
+                    ModelState.AddModelError("PaymentMethod", "You do not have enough money in your wallet to pay deposit!");
+                    //TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
+                    return RedirectToAction("BookACar", new { location = location, startDate = startDate, endDate = endDate, carId = CarId });
+                }
             }
+            else
+            {
+                if (viewModel.PaymentMethod == 1 && userCheckWallet.Wallet < (car.Deposit * numberOfDays))
+                {
+                    ModelState.AddModelError("PaymentMethod", "You do not have enough money in your wallet to pay deposit!");
+                    //TempData["AlertMessage"] = "You do not have enough money in your wallet to pay deposit!";
+                    return RedirectToAction("BookACar", new { location = location, startDate = startDate, endDate = endDate, carId = CarId });
+                }
+            }
+
+            
 
             var renterAddress = new Address
             {
@@ -585,12 +601,26 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.carId = carId;
 
             int numberOfDays = (int)Math.Ceiling((endDate - startDate).TotalDays);
+            var totalHours = (int)Math.Ceiling((endDate - startDate).TotalHours);
+            ViewBag.TotalHours = totalHours;
+
             ViewBag.NumberOfDays = numberOfDays;
             ViewBag.BasePrice = car.BasePrice;
-            ViewBag.Total = numberOfDays * car.BasePrice;
-            ViewBag.Deposit = numberOfDays * car.Deposit;
 
-            bool checkRent = false;
+            if (totalHours < 12)
+            {
+                ViewBag.Total = (decimal)car.BasePrice * 0.5m;
+                ViewBag.Deposit = (decimal)car.Deposit * 0.5m;
+            }
+            else
+            {
+                ViewBag.Total = numberOfDays * car.BasePrice;
+                ViewBag.Deposit = numberOfDays * car.Deposit;
+            }
+
+            
+
+            bool checkRent = false; 
             if (bookingDetail.Status == 2 || bookingDetail.Status == 3 || bookingDetail.Status == 4)
             {
                 checkRent = true;
@@ -695,58 +725,54 @@ namespace Rental_Car_Demo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditBookingDetail(Booking viewModel)
         {
-            if (viewModel != null)
-            {
-                var renterAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.RenterAddressId);
+            var renterAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.RenterAddressId);
 
-                renterAddress.CityId = viewModel.BookingInfo.RenterAddress.CityId;
-                renterAddress.DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId;
-                renterAddress.WardId = viewModel.BookingInfo.RenterAddress.WardId;
-                renterAddress.HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet;
+            renterAddress.CityId = viewModel.BookingInfo.RenterAddress.CityId;
+            renterAddress.DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId;
+            renterAddress.WardId = viewModel.BookingInfo.RenterAddress.WardId;
+            renterAddress.HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet;
 
-                _context.Addresses.Update(renterAddress);
-                _context.SaveChanges();
+            _context.Addresses.Update(renterAddress);
+            _context.SaveChanges();
 
-                var DriverAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.DriverAddressId);
-                DriverAddress.CityId = viewModel.BookingInfo.DriverAddress.CityId;
-                DriverAddress.DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId;
-                DriverAddress.WardId = viewModel.BookingInfo.DriverAddress.WardId;
-                DriverAddress.HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet;
+            var DriverAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.DriverAddressId);
+            DriverAddress.CityId = viewModel.BookingInfo.DriverAddress.CityId;
+            DriverAddress.DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId;
+            DriverAddress.WardId = viewModel.BookingInfo.DriverAddress.WardId;
+            DriverAddress.HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet;
 
-                _context.Addresses.Update(DriverAddress);
-                _context.SaveChanges();
+            _context.Addresses.Update(DriverAddress);
+            _context.SaveChanges();
 
-                var bookingInfo = _context.BookingInfos.FirstOrDefault(b => b.BookingInfoId == viewModel.BookingInfoId);
-                bookingInfo.RenterEmail = viewModel.BookingInfo.RenterEmail;
-                bookingInfo.RenterName = viewModel.BookingInfo.RenterName;
-                bookingInfo.RenterDob = viewModel.BookingInfo.RenterDob;
-                bookingInfo.RenterNationalId = viewModel.BookingInfo.RenterNationalId;
-                bookingInfo.RenterPhone = viewModel.BookingInfo.RenterPhone;
-                bookingInfo.RenterAddressId = viewModel.BookingInfo.RenterAddressId;
-                bookingInfo.RenterDrivingLicense = viewModel.BookingInfo.RenterDrivingLicense;
-                bookingInfo.IsDifferent = viewModel.BookingInfo.IsDifferent;
-                bookingInfo.DriverEmail = viewModel.BookingInfo.DriverEmail;
-                bookingInfo.DriverName = viewModel.BookingInfo.DriverName;
-                bookingInfo.DriverDob = viewModel.BookingInfo.DriverDob;
-                bookingInfo.DriverNationalId = viewModel.BookingInfo.DriverNationalId;
-                bookingInfo.DriverPhone = viewModel.BookingInfo.DriverPhone;
-                bookingInfo.DriverAddressId = viewModel.BookingInfo.DriverAddressId;
-                bookingInfo.DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense;
+            var bookingInfo = _context.BookingInfos.FirstOrDefault(b => b.BookingInfoId == viewModel.BookingInfoId);
+            bookingInfo.RenterEmail = viewModel.BookingInfo.RenterEmail;
+            bookingInfo.RenterName = viewModel.BookingInfo.RenterName;
+            bookingInfo.RenterDob = viewModel.BookingInfo.RenterDob;
+            bookingInfo.RenterNationalId = viewModel.BookingInfo.RenterNationalId;
+            bookingInfo.RenterPhone = viewModel.BookingInfo.RenterPhone;
+            bookingInfo.RenterAddressId = viewModel.BookingInfo.RenterAddressId;
+            bookingInfo.RenterDrivingLicense = viewModel.BookingInfo.RenterDrivingLicense;
+            bookingInfo.IsDifferent = viewModel.BookingInfo.IsDifferent;
+            bookingInfo.DriverEmail = viewModel.BookingInfo.DriverEmail;
+            bookingInfo.DriverName = viewModel.BookingInfo.DriverName;
+            bookingInfo.DriverDob = viewModel.BookingInfo.DriverDob;
+            bookingInfo.DriverNationalId = viewModel.BookingInfo.DriverNationalId;
+            bookingInfo.DriverPhone = viewModel.BookingInfo.DriverPhone;
+            bookingInfo.DriverAddressId = viewModel.BookingInfo.DriverAddressId;
+            bookingInfo.DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense;
 
-                _context.BookingInfos.Update(bookingInfo);
-                _context.SaveChanges();
+            _context.BookingInfos.Update(bookingInfo);
+            _context.SaveChanges();
 
-                var booking = _context.Bookings.FirstOrDefault(b => b.BookingNo == viewModel.BookingNo);
-                booking.UserId = viewModel.UserId;
-                booking.CarId = viewModel.CarId;
-                booking.BookingInfoId = bookingInfo.BookingInfoId;
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingNo == viewModel.BookingNo);
+            booking.UserId = viewModel.UserId;
+            booking.CarId = viewModel.CarId;
+            booking.BookingInfoId = bookingInfo.BookingInfoId;
 
-                _context.Bookings.Update(booking);
-                _context.SaveChanges();
+            _context.Bookings.Update(booking);
+            _context.SaveChanges();
 
-                return RedirectToAction("EditBookingDetail", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = booking.CarId, bookingNo = booking.BookingNo });
-            }
-            return View("ErrorAuthorization");
+            return RedirectToAction("EditBookingDetail", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = booking.CarId, bookingNo = booking.BookingNo });
         }
 
         [HttpPost]
