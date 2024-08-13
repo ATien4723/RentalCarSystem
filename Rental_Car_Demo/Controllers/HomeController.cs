@@ -65,12 +65,12 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchCarForm(string address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
-            if ( string.IsNullOrWhiteSpace (address) || address.Length < 2 ) {
-                ViewBag.ErrorMessage = "Please enter a valid location.";
-                return View (); // Return the view immediately with the error message
-            }
+            //if ( string.IsNullOrWhiteSpace (address) || address.Length < 2 ) {
+            //    ViewBag.ErrorMessage = "Please enter a valid location.";
+            //    return View (); // Return the view immediately with the error message
+            //}
 
             DateTime currentDateTime = DateTime.Now;
 
@@ -90,37 +90,37 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffTime = dropoffTime;
 
             // Fetch the cars based on the address
-            IEnumerable<Car> cars = _carRepository.GetAllCars (address);
+            IEnumerable<Car> cars = _carRepository.GetAllCars ();
             return View (cars);
         }
 
 
 
-        [HttpGet]
-        public IActionResult SearchCarFormGuest( DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
-        {
+        //[HttpGet]
+        //public IActionResult SearchCarFormGuest( DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        //{
 
-            DateTime currentDateTime = DateTime.Now;
+        //    DateTime currentDateTime = DateTime.Now;
 
-            pickupDate ??= DateOnly.FromDateTime(currentDateTime);
+        //    pickupDate ??= DateOnly.FromDateTime(currentDateTime);
 
-            dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
+        //    dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
 
-            pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
-            dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
+        //    pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
+        //    dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
 
 
-            // Pass values to ViewBag
+        //    // Pass values to ViewBag
 
-            ViewBag.pickupDate = pickupDate;
-            ViewBag.pickupTime = pickupTime;
-            ViewBag.dropoffDate = dropoffDate;
-            ViewBag.dropoffTime = dropoffTime;
+        //    ViewBag.pickupDate = pickupDate;
+        //    ViewBag.pickupTime = pickupTime;
+        //    ViewBag.dropoffDate = dropoffDate;
+        //    ViewBag.dropoffTime = dropoffTime;
 
-            // Fetch the cars based on the address
-            IEnumerable<Car> cars = _carRepository.GetAllCars();
-            return View("SearchCarForm", cars);
-        }
+        //    // Fetch the cars based on the address
+        //    IEnumerable<Car> cars = _carRepository.GetAllCars();
+        //    return View("SearchCarForm", cars);
+        //}
 
 
         public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)

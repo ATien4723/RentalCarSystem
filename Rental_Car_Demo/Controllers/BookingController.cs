@@ -22,19 +22,18 @@ namespace Rental_Car_Demo.Controllers
         BookingDAO bookingDAO = null;
         CarDAO carDAO = null;
         UserDAO userDAO = null;
-        RentCarDbContext _db = new RentCarDbContext();
         private readonly RentCarDbContext context;
 
         public IActionResult skipRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo)
         {
-            var carExists = _db.Cars.Any(c => c.CarId == carId);
+            var carExists = context.Cars.Any(c => c.CarId == carId);
 
             if (!carExists)
             {
                 return NotFound($"Car with ID {carId} not found.");
             }
 
-            var bookingExists = _db.Bookings.Any(b => b.BookingNo == bookingNo);
+            var bookingExists = context.Bookings.Any(b => b.BookingNo == bookingNo);
             if (!bookingExists)
             {
                 return NotFound($"Booking with number {bookingNo} not found.");
@@ -54,8 +53,8 @@ namespace Rental_Car_Demo.Controllers
             feedback.BookingNo = bookingNo;
             feedback.Ratings = -1;
             feedback.Date = DateTime.Now;
-            _db.Feedbacks.Add(feedback);
-            _db.SaveChanges();
+            context.Feedbacks.Add(feedback);
+            context.SaveChanges();
             ViewBag.checkFbExisted = true;
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
@@ -63,14 +62,14 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult giveRating(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string content, int ratings)
         {
-            var carExists = _db.Cars.Any(c => c.CarId == carId);
+            var carExists = context.Cars.Any(c => c.CarId == carId);
 
             if (!carExists)
             {
                 return NotFound($"Car with ID {carId} not found.");
             }
 
-            var bookingExists = _db.Bookings.Any(b => b.BookingNo == bookingNo);
+            var bookingExists = context.Bookings.Any(b => b.BookingNo == bookingNo);
             if (!bookingExists)
             {
                 return NotFound($"Booking with number {bookingNo} not found.");
@@ -94,8 +93,8 @@ namespace Rental_Car_Demo.Controllers
            
             feedback.BookingNo = bookingNo;
             feedback.Date = DateTime.Now;
-            _db.Feedbacks.Add(feedback);
-            _db.SaveChanges();
+            context.Feedbacks.Add(feedback);
+            context.SaveChanges();
             ViewBag.checkFbExisted = true;
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
@@ -130,7 +129,7 @@ namespace Rental_Car_Demo.Controllers
             }
             else
             {
-                var car = _context.Cars.Include(c => c.Address)
+                var car = context.Cars.Include(c => c.Address)
                     .ThenInclude(c => c.City)
                     .ThenInclude(c => c.Districts)
                     .ThenInclude(c => c.Wards).FirstOrDefault(x => x.CarId == CarId);
@@ -199,9 +198,9 @@ namespace Rental_Car_Demo.Controllers
 
                 bool checkRent = false;
 
-                var lBooking = _context.Bookings.Where(x => x.CarId == CarId).ToList();
+                var lBooking = context.Bookings.Where(x => x.CarId == CarId).ToList();
 
-                var matchedFeedback = (from feedback in _context.Feedbacks.ToList()
+                var matchedFeedback = (from feedback in context.Feedbacks.ToList()
                                        join booking in lBooking on feedback.BookingNo equals booking.BookingNo
                                        select feedback).ToList();
 
@@ -227,16 +226,16 @@ namespace Rental_Car_Demo.Controllers
                 }
                 ViewBag.Rating = rating;
 
-                var brand = _context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
-                var model = _context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
-                var document = _context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
-                var color = _context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
-                var address = _context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
-                var ward = _context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
-                var district = _context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
-                var city = _context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
-                var term = _context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
-                var function = _context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+                var brand = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
+                var model = context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
+                var document = context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
+                var color = context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
+                var address = context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
+                var ward = context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
+                var district = context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
+                var city = context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
+                var term = context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
+                var function = context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
                 ViewBag.car = car;
                 ViewBag.brand = brand;
                 ViewBag.model = model;
@@ -250,25 +249,25 @@ namespace Rental_Car_Demo.Controllers
                 ViewBag.function = function;
                 ViewBag.checkRent = checkRent;
 
-                var userW = _context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+                var userW = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
                 ViewBag.user = userW;
                 ViewBag.userId = userW.UserId;
                 ViewBag.wallet = userW.Wallet;
                 ViewBag.dob = userW.Dob?.ToString("yyyy-MM-dd");
                 ViewBag.DrivingLience = userW.DrivingLicense;
 
-                var addressP = _context.Addresses.FirstOrDefault(a=>a.AddressId==userW.AddressId);
+                var addressP = context.Addresses.FirstOrDefault(a=>a.AddressId==userW.AddressId);
 
 
                 if (addressP == null)
                 {
-                    ViewBag.Cities = new SelectList(_context.Cities.ToList(), "CityId", "CityProvince");
+                    ViewBag.Cities = new SelectList(context.Cities.ToList(), "CityId", "CityProvince");
                 }
                 else
                 {
-                    var cityP = _context.Cities.ToList();
-                    var districtP = _context.Districts.Where(a => a.CityId == addressP.CityId).ToList();
-                    var wardP = _context.Wards.Where(a => a.DistrictId == addressP.DistrictId).ToList();
+                    var cityP = context.Cities.ToList();
+                    var districtP = context.Districts.Where(a => a.CityId == addressP.CityId).ToList();
+                    var wardP = context.Wards.Where(a => a.DistrictId == addressP.DistrictId).ToList();
 
                     ViewBag.Cities = new SelectList(cityP, "CityId", "CityProvince", addressP.CityId);
                     ViewBag.Districts = new SelectList(districtP, "DistrictId", "DistrictName", addressP.DistrictId);
@@ -290,9 +289,9 @@ namespace Rental_Car_Demo.Controllers
                 user = JsonConvert.DeserializeObject<User>(userString);
             }
 
-            var userCheckWallet = _context.Users.SingleOrDefault(u => u.UserId == user.UserId);
-            var car = _context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
-            var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
+            var userCheckWallet = context.Users.SingleOrDefault(u => u.UserId == user.UserId);
+            var car = context.Cars.Include(c => c.User).FirstOrDefault(x => x.CarId == viewModel.CarId);
+            var carOwner = context.Users.FirstOrDefault(u => u.UserId == car.UserId);
             int numberOfDays = (int)Math.Ceiling((viewModel.EndDate - viewModel.StartDate).TotalDays);
 
             var checkTimeRent = (int)Math.Ceiling((endDate - startDate).TotalHours);
@@ -325,8 +324,8 @@ namespace Rental_Car_Demo.Controllers
                 HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet
             };
 
-            _context.Addresses.Add(renterAddress);
-            _context.SaveChanges();
+            context.Addresses.Add(renterAddress);
+            context.SaveChanges();
 
             var DriverAddress = new Address
             {
@@ -336,8 +335,8 @@ namespace Rental_Car_Demo.Controllers
                 HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet
             };
 
-            _context.Addresses.Add(DriverAddress);
-            _context.SaveChanges();
+            context.Addresses.Add(DriverAddress);
+            context.SaveChanges();
 
             var bookingInfo = new BookingInfo
             {
@@ -358,8 +357,8 @@ namespace Rental_Car_Demo.Controllers
                 DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense
             };
 
-            _context.BookingInfos.Add(bookingInfo);
-            _context.SaveChanges();
+            context.BookingInfos.Add(bookingInfo);
+            context.SaveChanges();
 
             var booking = new Booking
             {
@@ -379,8 +378,8 @@ namespace Rental_Car_Demo.Controllers
                 booking.Status = 1;
             }
 
-            _context.Bookings.Add(booking);
-            _context.SaveChanges();
+            context.Bookings.Add(booking);
+            context.SaveChanges();
 
 
             if (viewModel.PaymentMethod == 1)
@@ -390,7 +389,7 @@ namespace Rental_Car_Demo.Controllers
                 {
                     user.Wallet -= (0.5m * car.Deposit);
                     carOwner.Wallet += (0.5m * car.Deposit);
-                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    var _user = context.Users.FirstOrDefault(x => x.UserId == user.UserId);
                     _user.Wallet -= (0.5m * car.Deposit);
 
                     var wallet = new Wallet
@@ -411,15 +410,15 @@ namespace Rental_Car_Demo.Controllers
                         BookingNo = booking.BookingNo,
                         CarName = car.Name
                     };
-                    _context.Wallets.Add(wallet);
-                    _context.Wallets.Add(walletCarOwner);
-                    _context.SaveChanges();
+                    context.Wallets.Add(wallet);
+                    context.Wallets.Add(walletCarOwner);
+                    context.SaveChanges();
                 }
                 else
                 {
                     user.Wallet -= (numberOfDays * car.Deposit);
                     carOwner.Wallet += (numberOfDays * car.Deposit);
-                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    var _user = context.Users.FirstOrDefault(x => x.UserId == user.UserId);
                     _user.Wallet -= (numberOfDays * car.Deposit);
 
                     var wallet = new Wallet
@@ -440,15 +439,15 @@ namespace Rental_Car_Demo.Controllers
                         BookingNo = booking.BookingNo,
                         CarName = car.Name
                     };
-                    _context.Wallets.Add(wallet);
-                    _context.Wallets.Add(walletCarOwner);
-                    _context.SaveChanges();
+                    context.Wallets.Add(wallet);
+                    context.Wallets.Add(walletCarOwner);
+                    context.SaveChanges();
                 }
             }
 
 
             car.Status = 2;
-            _context.SaveChanges();
+            context.SaveChanges();
 
             var currentUser = JsonConvert.DeserializeObject<User>(HttpContext.Session.GetString("User"));
             currentUser = JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(user));
@@ -512,7 +511,7 @@ namespace Rental_Car_Demo.Controllers
                 return View("ErrorAuthorization");
             }
 
-            Booking booking = _db.Bookings.Find(bookingNo);
+            Booking booking = context.Bookings.Find(bookingNo);
 
             if (booking == null)
             {
@@ -520,8 +519,8 @@ namespace Rental_Car_Demo.Controllers
             }
 
             booking.Status = 3;
-            _db.Bookings.Update(booking);
-            _db.SaveChanges();
+            context.Bookings.Update(booking);
+            context.SaveChanges();
            
             if (!startDate.HasValue || !endDate.HasValue)
             {
@@ -603,7 +602,7 @@ namespace Rental_Car_Demo.Controllers
                 return View("ViewBookingList");
             }
 
-            var car = _db.Cars.Find(carId);
+            var car = context.Cars.Find(carId);
             if (car == null)
             {
                 return NotFound($"Cannot find car with Id = {carId} !");
@@ -633,7 +632,7 @@ namespace Rental_Car_Demo.Controllers
             }
 
             //get user to block customer access this view
-            var booking = _context.Bookings
+            var booking = context.Bookings
                 .Include(b => b.BookingInfo)
                     .ThenInclude(bi => bi.RenterAddress)
                 .Include(b => b.BookingInfo)
@@ -641,7 +640,7 @@ namespace Rental_Car_Demo.Controllers
                 .FirstOrDefault(b => b.BookingNo == bookingNo);
 
             //using var context = new RentCarDbContext();
-            var car = _context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
+            var car = context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
             if (user.Role == true || booking.UserId != user.UserId || booking.CarId != carId)
             {
                 return View("ErrorAuthorization");
@@ -649,14 +648,14 @@ namespace Rental_Car_Demo.Controllers
             //
 
             Boolean checkFbExisted = false;
-            Feedback? feedback = _context.Feedbacks.FirstOrDefault(x => x.BookingNo == bookingNo);
+            Feedback? feedback = context.Feedbacks.FirstOrDefault(x => x.BookingNo == bookingNo);
             if (feedback != null)
             {
                 checkFbExisted = true;
             }
             ViewBag.checkFbExisted = checkFbExisted;
 
-            var bookingDetail = _context.Bookings
+            var bookingDetail = context.Bookings
                 .Include(b => b.BookingInfo)
                     .ThenInclude(bi => bi.RenterAddress)
                 .Include(b => b.BookingInfo)
@@ -698,9 +697,9 @@ namespace Rental_Car_Demo.Controllers
                 checkRent = true;
             }
 
-            var lBooking = _context.Bookings.Where(x => x.CarId == carId).ToList();
+            var lBooking = context.Bookings.Where(x => x.CarId == carId).ToList();
 
-            var matchedFeedback = (from feedbackEdit in _context.Feedbacks.ToList()
+            var matchedFeedback = (from feedbackEdit in context.Feedbacks.ToList()
                                     join booking2 in lBooking on feedbackEdit.BookingNo equals booking.BookingNo
                                     select feedbackEdit).ToList();
 
@@ -726,16 +725,16 @@ namespace Rental_Car_Demo.Controllers
             }
             ViewBag.Rating = rating;
 
-            var brand = _context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
-            var model = _context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
-            var document = _context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
-            var color = _context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
-            var address = _context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
-            var ward = _context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
-            var district = _context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
-            var city = _context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
-            var term = _context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
-            var function = _context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+            var brand = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
+            var model = context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
+            var document = context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
+            var color = context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
+            var address = context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
+            var ward = context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
+            var district = context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
+            var city = context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
+            var term = context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
+            var function = context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
             ViewBag.car = car;
             ViewBag.brand = brand;
             ViewBag.model = model;
@@ -758,13 +757,13 @@ namespace Rental_Car_Demo.Controllers
 
             if (addressR == null)
             {
-                ViewBag.CitiesR = new SelectList(_context.Cities.ToList(), "CityId", "CityProvince");
+                ViewBag.CitiesR = new SelectList(context.Cities.ToList(), "CityId", "CityProvince");
             }
             else
             {
-                var cityR = _context.Cities.ToList();
-                var districtR = _context.Districts.Where(d => d.CityId == addressR.CityId).ToList();
-                var wardR = _context.Wards.Where(d => d.DistrictId == addressR.DistrictId).ToList();
+                var cityR = context.Cities.ToList();
+                var districtR = context.Districts.Where(d => d.CityId == addressR.CityId).ToList();
+                var wardR = context.Wards.Where(d => d.DistrictId == addressR.DistrictId).ToList();
 
                 ViewBag.CitiesR = new SelectList(cityR, "CityId", "CityProvince", addressR.CityId);
                 ViewBag.DistrictsR = new SelectList(districtR, "DistrictId", "DistrictName", addressR.DistrictId);
@@ -776,13 +775,13 @@ namespace Rental_Car_Demo.Controllers
 
             if (addressD == null)
             {
-                ViewBag.CitiesD = new SelectList(_context.Cities.ToList(), "CityId", "CityProvince");
+                ViewBag.CitiesD = new SelectList(context.Cities.ToList(), "CityId", "CityProvince");
             }
             else
             {
-                var cityD = _context.Cities.ToList();
-                var districtD = _context.Districts.Where(d => d.CityId == addressD.CityId).ToList();
-                var wardD = _context.Wards.Where(d => d.DistrictId == addressD.DistrictId).ToList();
+                var cityD = context.Cities.ToList();
+                var districtD = context.Districts.Where(d => d.CityId == addressD.CityId).ToList();
+                var wardD = context.Wards.Where(d => d.DistrictId == addressD.DistrictId).ToList();
 
                 ViewBag.CitiesD = new SelectList(cityD, "CityId", "CityProvince", addressD.CityId);
                 ViewBag.DistrictsD = new SelectList(districtD, "DistrictId", "DistrictName", addressD.DistrictId);
@@ -797,26 +796,26 @@ namespace Rental_Car_Demo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditBookingDetail(Booking viewModel)
         {
-            var renterAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.RenterAddressId);
+            var renterAddress = context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.RenterAddressId);
 
             renterAddress.CityId = viewModel.BookingInfo.RenterAddress.CityId;
             renterAddress.DistrictId = viewModel.BookingInfo.RenterAddress.DistrictId;
             renterAddress.WardId = viewModel.BookingInfo.RenterAddress.WardId;
             renterAddress.HouseNumberStreet = viewModel.BookingInfo.RenterAddress.HouseNumberStreet;
 
-            _context.Addresses.Update(renterAddress);
-            _context.SaveChanges();
+            context.Addresses.Update(renterAddress);
+            context.SaveChanges();
 
-            var DriverAddress = _context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.DriverAddressId);
+            var DriverAddress = context.Addresses.FirstOrDefault(a => a.AddressId == viewModel.BookingInfo.DriverAddressId);
             DriverAddress.CityId = viewModel.BookingInfo.DriverAddress.CityId;
             DriverAddress.DistrictId = viewModel.BookingInfo.DriverAddress.DistrictId;
             DriverAddress.WardId = viewModel.BookingInfo.DriverAddress.WardId;
             DriverAddress.HouseNumberStreet = viewModel.BookingInfo.DriverAddress.HouseNumberStreet;
 
-            _context.Addresses.Update(DriverAddress);
-            _context.SaveChanges();
+            context.Addresses.Update(DriverAddress);
+            context.SaveChanges();
 
-            var bookingInfo = _context.BookingInfos.FirstOrDefault(b => b.BookingInfoId == viewModel.BookingInfoId);
+            var bookingInfo = context.BookingInfos.FirstOrDefault(b => b.BookingInfoId == viewModel.BookingInfoId);
             bookingInfo.RenterEmail = viewModel.BookingInfo.RenterEmail;
             bookingInfo.RenterName = viewModel.BookingInfo.RenterName;
             bookingInfo.RenterDob = viewModel.BookingInfo.RenterDob;
@@ -833,16 +832,16 @@ namespace Rental_Car_Demo.Controllers
             bookingInfo.DriverAddressId = viewModel.BookingInfo.DriverAddressId;
             bookingInfo.DriverDrivingLicense = viewModel.BookingInfo.DriverDrivingLicense;
 
-            _context.BookingInfos.Update(bookingInfo);
-            _context.SaveChanges();
+            context.BookingInfos.Update(bookingInfo);
+            context.SaveChanges();
 
-            var booking = _context.Bookings.FirstOrDefault(b => b.BookingNo == viewModel.BookingNo);
+            var booking = context.Bookings.FirstOrDefault(b => b.BookingNo == viewModel.BookingNo);
             booking.UserId = viewModel.UserId;
             booking.CarId = viewModel.CarId;
             booking.BookingInfoId = bookingInfo.BookingInfoId;
 
-            _context.Bookings.Update(booking);
-            _context.SaveChanges();
+            context.Bookings.Update(booking);
+            context.SaveChanges();
 
             return RedirectToAction("EditBookingDetail", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = booking.CarId, bookingNo = booking.BookingNo });
         }
@@ -863,15 +862,15 @@ namespace Rental_Car_Demo.Controllers
             }
 
             Booking booking = null;
-            booking = _context.Bookings.Include(b => b.Car).FirstOrDefault(b => b.BookingNo == BookingNo);
+            booking = context.Bookings.Include(b => b.Car).FirstOrDefault(b => b.BookingNo == BookingNo);
 
             booking.Status = 0;
             booking.Car.Status = 1;
-            _context.Update(booking);
-            _context.SaveChanges();
+            context.Update(booking);
+            context.SaveChanges();
 
-            var car = _context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
-            var carOwner = _context.Users.FirstOrDefault(u => u.UserId == car.UserId);
+            var car = context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
+            var carOwner = context.Users.FirstOrDefault(u => u.UserId == car.UserId);
 
             int numberOfDays = (int)Math.Ceiling((booking.EndDate - booking.StartDate).TotalDays);
 
@@ -882,7 +881,7 @@ namespace Rental_Car_Demo.Controllers
                 if (totalHours < 12)
                 {
                   carOwner.Wallet -= (0.5m * car.Deposit);
-                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    var _user = context.Users.FirstOrDefault(x => x.UserId == user.UserId);
                     _user.Wallet += (0.5m * car.Deposit);
 
                     var wallet = new Wallet
@@ -903,14 +902,14 @@ namespace Rental_Car_Demo.Controllers
                         BookingNo = booking.BookingNo,
                         CarName = car.Name
                     };
-                    _context.Wallets.Add(wallet);
-                    _context.Wallets.Add(walletCarOwner);
-                    _context.SaveChanges();
+                    context.Wallets.Add(wallet);
+                    context.Wallets.Add(walletCarOwner);
+                    context.SaveChanges();
                 }
                 else
                 {
                     carOwner.Wallet -= (numberOfDays * car.Deposit);
-                    var _user = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+                    var _user = context.Users.FirstOrDefault(x => x.UserId == user.UserId);
                     _user.Wallet += (numberOfDays * car.Deposit);
 
                     var wallet = new Wallet
@@ -931,12 +930,12 @@ namespace Rental_Car_Demo.Controllers
                         BookingNo = booking.BookingNo,
                         CarName = car.Name
                     };
-                    _context.Wallets.Add(wallet);
-                    _context.Wallets.Add(walletCarOwner);
-                    _context.SaveChanges();
+                    context.Wallets.Add(wallet);
+                    context.Wallets.Add(walletCarOwner);
+                    context.SaveChanges();
                 }
             }
-            _context.SaveChanges();
+            context.SaveChanges();
 
             string email = car.User.Email;
             string subject = "A booking with your car has been cancelled";
@@ -957,14 +956,14 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public JsonResult GetDistricts(int cityId)
         {
-            var districts = _context.Districts.Where(d => d.CityId == cityId);
+            var districts = context.Districts.Where(d => d.CityId == cityId);
             return Json(districts);
         }
 
         [HttpGet]
         public JsonResult GetWards(int districtId)
         {
-            var wards = _context.Wards.Where(w => w.DistrictId == districtId);
+            var wards = context.Wards.Where(w => w.DistrictId == districtId);
             return Json(wards);
         }
 
