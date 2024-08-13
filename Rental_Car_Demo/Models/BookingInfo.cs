@@ -9,7 +9,7 @@ public partial class BookingInfo
     public int BookingInfoId { get; set; }
 
     [Required(ErrorMessage = "This field is required.")]
-    [EmailAddress]
+    //[EmailAddress(ErrorMessage = "Email must be a valid gmail.com address.")]
     [MaxLength(50)]
     [RegularExpression(@"^[^@\s]+@gmail\.com$", ErrorMessage = "Email must be a valid gmail.com address.")]
     public string RenterEmail { get; set; } = null!;
@@ -32,7 +32,7 @@ public partial class BookingInfo
     public bool IsDifferent { get; set; } = false;
 
     [Required(ErrorMessage = "This field is required.")]
-    [EmailAddress]
+    //[EmailAddress]
     [MaxLength(50)]
     [RegularExpression(@"^[^@\s]+@gmail\.com$", ErrorMessage = "Email must be a valid gmail.com address.")]
     public string DriverEmail { get; set; } = null!;
