@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Newtonsoft.Json;
@@ -7,6 +8,7 @@ using Rental_Car_Demo.Context;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.UserRepository;
+using Rental_Car_Demo.Services;
 using Rental_Car_Demo.Services;
 using Rental_Car_Demo.ViewModel;
 using System;
@@ -20,7 +22,7 @@ using System.Threading.Tasks;
 namespace Rental_Car_Demo.UnitTests
 {
     [TestFixture]
-    public class UsersControllerTests
+    public class UsersControllerTests2Q
     {
         private UsersController _controller;
         private Mock<IEmailService> _emailServiceMock;
@@ -29,12 +31,16 @@ namespace Rental_Car_Demo.UnitTests
         private DummyCookies _dummyCookies;
         private DefaultHttpContext _httpContext;
         private RentCarDbContext _context;
+        private Mock<ITempDataDictionary> _mockTempData;
         private Mock<ITokenGenerator> _mockTokenGenerator;
         private Mock<ICustomerContext> _mockCustomerContext;
 
         [SetUp]
         public void SetUp()
         {
+            _mockTokenGenerator = new Mock<ITokenGenerator>();
+            _mockCustomerContext = new Mock<ICustomerContext>();
+            _mockTempData = new Mock<ITempDataDictionary>();
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase")
             .Options;
@@ -907,7 +913,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsInstanceOf<ViewResult>(result);
         }
     }
-    
+
     public class DummyCookies : IRequestCookieCollection, IResponseCookies
     {
         private readonly Dictionary<string, string> _cookiesStore = new Dictionary<string, string>();

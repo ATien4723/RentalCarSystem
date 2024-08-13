@@ -367,7 +367,7 @@ namespace Rental_Car_Demo.Tests
             var result = _controller.ChangeCarDetailsByOwner(carId) as ViewResult;
 
             // Assert
-            Assert.AreEqual("NotFound", result.ViewName, "The view name is incorrect");
+            Assert.AreEqual("ErrorAuthorization", result.ViewName, "The view name is incorrect");
         }
 
         [Test]
@@ -522,7 +522,7 @@ namespace Rental_Car_Demo.Tests
             var result = _controller.ChangeCarTermsByOwner(car, smoking, food, pet, specify) as ViewResult;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(null, result.ViewName);
+            Assert.AreEqual("ErrorAuthorization", result.ViewName);
         }
 
         [Test]

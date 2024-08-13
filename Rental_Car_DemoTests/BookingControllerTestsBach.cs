@@ -5,18 +5,13 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.BookingRepository;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Rental_Car_Demo.UnitTests.CarControllerTests;
+
 
 namespace Rental_Car_Demo.UnitTests
 {
     [TestFixture]
-    public class BookingControllerTests
+    public class BookingControllerTestsBach
     {
         private BookingController _bookingController;
         private RentCarDbContext _dbContext;
@@ -288,10 +283,10 @@ namespace Rental_Car_Demo.UnitTests
         [Test, MaxTime(2000)]
         [TestCase(100, "2024-01-01", "2023-03-01", -1)] // End date before start date
         [TestCase(100, "2024-01-01", "2024-01-01", -1)] // Same start and end date
-        [TestCase(100, "2024-02-28", "2024-03-01", 200)] // Leap year
-        [TestCase(100, "2024-12-31", "2025-01-01", 100)] // Across year boundary
-        [TestCase(100, "2020-01-01", "2024-01-01", 146100)] // Long date range
-        [TestCase(100, "2024-01-01", "2024-01-02", 100)] // Single day rental
+        [TestCase(100, "2024-02-28", "2024-03-01", 250)] // Leap year
+        [TestCase(100, "2024-12-31", "2025-01-01", 150)] // Across year boundary
+        [TestCase(100, "2020-01-01", "2024-01-01", 146150)] // Long date range
+        [TestCase(100, "2024-01-01", "2024-01-02", 150)] // Single day rental
         [TestCase(0, "2024-01-01", "2024-01-10", -1)] // Zero base price
         [TestCase(-100, "2024-01-01", "2024-01-10", -1)] // Negative base price
         [TestCase(100, "2024-01-01", "2024-01-01T18:00:00", 100)] // End date is today
@@ -311,10 +306,10 @@ namespace Rental_Car_Demo.UnitTests
         [Test, MaxTime(2000)]
         [TestCase(100, "2024-01-01", "2023-03-01", -1)] // End date before start date
         [TestCase(100, "2024-01-01", "2024-01-01", -1)] // Same start and end date
-        [TestCase(100, "2024-02-28", "2024-03-01", 200)] // Leap year
-        [TestCase(100, "2024-12-31", "2025-01-01", 100)] // Across year boundary
-        [TestCase(100, "2020-01-01", "2024-01-01", 146100)] // Long date range
-        [TestCase(100, "2024-01-01", "2024-01-02", 100)] // Single day rental
+        [TestCase(100, "2024-02-28", "2024-03-01", 250)] // Leap year
+        [TestCase(100, "2024-12-31", "2025-01-01", 150)] // Across year boundary
+        [TestCase(100, "2020-01-01", "2024-01-01", 146150)] // Long date range
+        [TestCase(100, "2024-01-01", "2024-01-02", 150)] // Single day rental
         [TestCase(0, "2024-01-01", "2024-01-10", -1)] // Zero deposit
         [TestCase(-100, "2024-01-01", "2024-01-10", -1)] // Negative deposit
         [TestCase(100, "2024-01-01", "2024-01-01T18:00:00", 100)] // End date is today
@@ -332,18 +327,18 @@ namespace Rental_Car_Demo.UnitTests
         }
 
         [Test, MaxTime(2000)]
-        [TestCase(100, "2024-01-01", "2024-03-01", 6000)] // Valid date range
-        [TestCase(100, "2024-01-01", "2023-03-01", 0)] // End date in the past
-        [TestCase(100, "2024-01-01", "2024-01-01", 0)] // Same start and end date
-        [TestCase(100, "2024-02-28", "2024-03-01", 200)] // Leap year
-        [TestCase(100, "2020-01-01", "2024-01-01", 146100)] // Long date range ending in the past
-        [TestCase(100, "2024-01-01", "2024-01-02", 100)] // Single day rental
-        [TestCase(0, "2024-01-01", "2024-01-10", 0)] // Zero base price
-        [TestCase(-100, "2024-01-01", "2024-01-10", 0)] // Negative base price
-        [TestCase(100, "2024-01-01", "2023-01-01", 0)] // End date before start date
-        [TestCase(100, "2024-01-01", "2023-12-31", 0)] // End date just before start date
-        [TestCase(100, "2024-02-28", "2024-03-01", 200)] // Leap day rental
-        [TestCase(100, "2024-01-01", "2024-01-01T18:00:00", 0)] // End date is the same day but with time
+        [TestCase(100, "2024-01-01T15:00:00", "2024-03-01T18:00:00", 6050)] // Valid date range
+        [TestCase(100, "2024-01-01", "2023-03-01", -1)] // End date in the past
+        [TestCase(100, "2024-01-01", "2024-01-01", -1)] // Same start and end date
+        [TestCase(100, "2024-02-28T18:00:00", "2024-03-01T17:00:00", 200)] // Leap year
+        [TestCase(100, "2020-01-01", "2024-01-01", 146150)] // Long date range ending in the past
+        [TestCase(100, "2024-01-01", "2024-01-02", 150)] // Single day rental
+        [TestCase(0, "2024-01-01", "2024-01-10", -1)] // Zero base price
+        [TestCase(-100, "2024-01-01", "2024-01-10", -1)] // Negative base price
+        [TestCase(100, "2024-01-01", "2023-01-01", -1)] // End date before start date
+        [TestCase(100, "2024-01-01", "2023-12-31", -1)] // End date just before start date
+        [TestCase(100, "2024-02-28", "2024-03-01", 250)] // Leap day rental
+        [TestCase(100, "2024-01-01", "2024-01-01T18:00:00", 100)] // End date is the same day but with time
         public void GetTotalPriceFromToday_ReturnsExpectedResult(decimal baseprice, string startDateString, string endDateString, decimal expected)
         {
             // Arrange

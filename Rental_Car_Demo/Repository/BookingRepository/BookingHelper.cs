@@ -72,11 +72,9 @@
         {
             DateTime today = DateTime.Today;
             DateTime actualEndDate = today < endDate ? today : endDate;
-            DateTime startDateOnly = startDate.Date;
-            DateTime actualEndDateOnly = actualEndDate.Date;
-            TimeSpan difference = actualEndDateOnly - startDateOnly;
+            TimeSpan difference = actualEndDate - startDate;
 
-            if (difference.TotalDays > 0)
+            if (difference.TotalDays > 0 && baseprice >0)
             {
                 int fullDays = (int)difference.TotalDays;
                 double remainingHours = difference.TotalHours - (fullDays * 24);

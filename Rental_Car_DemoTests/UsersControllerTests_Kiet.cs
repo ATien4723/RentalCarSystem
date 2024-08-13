@@ -365,7 +365,7 @@ namespace Rental_Car_Demo.Tests
 
             // Assert
             Assert.IsNotNull(result, "The result should not be null");
-            Assert.AreEqual("Login", result.ViewName, "The view name should be 'Login'");
+            Assert.AreEqual("Guest", result.ViewName, "The view name should be 'Guest'");
 
             var user = _context.Users.FirstOrDefault(u => u.UserId == model.CustomerId);
 

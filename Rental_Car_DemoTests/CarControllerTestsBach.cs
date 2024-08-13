@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ using Org.BouncyCastle.Tls;
 using Rental_Car_Demo.Controllers;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
-using Rental_Car_Demo.Validation;
+using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.UnitTests
 {
@@ -26,12 +27,17 @@ namespace Rental_Car_Demo.UnitTests
     {
         private CarController _carController;
         private RentCarDbContext _dbContext;
+        private Mock<IEmailService> _mockEmailService;
+        private Mock<ITempDataDictionary> _mockTempData;
+        private Mock<ICarRepository> _mockCarRepository;
         private DummySession _session;
         private CarDAO _carDAO;
 
         [SetUp]
         public void SetUp()
         {
+            _mockCarRepository = new Mock<ICarRepository>();
+            _mockEmailService = new Mock<IEmailService>();
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
@@ -39,7 +45,7 @@ namespace Rental_Car_Demo.UnitTests
             _dbContext = new RentCarDbContext(options);
             _session = new DummySession();
             _carDAO = new CarDAO(_dbContext);
-            _carController = new CarController(_dbContext)
+            _carController = new CarController(_mockCarRepository.Object, _dbContext, _mockEmailService.Object)
             {
                 ControllerContext = new ControllerContext
                 {

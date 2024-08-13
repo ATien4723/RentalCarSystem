@@ -174,13 +174,13 @@ namespace Rental_Car_Demo.Controllers
             {
                 year.Add(i);
             }
-            ViewBag.LPList = context.Cars.Select(x => x.LicensePlate).ToList();
-            ViewBag.Color = context.CarColors.ToList();
-            ViewBag.Brand = context.CarBrands.ToList();
-            ViewBag.Model = context.CarModels.ToList();
-            ViewBag.City = context.Cities.ToList();
-            ViewBag.District = context.Districts.ToList();
-            ViewBag.Ward = context.Wards.ToList();
+            ViewBag.LPList = _db.Cars.Select(x => x.LicensePlate).ToList();
+            ViewBag.Color = _db.CarColors.ToList();
+            ViewBag.Brand = _db.CarBrands.ToList();
+            ViewBag.Model = _db.CarModels.ToList();
+            ViewBag.City = _db.Cities.ToList();
+            ViewBag.District = _db.Districts.ToList();
+            ViewBag.Ward = _db.Wards.ToList();
             ViewBag.Year = year;
 
 
@@ -246,8 +246,8 @@ namespace Rental_Car_Demo.Controllers
                 document.Insurance = fileNameInsurance;
             }
 
-            context.CarDocuments.Add(document);
-            context.SaveChanges();
+            _db.CarDocuments.Add(document);
+            _db.SaveChanges();
 
             car.DocumentId = document.DocumentId;
 
@@ -257,8 +257,8 @@ namespace Rental_Car_Demo.Controllers
             address.WardId = ward;
             address.HouseNumberStreet = street;
 
-            context.Addresses.Add(address);
-            context.SaveChanges();
+            _db.Addresses.Add(address);
+            _db.SaveChanges();
             car.AddressId = address.AddressId;
 
             if (front != null)
@@ -318,8 +318,8 @@ namespace Rental_Car_Demo.Controllers
             additionalFunction.Dvd = DVD;
             additionalFunction.Usb = USB;
 
-            context.AdditionalFunctions.Add(additionalFunction);
-            context.SaveChanges();
+            _db.AdditionalFunctions.Add(additionalFunction);
+            _db.SaveChanges();
             car.FucntionId = additionalFunction.FucntionId;
 
             car.Status = 1;
@@ -333,8 +333,8 @@ namespace Rental_Car_Demo.Controllers
             {
                 termsOfUse.Specify = specify;
             }
-            context.TermOfUses.Add(termsOfUse);
-            context.SaveChanges();
+            _db.TermOfUses.Add(termsOfUse);
+            _db.SaveChanges();
             car.TermId = termsOfUse.TermId;
 
             var userString = HttpContext.Session.GetString("User");
@@ -345,7 +345,7 @@ namespace Rental_Car_Demo.Controllers
             }
             car.UserId = user.UserId;
 
-            car.Name = context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
+            car.Name = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId).BrandName + " " + _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId).ModelName + " " + car.ProductionYear;
             if (car != null)
             {
                 CarDAO carDao = new CarDAO(_db);
@@ -370,7 +370,7 @@ namespace Rental_Car_Demo.Controllers
                 return RedirectToAction("Login", "Users");
             }
             var userId = user.UserId;
-            ViewBag.Cars = context.Cars
+            ViewBag.Cars = _db.Cars
                 .Include(c => c.Address)
                     .ThenInclude(a => a.District)
                 .Include(c => c.Address)
@@ -404,8 +404,8 @@ namespace Rental_Car_Demo.Controllers
                     car.Status,
                     car.NoOfRide,
                     car.Address,
-                    AverageRating = context.Feedbacks
-                        .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                    AverageRating = _db.Feedbacks
+                        .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                         .Average(f => (double?)f.Ratings) ?? 0
                 })
                 .Where(c => c.UserId == userId)
@@ -413,7 +413,7 @@ namespace Rental_Car_Demo.Controllers
                 .ToList();
             ViewBag.SortOrder = "newest";
 
-            ViewBag.Bookings = context.Bookings
+            ViewBag.Bookings = _db.Bookings
            .Include(b => b.Car) // Include the Car navigation property
            .ToList();
 
@@ -429,7 +429,7 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public ActionResult ViewMyCars(string sortOrder)
         {
-            ViewBag.Bookings = context.Bookings
+            ViewBag.Bookings = _db.Bookings
            .Include(b => b.Car) // Include the Car navigation property
            .ToList();
             var userString = HttpContext.Session.GetString("User");
@@ -441,7 +441,7 @@ namespace Rental_Car_Demo.Controllers
             var userId = user.UserId;
             if (sortOrder == "latest")
             {
-                ViewBag.Cars = context.Cars
+                ViewBag.Cars = _db.Cars
                     .Include(c => c.Address)
                         .ThenInclude(a => a.District)
                     .Include(c => c.Address)
@@ -475,8 +475,8 @@ namespace Rental_Car_Demo.Controllers
                         car.Status,
                         car.NoOfRide,
                         car.Address,
-                        AverageRating = context.Feedbacks
-                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                        AverageRating = _db.Feedbacks
+                            .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
                     })
                     .Where(c => c.UserId == userId)
@@ -485,7 +485,7 @@ namespace Rental_Car_Demo.Controllers
             }
             else if (sortOrder == "newest")
             {
-                ViewBag.Cars = context.Cars
+                ViewBag.Cars = _db.Cars
                     .Include(c => c.Address)
                         .ThenInclude(a => a.District)
                     .Include(c => c.Address)
@@ -519,8 +519,8 @@ namespace Rental_Car_Demo.Controllers
                         car.Status,
                         car.NoOfRide,
                         car.Address,
-                        AverageRating = context.Feedbacks
-                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                        AverageRating = _db.Feedbacks
+                            .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
                     })
                     .Where(c => c.UserId == userId)
@@ -530,7 +530,7 @@ namespace Rental_Car_Demo.Controllers
             }
             else if (sortOrder == "highest")
             {
-                ViewBag.Cars = context.Cars
+                ViewBag.Cars = _db.Cars
                     .Include(c => c.Address)
                         .ThenInclude(a => a.District)
                     .Include(c => c.Address)
@@ -564,8 +564,8 @@ namespace Rental_Car_Demo.Controllers
                         car.Status,
                         car.NoOfRide,
                         car.Address,
-                        AverageRating = context.Feedbacks
-                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                        AverageRating = _db.Feedbacks
+                            .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
                     })
                     .Where(c => c.UserId == userId)
@@ -575,7 +575,7 @@ namespace Rental_Car_Demo.Controllers
             }
             else if (sortOrder == "lowest")
             {
-                ViewBag.Cars = context.Cars
+                ViewBag.Cars = _db.Cars
                     .Include(c => c.Address)
                         .ThenInclude(a => a.District)
                     .Include(c => c.Address)
@@ -609,8 +609,8 @@ namespace Rental_Car_Demo.Controllers
                         car.Status,
                         car.NoOfRide,
                         car.Address,
-                        AverageRating = context.Feedbacks
-                            .Where(f => context.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
+                        AverageRating = _db.Feedbacks
+                            .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
                             .Average(f => (double?)f.Ratings) ?? 0
                     })
                     .Where(c => c.UserId == userId)
