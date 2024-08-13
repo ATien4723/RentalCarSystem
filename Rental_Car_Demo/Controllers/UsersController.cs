@@ -172,7 +172,32 @@ namespace Rental_Car_Demo.Controllers
 
         public IActionResult Guest()
         {
-            return View();
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                Register = new RegisterViewModel(),
+                User = new User()
+            };
+
+            if (Request.Cookies.TryGetValue("UserEmail", out string encodedRememberMeValue))
+            {
+                string rememberMeValue = Encoding.UTF8.GetString(Convert.FromBase64String(encodedRememberMeValue));
+
+                var values = rememberMeValue.Split('|');
+
+                if (values.Length == 2)
+                {
+                    viewModel.User = new User
+                    {
+                        Email = values[0],
+                        Password = values[1],
+                        RememberMe = true
+                    };
+                }
+            }
+
+
+            return View(viewModel);
         }
 
 

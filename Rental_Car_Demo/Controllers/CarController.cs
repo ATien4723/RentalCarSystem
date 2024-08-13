@@ -28,7 +28,7 @@ namespace Rental_Car_Demo.Controllers
 
 
             var userJson = HttpContext.Session.GetString("User");
-            bool checkRent = false; 
+            bool checkRent = false;
             if (!string.IsNullOrEmpty(userJson))
             {
                 var user = JsonConvert.DeserializeObject<User>(userJson);
@@ -50,7 +50,7 @@ namespace Rental_Car_Demo.Controllers
 
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
 
-            if(car == null)
+            if (car == null)
             {
                 return NotFound($"No founded car with Id = {CarId} !");
             }
@@ -61,7 +61,7 @@ namespace Rental_Car_Demo.Controllers
             }
 
             ViewBag.CarOwner = _db.Users.FirstOrDefault(x => x.UserId == car.UserId);
-            
+
             var matchedFeedback = (from feedback in _db.Feedbacks
                                    join booking in _db.Bookings on feedback.BookingNo equals booking.BookingNo
                                    join user in _db.Users on booking.UserId equals user.UserId
@@ -99,7 +99,7 @@ namespace Rental_Car_Demo.Controllers
                 rating = 0;
             }
 
-            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x=> x.Date);
+            ViewBag.matchedFeedback = matchedFeedback.OrderByDescending(x => x.Date);
             ViewBag.Rating = rating;
             var brand = _db.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
             var model = _db.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
@@ -161,8 +161,8 @@ namespace Rental_Car_Demo.Controllers
         AverageRating = _db.Feedbacks
             .Where(f => _db.Bookings.Any(b => b.BookingNo == f.BookingNo && b.CarId == car.CarId))
             .Average(f => (double?)f.Ratings) ?? 0
-        })
-        .Where(c => c.CarId != car.CarId && c.Status==1)
+    })
+        .Where(c => c.CarId != car.CarId && c.Status == 1)
         .ToList();
 
             return View();
@@ -620,7 +620,7 @@ namespace Rental_Car_Demo.Controllers
             }
             return View();
         }
-        
+
         public IActionResult ChangeCarDetailsByOwner(int CarId)
         {
             var car = _db.Cars.FirstOrDefault(x => x.CarId == CarId);
@@ -808,7 +808,7 @@ namespace Rental_Car_Demo.Controllers
             var carId = car.CarId;
             var carrrr = _db.Cars.FirstOrDefault(car => car.CarId == carId);
 
-            if (/*ModelState.IsValid && */car.BasePrice > 0 && car.Deposit >0)
+            if (/*ModelState.IsValid && */car.BasePrice > 0 && car.Deposit > 0)
             {
                 carrrr.BasePrice = car.BasePrice;
                 carrrr.Deposit = car.Deposit;
@@ -821,10 +821,9 @@ namespace Rental_Car_Demo.Controllers
                 termsOfUse.NoSmoking = smoking;
                 termsOfUse.NoFoodInCar = food;
                 termsOfUse.NoPet = pet;
-                if (specify != null)
-                {
-                    termsOfUse.Specify = specify;
-                }
+
+
+                termsOfUse.Specify = specify;
 
                 _db.Update(termsOfUse);
                 _db.SaveChanges();
@@ -834,7 +833,7 @@ namespace Rental_Car_Demo.Controllers
             }
 
             return View("ErrorAuthorization");
-            
+
         }
 
         [HttpPost]
@@ -868,29 +867,37 @@ namespace Rental_Car_Demo.Controllers
                     _db.SaveChanges();
                     return RedirectToAction("ViewBookingList", "Booking");
                 }
-                user.Wallet += amount;
-                var transactionUser = new Wallet
+
+                if (amount != 0)
                 {
-                    UserId = userId,
-                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
-                    Type = "Offset final payment",
-                    CreatedAt = DateTime.Now,
-                    BookingNo = booking.BookingNo,
-                    CarName = car.Name
-                };
-                carOwner.Wallet -= amount;
-                var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
-                var transactionCarOwner = new Wallet
-                {
-                    UserId = carOwner.UserId,
-                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
-                    Type = transactionCarOwnerType,
-                    CreatedAt = DateTime.Now,
-                    BookingNo = booking.BookingNo,
-                    CarName = car.Name
-                };
-                _db.Wallets.Add(transactionUser);
-                _db.Wallets.Add(transactionCarOwner);
+
+
+                    user.Wallet += amount;
+                    var transactionUser = new Wallet
+                    {
+                        UserId = userId,
+                        Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
+                        Type = "Offset final payment",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    carOwner.Wallet -= amount;
+                    var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
+                    var transactionCarOwner = new Wallet
+                    {
+                        UserId = carOwner.UserId,
+                        Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
+                        Type = transactionCarOwnerType,
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    _db.Wallets.Add(transactionUser);
+                    _db.Wallets.Add(transactionCarOwner);
+                    _db.SaveChanges();
+                }
+
                 booking.Status = 5;
                 car.NoOfRide += 1;
                 _db.Update(car);
@@ -913,35 +920,49 @@ namespace Rental_Car_Demo.Controllers
             {
                 if ((-amount) > user.Wallet)
                 {
-                    TempData["ErrorMessage"] = "Your wallet doesn’t have enough balance. Please top-up your wallet and try again";
+                    TempData["ErrorMessage"] =
+                        "Your wallet doesn’t have enough balance. Please top-up your wallet and try again";
                     booking.Status = 4;
                     _db.Update(booking);
                     _db.SaveChanges();
-                    return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
+                    return RedirectToAction("EditBookingDetail", "Booking",
+                        new
+                        {
+                            startDate = booking.StartDate,
+                            endDate = booking.EndDate,
+                            carId = carId,
+                            bookingNo = booking.BookingNo
+                        });
                 }
-                user.Wallet += amount;
-                var transactionUser = new Wallet
+
+                if (amount != 0)
                 {
-                    UserId = userId,
-                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
-                    Type = "Offset final payment",
-                    CreatedAt = DateTime.Now,
-                    BookingNo = booking.BookingNo,
-                    CarName = car.Name
-                };
-                carOwner.Wallet -= amount;
-                var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
-                var transactionCarOwner = new Wallet
-                {
-                    UserId = carOwner.UserId,
-                    Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
-                    Type = transactionCarOwnerType,
-                    CreatedAt = DateTime.Now,
-                    BookingNo = booking.BookingNo,
-                    CarName = car.Name
-                };
-                _db.Wallets.Add(transactionUser);
-                _db.Wallets.Add(transactionCarOwner);
+                    user.Wallet += amount;
+                    var transactionUser = new Wallet
+                    {
+                        UserId = userId,
+                        Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", amount),
+                        Type = "Offset final payment",
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    carOwner.Wallet -= amount;
+                    var transactionCarOwnerType = amount > 0 ? "Return Transaction" : "Receive Transaction";
+                    var transactionCarOwner = new Wallet
+                    {
+                        UserId = carOwner.UserId,
+                        Amount = string.Format("{0:+#,##0.00;-#,##0.00;0.00}", -amount),
+                        Type = transactionCarOwnerType,
+                        CreatedAt = DateTime.Now,
+                        BookingNo = booking.BookingNo,
+                        CarName = car.Name
+                    };
+                    _db.Wallets.Add(transactionUser);
+                    _db.Wallets.Add(transactionCarOwner);
+                    _db.SaveChanges();
+                }
+
                 booking.Status = 5;
                 car.NoOfRide += 1;
                 _db.Update(car);
