@@ -409,6 +409,22 @@ namespace Rental_Car_Demo.Tests
         [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 100000, 500000, null, 0)] //search car brandname + seat + price 100000->500000
         [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 500000, 1000000, null, 0)] //search car brandname + seat + price 500000->100000
         [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 1000000, 5000000, null, 0)] //search car brandname + seat + price 1000000->5000000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 0, 100000, null, 0)] //search car brandname + seat + manual + price 0->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 100000, 500000, null, 0)] //search car brandname + seat + manual + price 100000->500000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 500000, 1000000, null, 0)] //search car brandname + seat + manual + price 500000->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 1000000, 5000000, null, 0)] //search car brandname + seat + manual + price 1000000->5000000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 0, 100000, null, 0)] //search car brandname + seat + auto + price 0->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 100000, 500000, null, 0)] //search car brandname + seat + auto + price 100000->500000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 500000, 1000000, null, 0)] //search car brandname + seat + auto + price 500000->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 1000000, 5000000, null, 0)] //search car brandname + seat + auto + price 1000000->5000000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 0, 100000, null, 0)] //search car brandname + seat + auto + manual + price 0->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 100000, 500000, null, 0)] //search car brandname + seat + auto + manual + price 100000->500000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 500000, 1000000, null, 0)] //search car brandname + seat + auto + manual + price 500000->100000
+        [TestCase (new string[] { "Brand A" }, new int[] { 4 }, null, null, 1000000, 5000000, null, 0)] //search car brandname + seat + auto + manual + price 1000000->5000000
+
+
+
+
 
 
         [TestCase (null, null, null, null, 0, 100000, null, 1)]
