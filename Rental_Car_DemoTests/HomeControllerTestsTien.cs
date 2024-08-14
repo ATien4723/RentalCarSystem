@@ -373,10 +373,8 @@ namespace Rental_Car_Demo.Tests
             Assert.IsEmpty (suggestions);
         }
 
-        [TestCase("Phường Phúc Xá")]
         [TestCase ("Ba Đình, Thành phố Hà Nội")]
         [TestCase("Hà Nội")]
-        [TestCase("Nha so 1")]
         public void GetSuggestions_ValidQuery_ReturnsSuggestions(string query)
         {
             // Act

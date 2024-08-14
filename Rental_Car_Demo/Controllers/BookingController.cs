@@ -493,10 +493,9 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpPost]
-        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo,string sortOrder)
+        public IActionResult confirmPickupForDetailsPage(DateTime? startDate, DateTime? endDate, int carId, int bookingNo, string sortOrder)
         {
 
-            var context = new RentCarDbContext();
             var userString = HttpContext.Session.GetString("User");
             User user = null;
             if (!string.IsNullOrEmpty(userString))
@@ -521,10 +520,10 @@ namespace Rental_Car_Demo.Controllers
             booking.Status = 3;
             context.Bookings.Update(booking);
             context.SaveChanges();
-           
+
             if (!startDate.HasValue || !endDate.HasValue)
             {
-               
+
                 if (sortOrder != "latest" && sortOrder != "newest" && sortOrder != "highest" && sortOrder != "lowest")
                 {
                     return NotFound($"Can not find sort order {sortOrder} !");
@@ -587,7 +586,6 @@ namespace Rental_Car_Demo.Controllers
                         Status = b.Status,
                         Name = b.Car.Name,
                         BasePrice = b.Car.BasePrice,
-
                         TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
                     })
                     .OrderBy(b => b.TotalCost)
@@ -595,8 +593,8 @@ namespace Rental_Car_Demo.Controllers
                     ViewBag.SortOrder = "lowest";
                 }
                 var bookingCount = context.Bookings
-                .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
-                .Count();
+                    .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
+                    .Count();
 
                 ViewBag.Count = bookingCount;
                 return View("ViewBookingList");

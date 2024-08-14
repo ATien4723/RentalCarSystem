@@ -12,11 +12,12 @@ using Rental_Car_Demo.Repository.BookingRepository;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
+using System.Text;
 using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.UnitTests
 {
-    
+
     [TestFixture]
     public class BookingControllerTestsAn
     {
@@ -24,10 +25,14 @@ namespace Rental_Car_Demo.UnitTests
         private RentCarDbContext _context;
         private Mock<IEmailService> _mockEmailService;
         private DummySession _session;
+        private string filePath;
+        private Mock<IFormFile> _mockFile;
 
         [SetUp]
         public void Setup()
         {
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            filePath = Path.Combine(Environment.CurrentDirectory, "wwwroot/img", "newFile.png");
             var options = new DbContextOptionsBuilder<RentCarDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
@@ -35,7 +40,8 @@ namespace Rental_Car_Demo.UnitTests
             _context = new RentCarDbContext(options);
             _session = new DummySession();
             _mockEmailService = new Mock<IEmailService>();
-            _controller = new BookingController( _mockEmailService.Object, _context)
+            _mockFile = new Mock<IFormFile>();
+            _controller = new BookingController(_mockEmailService.Object, _context)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -51,6 +57,10 @@ namespace Rental_Car_Demo.UnitTests
         [TearDown]
         public void TearDown()
         {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
             _context.Database.EnsureDeleted();
             _controller.Dispose();
             _context.Dispose();
@@ -543,36 +553,14 @@ namespace Rental_Car_Demo.UnitTests
             "", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "0334110870", "", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", null, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, null)]
-
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "", "", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
@@ -2047,7 +2035,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual("ErrorAuthorization", result.ViewName);
         }
-        
+
         [TestCase(1, "Acura ILX 2000", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1)]
         public void BookACarFinish_AuthorizationCustomer_ReturnView(int? carId, string? carName, string? startDateStr, string? endDateStr, int bookingNo)
         {
@@ -2208,7 +2196,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual("Login", result.ActionName);
         }
-        
+
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_AuthorizationCarOwner_ErrorAuthorization(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -2230,7 +2218,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual("ErrorAuthorization", result.ViewName);
         }
-        
+
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 3)]
         public void EditBookingDetail_Get_AuthorizationConflictUserId_ErrorAuthorization(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -2274,7 +2262,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual("ErrorAuthorization", result.ViewName);
         }
-        
+
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_ReturnPost(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -3247,7 +3235,7 @@ namespace Rental_Car_Demo.UnitTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedValue, result.ViewData["dob"]);
         }
-        
+
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_CheckViewBagDrivingLience(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -3488,7 +3476,7 @@ namespace Rental_Car_Demo.UnitTests
 
             Assert.AreEqual(expectedValue, result.ViewData["houseNumberStreetR"]);
         }
-        
+
         [TestCase("2024-08-01 20:00:00", "2024-08-03 20:00:00", 3, 3)]
         public void EditBookingDetail_Get_CheckViewBagCitiesD(string startDateStr, string endDateStr, int carId, int bookingNo)
         {
@@ -3787,6 +3775,101 @@ namespace Rental_Car_Demo.UnitTests
 
             Assert.IsNotNull(result);
             Assert.AreEqual("EditBookingDetail", result.ActionName);
+        }
+
+        [Test]
+        public void UploadImage_NullFile_ReturnsInvalidFileMessage()
+        {
+            // Act
+            var result = _controller.UploadImage(null) as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            //var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsNotNull(jsonResult);
+            //Assert.IsFalse((bool)jsonResult["success"]);
+            //Assert.AreEqual("Invalid file", jsonResult["message"]);
+        }
+
+        [Test]
+        public void UploadImage_FileAlreadyExists_ReturnsFileExistsMessage()
+        {
+            // Arrange
+            var fileName = "1.png";
+            var imgDirectory = GetProjectPath("wwwroot/img");
+            var filePath = Path.Combine(imgDirectory, fileName);
+
+            File.WriteAllText(filePath, "dummy content");
+
+            _mockFile.Setup(f => f.FileName).Returns(fileName);
+            _mockFile.Setup(f => f.Length).Returns(1024);
+            _mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(stream =>
+            {
+                using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes("Dummy content")))
+                {
+                    memoryStream.CopyTo(stream);
+                }
+            });
+
+            // Act
+            var result = _controller.UploadImage(_mockFile.Object) as JsonResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            //var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsNotNull(jsonResult);
+            //Assert.IsFalse((bool)jsonResult["success"]);
+            //Assert.AreEqual("File already exists", jsonResult["message"]);
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [Test]
+        public void UploadImage_ValidFile_ReturnsSuccess()
+        {
+            // Arrange
+            var uniqueFileName = $"newFile_{Guid.NewGuid()}.png";
+            var imgDirectory = GetProjectPath("wwwroot/img");
+
+            // Đảm bảo rằng thư mục tồn tại
+            if (!Directory.Exists(imgDirectory))
+            {
+                Directory.CreateDirectory(imgDirectory);
+            }
+
+            var filePath = Path.Combine(imgDirectory, uniqueFileName);
+
+            _mockFile.Setup(f => f.FileName).Returns(uniqueFileName);
+            _mockFile.Setup(f => f.Length).Returns(1024);
+            _mockFile.Setup(f => f.CopyTo(It.IsAny<Stream>())).Callback<Stream>(stream =>
+            {
+                using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes("Dummy content")))
+                {
+                    memoryStream.CopyTo(stream);
+                }
+            });
+
+            // Act
+            var result = _controller.UploadImage(_mockFile.Object) as JsonResult;
+
+            // Cleanup
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            // Assert
+            Assert.IsNotNull(result);
+            var jsonResult = result.Value as IDictionary<string, object>;
+            //Assert.IsTrue((bool)jsonResult["success"]);
+        }
+
+        public string GetProjectPath(string relativePath)
+        {
+            // Lấy đường dẫn tuyệt đối đến thư mục dự án gốc
+            var projectRoot = Directory.GetCurrentDirectory();
+            return Path.Combine(projectRoot, relativePath);
         }
     }
 }

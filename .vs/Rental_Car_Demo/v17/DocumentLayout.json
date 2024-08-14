@@ -3,44 +3,24 @@
   "WorkspaceRootPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\tokengeneratortestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\tokengeneratortestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\homecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\homecontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\userscontrollertestsan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\userscontrollertestsan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\emailservicestests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\emailservicestests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\customercontexttestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\customercontexttestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\bookingcontrollertestsan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\bookingcontrollertestsan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\cardaotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\cardaotests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\carcontrollertestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\carcontrollertestskiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\bookingcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\bookingcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demotests\\userscontrollertests_kiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{96627AF2-10CB-4CA3-BE79-C01F9DE44A3F}|Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj|solutionrelative:rental_car_demotests\\userscontrollertests_kiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\views\\car\\addacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\views\\car\\addacar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|d:\\fsoftassignment\\project_rentalcar\\rental-car\\rental_car_demo\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29AD524D-ED25-4F88-A2AC-5124E4F9076A}|Rental_Car_Demo\\Rental_Car_Demo.csproj|solutionrelative:rental_car_demo\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,97 +30,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TokenGeneratorTestsKiet.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\TokenGeneratorTestsKiet.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\TokenGeneratorTestsKiet.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\TokenGeneratorTestsKiet.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\TokenGeneratorTestsKiet.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:43:20.263Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HomeControllerTests.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\HomeControllerTests.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\HomeControllerTests.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\HomeControllerTests.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\HomeControllerTests.cs",
-              "ViewState": "AQIAAMEBAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:43:10.428Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "EmailServicesTests.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\EmailServicesTests.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\EmailServicesTests.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\EmailServicesTests.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\EmailServicesTests.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:43:08.008Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "CustomerContextTestsKiet.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CustomerContextTestsKiet.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\CustomerContextTestsKiet.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CustomerContextTestsKiet.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\CustomerContextTestsKiet.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
+              "Title": "BookingControllerTestsAn.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\BookingControllerTestsAn.cs",
+              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\BookingControllerTestsAn.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\BookingControllerTestsAn.cs",
+              "RelativeToolTip": "Rental_Car_DemoTests\\BookingControllerTestsAn.cs",
+              "ViewState": "AQIAAAkPAAAAAAAAAAAwwCMPAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:42:40.66Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CarDAOTests.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CarDAOTests.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\CarDAOTests.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CarDAOTests.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\CarDAOTests.cs",
-              "ViewState": "AQIAAJYBAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:42:25.276Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "BookingControllerTests.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\BookingControllerTests.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\BookingControllerTests.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\BookingControllerTests.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\BookingControllerTests.cs",
-              "ViewState": "AQIAAFgBAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:41:43.941Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "UsersControllerTests_Kiet.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\UsersControllerTests_Kiet.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\UsersControllerTests_Kiet.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\UsersControllerTests_Kiet.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\UsersControllerTests_Kiet.cs",
-              "ViewState": "AQIAAFwBAAAAAAAAAAAUwF8BAAAsAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T04:38:53.381Z",
+              "WhenOpened": "2024-08-14T07:29:56.724Z",
               "EditorCaption": ""
             },
             {
@@ -165,41 +67,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CarControllerTestsKiet.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CarControllerTestsKiet.cs",
-              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\CarControllerTestsKiet.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\CarControllerTestsKiet.cs",
-              "RelativeToolTip": "Rental_Car_DemoTests\\CarControllerTestsKiet.cs",
-              "ViewState": "AQIAAGMBAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 4,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Rental_Car_Demo\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAHMAAAAAAAAAAAA5wAwAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T02:21:11.702Z",
+              "WhenOpened": "2024-08-14T07:35:05.048Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Program.cs",
-              "RelativeDocumentMoniker": "Rental_Car_Demo\\Program.cs",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Program.cs",
-              "RelativeToolTip": "Rental_Car_Demo\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAbAAAA",
+              "DocumentIndex": 2,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Rental_Car_Demo\\Controllers\\UsersController.cs",
+              "ViewState": "AQIAAI4BAAAAAAAAAAAswP4BAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T03:57:46.083Z",
+              "WhenOpened": "2024-08-14T07:23:44.961Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "AddACar.cshtml",
-              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "RelativeDocumentMoniker": "Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "RelativeToolTip": "Rental_Car_Demo\\Views\\Car\\AddACar.cshtml",
-              "ViewState": "AQIAAAUCAAAAAAAAAAAswCECAAAvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-13T08:11:26.305Z",
+              "DocumentIndex": 1,
+              "Title": "UsersControllerTestsAn.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\UsersControllerTestsAn.cs",
+              "RelativeDocumentMoniker": "Rental_Car_DemoTests\\UsersControllerTestsAn.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\UsersControllerTestsAn.cs",
+              "RelativeToolTip": "Rental_Car_DemoTests\\UsersControllerTestsAn.cs",
+              "ViewState": "AQIAADQCAAAAAAAAAAAgwEECAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-14T07:19:54.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BookingController.cs",
+              "DocumentMoniker": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\BookingController.cs",
+              "RelativeDocumentMoniker": "Rental_Car_Demo\\Controllers\\BookingController.cs",
+              "ToolTip": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Controllers\\BookingController.cs",
+              "RelativeToolTip": "Rental_Car_Demo\\Controllers\\BookingController.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAgwBIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-14T06:33:01.807Z",
               "EditorCaption": ""
             }
           ]

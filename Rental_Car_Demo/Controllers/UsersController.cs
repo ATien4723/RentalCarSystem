@@ -468,7 +468,7 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-            
+
             bool emailExists = context.Users.Any(u => u.Email == user.Email && u.UserId != user.UserId);
             if (emailExists)
             {
@@ -502,11 +502,11 @@ namespace Rental_Car_Demo.Controllers
             }
             if (currentUser.Role == false)
             {
-                return RedirectToAction("LoginCus", "Users");
+                return View(user);
             }
             else
             {
-                return RedirectToAction("LoginOwn", "Users");
+                return View(user);
             }
         }
 
