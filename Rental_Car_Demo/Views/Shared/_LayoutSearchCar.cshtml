@@ -257,7 +257,7 @@
                 {
                     <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
                        id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
+                        <img src="~/img/avata.jpg" style="width:20px" alt="Profile" class="rounded-circle me-2">
                         Welcome, @user?.Name
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
@@ -275,7 +275,7 @@
                 {
                     <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-black" href="#"
                        id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://via.placeholder.com/30" alt="Profile" class="rounded-circle me-2">
+                        <img src="~/img/avata.jpg" style="width:20px" alt="Profile" class="rounded-circle me-2">
                         Guest
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" aria-expanded="false">
@@ -323,23 +323,19 @@
 
     <script>
 
-        function toggleSelection(element) {
-            element.classList.toggle('selected');
-        }
         $(document).ready(function () {
-        });
 
-        $(document).ready(function () {
+            // Hàm thực hiện tìm kiếm
             function performSearch() {
+                var address = $('#pickupLocation').val().trim().toLowerCase();
                 var selectedBrands = [];
                 $(".brandNameCheckbox:checked").each(function () {
                     selectedBrands.push($(this).val());
                 });
 
-
                 var selectedSeats = [];
                 $(".seatsCheckbox:checked").each(function () {
-                    selectedSeats.push($(this).val());
+                    selectedSeats.push(parseInt($(this).val(), 10));
                 });
 
                 var selectedTransmissions = [];
@@ -352,23 +348,28 @@
                     selectedFuel.push($(this).val() === "true");
                 });
 
-               
+                var priceRange = $('input.priceRangeCheckbox:checked').map(function () { return this.value; }).get();
 
-                console.log("Selected trasss:", selectedTransmissions);  // Debug log
-                console.log("Selected trasss:", selectedFuel);
+                console.log("Address:", address);
+                console.log("Selected Brands:", selectedBrands);
+                console.log("Selected Seats:", selectedSeats);
+                console.log("Selected Transmissions:", selectedTransmissions);
+                console.log("Selected Fuel:", selectedFuel);
+                console.log("Price Range:", priceRange);
 
                 $.ajax({
                     url: "/Home/SearchCar",
                     type: "GET",
                     traditional: true,
                     data: {
+                        address: address,
                         brandNames: selectedBrands,
                         seats: selectedSeats,
                         transmissionTypes: selectedTransmissions,
-                        fuelTypes: selectedFuel
+                        fuelTypes: selectedFuel,
+                        priceRange: priceRange
                     },
                     success: function (data) {
-                      //  console.log("Data Received:", data); 
                         $("#carResults").html(data);
                     },
                     error: function (error) {
@@ -377,12 +378,24 @@
                 });
             }
 
-            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox, .fuleTypeCheckbox").change(function (event) {
+            // Hàm gọi khi có sự thay đổi trên các checkbox
+            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox, .fuleTypeCheckbox, .priceRangeCheckbox").change(function (event) {
                 event.preventDefault();
                 performSearch();
             });
 
+            // Hàm để toggle class khi chọn lọc
+            function toggleSelection(element) {
+                element.classList.toggle('selected');
+            }
+
+            // Xử lý khi người dùng gõ địa chỉ tìm kiếm
+            $('#pickupLocation').on('keyup', function () {
+                performSearch();
+            });
+
         });
+
 
         // function performBrandSearch(brandNames) {
         //     $.ajax({
@@ -401,30 +414,9 @@
         //     });
         // }
 
-      
-
-
-
-            $(document).ready(function () {
-                $('.priceRangeCheckbox').change(function () {
-                    var form = $('#priceRangeForm');
-                    $.ajax({
-                    url: "/Home/SearchCar",
-                    type: "POST",
-                        data: form.serialize(),
-                        success: function (result) {
-                        $('#carResults').html(result);
-                        },
-                        error: function () {
-                            alert('Error occurred while fetching data.');
-                        }
-                    });
-                });
-            });
-
 
         function fetchSuggestions(query, inputId) {
-            fetch('/Home/GetSuggestions?query=' + encodeURIComponent(query))
+            fetch('/Home/GetSuggest?query=' + encodeURIComponent(query))
                 .then(response => response.json())
                 .then(data => {
                     let suggestions = data.map(item => `<option value="${item}">`).join('');
@@ -443,13 +435,12 @@
         }
 
         function resetLocationInput(inputId) {
+            // Clear the input field
             document.getElementById(inputId).value = '';
-            document.getElementById(inputId + "Suggestions").innerHTML = '';
-            searchAllCars();
-        }
 
-        function resetCarList() {
-            document.getElementById('carResults').innerHTML = '';
+            document.getElementById(inputId + "Suggestions").innerHTML = '';
+
+            resetAllFilters();
         }
 
         function searchAllCars() {
@@ -468,6 +459,20 @@
                     document.getElementById('carResults').innerHTML = html;
                 })
                 .catch(error => console.error('Error searching cars:', error));
+        }
+
+        function resetAllFilters() {
+            // Redirect to the SearchCarForm action with empty or default parameters
+            const params = new URLSearchParams({
+                address: '',
+                pickupDate: '',
+                pickupTime: '',
+                dropoffDate: '',
+                dropoffTime: ''
+            });
+
+            // Redirect to the URL to reload the page
+            window.location.href = `/Home/SearchCarForm?${params.toString()}`;
         }
 
         function toggleSelection(element) {

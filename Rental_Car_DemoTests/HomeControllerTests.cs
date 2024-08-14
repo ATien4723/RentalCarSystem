@@ -294,31 +294,7 @@ namespace Rental_Car_Demo.Tests
 
   
 
-        [Test]
-
-        [TestCase ("Adress", null, null, null, null, Description = "Only address")]
-        [TestCase ("Some Address", "2023-07-01", "12:00", "2023-07-02", "14:00", Description = "With provided values")]
-        [TestCase ("aa", "2024-01-01", "08:30", "2024-01-03", "18:00", Description = "Empty address with provided dates and times")]
-
-        public void SearchCarForm_Returns_ViewResult_With_Cars(string? address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime)
-        {
-            // Convert strings to DateOnly and TimeOnly
-            DateOnly? pickupDateOnly = pickupDate != null ? DateOnly.Parse(pickupDate) : (DateOnly?)null;
-            TimeOnly? pickupTimeOnly = pickupTime != null ? TimeOnly.Parse(pickupTime) : (TimeOnly?)null;
-            DateOnly? dropoffDateOnly = dropoffDate != null ? DateOnly.Parse(dropoffDate) : (DateOnly?)null;
-            TimeOnly? dropoffTimeOnly = dropoffTime != null ? TimeOnly.Parse(dropoffTime) : (TimeOnly?)null;
-
-
-            // Act
-            var result = _controller.SearchCarForm(address, pickupDateOnly, pickupTimeOnly, dropoffDateOnly, dropoffTimeOnly) as ViewResult;
-
-
-            // Assert
-            Assert.IsNotNull(result);
-            var model = result.Model as IEnumerable<Car>;
-            Assert.IsNotNull(model);
-
-        }
+        
 
 
         [Test]
@@ -335,10 +311,11 @@ namespace Rental_Car_Demo.Tests
         [TestCase(new string[] { "Brand B" }, new int[] { 4 }, new bool[] { false }, new bool[] { true }, new string[] { "1000000-5000000" }, "Some address")]
         [TestCase(new string[] { "Brand A" }, new int[] { 4 }, new bool[] { true }, new bool[] { true },  new string[] { "5000000-10000000" }, "Some address")]
         [TestCase(new string[] { "Brand B" }, new int[] { 2 }, new bool[] { false }, new bool[] { false },  new string[] { "10000000-100000000" }, "Some address")]
-        public void SearchCar_ValidParameters_ReturnsPartialViewWithCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
+        public async Task SearchCar_ValidParameters_ReturnsPartialViewWithCars(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
         {
             // Act
-            var result = _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as PartialViewResult;
+            var result = await _controller.SearchCar(brandNames, seats, transmissionTypes, fuelTypes, priceRange, address) as PartialViewResult;
+
             var model = result.Model as IEnumerable<Car>;
 
             // Assert
@@ -347,6 +324,33 @@ namespace Rental_Car_Demo.Tests
             Assert.IsNotNull(model);
         }
 
+
+        [Test]
+        [TestCase ("Valid Address", "2024-01-01", "08:00", "2024-01-02", "18:00", new[] { "Brand A" }, new[] { 4 }, new[] { true }, new[] { false }, new[] { "50000-150000" }, Description = "All parameters valid")]
+        [TestCase ("Valid Address", null, null, null, null, new string[] { }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { }, Description = "Empty optional parameters")]
+        [TestCase ("Valid Address", "2024-01-01", null, null, null, new[] { "Brand B" }, new[] { 2 }, new[] { false }, new[] { true }, new[] { "100000-200000" }, Description = "Date and time provided with other valid parameters")]
+        [TestCase ("Invalid Address", "2024-01-01", "08:00", "2024-01-02", "18:00", new[] { "Brand C" }, new[] { 3 }, new[] { true }, new[] { false }, new[] { "0-50000" }, Description = "Address with no cars available")]
+        [TestCase ("Some Address", "2024-01-01", "08:00", "2024-01-01", "18:00", new[] { "Brand D" }, new[] { 5 }, new[] { true }, new[] { true }, new[] { "200000-300000" }, Description = "Start and end date are the same")]
+
+        public void SearchCarForm_Returns_ViewResult_With_Cars(string address, string? pickupDate, string? pickupTime, string? dropoffDate, string? dropoffTime, string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange)
+        {
+            // Convert strings to DateOnly and TimeOnly
+            DateOnly? pickupDateOnly = pickupDate != null ? DateOnly.Parse (pickupDate) : (DateOnly?)null;
+            TimeOnly? pickupTimeOnly = pickupTime != null ? TimeOnly.Parse (pickupTime) : (TimeOnly?)null;
+            DateOnly? dropoffDateOnly = dropoffDate != null ? DateOnly.Parse (dropoffDate) : (DateOnly?)null;
+            TimeOnly? dropoffTimeOnly = dropoffTime != null ? TimeOnly.Parse (dropoffTime) : (TimeOnly?)null;
+
+
+            // Act
+            var result = _controller.SearchCarForm (address, pickupDateOnly, pickupTimeOnly, dropoffDateOnly, dropoffTimeOnly, brandNames, seats, transmissionTypes, fuelTypes, priceRange) as ViewResult;
+
+
+            // Assert
+            Assert.IsNotNull (result);
+            var model = result.Model as IEnumerable<Car>;
+            Assert.IsNotNull (model);
+
+        }
 
 
         [Test]

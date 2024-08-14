@@ -434,14 +434,14 @@ namespace Rental_Car_Demo.Tests
         [TestCase (null, null, null, null, 5000000, 10000000, null, 1)]
         [TestCase(null, null, null, null, 10000000, 100000000, null, 2)]
         [TestCase(null, null, null, null, null, null, "Nha so 1", 1)]
-        public void SearchCars_TestCases(string[]? brandNames, int[]? seats, bool[]? transmissionTypes, bool[]? fuelTypes, decimal? minPrice, decimal? maxPrice, string? address, int? expectedCount)
+        public async Task SearchCars_TestCases(string[]? brandNames, int[]? seats, bool[]? transmissionTypes, bool[]? fuelTypes, decimal? minPrice, decimal? maxPrice, string? address, int? expectedCount)
         {
             // Act
-            var result = _carDAO.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address).ToList();
-
+            var result = await _carDAO.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
+            var resultList = result.ToList ();
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedCount, result.Count);
+            Assert.AreEqual(expectedCount, resultList.Count);
         }
     }
 
