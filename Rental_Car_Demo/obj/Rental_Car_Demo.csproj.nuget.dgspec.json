@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
   },
   "projects": {
-    "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "projectName": "Rental_Car_Demo",
-        "projectPath": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\obj\\",
+        "outputPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

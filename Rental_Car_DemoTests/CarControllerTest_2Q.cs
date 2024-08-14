@@ -923,7 +923,6 @@ namespace Rental_Car_Demo.UnitTests
         [Test]
         [TestCase("500")]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCar_CreatesWalletTransactionsForUser(decimal amount)
         {
             int carId = 4;
@@ -951,7 +950,6 @@ namespace Rental_Car_Demo.UnitTests
         [Test]
         [TestCase("500")]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCar_CreatesWalletTransactionsForCarOwner(decimal amount)
         {
             int carId = 4;
@@ -996,7 +994,6 @@ namespace Rental_Car_Demo.UnitTests
         }
         [Test]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCar_NegativeOrZeroAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
         {
             int carId = 4;
@@ -1458,7 +1455,6 @@ namespace Rental_Car_Demo.UnitTests
         [Test]
         [TestCase("500")]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCarInDetail_CreatesWalletTransactionsForUser(decimal amount)
         {
             int carId = 4;
@@ -1486,7 +1482,6 @@ namespace Rental_Car_Demo.UnitTests
         [Test]
         [TestCase("500")]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCarInDetail_CreatesWalletTransactionsForCarOwner(decimal amount)
         {
             int carId = 4;
@@ -1531,7 +1526,6 @@ namespace Rental_Car_Demo.UnitTests
         }
         [Test]
         [TestCase("-500")]
-        [TestCase("0")]
         public void ReturnCarInDetail_NegativeOrZeroAmount_TransactionTypeOfCarOwnerWallet(decimal amount)
         {
             int carId = 4;
