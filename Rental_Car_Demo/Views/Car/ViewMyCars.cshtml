@@ -29,8 +29,8 @@
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-light.css">
     <style>
         body {
-            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
+            background-color: #edf2f8;
         }
 
         .car-card {
@@ -107,7 +107,7 @@
                 margin-bottom: 0.5rem;
                 display: flex;
                 align-items: center;
-                gap: 5px;
+                gap: 8px;
             }
 
         .specs i,
@@ -132,7 +132,6 @@
             font-size: 1rem;
             cursor: pointer;
             align-self: flex-start;
-            width: 25%;
         }
 
         .view-deposit-btn {
@@ -193,12 +192,12 @@
 </head>
 <body>
     <div class="container mt-5">
-        <a class="link mt-5" href="~/Users/LoginOwn">Home</a> > <span>Add a car</span>
-
-        <h2 class="mt-3" style="font-weight: bold;">List of Cars</h2>
+        <a class="link mt-5" href="~/Users/LoginOwn">Home</a> > <span style="font-weight:bold">List of Cars</span>
 
         <div class="d-flex justify-content-between align-items-center mt-4">
-            <button class="btn btn-primary" onclick="location.href='@Url.Action("AddACar", "Car")'">Add car</button>
+            <button class="btn btn-primary mb-2" style="background-color: #3942e5;
+                                                   border: none;color: white;" 
+            onclick="location.href='@Url.Action("AddACar", "Car")'">Add Car</button>
             <form id="sortForm" method="post" asp-action="ViewMyCars">
                 <select id="sortOrder" name="sortOrder" class="form-select w-auto">
                     <option value="newest">Newest to Latest</option>
@@ -210,8 +209,6 @@
         </div>
     </div>
 
-    <div class="row">
-    </div>
 
     <div class="container" id="listingContainer">
         @foreach (var c in ViewBag.Cars)
@@ -253,16 +250,16 @@
                     </div>
 
                     <!-- Left and right controls/icons -->
-                    <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="prev">
+                    <button class="carousel-control-prev"  type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="next">
+                    <button class="carousel-control-next"  type="button" data-bs-target="#demo@(c.CarId)" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
-                <div class="col-sm-1"></div>
+                <div class="col-sm-7">
                 <!-- Preview Details Car -->
                 <div class="car-details">
                     <h5>@c.Name</h5>
@@ -271,7 +268,7 @@
                         <i class="fa-sharp fa-solid fa-person-seat"></i> @c.Seats seats
                         <i class="fa fa-cogs"></i> @(c.TransmissionType ? "Automatic" : "Manual")
                         <i class="fa-regular fa-roller-coaster"></i> @c.NoOfRide No of ride
-                        <i class="fa fa-gas-pump"></i> Diesel
+                        <i class="fa fa-gas-pump"></i> @(c.FuelType ? "Gasoline" : "Diesel")
                     </p>
                     <p class="price">Price: @((c.BasePrice ).ToString("N0")) VND</p>
                     <p class="category"><i class="fa-regular fa-map-location"></i>Location: @c.Address.District.DistrictName, @c.Address.City.CityProvince</p>
@@ -347,6 +344,7 @@
                         }
 
                     </div>
+                </div>
                 </div>
 
                 

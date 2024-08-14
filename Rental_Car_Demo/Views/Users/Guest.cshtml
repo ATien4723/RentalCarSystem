@@ -4,11 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +21,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <style>
     .container-custom1 {
         background-color: #4a4a4a;
@@ -158,6 +155,7 @@
         .nav-link i {
             margin-right: 8px;
         }
+
 </style>
 
 <body>
@@ -170,7 +168,7 @@
                     <h2>Looking for a vehicle?</h2>
                     <p>You're at the right place.</p>
                     <p>Choose between 100's of private cars for rent at really low prices!</p>
-                    <a class="btn btn-custom" asp-action="SearchCarForm" asp-controller="Home">Find a Rental Car Near You</a>
+                    <a class="btn btn-custom" asp-action="SearchCarFormGuest" asp-controller="Home">Find a Rental Car Near You</a>
                 </div>
                 <div class="col-md-6 mb-4">
                     <h2>Are you a car owner?</h2>
@@ -370,108 +368,142 @@
     </section>
 
 
+    @{
+        var showModal = TempData["ShowModal"] as string;
+        var showPanel = TempData["ShowPanel"] as string;
+
+    }
+
+
     <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="authModalLabel">Authentication</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="color:black">
-                    <div class="container-custom">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>LOG IN USING YOUR ACCOUNT</h4>
-                                @using (Html.BeginForm("Login", "Users", FormMethod.Post))
+                <div class="modal-body p-0">
+                    <div class="container-login" id="container">
+                        <div class="body-login">
+                            <div class="form-container sign-up">
+                                <form asp-controller="Users" asp-action="Register" method="post" asp-antiforgery="true" data-val="true">
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Name" class="form-label">Your name</label>
+                                        <input asp-for="Register.Name" type="text" class="form-control" id="signupName" placeholder="Your name">
+                                        <span asp-validation-for="Register.Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Email" class="form-label">Your email address</label>
+                                        <input asp-for="Register.Email" type="email" class="form-control" id="signupEmail" placeholder="Your email address">
+                                        <span asp-validation-for="Register.Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3 position-relative">
+                                        <label asp-for="Register.Password" class="form-label">Pick a password</label>
+                                        <input asp-for="Register.Password" type="password" class="form-control" id="signupPassword" placeholder="Pick a password">
+                                        <i class='bx bx-low-vision toggle-password2' id="toggleSignupPassword"></i>
+                                        <small class="form-text text-muted">
+                                            Use at least one letter, one number, and seven
+                                            characters.
+                                        </small>
+                                        <span asp-validation-for="Register.Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3 position-relative">
+                                        <label asp-for="Register.ConfirmPassword" class="form-label">Confirm password</label>
+                                        <input asp-for="Register.ConfirmPassword" type="password" class="form-control" id="signupConfirmPassword"
+                                               placeholder="Confirm password">
+                                        <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
+                                        <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Phone" class="form-label">Your phone number</label>
+                                        <input asp-for="Register.Phone" class="form-control" id="signupPhone" placeholder="Your phone number">
+                                        <span asp-validation-for="Register.Phone" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check mb-3">
+                                            <input asp-for="Register.Role" class="form-check" type="radio" value="rentCar" id="rentCar" style="width: 16px;" checked>
+                                            <label class="form-check-label" for="rentCar">
+                                                I want to rent a car
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3 ps-5">
+                                            <input asp-for="Register.Role" class="form-check" type="radio" value="carOwner" id="carOwner" style="width: 16px;">
+                                            <label class="form-check-label" for="carOwner">
+                                                I am a car owner
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Register.Role" class="text-danger"></span>
+
+                                    <div class="mb-3 d-flex">
+                                        <input asp-for="Register.AgreeToTerms" class="" type="checkbox" id="terms" style="width: 16px;">
+                                        <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
+                                            I have read and agree with the <a href="@Url.Action("TermsAndConditions", "Home")" class="text-decoration-none ps-3">
+                                                <u>
+                                                    Terms and
+                                                    Conditions
+                                                </u>
+                                            </a>
+                                        </label>
+                                        <span asp-validation-for="Register.AgreeToTerms" class="text-danger"></span>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-custom w-100 far fa-user fa-plus"> SIGN UP</button>
+                                </form>
+                            </div>
+
+                            <div class="form-container sign-in">
+                                @using (Html.BeginForm("Login", "Users", FormMethod.Post, new { id = "loginForm" }))
                                 {
+                                    <h1>Sign In</h1>
                                     <div class="mb-3">
                                         <label for="loginEmail" class="form-label">Your email address</label>
                                         @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
                                         <span class="text-danger" id="loginEmailError"></span>
                                     </div>
-                                    <div class="mb-3 position-relative">
-                                        <label for="loginPassword" class="form-label">Password</label>
-                                        @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
-                                        <span class="text-danger" id="loginPasswordError"></span>
-                                        <i class="bx bx-low-vision toggle-password3" id="toggleLoginPassword"></i>
+                                    <div class="position-relative">
+                                        <div class="abccc" style="position:relative;">
+                                            <label for="loginPassword" class="form-label">Password</label>
+                                            @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
+                                            <span class="text-danger" id="loginPasswordError"></span>
+                                            <i class="bx bx-low-vision toggle-password3" style="position:relative" id="toggleLoginPassword"></i>
+                                        </div>
                                     </div>
                                     @if (!string.IsNullOrEmpty(ViewBag.Error))
                                     {
                                         <div class="text-danger" id="serverError">@ViewBag.Error</div>
                                     }
-                                    <div class="mb-1 form-check">
-                                        <label class="form-check-label">
-                                            @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input" }) @Html.DisplayNameFor(x => x.User.RememberMe)
-                                        </label>
+                                    <div class="mb-3 form-check" style="padding-left: 0.5em;">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input", id = "rememberMe" })
+                                            <label class="form-check-label" for="rememberMe">
+                                                @Html.DisplayNameFor(x => x.User.RememberMe)
+                                            </label>
+                                        </div>
                                     </div>
+
                                     <div class="mb-3 d-flex justify-content-center">
-                                        <a asp-controller="Users" asp-action="ResetPassword" class="text-decoration-none"><u>Forgot your password?</u></a>
+                                        <a asp-controller="Users" asp-action="ResetPassword">Forgot your password?</a>
                                     </div>
-                                    <button type="submit" class="btn btn-custom w-100 far fa-user"> LOG IN</button>
+
+
+                                    <button type="submit">Sign In</button>
                                 }
                             </div>
-                            <div class="col-md-1 d-flex align-items-center justify-content-center">
-                                <div class="divider"></div>
-                            </div>
-                            <div class="col-md-5">
-                                <h4>NOT A MEMBER YET?</h4>
-                                <form asp-controller="Users" asp-action="Register" method="post">
-                                    <div class="mb-3">
-                                        <label asp-for="Register.Name" class="form-label"></label>
-                                        <input asp-for="Register.Name" class="form-control" placeholder="Your name" />
-                                        <span asp-validation-for="Register.Name" class="text-danger"></span>
+
+                            <div class="toggle-container">
+                                <div class="toggle">
+                                    <div class="toggle-panel toggle-left" id="toggle-left">
+                                        <h1>Welcome Back!</h1>
+                                        <p>Enter your personal details to use all of the site's features</p>
+                                        <button class="hidden" id="login">Sign In</button>
                                     </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Register.Email" class="form-label"></label>
-                                        <input asp-for="Register.Email" class="form-control" placeholder="Your email address" />
-                                        <span asp-validation-for="Register.Email" class="text-danger"></span>
+                                    <div class="toggle-panel toggle-right" id="toggle-right">
+                                        <h1>Hello, Friend!</h1>
+                                        <p>Register with your personal details to use all of the site's features</p>
+                                        <button class="hidden" id="register">Sign Up</button>
                                     </div>
-                                    <div class="mb-3 position-relative">
-                                        <label asp-for="Register.Password" class="form-label"></label>
-                                        <div class="abccc" style="position:relative;">
-                                            <input asp-for="Register.Password" type="password" class="form-control" id="signupPassword" placeholder="Your password" />
-                                            <i class='bx bx-low-vision toggle-password' id="toggleSignupPassword"></i>
-                                        </div>
-                                        <small class="form-text text-muted">Use at least one letter, one number, and seven characters.</small>
-                                        <span asp-validation-for="Register.Password" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-3 position-relative">
-                                        <label asp-for="Register.ConfirmPassword" class="form-label">Confirm password</label>
-                                        <div class="abccc" style="position:relative;">
-                                            <input asp-for="Register.ConfirmPassword" type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm password" />
-                                            <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
-                                        </div>
-                                        <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Register.Phone" class="form-label"></label>
-                                        <input asp-for="Register.Phone" class="form-control" placeholder="Your phone number" />
-                                        <span asp-validation-for="Register.Phone" class="text-danger"></span>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="form-check mb-3">
-                                            <input asp-for="Register.Role" class="form-check-input" type="radio" value="rentCar" id="rentCar" checked>
-                                            <label class="form-check-label" for="rentCar">I want to rent a car</label>
-                                        </div>
-                                        <div class="form-check mb-3 ps-5">
-                                            <input asp-for="Register.Role" class="form-check-input" type="radio" value="carOwner" id="carOwner">
-                                            <label class="form-check-label" for="carOwner">I am a car owner</label>
-                                        </div>
-                                    </div>
-                                    <span asp-validation-for="Register.Role" class="text-danger"></span>
-                                    <div class="mb-3">
-                                        <input asp-for="Register.AgreeToTerms" type="checkbox" id="terms" />
-                                        <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
-                                            I have read and agree with the <a href="#" class="text-decoration-none ps-3"><u>Terms and Conditions</u></a>
-                                        </label>
-                                    </div>
-                                    <span asp-validation-for="Register.AgreeToTerms" class="text-danger"></span>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-custom w-100 far fa-user fa-plus"> SIGN UP</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -479,9 +511,97 @@
             </div>
         </div>
     </div>
+    
+  @*   <script>
+        // Function to show the desired panel
+        function showPanel(panelId) {
+            var panels = document.querySelectorAll('.toggle-panel');
+            panels.forEach(function (panel) {
+                panel.classList.add('hidden'); // Hide all panels
+            });
 
+            var panelToShow = document.getElementById(panelId);
+            if (panelToShow) {
+                panelToShow.classList.remove('hidden'); // Show the selected panel
+            }
+        }
 
+        // Example condition to choose which panel to show
+        document.addEventListener('DOMContentLoaded', function () {
+            var show = "@showPanel"; // Set to true to show "toggle-left", false to show "toggle-right"
 
+            if (show === "register") {
+                showPanel('toggle-right');
+            } else {
+                showPanel('toggle-left');
+            }
+        });
+    </script> *@
+
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId, toggleId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(toggleId);
+
+            toggleIcon.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                if (type === 'text') {
+                    toggleIcon.classList.remove('bx-low-vision');
+                    toggleIcon.classList.add('bx-show');
+                } else {
+                    toggleIcon.classList.remove('bx-show');
+                    toggleIcon.classList.add('bx-low-vision');
+                }
+            });
+        }
+
+        togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
+        togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
+        togglePasswordVisibility('signupConfirmPassword', 'toggleSignupConfirmPassword');
+
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+
+        registerBtn.addEventListener('click', () => {
+            container.classList.add("active");
+        });
+
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove("active");
+        });
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('click', function () {
+                if (this.previousChecked) {
+                    this.checked = false;
+                }
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.previousChecked = false);
+                this.previousChecked = this.checked;
+            });
+        });
+    </script>
+    
+    
+    <script>
+        var show = "@showModal";
+
+        if (show === "yes") {
+            const myModal = bootstrap.Modal.getOrCreateInstance('#authModal');
+            window.addEventListener('DOMContentLoaded', () => {
+                myModal.show();
+            });
+        }
+        else {
+            document.querySelector('.nav-link').addEventListener('click', function () {
+                var myModal = new bootstrap.Modal(document.getElementById('authModal'));
+                myModal.show();
+            });
+        }
+    </script>
 
 
     <script>
@@ -505,16 +625,17 @@
         changeBackgroundImage(); // goi ptu dau tien
     </script>
 
+
     @section Scripts {
-        @*thong bao dang ky thanh cong*@
-        <script>
-            @if (TempData["SuccessMessage"] != null)
+    @*thong bao dang ky thanh cong*@
+    <script>
+        @if (TempData["SuccessMessage"] != null)
             {
-                <text>
-                    swal("Success!", "@TempData["SuccessMessage"]", "success");
-                </text>
-            }
-        </script>
+            <text>
+            swal("Success!", "@TempData["SuccessMessage"]", "success");
+        </text>
+        }
+    </script>
     }
 
 </body>

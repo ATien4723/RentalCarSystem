@@ -247,3 +247,13 @@
 .fa-lock {
     margin-right: 10px;
 }
+
+@keyframes slideShow {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    33%, 66% {
+        opacity: 0;
+    }
+}

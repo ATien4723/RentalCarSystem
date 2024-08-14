@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {}
   },
   "projects": {
-    "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "projectName": "Rental_Car_Demo",
-        "projectPath": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FULearning\\Sem6\\GIT6\\rental-car\\Rental_Car_Demo\\obj\\",
+        "outputPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -39,12 +39,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.12.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.7.1.1, )"
@@ -115,7 +124,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

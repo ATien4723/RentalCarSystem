@@ -5,39 +5,102 @@
 @using Rental_Car_Demo.Repository.BookingRepository
 <head>
     <style>
+        .main-image-container {
+            width: 100%;
+            height: 400px; /* Fixed height */
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100px; /* Fixed height */
+            object-fit: cover;
+        }
+
+        .thumbnail-container {
+            margin-top: 10px;
+        }
+
+        .price {
+            color: green;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .offer-section {
+            margin-top: 20px;
+        }
+
+        .offer-btn {
+            background-color: green;
+            color: white;
+            width: 100%;
+        }
+
+        .carousel {
+            position: relative;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: 115%;
+            object-fit: cover;
+        }
+
+        .car-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+
+        .carousel-control-prev {
+            left: 10px;
+        }
+
+        .carousel-control-next {
+            right: 10px;
+        }
+
         .custom-lightgrey {
             background-color: lightgrey;
             border-color: lightgrey;
             color: black;
         }
 
-            .custom-lightgrey:hover {
-                background-color: grey; /* Adjust this color to your desired hover color */
-                border-color: grey;
-                color: black;
+        .custom-lightgrey:hover {
+            background-color: grey;
+            border-color: grey;
+            color: black;
             }
     </style>
 </head>
 <body>
-    @if (TempData["ErrorMessage"] != null)
-    {
+    @if ( TempData["ErrorMessage"] != null ) {
         <div class="alert alert-danger">
             @TempData["ErrorMessage"]
         </div>
     }
     <div class="container mt-5">
-        <a class="link mt-5" href="~/Users/LoginCus">Home</a> > <span>Add a car</span>
+        <a class="link mt-5" href="~/Users/LoginCus">Home</a> > <span class="fw-bold">View Bookings</span>
 
-        <h2 class="mt-3" style="font-weight: bold;">List of Cars</h2>
+        <h2 class="mt-3" style="font-weight: bold;">List of Bookings</h2>
 
         <div class="d-flex justify-content-between align-items-center mt-4">
-            @if (ViewBag.Count == 0)
-            {
+            @if ( ViewBag.Count == 0 ) {
                 <a>You have no bookings</a>
-            }
-            else
-            {
-                <a>You have @ViewBag.Count on-going bookings</a>
+            } else {
+                <a style="font-weight: bold;
+                     border: 1px solid #ddd;
+                     border-radius: 10px;
+                     padding: 5px;">You have @ViewBag.Count on-going bookings</a>
             }
 
             <form id="sortForm" method="post" asp-action="ViewBookingList">
@@ -51,156 +114,167 @@
         </div>
     </div>
 
-    <div class="row">
-    </div>
+
 
     <div id="listingContainer">
-        @foreach (var b in ViewBag.Bookings)
-        {
-            <div class="listingItem container mt-3 p-5">
+        @foreach ( var b in ViewBag.Bookings ) {
+            <div class="listingItem container car-card  mt-3 p-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Preview car image -->
+                        <div id="demo@(b.CarId)" class="carousel slide" data-bs-ride="carousel">
+                            <!-- Indicators/dots -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="0" class="active"></button>
+                                <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="1"></button>
+                                <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="2"></button>
+                                <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="3"></button>
+                            </div>
+                            <!-- The slideshow/carousel -->
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner main-image-container">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100 main-image" src="~/img/@b.Car.FrontImage"
+                                             alt="Front img">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100 main-image" src="~/img/@b.Car.BackImage"
+                                             alt="Back img">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100 main-image" src="~/img/@b.Car.LeftImage"
+                                             alt="Left img">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100 main-image" src="~/img/@b.Car.RightImage"
+                                             alt="Right img">
+                                    </div>
+                                </div>
 
-                <div class="row d-flex align-items-center justify-content-between">
-                    <!-- Preview car image -->
-                    <div id="demo@(b.CarId)" class="col-sm-5 carousel slide" data-bs-ride="carousel">
-                        <!-- Indicators/dots -->
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="0" class="active"></button>
-                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="1"></button>
-                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="2"></button>
-                            <button type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide-to="3"></button>
+                                <!-- Left and right controls/icons -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
                         </div>
-
-                        <!-- The slideshow/carousel -->
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="~/img/@b.Car.FrontImage"
-                                     alt="Front img" style="width: 100%; height: 100%; border: 2px solid black;">
-                            </div>
-                            <div class="carousel-item ">
-                                <img src="~/img/@b.Car.BackImage"
-                                     alt="Back img" style="width: 100%; height: 100%; border: 2px solid black;">
-                            </div>
-                            <div class="carousel-item ">
-                                <img src="~/img/@b.Car.LeftImage"
-                                     alt="Left img" style="width: 100%; height: 100%; border: 2px solid black;">
-                            </div>
-                            <div class="carousel-item ">
-                                <img src="~/img/@b.Car.RightImage"
-                                     alt="Right img" style="width: 100%; height: 100%; border: 2px solid black;">
-                            </div>
-                        </div>
-
-                        <!-- Left and right controls/icons -->
-                        <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo@(b.CarId)" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
-                    <div class="col-sm-1"></div>
-                    <!-- Preview Details Car -->
-                    <div class="col-sm-4">
-                        <h4 class=" fw-bold mb-3 mt-4">
+
+
+                    <div class="col-md-6">
+                        <h4 class=" fw-bold mb-3">
                             <a style="text-decoration:none;color:black;" href="@Url.Action("EditBookingDetail", "Booking",new { startDate = b.StartDate, endDate = b.EndDate, carId = b.CarId, bookingNo = b.BookingNo })">
                                 @b.Car.Name
                             </a>
                         </h4>
-                        <ul>
+                        <ul class="price">
                             <li><p class="fw-bold">From @b.StartDate</p></li>
                             <li><p class="fw-bold">To @b.EndDate</p></li>
                         </ul>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Number of days:</label>
-                            <label class="col-5 fw-bold">@BookingHelper.GetDaysBetween(b.StartDate, b.EndDate)<span class="fw-bold"></span></label>
-                        </div>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Base price:</label>
-                            <label class="col-5 fw-bold">@b.Car.BasePrice.ToString("N0")<span class="fw-bold"></span> VND/day</label>
-                        </div>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Total:</label>
-                            <label class="col-5 fw-bold">@BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
-                        </div>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Deposit:</label>
-                            <label class="col-5 fw-bold">@BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></label>
-                        </div>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Booking no:</label>
-                            <label class="col-5 fw-bold">@b.BookingNo<span class="fw-bold"></span></label>
-                        </div>
-                        <div class="row mt-4 fs-5">
-                            <label class="col-5 fw-bold">Booking status:</label>
-                            <label class="col-5 fw-bold">
-                                @{
-                                    string statusText = "";
-                                    string statusStyle = "";
-                                    switch (b.Status)
-                                    {
-                                        case 0:
-                                            statusText = "Cancelled";
-                                            statusStyle = "color: grey";
-                                            break;
-                                        case 1:
-                                            statusText = "Pending Deposit";
-                                            statusStyle = "color: red";
-                                            break;
-                                        case 2:
-                                            statusText = "Confirmed";
-                                            statusStyle = "color: forestgreen";
-                                            break;
-                                        case 3:
-                                            statusText = "In-Progress";
-                                            statusStyle = "color: orange";
-                                            break;
-                                        case 4:
-                                            statusText = "Pending Payment";
-                                            statusStyle = "color: red";
-                                            break;
-                                        case 5:
-                                            statusText = "Completed";
-                                            statusStyle = "color: blue";
-                                            break;
-                                    }
-                                }
-                                <span style="@statusStyle">@statusText</span>
-                            </label>
-                        </div>
-                    </div>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Number of days:</th>
+                                    <td>@BookingHelper.NumberOfDays(b.StartDate, b.EndDate)<span class="fw-bold"></span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Base price:</th>
+                                    <td>@b.Car.BasePrice.ToString("N0")<span class="fw-bold"> VND/day</span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Deposit:</th>
+                                    <td>@BookingHelper.TotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold"> VND</span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total:</th>
+                                    <td class="text-success fw-bold">@BookingHelper.TotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate).ToString("N0")<span class="fw-bold "> VND</span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Booking no:</th>
+                                    <td>@b.BookingNo<span class="fw-bold"></span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Booking status:</th>
+                                    <td>
+                                        @{
+                                            string statusText = "";
+                                            string statusStyle = "";
+                                            switch ( b.Status ) {
+                                                case 0:
+                                                    statusText = "Cancelled";
+                                                    statusStyle = "color: grey";
+                                                    break;
+                                                case 1:
+                                                    statusText = "Pending Deposit";
+                                                    statusStyle = "color: red";
+                                                    break;
+                                                case 2:
+                                                    statusText = "Confirmed";
+                                                    statusStyle = "color: forestgreen";
+                                                    break;
+                                                case 3:
+                                                    statusText = "In-Progress";
+                                                    statusStyle = "color: orange";
+                                                    break;
+                                                case 4:
+                                                    statusText = "Pending Payment";
+                                                    statusStyle = "color: red";
+                                                    break;
+                                                case 5:
+                                                    statusText = "Completed";
+                                                    statusStyle = "color: blue";
+                                                    break;
+                                            }
+                                        }
+                                        <span style="@statusStyle">@statusText</span>
+                                    </td>
+                                </tr>
 
-                    @if (b.Status == 1)
-                    {
-                        <div class="col-sm-2">
-                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
-                            <a id="cancelButton_@b.BookingNo" class="btn btn-danger mt-2 w-100 cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
-                        </div>
-                    }
-                    else if (b.Status == 2)
-                    {
-                        <div class="col-sm-2">
-                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
-                            <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary mt-2 w-100 custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
-                            <a id="cancelButton_@b.BookingNo" class="btn btn-danger mt-2 w-100 cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
-                        </div>
-                    }
-                    else if (b.Status == 4 || b.Status == 3)
-                    {
-                        <div class="col-sm-2">
-                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
-                            <a class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return car</a>
-                        </div>
-                    }
-                    else if (b.Status == 0 || b.Status == 5)
-                    {
-                        <div class="col-sm-2">
-                            <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
-                        </div>
-                    }
+                            </tbody>
+                        </table>
+                        @if ( b.Status == 1 ) {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100 ">View details</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a id="cancelButton_@b.BookingNo" class="btn btn-danger cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
+                                </div>
+                            </div>
+                        } else if ( b.Status == 2 ) {
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button onclick="getValueForPickUp(@b.BookingNo)" type="button" class="btn btn-primary custom-lightgrey" data-bs-toggle="modal" data-bs-target="#confirm-pickup" data-bs-toggle="modal" data-bs-target="#confirm-pickup">Confirm Pick-up</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <a id="cancelButton_@b.BookingNo" class="btn btn-danger cancelButton" data-booking-no="@b.BookingNo" data-bs-toggle="modal" data-bs-target="#cancelModal_@b.BookingNo">Cancel booking</a>
+                                </div>
+                            </div>
+                        } else if ( b.Status == 4 || b.Status == 3 ) {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-100">View details</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#returnCarModal">Return car</a>
+                                </div>
+                            </div>
+                        } else if ( b.Status == 0 || b.Status == 5 ) {
+                            <div class="col-sm-12">
+                                <a href="@Url.Action("ViewCarDetailsByCustomer", "Car",new {CarId = b.CarId})" class="btn btn-primary w-50">View details</a>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
+
 
 
             <form asp-controller="Booking" asp-action="CancelBooking" method="post" id="Form_@b.BookingNo" enctype="multipart/form-data" style="margin: 0; padding: 0;">
@@ -267,14 +341,14 @@
                 });
             </script>
 
-            
 
-            <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCar" 
-            asp-route-carId="@(b.CarId)" asp-route-userId="@(b.UserId)"
+
+            <form id="returnCarForm" asp-controller="Car" asp-action="ReturnCar"
+                  asp-route-carId="@(b.CarId)" asp-route-userId="@(b.UserId)"
                   asp-route-amount="@(((DateTime.Today > b.StartDate && DateTime.Today < b.EndDate)||DateTime.Today<b.StartDate)
                  ? BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) - BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate)
                  : BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) - BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date))"
-            method="post" style="display: none;">
+                  method="post" style="display: none;">
                 <input type="hidden" name="returnUrl" value="~/">
             </form>
             <div class="modal fade" id="returnCarModal" tabindex="-1" aria-labelledby="returnCarModalLabel" aria-hidden="true">
@@ -285,58 +359,50 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body modal-body-center">
-                            @if ((DateTime.Today > b.StartDate && DateTime.Today < b.EndDate) || DateTime.Today < b.StartDate)
-                            {
-                                @if (BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate) > BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate))
-                                {
+                            @if ( ( DateTime.Today > b.StartDate && DateTime.Today < b.EndDate ) || DateTime.Today < b.StartDate ) {
+                                @if ( BookingHelper.GetTotalPrice (b.Car.BasePrice, b.StartDate, b.EndDate) > BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) ) {
                                     <p class="text-center w-100">
-                                        Please confirm to return the car.                                      
+                                        Please confirm to return the car.
                                         <br />
                                         The remaining amount of @(
-                            (BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate) -
-                            BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)).ToString("N0")
+                            ( BookingHelper.GetTotalPrice (b.Car.BasePrice, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) ).ToString ("N0")
                             ) VND will be deducted from your wallet.
                                     </p>
 
-                                }
-                                else
-                                {
+                                } else {
                                     <p class="text-center w-100">
                                         Please confirm to return the car.
                                         <br />
                                         The exceeding amount of @(
-                            (BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) -
-                            BookingHelper.GetTotalPrice(b.Car.BasePrice, b.StartDate, b.EndDate)).ToString("N0")
+                            ( BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalPrice (b.Car.BasePrice, b.StartDate, b.EndDate) ).ToString ("N0")
                             ) VND will be returned to your wallet.
                                     </p>
 
                                 }
-                            } else if (DateTime.Today > b.EndDate)
-                            {
-                                @if (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date) > BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate))
-                                {
+                            } else if ( DateTime.Today > b.EndDate ) {
+                                @if ( BookingHelper.GetTotalPriceFromToday (b.Car.BasePrice, b.StartDate, DateTime.Today.Date) > BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) ) {
                                     <p class="text-center w-100">
                                         Please confirm to return the car.
-                                         <br />
-                                        You returned the car @((DateTime.Today.Date - b.EndDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.EndDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        <br />
+                                        You returned the car @(( DateTime.Today.Date - b.EndDate.Date ).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday (b.Car.BasePrice, b.EndDate, DateTime.Today).ToString ("N0") VND for violating the terms of use.
                                         <br />
                                         The remaining amount of @(
-                            (BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date) -
-                            BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate)).ToString("N0")
+                            ( BookingHelper.GetTotalPriceFromToday (b.Car.BasePrice, b.StartDate, DateTime.Today.Date) -
+                            BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) ).ToString ("N0")
                             ) VND will be deducted from your wallet.
                                     </p>
 
-                                }
-                                else
-                                {
+                                } else {
                                     <p class="text-center w-100">
                                         Please confirm to return the car.
                                         <br />
-                                        You returned the car @((DateTime.Today.Date - b.EndDate.Date).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.EndDate, DateTime.Today).ToString("N0") VND for violating the terms of use.
+                                        You returned the car @(( DateTime.Today.Date - b.EndDate.Date ).Days) days late. You have to pay an additional @BookingHelper.GetTotalPriceFromToday (b.Car.BasePrice, b.EndDate, DateTime.Today).ToString ("N0") VND for violating the terms of use.
                                         <br />
                                         The exceeding amount of @(
-                            (BookingHelper.GetTotalDeposit(b.Car.Deposit, b.StartDate, b.EndDate) -
-                            BookingHelper.GetTotalPriceFromToday(b.Car.BasePrice, b.StartDate, DateTime.Today.Date)).ToString("N0")
+                            ( BookingHelper.GetTotalDeposit (b.Car.Deposit, b.StartDate, b.EndDate) -
+                            BookingHelper.GetTotalPriceFromToday (b.Car.BasePrice, b.StartDate, DateTime.Today.Date) ).ToString ("N0")
                             ) VND will be returned to your wallet.
                                     </p>
 
@@ -354,7 +420,7 @@
                     </div>
                 </div>
             </div>
-            
+
         }
     </div>
 
@@ -417,7 +483,7 @@
             document.getElementById("confirmPickup-sortOrder").value = document.getElementById("sortOrder").value;
         }
     </script>
-	<script>
+    <script>
         function submitReturn() {
             document.getElementById('returnCarForm').submit();
         }
@@ -515,6 +581,6 @@
         });
     </script>
 
-    
+
 
 </body>

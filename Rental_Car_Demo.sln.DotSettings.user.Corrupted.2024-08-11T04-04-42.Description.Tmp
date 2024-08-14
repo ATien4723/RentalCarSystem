@@ -1,0 +1,112 @@
+﻿<CorruptedSettingsDescription>
+  <Exception Message="Name cannot begin with the '&lt;' character, hexadecimal value 0x3C. Line 2, position 2." Kind="Error">Name cannot begin with the '&lt;' character, hexadecimal value 0x3C. Line 2, position 2.
+
+--- EXCEPTION #1/2 [XmlException]
+Message = “Name cannot begin with the '&lt;' character, hexadecimal value 0x3C. Line 2, position 2.”
+ExceptionPath = Root.InnerException
+ClassName = System.Xml.XmlException
+Data.ThreadLocalDebugInfo = VsInteropController::DispatchActionsUnderReadLock
+HResult = Xml=80131940
+Source = System.Xml
+res = Xml_BadStartNameChar
+args.#0 = &lt;
+args.#1 = 0x3C
+lineNumber = 2
+linePosition = 2
+version = 2.0
+StackTraceString = “
+  at System.Xml.XmlTextReaderImpl.Throw(Exception e) in Throw.il:line IL_0027 mvid 9E49
+     at System.Xml.XmlTextReaderImpl.ParseQName(Boolean isQName, Int32 startOffset, Int32&amp; colonPos) in ParseQName.il:line IL_0000 mvid 9E49
+     at System.Xml.XmlTextReaderImpl.ParseElement() in ParseElement.il:line IL_0000 mvid 9E49
+     at System.Xml.XmlTextReaderImpl.ParseElementContent() in ParseElementContent.il:line IL_016F mvid 9E49
+     at JetBrains.Application.Settings.Storage.Persistence.EntriesReader.Step_GenericRead_SkipToElement() in Step.il:line IL_0029 mvid 8E0E
+”
+
+--- Outer ---
+
+--- EXCEPTION #2/2 [LoggerException]
+Message = “Name cannot begin with the '&lt;' character, hexadecimal value 0x3C. Line 2, position 2.”
+ExceptionPath = Root
+ClassName = JetBrains.Util.LoggerException
+InnerException = “Exception #1 at Root.InnerException”
+HResult = COR_E_APPLICATION=80131600
+StackTraceString = “
+  at JetBrains.Util.ILoggerEx.LogException(ILogger this, LoggingLevel level, Exception exception, ExceptionOrigin exceptionOrigin, String comment) in LogException.il:line IL_0025 mvid DDF9
+     at JetBrains.Util.ILoggerEx.LogOuterDataException(ILogger thіs, Exception ex, String comment) in LogOuterDataException.il:line IL_0009 mvid DDF9
+     at JetBrains.Application.Settings.Storage.Persistence.EntriesReader.Step_GenericRead_SkipToElement() in Step.il:line IL_0029 mvid 8E0E or Step.il:line IL_0033 mvid 8E0E or Step.il:line IL_006F mvid 8E0E
+     at JetBrains.Application.Settings.Storage.Persistence.EntriesReader.Step_GenericRead() in Step.il:line IL_0029 mvid 8E0E or Step.il:line IL_0033 mvid 8E0E or Step.il:line IL_006F mvid 8E0E
+     at JetBrains.Application.Settings.Storage.Persistence.EntriesReader.Step() in Step.il:line IL_0029 mvid 8E0E or Step.il:line IL_0033 mvid 8E0E or Step.il:line IL_006F mvid 8E0E
+     at JetBrains.Application.Settings.Storage.Persistence.EntriesReader.Run(XmlReader reader, EntryPositionsFlag entryPositionsFlag) in Run.il:line IL_006B mvid 8E0E
+     at JetBrains.Util.XmlReaderEx.ReadXml[TResult](Stream stream, Func`2 FRead) in ReadXml.il:line IL_002F mvid 627B
+     at JetBrains.Util.FileSystemPathOpenEx.ReadStream[T,TF,TFile,TDir](FileSystemPathBase`3 path, Func`2 λRead) in ReadStream.il:line IL_0029 mvid DDF9
+     at JetBrains.Application.Settings.Storage.Persistence.SettingsStoreSerializationToXmlDiskFile.&lt;&gt;c__DisplayClass34_1.&lt;Save_WriteFile_BackupOldCorruptedFile&gt;b__2() in SettingsStoreSerializationToXmlDiskFile.il:line IL_0065 mvid 8E0E
+     at JetBrains.Util.Logging.Logger.Catch(Action action) in Catch.il:line IL_000F mvid DDF9
+     at JetBrains.Util.XmlWriterEx.InElement(XmlWriter writer, String name, Action nested, Boolean writeFullEndElement)
+     at JetBrains.Util.XmlWriterEx.WriteXml(Stream stream, Action`1 FWrite) in WriteXml.il:line IL_0023 mvid DDF9
+     at JetBrains.Util.FileSystemPathOpenEx.WriteStream[T,TFile,TDir](FileSystemPathBase`3 path, Action`1 λWrite) in WriteStream.il:line IL_0029 mvid DDF9
+     at JetBrains.Application.Settings.Storage.Persistence.SettingsStoreSerializationToXmlDiskFile.Save_WriteFile_BackupOldCorruptedFile(FileSystemPath path) in Save.il:line IL_00D7 mvid 8E0E or Save.il:line IL_0246 mvid 8E0E
+     at JetBrains.Util.ILoggerEx.Catch(ILogger thіs, Action F, ExceptionOrigin origin, LoggingLevel loggingLevel) in Catch.il:line IL_0060 mvid DDF9
+     at JetBrains.Application.Settings.Storage.Persistence.SettingsStoreSerializationToXmlDiskFile.Save_WriteFile(SaveDiffFlags flagsDiff, SaveForcedFlags flagsForced) in Save.il:line IL_00D7 mvid 8E0E or Save.il:line IL_0246 mvid 8E0E
+     at JetBrains.DataFlow.IPropertySignalEx.&lt;&gt;c__DisplayClass0_0`1.&lt;Advise_FallingFront&gt;b__0(PropertyChangedEventArgs`1 args)
+     at JetBrains.DataFlow.CombinedProperty2`3.&lt;&gt;c__DisplayClass8_0.&lt;AdviseCore&gt;b__1() in CombinedProperty2.il:line IL_0000 mvid DDF9
+     at JetBrains.Lifetimes.LifetimeDefinition.Destruct() in Destruct.il:line IL_00A8 mvid 8CE0
+     at JetBrains.Lifetimes.LifetimeDefinition.Terminate() in Terminate.il:line IL_0183 mvid 8CE0
+     at JetBrains.Application.Components.SingletonDescriptorBindings`1.Dispose() in Dispose.il:line IL_0014 mvid B0D0
+     at JetBrains.Application.Components.SingletonDescriptor`1.DisposeInternalResources() in DisposeInternalResources.il:line IL_004E mvid B0D0
+     at JetBrains.Application.Components.AsyncDescriptorBase.DoDisposeSafe(Object instance) in DoDisposeSafe.il:line IL_0036 mvid B0D0
+     at JetBrains.Application.Components.AsyncDescriptorBase.Dispose() in Dispose.il:line IL_0000 mvid B0D0
+     at JetBrains.Application.Components.ComponentStorage.DisposeDescriptor(IComponentDescriptor descriptor) in DisposeDescriptor.il:line IL_000A mvid B0D0
+     at JetBrains.Application.Components.ComponentStorage.Terminate() in Terminate.il:line IL_009D mvid B0D0
+     at JetBrains.Lifetimes.LifetimeDefinition.Destruct() in Destruct.il:line IL_00A8 mvid 8CE0
+     at JetBrains.Lifetimes.LifetimeDefinition.Terminate() in Terminate.il:line IL_0183 mvid 8CE0
+     at JetBrains.ProjectModel.SolutionInstance.CloseSolutionInstance() in CloseSolutionInstance.il:line IL_0087 mvid 83DC
+     at JetBrains.ProjectModel.SolutionManagerBase.CloseSolutionInstance(SolutionInstance instance) in CloseSolutionInstance.il:line IL_0000 mvid 83DC
+     at JetBrains.VsIntegration.ProjectDocuments.VSSolutionManager.CloseSolutionInstance(SolutionInstance instance) in CloseSolutionInstance.il:line IL_0059 mvid C29D
+     at JetBrains.Util.ILoggerEx.Catch(ILogger thіs, Action F, ExceptionOrigin origin, LoggingLevel loggingLevel) in Catch.il:line IL_0060 mvid DDF9
+     at JetBrains.VsIntegration.Interop.VsInteropController.&lt;&gt;c__DisplayClass27_0.&lt;ExecuteActionsUnderProperLock&gt;b__0() in VsInteropController.il:line IL_0048 mvid C29D or VsInteropController.il:line IL_009F mvid C29D
+     at JetBrains.Util.Logging.Logger.Catch(Action action) in Catch.il:line IL_000F mvid DDF9
+     at JetBrains.VsIntegration.Interop.VsInteropController.ExecuteActionsUnderProperLock(Boolean isWriteLockTaken) in ExecuteActionsUnderProperLock.il:line IL_010C mvid C29D
+     at JetBrains.VsIntegration.Interop.VsInteropController.&lt;ExecuteActionsUnderReadLockOrReschedule&gt;b__25_0() in VsInteropController.il:line IL_0048 mvid C29D or VsInteropController.il:line IL_009F mvid C29D
+     at JetBrains.Application.Threading.IShellLocksEx.ExecuteWithReadLock(IShellLocks thіs, Action F) in ExecuteWithReadLock.il:line IL_0027 mvid 8E0E
+     at JetBrains.Threading.ReentrancyGuard.Execute(String name, Action action) in Execute.il:line IL_014D mvid DDF9
+     at JetBrains.Threading.ReentrancyGuard.TryExecute(String name, Action action) in TryExecute.il:line IL_008F mvid DDF9
+     at JetBrains.Threading.ReentrancyGuardEx.ExecuteOrQueue(ReentrancyGuard thіs, OuterLifetime lifetime, String name, Action F, TaskPriority priority) in ExecuteOrQueue.il:line IL_004F mvid DDF9
+     at JetBrains.Util.Concurrency.UnguardedCallbackMerger.ExecuteOrQueueOrMerge(Lifetime lifetimeQueue, String name, Action F) in ExecuteOrQueueOrMerge.il:line IL_009D mvid DDF9
+     at JetBrains.VsIntegration.Interop.VsInteropController.DispatchActions() in DispatchActions.il:line IL_018D mvid C29D
+     at JetBrains.VsIntegration.Interop.VsInteropController.ExecuteOrQueueOrMergeWithReadLockWhenTalkingToVsAllowed(Lifetime lifetime, String name, Boolean requiresWriteLock, Action action) in ExecuteOrQueueOrMergeWithReadLockWhenTalkingToVsAllowed.il:line IL_008E mvid C29D
+     at JetBrains.VsIntegration.ProjectDocuments.VSSolutionManager.OnBeforeCloseSolution(Object pUnkReserved) in OnBeforeCloseSolution.il:line IL_006B mvid C29D
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.&lt;&gt;c.&lt;NotifyOnBeforeCloseSolutionAsync&gt;b__774_1(ISolutionEventsSink sink) in Solution.il:line IL_000D mvid C505 or Solution.il:line IL_0015 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.&lt;&gt;c__728`1.&lt;NotifySolutionEventsAsync&gt;b__728_0(ISinkFor`1 sink, StateAction`2 callback) in Solution.il:line IL_000D mvid C505 or Solution.il:line IL_0015 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.StateAction`2.&lt;&gt;c__10`1.&lt;Adapt&gt;b__10_0(TNewArg arg, ValueTuple`2 state) in StateAction.il:line IL_0012 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.StateAction`2.Invoke(TArg arg)
+     at Microsoft.VisualStudio.CommonIDE.VsEventsTable`1.&lt;&gt;c__1`2.&lt;NotifyEventWithCatch&gt;b__1_0(T sink, StateAction`2 callback, ValueTuple`4 state) in VsEventsTable.il:line IL_0032 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.StateAction`2.StateRectifier`1.&lt;&gt;c__9`1.&lt;Adapt&gt;b__9_0(TNewArg arg, ValueTuple`3 state) in StateRectifier.il:line IL_0018 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.StateAction`2.Invoke(TArg arg)
+     at Microsoft.VisualStudio.CommonIDE.VsBasicCookieTable`1.&lt;&gt;c__10`1.&lt;Notify&gt;b__10_0(UInt32 _, T sink, StateAction`2 callback) in VsBasicCookieTable.il:line IL_0008 mvid C505
+     at Microsoft.Internal.VisualStudio.PlatformUI.CookieTable`2.ForEach[TState](Action`3 callback, TState state, Boolean skipRemoved) in ForEach.il:line IL_0009 mvid 750D or ForEach.il:line IL_0090 mvid 750D
+     at Microsoft.Internal.VisualStudio.PlatformUI.CookieTable`2.ForEach[TState](Action`3 callback, TState state) in ForEach.il:line IL_0009 mvid 750D or ForEach.il:line IL_0090 mvid 750D
+     at Microsoft.VisualStudio.CommonIDE.VsBasicCookieTable`1.Notify[TState](StateAction`2 callback) in Notify.il:line IL_002B mvid C505
+     at Microsoft.VisualStudio.CommonIDE.VsEventsTable`1.NotifyEventWithCatch[TEventInterface,TState](String sinkName, String eventName, StateAction`2 callback, Func`2 selector, Func`2 predicate) in NotifyEventWithCatch.il:line IL_0041 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.BackgroundSolutionService.NotifySolutionEvent[TEventInterface,TState](String eventName, StateAction`2 callback, Func`2 selector, Func`2 predicate) in NotifySolutionEvent.il:line IL_0015 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.NotifySolutionEventsAsync[TState](String eventName, StateAction`2 callback) in NotifySolutionEventsAsync.il:line IL_0054 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.&lt;NotifyOnBeforeCloseSolutionAsync&gt;d__774.MoveNext() in NotifyOnBeforeCloseSolutionAsync.il:line IL_0160 mvid C505
+     at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx) in RunInternal.il:line IL_0079 mvid 8BCD
+     at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx) in Run.il:line IL_0009 mvid 8BCD
+     at System.Runtime.CompilerServices.AsyncMethodBuilderCore.MoveNextRunner.Run() in Run.il:line IL_0024 mvid 8BCD
+     at Microsoft.VisualStudio.Threading.JoinableTaskFactory.SingleExecuteProtector.TryExecute() in TryExecute.il:line IL_004B mvid 5954
+     at Microsoft.VisualStudio.Threading.JoinableTask.CompleteOnCurrentThread() in CompleteOnCurrentThread.il:line IL_0006 mvid 5954 or CompleteOnCurrentThread.il:line IL_00F6 mvid 5954
+     at Microsoft.VisualStudio.Threading.JoinableTask`1.CompleteOnCurrentThread() in CompleteOnCurrentThread.il:line IL_0006 mvid 5954 or CompleteOnCurrentThread.il:line IL_00F6 mvid 5954
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.Close(Boolean fDoSave, Boolean fSaveAll, Boolean fUpdateMRU, Boolean fExitApp) in Close.il:line IL_003C mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.ClearTheSolution(Boolean fEndSession) in ClearTheSolution.il:line IL_0024 mvid C505
+     at Microsoft.VisualStudio.CommonIDE.Solutions.Solution.Microsoft.VisualStudio.CommonIDE.Solutions.Interop.IVsSolutionInternal.ClearTheSolution(Boolean bEndSession)
+”
+</Exception>
+  <!--The backup file has been created before writing in-memory changes to the settings file. As the existing settings file is corrupted, many settings might get lost when writing the new content. If you'd like to restore the settings from the previous version, here're the changes against the backed-up version (note: subsequent changes are not reflected here).-->
+  <InMemoryChanges>
+    <SetValue>
+      <wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\admin\AppData\Local\Temp\JetBrains\ReSharperPlatformVs17\vAny_69d9a713\CoverageData\_Rental_Car_Demo.1763011395\Snapshot\snapshot.utdcvr</s:String></wpf:ResourceDictionary>
+    </SetValue>
+    <ClearValue></ClearValue>
+  </InMemoryChanges>
+</CorruptedSettingsDescription>

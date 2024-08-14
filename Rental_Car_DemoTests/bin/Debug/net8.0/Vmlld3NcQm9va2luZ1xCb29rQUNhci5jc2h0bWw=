@@ -17,12 +17,18 @@
 
 <style>
      .booking-details-card {
-        background-color: #4e4e4e;
-        color: white;
-        padding: 20px 20px 20px 60px;
-        margin: auto;
-        width: 100%;
-        max-width: 100%;
+      border: 1px solid #eaeaea;
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+      color: black;
+    padding: 20px 20px 20px 60px;
+    margin-left: 20px;
+    width: 95%;
+    max-width: 100%;
+    border-radius: 40px;
     }
 
     .booking-header {
@@ -105,15 +111,46 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+
+     .carousel-item {
+            height: 350px;
+        }
+
+        
+        .main-image-container {
+            width: 100%;
+            height: 400px; /* Fixed height */
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100px; /* Fixed height */
+            object-fit: cover;
+        }
+
+        .thumbnail-container {
+            margin-top: 10px;
+        }
+
 </style>
 
 
 <div class="mt-2 mb-2">
-    <a asp-controller="Users" asp-action="LoginCus">Home</a> > Book car
+    <a asp-controller="Users" asp-action="LoginCus">Home</a> > <a asp-controller="Car" asp-action="ViewCarDetailsByCustomer">Car Details</a> > <span class="fw-bold">Book Car</span>
 </div>
+
+
+  
 
 <div class="row">
     @* <div class="container" id="step0"></div> *@
+    <div class="col-6">
     <div class="booking-details-card">
         <div class="booking-header">
             <h3>Booking Details</h3>
@@ -134,7 +171,17 @@
                 <input type="hidden" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate.ToString("yyyy-MM-ddTHH:mm")" />
             </li>
         </ul>
+        </div>
     </div>
+     <div class="col-6">
+    <div class="col- progress-container">
+      <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
+      <div class="step">Step 2: Payment</div>
+      <div class="step">Step 3: Finish</div>
+  </div>
+  </div>
+    </div>
+
 
     <div class="modal" id="editBookingModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -174,27 +221,40 @@
     </div>
 
 
-    <div class="progress-container">
-        <div class="step active" onclick="navigateTo(0)">Step 1: Booking Information</div>
-        <div class="step">Step 2: Payment</div>
-        <div class="step">Step 3: Finish</div>
-    </div>
+  
 
     <form asp-controller="Booking" asp-action="BookACar" method="post" id="Form" enctype="multipart/form-data" style="margin: 0; padding: 0;">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class=" row mt-2" style="border:1px solid;">
-            <div id="demo" class="col-md-6 carousel slide ms-4" data-bs-ride="carousel">
-                <!-- The slideshow/carousel -->
-                <div style="margin-left: 9%;">
-                    <div class="carousel-inner" style="height: 50%" >
+       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                  <div class="carousel-inner" >
                         <div class="carousel-item active">
-                            <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                            <img class="d-block w-100 main-image" id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                        </div>
+                        </div>
+                          <div class="row thumbnail-container">
+                        <div class="col-4">
+                            <img id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img" class="thumbnail-image">
                         </div>
                     </div>
-                    <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
-                    <div class="row">
-                        <label class="col-5 fw-bold  fs-6">Ratings:</label>
-                        <label class="col-5 d-flex fs-6" id="rating">
+                    </div>
+
+            <div class="col-md-6">
+                <h2 class="fw-bold" id="CarName">@ViewBag.car.Name</h2>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Ratings:</th>
+                            <td>   
+                             <label class="fw-bold  fs-6">Ratings:</label>
+                             <label class="d-flex fs-6" id="rating">
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
                             <i class="bi bi-star-fill star ms-1"></i>
@@ -203,64 +263,80 @@
                         </label>
                         @if (ViewBag.car.NoOfRide == 0)
                         {
-                            <label class="col-5"></label>
-                            <span class="col-5 fw-bold">(No ratings yet)</span>
+                            <span class="fw-bold">(No ratings yet)</span>
                         }
-                    </div>
-
-                    <div class="row fs-6 mt-2">
-                        <label class="col-5 fw-bold">No. of rides:</label>
-                        <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Price:</label>
-                        <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></label>
-                    </div>
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Locations:</label>
-                        <label class="col-7 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
-                    </div>
-
-                    <div class="row  fs-6 mt-2">
-                        <label class="col-5 fw-bold">Status:</label>
-                        @if (@ViewBag.car.Status == 1)
+                        </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">No of rides:</th>
+                            <td>@ViewBag.car.NoOfRide</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Price:</th>
+                            <td>@((ViewBag.car.BasePrice).ToString("N0")) <span class="fw-bold">VND/day</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Locations:</th>
+                            <td>@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Status:</th>
+                            <td>
+                                 @if (@ViewBag.car.Status == 1)
                         {
-                            <label class="col-5 fw-bold text-warning">Available</label>
+                            <label class="fw-bold text-warning">Available</label>
                         }
                         else if (@ViewBag.car.Status == 2)
                         {
-                            <label class="col-5 fw-bold text-primary">Booked</label>
+                            <label class="fw-bold text-primary">Booked</label>
                         }
                         else
                         {
-                            <label class="col-5 fw-bold text-danger">Stopped</label>
+                            <label class="fw-bold txt-danger">Stopped</label>
                         }
+                            </td>
+                        </tr>
+                          <tr>
+                              <th scope="row">Number of days:</th>
+                              @if (@ViewBag.TotalHours < 12)
+                              {
+                                  <td>Half a day</td>
+                              }
+                              else
+                              {
+                                  <td>@ViewBag.NumberOfDays</td>
+                              }
+                        </tr>
+                         <tr>
+                            <th style="border-bottom: none;" scope="row">Price per day:</th>
+                            <td style="border-bottom: none;">@ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <!-- Booking summary -->
+                <div class="offer-section mt-2">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold" id="offer-tab" data-toggle="tab" href="#offer" role="tab" aria-controls="offer" aria-selected="true">Booking Summary</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="offer" role="tabpanel" aria-labelledby="offer-tab">
+                            <div class="form-group mt-3" style="margin-left:10px">
+                                <label class="fw-bold ">Total: <span class="text-success">@ViewBag.Total.ToString("N0") VND</span></label> <br />
+                                 <label class="fw-bold mt-3 mb-3">Deposit: <span class="text-danger">@ViewBag.Deposit.ToString("N0") VND</span></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Booking summary -->
-            <div class="col-md-5 d-flex flex-column" style="border-left: 1px solid;">
-                <div class="mt-3 flex-grow-1">
-                    <h4 class="fw-bold">Booking Summary</h4>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Number of days: @ViewBag.NumberOfDays</label>
-                </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Price per day: @ViewBag.BasePrice.ToString("N0")<span class="fw-bold"> VND</span></label>
-                </div>
-                <hr style="width: 80%; margin-left: auto;">
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Total: @ViewBag.Total.ToString("N0") VND</label>
-                </div>
-                <div class=" mt-4 fs-6 text-end">
-                    <label class="col-6 fw-bold text-end">Deposit: @ViewBag.Deposit.ToString("N0") VND</label>
-                </div>
-                </div>
-            </div>
         </div>
-        <div class="cont" id="step1">
-            <div style="margin-left: 64px;">
+        </div>
+
+
+
+        <div class="container-fluid" id="step1">
+            <div >
                 <div class="form-group" hidden>
                     <label asp-for="UserId" class="control-label"></label>
                     <input asp-for="UserId" class="form-control" value="@user.UserId" readonly>
@@ -284,7 +360,7 @@
                             <label asp-for="BookingInfo.RenterPhone" class="control-label">
                                 Phone number: <span style="color: red;">*</span>
                             </label>
-                        <input asp-for="BookingInfo.RenterPhone" class="form-control" value="@ViewBag.user.Phone" required/>
+                        <input asp-for="BookingInfo.RenterPhone" type="number" class="form-control" value="@ViewBag.user.Phone" required/>
                             <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
                         </div>
 
@@ -387,7 +463,7 @@
                                 <label asp-for="BookingInfo.DriverPhone" class="control-label">
                                     Phone number: <span style="color: red;">*</span>
                                 </label>
-                                <input asp-for="BookingInfo.DriverPhone" class="form-control" required/>
+                                <input asp-for="BookingInfo.DriverPhone" type="number" class="form-control" required/>
                                 <span asp-validation-for="BookingInfo.DriverPhone" class="text-danger"></span>
                             </div>
 
@@ -414,10 +490,10 @@
                                 <span asp-validation-for="BookingInfo.DriverEmail" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3">
-                                <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license:</label>
+                                <label asp-for="BookingInfo.DriverDrivingLicense" class="control-label">Driving license: <span style="color: red;">*</span></label>
                                 <div class="input-group">
                                     <input asp-for="BookingInfo.DriverDrivingLicense" type="file" id="fileInput2" class="form-control" name="fileInput2" style="display: none;" accept="image/*" />
-                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly />
+                                    <input asp-for="BookingInfo.DriverDrivingLicense" type="text" id="fileName2" class="form-control" value="@ViewBag.user.DrivingLicense" readonly required/>
                                     <div class="input-group-append">
                                         <button asp-for="BookingInfo.DriverDrivingLicense" type="button" id="chooseFileBtn2" class="btn btn-outline-secondary">Upload</button>
                                     </div>
@@ -531,86 +607,11 @@
         </div>
         <div class="cont mt-4" id="step3"></div>
     </form>
-</div>
 
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-@* <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Hide all steps initially
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step3').style.display = 'none';
-
-        // Show the initial step (for example, Step 1)
-        navigateTo(0); // Adjust index based on your steps (0-indexed)
-    });
-
-    function navigateTo(stepIndex) {
-        // Hide all steps
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step3').style.display = 'none';
-
-        // Show the selected step
-        document.getElementById('step' + (stepIndex + 1)).style.display = 'block';
-
-        // Optionally, update the active state of your step indicators if needed
-        const steps = document.querySelectorAll('.step');
-        steps.forEach((step, index) => {
-            if (index === stepIndex) {
-                step.classList.add('active');
-            } else {
-                step.classList.remove('active');
-            }
-        });
-    }
-
-    function validateStep1() {
-        const requiredFields = document.querySelectorAll('#step1 .form-control[required]');
-        let valid = true;
-
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                valid = false;
-                field.classList.add('is-invalid');
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        // Check for any visible .text-danger elements
-        const errorMessages = document.querySelectorAll('#step1 .text-danger');
-        errorMessages.forEach(error => {
-            if (error.innerHTML.trim() !== '') {
-                valid = false;
-            }
-        });
-
-        return valid;
-    }
-
-    // Function to navigate to the next step
-    function nextStep() {
-        // Validate Step 1 before proceeding to Step 2
-        if (validateStep1()) {
-            // Example: Navigate to Step 2
-            navigateTo(1); // Adjust index based on your steps (0-indexed)
-        } else {
-            alert("Please fill in all required fields with valid values!");
-        }
-    }
-
-    function goToStep1() {
-        navigateTo(0); // Navigate to Step 1 (0-indexed)
-    }
-</script> *@
-
-
-
 
 <script>
     $(document).ready(function () {
@@ -951,7 +952,7 @@
 
             // Validate end date and time is greater than start date and time and at least 1 day later
             if (!isEndDateValid(newStartDate, newEndDate)) {
-                alert('Return date and time must be at least half of a day greater than pick-up date and time.');
+                alert('Return date and time must be at least a hour greater than pick-up date and time.');
                 return;
             }
 
@@ -1013,16 +1014,16 @@
             var startDateTime = new Date(startDate).getTime();
             var endDateTime = new Date(endDate).getTime();
 
-            return endDateTime > startDateTime;
+            return endDateTime >= startDateTime;
         }
 
-        // Function to check if end date and time is at least 1 day greater than start date and time
+        // Function to check if end date and time is at least 1 hour greater than start date and time
         function isEndDateValid(startDate, endDate) {
             var startDateTime = new Date(startDate).getTime();
             var endDateTime = new Date(endDate).getTime();
-            var oneDayInMillis = 12 * 60 * 60 * 1000; // One day in milliseconds
+            var oneDayInMillis = 1 * 60 * 60 * 1000; // One day in milliseconds
 
-            return endDateTime > startDateTime && (endDateTime - startDateTime) >= oneDayInMillis;
+            return endDateTime > startDateTime;
         }
     });
 </script>
@@ -1048,6 +1049,12 @@ $(document).ready(function () {
             updateDriverFields();
         }
     });
+
+    setInterval(function() {
+        if ($('input[name="BookingInfo.IsDifferent"]').is(':checked')) {
+            updateDriverFields();
+        }
+    }, 100);
 
     function toggleDriverFields() {
         var isChecked = $('input[name="BookingInfo.IsDifferent"]').is(':checked');
@@ -1216,6 +1223,101 @@ $(document).ready(function () {
         var submitButton = document.getElementById('submitButton');
         submitButton.disabled = true;
         submitButton.innerText = 'Processing...'; // Optional: change button text to indicate processing
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("submitButton").addEventListener("click", function(event) {
+            var wallet = @ViewBag.wallet; // Đảm bảo bạn đã định nghĩa biến wallet ở phía server
+            var deposit = @ViewBag.deposit; // Đảm bảo bạn đã định nghĩa biến deposit ở phía server
+            var isWalletChecked = document.getElementById("pm1").checked;
+
+            if (isWalletChecked && wallet < deposit) {
+                alert("Your wallet balance is insufficient for this payment method. Please choose another payment method or add funds to your wallet.");
+                event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu
+            }
+
+            var newLocation = $('#modalPickupLocation').val();
+            var newStartDate = $('#modalStartDate').val();
+            var newEndDate = $('#modalEndDate').val();
+            var newCarId = $('#modalCarId').val();
+
+            // Validate start date and time is greater than current date and time
+            if (!isStartDateGreaterThanCurrentDate(newStartDate)) {
+                alert('Pick-up date and time must be greater than the current date and time.');
+                event.preventDefault();
+            }
+
+            // Validate end date and time is greater than start date and time
+            if (!isEndDateGreaterThanStartDate(newStartDate, newEndDate)) {
+                alert('Return date and time must be greater than start date and time.');
+                event.preventDefault();
+            }
+
+            // Validate end date and time is greater than start date and time and at least 1 day later
+            if (!isEndDateValid(newStartDate, newEndDate)) {
+                alert('Return date and time must be at least a hour greater than pick-up date and time.');
+                event.preventDefault();
+            }
+
+            // Format dates to desired format
+            var formattedStartDate = formatDate(newStartDate);
+            var formattedEndDate = formatDate(newEndDate);
+
+            // Update booking details display
+            $('#pickupLocationText').text(newLocation);
+            $('#startDateText').text(formattedStartDate);
+            $('#endDateText').text(formattedEndDate);
+            $('#CarIdText').text(newCarId);
+
+            // Optionally update hidden input values
+            $('#hiddenStartDate').val(newStartDate);
+            $('#hiddenEndDate').val(newEndDate);
+
+        });
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var formattedDate = date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            // Ensure "AM" or "PM" is in uppercase
+            formattedDate = formattedDate.replace(/\b([ap])m\b/g, function (match) {
+                return match.toUpperCase();
+            });
+
+            return formattedDate;
+        }
+
+        // Function to check if start date and time is greater than current date and time
+        function isStartDateGreaterThanCurrentDate(startDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var currentDateTime = new Date().getTime() - (1 * 60 * 1000);
+
+            return startDateTime >= currentDateTime;
+        }
+
+        // Function to check if end date and time is greater than start date and time
+        function isEndDateGreaterThanStartDate(startDate, endDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var endDateTime = new Date(endDate).getTime();
+
+            return endDateTime >= startDateTime;
+        }
+
+        // Function to check if end date and time is at least 1 hour greater than start date and time
+        function isEndDateValid(startDate, endDate) {
+            var startDateTime = new Date(startDate).getTime();
+            var endDateTime = new Date(endDate).getTime();
+            var oneDayInMillis = 1 * 60 * 60 * 1000; // One day in milliseconds
+
+            return endDateTime > startDateTime;
+        }
     });
 </script>
 }

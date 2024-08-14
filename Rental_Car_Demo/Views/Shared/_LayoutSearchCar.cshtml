@@ -252,12 +252,6 @@
     <header class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Rental <span class="text-danger">Cars</span></h3>
         <div class="top-bar d-flex align-items-center">
-            <div class="input-group me-4">
-                <input type="text" class="form-control" placeholder="Search your ride">
-                <button class="btn btn-outline-secondary" type="button">
-                    <i class="fa-regular fa-magnifying-glass"></i>
-                </button>
-            </div>
             <div class="dropdown">
                 @if (isUserLoggedIn)
                 {
@@ -332,7 +326,8 @@
         function toggleSelection(element) {
             element.classList.toggle('selected');
         }
-
+        $(document).ready(function () {
+        });
 
         $(document).ready(function () {
             function performSearch() {
@@ -341,6 +336,7 @@
                     selectedBrands.push($(this).val());
                 });
 
+
                 var selectedSeats = [];
                 $(".seatsCheckbox:checked").each(function () {
                     selectedSeats.push($(this).val());
@@ -348,25 +344,31 @@
 
                 var selectedTransmissions = [];
                 $(".transmissionCheckbox:checked").each(function () {
-                    var transmissionValue = ($(this).val() === "true");
-                    selectedTransmissions.push(transmissionValue);
+                    selectedTransmissions.push($(this).val() === "true");
                 });
 
-                var selectedBrandLogos = [];
-                $(".brandLogoCheckbox:checked").each(function () {
-                    selectedBrandLogos.push($(this).val());
+                var selectedFuel = [];
+                $(".fuleTypeCheckbox:checked").each(function () {
+                    selectedFuel.push($(this).val() === "true");
                 });
+
+               
+
+                console.log("Selected trasss:", selectedTransmissions);  // Debug log
+                console.log("Selected trasss:", selectedFuel);
 
                 $.ajax({
                     url: "/Home/SearchCar",
                     type: "GET",
                     traditional: true,
                     data: {
-                        brandName: selectedBrands,
+                        brandNames: selectedBrands,
                         seats: selectedSeats,
-                        transmissionType: selectedTransmissions
+                        transmissionTypes: selectedTransmissions,
+                        fuelTypes: selectedFuel
                     },
                     success: function (data) {
+                      //  console.log("Data Received:", data); 
                         $("#carResults").html(data);
                     },
                     error: function (error) {
@@ -375,85 +377,53 @@
                 });
             }
 
-            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox").change(function (event) {
+            $(".brandNameCheckbox, .seatsCheckbox, .transmissionCheckbox, .fuleTypeCheckbox").change(function (event) {
                 event.preventDefault();
                 performSearch();
             });
+
         });
 
-        function performBrandSearch(brandName) {
-            $.ajax({
-                url: "/Home/SearchCar",
-                type: "GET",
-                traditional: true,
-                data: {
-                    brandName: brandName
-                },
-                success: function (data) {
-                    $("#carResults").html(data);
-                },
-                error: function (error) {
-                    console.log("Error performing search: " + error);
-                }
+        // function performBrandSearch(brandNames) {
+        //     $.ajax({
+        //         url: "/Home/SearchCar",
+        //         type: "POST",
+        //         traditional: true,
+        //         data: {
+        //             brandNames: brandNames
+        //         },
+        //         success: function (data) {
+        //             $("#carResults").html(data);
+        //         },
+        //         error: function (error) {
+        //             console.log("Error performing search: " + error);
+        //         }
+        //     });
+        // }
+
+      
+
+
+
+            $(document).ready(function () {
+                $('.priceRangeCheckbox').change(function () {
+                    var form = $('#priceRangeForm');
+                    $.ajax({
+                    url: "/Home/SearchCar",
+                    type: "POST",
+                        data: form.serialize(),
+                        success: function (result) {
+                        $('#carResults').html(result);
+                        },
+                        error: function () {
+                            alert('Error occurred while fetching data.');
+                        }
+                    });
+                });
             });
-        }
-
-        $(document).ready(function () {
-            $(".brand-item img").click(function () {
-                var brandName = $(this).attr("alt");
-                performBrandSearch(brandName);
-            });
-        });
-
-
-        function performPriceRangeSearch() {
-            var selectedPriceRanges = [];
-            $(".priceRangeCheckbox:checked").each(function () {
-                selectedPriceRanges.push($(this).val());
-            });
-
-            var minPrice = null;
-            var maxPrice = null;
-
-            selectedPriceRanges.forEach(function (range) {
-                var bounds = range.split('-');
-                var lowerBound = parseFloat(bounds[0]);
-                var upperBound = parseFloat(bounds[1]);
-
-                if (minPrice === null || lowerBound < minPrice) {
-                    minPrice = lowerBound;
-                }
-                if (maxPrice === null || upperBound > maxPrice) {
-                    maxPrice = upperBound;
-                }
-            });
-
-            $.ajax({
-                url: "/Home/SearchCar",
-                type: "GET",
-                data: {
-                    minPrice: minPrice,
-                    maxPrice: maxPrice
-                },
-                success: function (data) {
-                    $("#carResults").html(data);
-                },
-                error: function (error) {
-                    console.log("Error performing search: " + error);
-                }
-            });
-        }
-
-        $(document).ready(function () {
-            $(".priceRangeCheckbox").change(function () {
-                performPriceRangeSearch();
-            });
-        });
 
 
         function fetchSuggestions(query, inputId) {
-            if (query.length < 2) return; // Only fetch suggestions if the query is at least 2 characters long
-
             fetch('/Home/GetSuggestions?query=' + encodeURIComponent(query))
                 .then(response => response.json())
                 .then(data => {
@@ -514,7 +484,6 @@
 
             function getCurrentDateTime() {
                 const now = new Date();
-                now.setDate(now.getDate() + 1); // Add 1 day to correct the -1 day issue
                 return {
                     date: now.toISOString().split('T')[0],
                     time: now.toTimeString().split(' ')[0].substring(0, 5)
@@ -527,9 +496,6 @@
 
                 if (pickupDateTime < currentDateTime) {
                     alert("Pickup date and time must be equal to or greater than the current date and time.");
-                    const currentDateTimeStr = getCurrentDateTime();
-                    pickupDateInput.value = currentDateTimeStr.date;
-                    pickupTimeInput.value = currentDateTimeStr.time;
                     return false;
                 }
                 return true;
@@ -538,37 +504,28 @@
             function validateDropoffDateTime() {
                 const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
                 const dropDateTime = new Date(`${dropDateInput.value}T${dropTimeInput.value}`);
-                const halfDayInMilliseconds = 12 * 60 * 60 * 1000;
 
-                if ((dropDateTime - pickupDateTime) < halfDayInMilliseconds) {
-                    alert("Drop-off date and time must be greater than the pickup date and time by at least half a day.");
-
-                    // Adjust dropoff time to be 12 hours after pickup time
-                    let adjustedDropoffDateTime = new Date(pickupDateTime.getTime() + halfDayInMilliseconds);
-
-                    // Check if adjusted dropoff time is still on the same day as pickupDateTime
-                    if (adjustedDropoffDateTime.toDateString() === pickupDateTime.toDateString()) {
-                        // Add an extra day to dropDateInput
-                        adjustedDropoffDateTime.setDate(adjustedDropoffDateTime.getDate() + 1);
+                // Nếu pickup date và drop off date bằng nhau
+                if (dropDateInput.value === pickupDateInput.value) {
+                    if (dropDateTime <= pickupDateTime) {
+                        alert("Drop-off time must be greater than the pickup time on the same day.");
+                        let adjustedDropoffDateTime = new Date(pickupDateTime);
+                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1); 
+                        dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+                        return false;
                     }
-
-                    // Set the adjusted date and time for dropoff
-                    dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
-                    dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
-
-                    return false;
+                } else {
+                    // Kiểm tra nếu drop off time nhỏ hơn pickup time
+                    if (dropDateTime <= pickupDateTime) {
+                        alert("Drop-off date and time must be greater than the pickup date and time.");
+                        let adjustedDropoffDateTime = new Date(pickupDateTime);
+                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1);
+                        dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
+                        dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+                        return false;
+                    }
                 }
                 return true;
-            }
-
-            function updatePickupTime() {
-                const now = new Date();
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-
-                if (pickupDateTime <= now) {
-                    const currentTime = now.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
-                    pickupTimeInput.value = currentTime;
-                }
             }
 
             function updateDropoffMin() {
@@ -577,58 +534,48 @@
 
                 if (pickupDate && pickupTime) {
                     const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
-                    const halfDayLater = new Date(pickupDateTime.getTime() + 12 * 60 * 60 * 1000);
-                    const formattedHalfDayLaterDate = halfDayLater.toISOString().split('T')[0];
-                    const formattedHalfDayLaterTime = halfDayLater.toTimeString().split(' ')[0].substring(0, 5);
-
-                    dropDateInput.setAttribute('min', formattedHalfDayLaterDate);
-                    dropTimeInput.setAttribute('min', formattedHalfDayLaterTime);
+                    dropDateInput.setAttribute('min', pickupDateTime.toISOString().split('T')[0]);
+                    dropTimeInput.setAttribute('min', pickupDateTime.toTimeString().split(' ')[0].substring(0, 5));
                 }
             }
 
-            // Initialize dropoff min values
             updateDropoffMin();
 
-            // Update pickupTime every minute if needed
-            setInterval(function () {
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-                const now = new Date();
-                if (pickupDateTime <= now) {
-                    updatePickupTime();
-                }
-            }, 60000); // 60000 ms = 1 minute
-
             pickupDateInput.addEventListener("change", function () {
-                if (!validatePickupDateTime()) {
+                if (validatePickupDateTime()) {
+                    updateDropoffMin();
+                    validateDropoffDateTime();
+                } else {
                     const currentDateTimeStr = getCurrentDateTime();
                     pickupDateInput.value = currentDateTimeStr.date;
                     pickupTimeInput.value = currentDateTimeStr.time;
                 }
-                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
             });
 
             pickupTimeInput.addEventListener("change", function () {
-                if (!validatePickupDateTime()) {
+                if (validatePickupDateTime()) {
+                    updateDropoffMin();
+                    validateDropoffDateTime();
+                } else {
                     const currentDateTimeStr = getCurrentDateTime();
                     pickupDateInput.value = currentDateTimeStr.date;
                     pickupTimeInput.value = currentDateTimeStr.time;
                 }
-                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
             });
 
             dropDateInput.addEventListener("change", function () {
-                if (!validateDropoffDateTime()) {
-                    // The values are already set inside validateDropoffDateTime
-                }
+                validateDropoffDateTime();
             });
 
             dropTimeInput.addEventListener("change", function () {
-                if (!validateDropoffDateTime()) {
-                    // The values are already set inside validateDropoffDateTime
-                }
+                validateDropoffDateTime();
             });
         });
     </script>
+
+
+
+
 
 
 

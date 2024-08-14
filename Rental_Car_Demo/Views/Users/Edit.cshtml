@@ -28,37 +28,37 @@
 @* <hr /> *@
 <div class="row">
     <div class="col-md-12">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="personal-info-tab" data-toggle="tab" href="#personal-info" role="tab" aria-controls="personal-info" aria-selected="true">Personal Information</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <form asp-action="Edit" enctype="multipart/form-data">
-                <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="UserId" />
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#personal-info" id="tab-personal-info">Personal Information</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#security" id="tab-security">Security</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="row container tab-pane active" id="personal-info">
+                    <div asp-validation-summary="ModelOnly" class="text-danger text-myfont" hidden></div>
+                    <input type="hidden" asp-for="UserId"/>
                     <input type="hidden" asp-for="Wallet"/>
                     <div class="row text-myfont mt-2 pt-2">
                         <div class="col-md-6">
                             <div class="form-group col-md-8 mb-3">
                                 <label asp-for="Name" class="control-label">Full Name:</label>
-                                <input asp-for="Name" class="form-control" />
+                                <input asp-for="Name" class="form-control"/>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3" readonly hidden>
                                 <label asp-for="Role" class="control-label">Role</label>
-                                <input asp-for="Role" class="form-control" />
+                                <input asp-for="Role" class="form-control"/>
                                 <span asp-validation-for="Role" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3">
                                 <label asp-for="Phone" class="control-label">
                                     Phone number: <span style="color: red;">*</span>
                                 </label>
-                                <input asp-for="Phone" class="form-control" />
+                                <input asp-for="Phone" type="number" class="form-control"/>
                                 <span asp-validation-for="Phone" class="text-danger"></span>
                             </div>
 
@@ -77,11 +77,10 @@
                                 <span asp-validation-for="Dob" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-8 mb-3">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <label asp-for="Email" class="control-label">
                                     Email address: <span style="color: red;">*</span>
                                 </label>
-                                <input asp-for="Email" class="form-control" />
+                                <input asp-for="Email" class="form-control"/>
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
 
@@ -90,8 +89,8 @@
                             <div class="form-group col-md-8 mb-3">
                                 <label asp-for="DrivingLicense" class="control-label">Driving license:</label>
                                 <div class="input-group">
-                                    <input asp-for="DrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
-                                    <input asp-for="DrivingLicense" type="text" id="fileName" class="form-control" readonly />
+                                    <input asp-for="DrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*"/>
+                                    <input asp-for="DrivingLicense" type="text" id="fileName" class="form-control" readonly/>
                                     <div class="input-group-append">
                                         <button asp-for="DrivingLicense" type="button" id="chooseFileBtn" class="btn btn-outline-secondary">Upload</button>
                                     </div>
@@ -111,7 +110,7 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <img id="modalImage" src="" style="width: 100%; height: auto;" /> <!-- Adjust styles -->
+                                            <img id="modalImage" src="" style="width: 100%; height: auto;"/> <!-- Adjust styles -->
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +148,7 @@
                     </div>
                     <div class="form-group mt-2 row justify-content-center">
                         <div class="col-md-6 text-center">
-                            @if (Model.Role==false)
+                            @if (Model.Role == false)
                             {
                                 <a asp-controller="Users" asp-action="LoginCus" class="btn btn-secondary">Discard</a>
                             }
@@ -157,29 +156,21 @@
                             {
                                 <a asp-controller="Users" asp-action="LoginOwn" class="btn btn-secondary">Discard</a>
                             }
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <input type="submit" value="Save" class="btn btn-primary"/>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade text-myfont col-md-12" id="security" role="tabpanel" aria-labelledby="security-tab">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="UserId" />
+                <div class="row container tab-pane fade text-myfont col-md-12" id="security">
+                    <input type="hidden" asp-for="UserId"/>
                     <div class="mb-5" style="padding-left: 1rem;">
                         <p class="text-myfont">Change password</p>
+                        <div id="validation-summary" asp-validation-summary="ModelOnly" class="text-danger text-myfont"></div>
                     </div>
-                    @* <div class="form-group col-md-4 mb-3">
-                        <label class="control-label">
-                            Current Password <span style="color: red;">*</span>
-                        </label>
-                        <input asp-for="Password" type="password" id="CurrentPassword" class="form-control" value="@Model.Password"/>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div> *@
-                    @* <input asp-for="Password" id="CurrentPassword" class="form-control" value="@Model.Password" /> *@
                     <div class="form-group col-md-4 mb-3">
-                        <label class="control-label" hidden>
+                        <label class="control-label">
                             Current Password
                         </label>
-                        <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" hidden/>
+                        <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" autocomplete="new-password"/>
                         <span id="CurrentPasswordError" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-4 mb-3">
@@ -193,12 +184,12 @@
                         <label class="control-label">
                             Confirm New Password
                         </label>
-                        <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
+                        <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password"/>
                         <span id="confirmPasswordError" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2 row justify-content-center">
                         <div class="col-md-6 text-center">
-                            @if (Model.Role==false)
+                            @if (Model.Role == false)
                             {
                                 <a asp-controller="Users" asp-action="LoginCus" class="btn btn-secondary">Discard</a>
                             }
@@ -206,12 +197,12 @@
                             {
                                 <a asp-controller="Users" asp-action="LoginOwn" class="btn btn-secondary">Discard</a>
                             }
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <input type="submit" value="Save" class="btn btn-primary"/>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -219,73 +210,73 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
+    
     <script>
-        $(document).ready(function () {
-            // Function to toggle visibility of personal info fields
-            function togglePersonalInfoFields(visible) {
-                $('#personal-info').find('.form-group').each(function () {
-                    $(this).toggle(visible);
-                });
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        // Kiểm tra nếu có lỗi trong validation summary
+        var validationSummary = document.getElementById("validation-summary");
 
-            function toggleSecurity(visible) {
-                $('#security').find('.form-group').each(function () {
-                    $(this).toggle(visible);
-                });
-            }
-
-            // Initial setup
-            togglePersonalInfoFields(true); // Show personal info fields initially
-            toggleSecurity(false);
-
-            // Tab click handlers
-            $('#personal-info-tab').on('click', function (e) {
-                e.preventDefault();
-                $('#myTab a[href="#personal-info"]').tab('show');
-                togglePersonalInfoFields(true); // Show personal info fields
-                toggleSecurity(false);
-            });
-
-            $('#security-tab').on('click', function (e) {
-                e.preventDefault();
-                $('#myTab a[href="#security"]').tab('show');
-                togglePersonalInfoFields(false); // Hide personal info fields
-                toggleSecurity(true);
-            });
-
-            // Form submission handler
-            $('form').submit(function () {
-                if ($('#security-tab').hasClass('active')) {
-                var currentPassword = $('#CurrentPassword').val();
-                var newPassword = $('#NewPassword').val();
-                var confirmPassword = $('#ConfirmPassword').val();
-                
-                var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-
+        if (validationSummary && validationSummary.innerHTML.trim().length > 0) {
+            // Chuyển sang tab Security nếu có lỗi liên quan đến password
+            if (validationSummary.textContent.includes("Please enter current password before enter new password!") || 
+                validationSummary.textContent.includes("New password must be matched with Confirm new password and contains at least one letter and one number!") || 
+                validationSummary.textContent.includes("Please enter both new password and confirm new password!") || 
+                validationSummary.textContent.includes("Current password is not correct!")) {
             
-                    // if (currentPassword == "") {
-                    //     $('#CurrentPasswordError').text('Please enter your current password');
-                    //     return false; // Prevent form submission
-                    // } else 
-                    if (newPassword == "" && confirmPassword == "") {
-                        $('#NewPasswordError').text("Please enter new password");
-                        return false;
-                    } else if (!passwordRegex.test(newPassword)) {
-                        $('#NewPasswordError').text("Password must contain at least one letter, one numeral, and be at least seven characters long.");
-                        return false;
-                    } else if (newPassword !== confirmPassword) {
-                        $('#confirmPasswordError').text('Passwords do not match');
-                        return false; // Prevent form submission
-                    } else {
-                        $('#confirmPasswordError').text(''); // Clear previous error message
-                        $('#CurrentPassword').val(newPassword); // Set the CurrentPassword field to the new password
-                    }
-                }
-                return true;
-            });
+                // Bỏ class active khỏi tab Personal Info
+                document.getElementById("tab-personal-info").classList.remove("active");
+                // Thêm class active vào tab Security
+                document.getElementById("tab-security").classList.add("active");
+
+                // Hiển thị nội dung của tab Security
+                document.querySelector("#personal-info").classList.remove("show", "active");
+                document.querySelector("#security").classList.add("show", "active");
+            }
+            validationSummary.style.display = "none";
+
+            // Hiển thị alert với nội dung lỗi sau khi tab Security đã được kích hoạt
+            setTimeout(function () {
+                alert(validationSummary.innerText.trim());
+            }, 150); // Delay để đảm bảo tab Security đã hoàn toàn kích hoạt
+        }
+    });
+
+    function validatePasswordFields() {
+        var newPassword = $('#NewPassword').val();
+        var confirmPassword = $('#ConfirmPassword').val();
+        var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
+
+        $('#NewPasswordError').text(''); // Xóa thông báo lỗi trước đó
+        $('#confirmPasswordError').text(''); // Xóa thông báo lỗi trước đó
+
+        if (newPassword == "" && confirmPassword == "") {
+            $('#NewPasswordError').text("Please enter new password");
+            return false;
+        } else if (!passwordRegex.test(newPassword)) {
+            $('#NewPasswordError').text("Password must contain at least one letter, one numeral, and be at least seven characters long.");
+            return false;
+        } else if (newPassword !== confirmPassword) {
+            $('#confirmPasswordError').text('Passwords do not match');
+            return false; // Prevent form submission
+        } else {
+            return true; // Tất cả hợp lệ
+        }
+    }
+
+    $(document).ready(function () {
+        // Kiểm tra định dạng mật khẩu khi người dùng nhập
+        $('#NewPassword, #ConfirmPassword').on('input', function () {
+            validatePasswordFields();
         });
-    </script>
+
+        $('form').submit(function () {
+            if ($('#security-tab').hasClass('active')) {
+                return validatePasswordFields(); // Gọi hàm kiểm tra mật khẩu trước khi gửi
+            }
+            return true; // Nếu không ở tab security, cho phép gửi biểu mẫu
+        });
+    });
+</script>
     <script>
     $(document).ready(function () {
         // Fetch and populate districts when a city is selected

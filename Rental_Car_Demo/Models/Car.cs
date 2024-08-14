@@ -20,6 +20,8 @@ public partial class Car
 
     public int ModelId { get; set; }
 
+    [Required(ErrorMessage = "This field can not be empty!!")]
+    [Range(1, 49, ErrorMessage = "Seat number between 1-49!")]
     public int Seats { get; set; }
 
     public int ColorId { get; set; }
@@ -47,7 +49,7 @@ public partial class Car
     [Range(1, double.MaxValue, ErrorMessage = "BasePrice must be greater than 0.")]
     public decimal BasePrice { get; set; }
 
-    [Range(0, double.MaxValue, ErrorMessage = "Deposit must be a positive number.")]
+    [Range(1, double.MaxValue, ErrorMessage = "Deposit must be a positive number.")]
     public decimal Deposit { get; set; }
 
     public int AddressId { get; set; }

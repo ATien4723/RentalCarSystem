@@ -1,94 +1,53 @@
 ﻿
 
+
+
+
+
+//
 document.addEventListener('DOMContentLoaded', function () {
-    // Toggle password visibility
-    document.getElementById('toggleLoginPassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('loginPassword');
-        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', type);
-        this.classList.toggle('bx-show');
-    });
+    const loginForm = document.getElementById('loginForm');
 
-    document.getElementById('toggleSignupPassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('signupPassword');
-        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', type);
-        this.classList.toggle('bx-show');
-    });
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (event) {
+            let valid = true;
 
-    document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('signupConfirmPassword');
-        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', type);
-        this.classList.toggle('bx-show');
-    });
+            const email = document.getElementById('loginEmail');
+            const password = document.getElementById('loginPassword');
 
-    // Only one radio button should be checked at a time
-    let lastChecked = null;
+            const emailError = document.getElementById('loginEmailError');
+            const passwordError = document.getElementById('loginPasswordError');
+            const serverError = document.getElementById('serverError');
 
-    const rentCar = document.getElementById('rentCar');
-    const carOwner = document.getElementById('carOwner');
+            emailError.textContent = '';
+            passwordError.textContent = '';
 
-    rentCar.addEventListener('click', function () {
-        if (lastChecked === rentCar) {
-            rentCar.checked = false;
-            lastChecked = null;
-        } else {
-            if (lastChecked) lastChecked.checked = false;
-            lastChecked = rentCar;
-            rentCar.checked = true;
-        }
-    });
+            if (email.value.trim() === '') {
+                emailError.textContent = 'This field is required';
+                valid = false;
+            } else {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email.value.trim())) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    valid = false;
+                }
+            }
 
-    carOwner.addEventListener('click', function () {
-        if (lastChecked === carOwner) {
-            carOwner.checked = false;
-            lastChecked = null;
-        } else {
-            if (lastChecked) lastChecked.checked = false;
-            lastChecked = carOwner;
-            carOwner.checked = true;
-        }
-    });
-
-    // Form validation
-    document.querySelector('form').addEventListener('submit', function (event) {
-        let valid = true;
-
-        const email = document.getElementById('loginEmail');
-        const password = document.getElementById('loginPassword');
-
-        const emailError = document.getElementById('loginEmailError');
-        const passwordError = document.getElementById('loginPasswordError');
-        const serverError = document.getElementById('serverError');
-
-        emailError.textContent = '';
-        passwordError.textContent = '';
-
-        if (email.value.trim() === '') {
-            emailError.textContent = 'This field is required';
-            valid = false;
-        } else {
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email.value.trim())) {
-                emailError.textContent = 'Please enter a valid email address';
+            if (password.value.trim() === '') {
+                passwordError.textContent = 'This field is required';
                 valid = false;
             }
-        }
 
-        if (password.value.trim() === '') {
-            passwordError.textContent = 'This field is required';
-            valid = false;
-        }
-
-        if (!valid) {
-            event.preventDefault(); // Prevent form submission
-            if (serverError) {
-                serverError.textContent = ''; // Clear server error message if any
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission
+                if (serverError) {
+                    serverError.textContent = ''; // Clear server error message if any
+                }
             }
-        }
-    });
+        });
+    }
 });
+
 
 
 

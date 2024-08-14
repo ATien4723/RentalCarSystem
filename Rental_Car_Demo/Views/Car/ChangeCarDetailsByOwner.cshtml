@@ -7,14 +7,14 @@
 <head>
     <style>
         .custom-drag-area1 {
-            margin-top: 1rem; /* Equivalent to mt-3 */
-            border-radius: 1rem; /* Equivalent to rounded-2xl */
-            border: 2px dashed black; /* Equivalent to border-2 and border-dashed */
-            padding: 1.5rem; /* Equivalent to p-6 */
+            margin-top: 1rem;
+            border-radius: 1rem;
+            border: 2px dashed black;
+            padding: 1.5rem;
             display: flex;
-            flex-direction: column; /* Equivalent to flex-col */
-            align-items: center; /* Equivalent to items-center */
-            justify-content: center; /* Equivalent to justify-content-center */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background-color: white;
         }
 
@@ -29,6 +29,28 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
         }
+
+        .main-image-container {
+            width: 100%;
+            height: 400px; /* Fixed height */
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100px; /* Fixed height */
+            object-fit: cover;
+        }
+
+        .thumbnail-container {
+            margin-top: 10px;
+        }
+
 
         .star-rating {
             color: #ffa500;
@@ -48,14 +70,75 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        .icon {
+            font-size: 1rem;
+            margin-right: 5px;
+        }
+
+            .icon img {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+            }
+
+        .owner-section h5 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .owner-info {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 5px;
+            width: 35%;
+        }
+
+        .owner-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .owner-details {
+            margin-left: 15px;
+        }
+
+        .owner-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .changekk {
+            border: var(--bs-border-width) solid var(--bs-border-color);
+            border-radius: var(--bs-border-radius);
+        }
+
+        .btn-aaa {
+            text-decoration: none;
+            background-color: #3942e5;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-size: 1rem;
+            cursor: pointer;
+            align-self: flex-start;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="mt-3">
-        <a href="~/Users/LoginOwn">Home</a> > <a href="~/Car/ViewMyCars">List of Cars</a> > <span>Car Details</span>
-        <h2 class="mt-2">Car Details</h2>
+    <div class="mt-3 ps-3">
+        <a href="~/Users/LoginOwn">Home</a> > <a href="~/Car/ViewMyCars">List of Cars</a> > <span class="fw-bold">Car Details</span>
     </div>
 
     @if (TempData["ErrorMessage"] != null)
@@ -68,123 +151,153 @@
     <div class="container-fluid">
 
         <!--Image and Preview-->
-        <div class="car-card row mt-3">
 
-            <div id="demo" class="col-5 carousel slide ms-4 mt-3" data-bs-ride="carousel">
-                <!-- Indicators/dots -->
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
-                </div>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-md-6">
 
-                <!-- The slideshow/carousel -->
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img id="frontImg" src="~/img/@(ViewBag.car.FrontImage)" alt="Front img">
+                    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+                        <!-- Indicators/dots -->
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+                        </div>
+
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner main-image-container">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100 main-image" src="~/img/@(ViewBag.car.FrontImage)" alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 main-image" src="~/img/@(ViewBag.car.BackImage)" alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 main-image" src="~/img/@(ViewBag.car.LeftImage)" alt="Third slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 main-image" src="~/img/@(ViewBag.car.RightImage)" alt="Fourth slide">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="carousel-item ">
-                        <img id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img">
+                    <div class="row thumbnail-container">
+                        <div class="col-4">
+                            <img id="backImg" src="~/img/@(ViewBag.car.BackImage)" alt="Back img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img" class="thumbnail-image">
+                        </div>
+                        <div class="col-4">
+                            <img id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img" class="thumbnail-image">
+                        </div>
                     </div>
-                    <div class="carousel-item ">
-                        <img id="leftImg" src="~/img/@(ViewBag.car.LeftImage)" alt="Left img">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="fw-bold mt-3">@ViewBag.car.Name</h2>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Ratings</th>
+                                <td id="rating">
+                                    <i class="bi bi-star-fill star ms-1"></i>
+                                    <i class="bi bi-star-fill star ms-1"></i>
+                                    <i class="bi bi-star-fill star ms-1"></i>
+                                    <i class="bi bi-star-fill star ms-1"></i>
+                                    <i class="bi bi-star-fill star ms-1"></i>
+                                    @if (ViewBag.car.NoOfRide == 0)
+                                    {
+                                        <span class="fw-bold">(No ratings yet)</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">No of rides</th>
+                                <td>@ViewBag.car.NoOfRide</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Price</th>
+                                <td id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0"))<span> VND/day</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Locations</th>
+                                <td id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</td>
+                            </tr>
+                            <tr>
+                                <th style="border-bottom: none;" scope="row">Status</th>
+                                <td style="border-bottom: none;">
+                                    @if (@ViewBag.car.Status == 2)
+                                    {
+                                        <label class="fw-bold text-primary">Booked</label>
+                                    }
+                                    else
+                                    {
+                                        <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
+                                            @{
+                                                var statusColor = @ViewBag.car.Status == 1 ? "green" : @ViewBag.car.Status == 3 ? "red" : "black";
+                                            }
+                                            <select style="color:@statusColor; width:50%" id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
+                                             {
+                                                 new { Value = "1", Text = "Available" },
+                                                 new { Value = "3", Text = "Stopped" }
+                                             }, "Value", "Text", @ViewBag.car.Status))">
+                                            </select>
+                                            <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
+                                            <input type="hidden" asp-for="CarId" value="@Model.CarId" />
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="owner-section mt-2">
+                        <h5>Car Owner</h5>
+                        <div class="owner-info d-flex align-items-center">
+                            <img src="~/img/5.png" alt="Owner Image" class="owner-image">
+                            <div class="owner-details ml-3">
+                                <div class="owner-name">@ViewBag.CarOwner.Name</div>
+                                <div class="verification-badge" style="color:green">
+                                    <span class="verified-icon">&#10003;</span> Verified
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="carousel-item ">
-                        <img id="rightImg" src="~/img/@(ViewBag.car.RightImage)" alt="Right img">
-                    </div>
-                </div>
 
-                <!-- Left and right controls/icons -->
-                <button class="carousel-control-prev" style="margin-left: -10%;" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" style="margin-right: -10%;" type="button" data-bs-target="#demo" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
-
-            <div class="col-1">
-            </div>
-
-            <div class="col-6" style="margin-left:-2%;">
-                <h2 class="fw-bold mt-1" id="CarName">@ViewBag.car.Name</h2>
-                <div class="row">
-                    <label class="col-3 fw-bold text-black fs-5">Ratings:</label>
-                    <label class="col-9 d-flex fs-4" id="rating">
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                        <i class="bi bi-star-fill star ms-1"></i>
-                    </label>
-                    @if (ViewBag.car.NoOfRide == 0)
-                    {
-                        <label class="col-3"> </label>
-                        <span class="col-5 fw-bold">(No ratings yet)</span>
-                    }
-                </div>
-                <div class="row mt-4 fs-5">
-                    <label class="col-3 fw-bold">No. of rides:</label>
-                    <label class="col-5 fw-bold">@ViewBag.car.NoOfRide</label>
-                </div>
-                <div class="row mt-4 fs-5">
-                    <label class="col-3 fw-bold">Price:</label>
-                    <label class="col-5 fw-bold" id="PreviewPrice">@((ViewBag.car.BasePrice).ToString("N0"))<span class="fw-bold"> VND/day</span></label>
-                </div>
-                <div class="row mt-4 fs-5">
-                    <label class="col-3 fw-bold">Locations:</label>
-                    <label class="col-5 fw-bold" id="PreviewLocation">@ViewBag.district.DistrictName, @ViewBag.city.CityProvince</label>
-                </div>
-
-                <div class="row mt-4 fs-5">
-                    <label class="col-3 fw-bold">Status:</label>
-                    <div class="col-5">
-                        @if (@ViewBag.car.Status == 2)
-                        {
-                            <label class="col-5 fw-bold text-primary">Booked</label>
-                        }
-                        else
-                        {
-                            <form id="statusForm" asp-action="ChangeCarStatus" asp-controller="Car" method="post">
-                                @{
-                                    var statusColor = @ViewBag.car.Status == 1 ? "green" : @ViewBag.car.Status == 3 ? "red" : "black";
-                                }
-                                <select style="color:@statusColor;" id="statusDropdown" class="form-select fw-bold" asp-for="Status" asp-items="@(new SelectList(new[]
-                                {
-                                    new { Value = "1", Text = "Available" },
-                                    new { Value = "3", Text = "Stopped" }
-                                }, "Value", "Text", @ViewBag.car.Status))">
-                                </select>
-                                <input type="hidden" id="previousStatus" value="@ViewBag.car.Status" />
-                                <input type="hidden" asp-for="CarId" value="@Model.CarId" />
-                            </form>
-                        }
-                    </div>
-
-                    <div class="col-4">
+                    <div class="mt-3">
                         @if (ViewBag.booking != null && ViewBag.booking.Status == 1)
                         {
                             <form id="confirmDepositForm" asp-action="ConfirmDeposit" asp-controller="Car" method="post">
-                                <button type="button" class="btn btn-primary p-2" id="confirmDepositButton">Confirm Deposit</button>
+                                <button type="button" class="btn-aaa p-2" id="confirmDepositButton">Confirm Deposit</button>
                                 <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                             </form>
                         }
                         else if (ViewBag.car.Status == 2)
                         {
                             <div>
-                                <span><a class="btn btn-primary p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a></span>
+                                <a class="btn-aaa p-2" href="#" data-bs-toggle="modal" data-bs-target="#confirmPaymentModal">Confirm Payment</a>
                             </div>
                         }
                     </div>
                 </div>
             </div>
-
         </div>
 
 
         <!--Car Details-->
-        <div class="mt-3">
+        <div class="mt-3 container-fluid">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
@@ -202,99 +315,104 @@
             <div class="tab-content">
                 <div id="home" class="row container tab-pane active">
                     <br>
-                    <div class="row">
-                        <label class="col-2 fw-bold">License plate:</label>
-                        <span class="col-2" style="margin-left:-5%">@ViewBag.car.LicensePlate</span>
-                        <label class="col-1 fw-bold">Color:</label>
-                        <span class="col-2 ">@ViewBag.color.ColorName</span>
-                    </div>
+                    <div id="home" class="container tab-pane active">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">License plate:</label>
+                                    <span class="col-8">@ViewBag.car.LicensePlate</span>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Color:</label>
+                                    <span class="col-8">@ViewBag.color.ColorName</span>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Brand name:</label>
+                                    <span class="col-8">@ViewBag.brand.BrandName</span>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Model:</label>
+                                    <span class="col-8">@ViewBag.model.ModelName</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Production Year:</label>
+                                    <span class="col-8">@ViewBag.car.ProductionYear</span>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">No. of seats:</label>
+                                    <span class="col-8">@ViewBag.car.Seats</span>
+                                </div>
 
-                    <div class="row mt-3">
-                        <label class="col-2 fw-bold">Brand name:</label>
-                        <span class="col-2" style="margin-left:-5%">@ViewBag.brand.BrandName</span>
-                        <label class="col-1 fw-bold">Model:</label>
-                        <span class="col-2 ">@ViewBag.model.ModelName</span>
-                    </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Transmission:</label>
+                                    <span class="col-8">
+                                        @(ViewBag.car.TransmissionType ? "Automatic" : "Manual")
+                                    </span>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-4 fw-bold">Fuel:</label>
+                                    <span class="col-8">
+                                        @(ViewBag.car.FuelType ? "Gasoline" : "Diesel")
+                                    </span>
+                                </div>
+                            </div>
 
-                    <div class="row mt-3">
-                        <label class="col-2 fw-bold">Production Year:</label>
-                        <span class="col-2" style="margin-left:-5%">@ViewBag.car.ProductionYear</span>
-                        <label class="col-1 fw-bold">No. of seat:</label>
-                        <span class="col-2 ">@ViewBag.car.Seats</span>
-                    </div>
+                            <div class="col-md-6">
+                                <div class="row mb-3">
+                                    <label class="col-12 fw-bold">Documents:</label>
+                                    <div class="col-12">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Name</th>
+                                                    <th>Note</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Registration paper</td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
 
-                    <div class="row mt-3">
-                        <label class="col-2 fw-bold">Transmission:</label>
-                        <span class="col-2 " style="margin-left:-5%">
-                            @(ViewBag.car.TransmissionType == true ? "Automatic" : "Manual")
-                        </span>
-                        <label class="col-1 fw-bold">Fuel:</label>
-                        <span class="col-2">@(ViewBag.car.FuelType == true ? "Gasoline" : "Diesel")</span>
-                    </div>
-                    <div class="row mt-3">
-                        <label class="fw-bold">Documents:</label>
-                        <div class="col-5 mt-2">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>Note</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Registration paper</td>
-                                        @if (!ViewBag.checkRent)
-                                        {
-                                            <td>
-                                                <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>Verified</td>
-                                        }
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Certificate of Inspection</td>
-                                        @if (!ViewBag.checkRent)
-                                        {
-                                            <td>
-                                                <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>Verified</td>
-                                        }
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Insurance</td>
-                                        @if (ViewBag.document.Insurance == null)
-                                        {
-                                            <td>Not available</td>
-                                        }
-@*                                         else if (!ViewBag.checkRent)
-                                        {
-                                            <td>Verified</td>
-                                        } *@
-                                        else if (!ViewBag.checkRent)
-                                        {
-                                            <td>
-                                                <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
-                                            </td>
-                                        }
-                                    </tr>
-                                </tbody>
-                            </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Certificate of Inspection</td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
+
+                                                        
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Insurance</td>
+                                                    <td>
+                                                        @if (ViewBag.document.Insurance == null)
+                                                        {
+                                                        <td>Not Available</td>
+                                                        }
+                                                        else
+                                                        {
+                                                        <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
+                                </div>
+                            </div>
                         </div>
-                        <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
                     </div>
                 </div>
+
 
 
                 @* <form asp-action="ChangeCarDetailsByOwner" asp-controller="Car" method="post" > *@
@@ -304,19 +422,19 @@
                     <br>
 
                     @*  <div class="container mt-3 " id="Step2">   *@
-                    <form asp-action="ChangeCarDetailsByOwner" asp-controller="Car" method="post" enctype="multipart/form-data">
+                    <form asp-action="ChangeCarDetailsByOwner" id="Form" asp-controller="Car" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="row mt-4">
                             <div class="col-md-6">
                                 <label asp-for="Mileage" class="col-md-2 fw-bold">Mileage:</label><br>
-                                <input asp-for="Mileage" class="col-md-2 mt-3" style="width: 150px; margin-left: 3%;" type="number" value="@ViewBag.car.Mileage" required>
+                                <input asp-for="Mileage" class="col-md-2 changekk mt-3" style="width: 150px; margin-left: 3%;" type="number" value="@ViewBag.car.Mileage" required>
                                 <div class="col-md-2" style="width: 150px; margin-left: 3%;">
                                     <span asp-validation-for="Mileage" id="checkMileage" class="text-danger fw-bold"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="FuelConsumption" class="fw-bold">Fuel consumption:</label><br>
-                                <input asp-for="FuelConsumption" class="col-md-2 mt-3" style="margin-left: 3%;" type="number" value="@ViewBag.car.FuelConsumption">
+                                <input asp-for="FuelConsumption" class="col-md-2 changekk mt-3" style="margin-left: 3%;" type="number" value="@ViewBag.car.FuelConsumption">
                                 <span class="fw-bold">liter/100 km</span><br />
                                 <span asp-validation-for="FuelConsumption" id="checkFuel" style="margin-left: 3%;" class="text-danger fw-bold col-md-2 mt-3"></span>
                             </div>
@@ -346,17 +464,19 @@
                                         <option data-brand="@w.DistrictId" value="@w.WardId">@w.WardName</option>
                                     }
                                 </select>
-                                <input class="mt-3" style="width: 400px; margin-left: 3%;" type="text" name="street" id="street"
+                                <input class="mt-3 changekk" style="width: 400px; margin-left: 3%;" type="text" name="street" id="street"
                                        placeholder="House number, Street" value="@ViewBag.address.HouseNumberStreet">
                                 <div class="text-danger fw-bold mt-3" style="margin-left: 3%;" id="checkStreet"></div>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="Description" class="col-md-2 fw-bold">Description:</label>
+                                <label asp-for="Description" class="col-md-2  fw-bold">Description:</label>
                                 <br>
                                 <textarea asp-for="Description"
-                                          style="height: 180px;width: 400px; border-color: black; border-radius: 0%;"
+                                          style="height: 180px;width: 400px; border-color: black; border-radius: 0%;
+                                            border: var(--bs-border-width) solid var(--bs-border-color);
+                                            border-radius: var(--bs-border-radius);"
                                           class="form-control mt-2"> @Model.Description </textarea>
-                                <span asp-validation-for="Description" id="checkDes" class="col-md-2 ms-1 fw-bold text-danger"></span>
+                                <span asp-validation-for="Description" id="checkDes" class="col-md-2  ms-1 fw-bold text-danger"></span>
                             </div>
                         </div>
 
@@ -495,7 +615,7 @@
                                         <img src="~/img/@ViewBag.car.FrontImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile4" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
-                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4" />
+                                        <input asp-for="FrontImage" type="file" hidden name="front" id="fileInput4" accept=".jpg, .png, .jpeg, .gif" />
                                     </div>
                                 </div>
 
@@ -507,7 +627,7 @@
                                         <img src="~/img/@ViewBag.car.BackImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile5" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
-                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5" />
+                                        <input asp-for="BackImage" type="file" hidden name="back" id="fileInput5" accept=".jpg, .png, .jpeg, .gif" />
                                     </div>
                                 </div>
                             </div>
@@ -520,7 +640,7 @@
                                         <img src="~/img/@ViewBag.car.LeftImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile6" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
-                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6" />
+                                        <input asp-for="LeftImage" type="file" hidden name="left" id="fileInput6" accept=".jpg, .png, .jpeg, .gif" />
                                     </div>
 
                                 </div>
@@ -532,18 +652,18 @@
                                         <img src="~/img/@ViewBag.car.RightImage" style="max-width: 100%; height: auto;">
                                         <a id="selectfile7" href=""
                                            style="color: rgb(98, 122, 239); text-decoration: underline;">Choose another file</a>
-                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7" />
+                                        <input asp-for="RightImage" type="file" hidden name="right" id="fileInput7" accept=".jpg, .png, .jpeg, .gif" />
                                     </div>
                                 </div>
                             </div>
 
-                            <a class="mt-4">File type: doc, docx, pdf, jpg, jpeg, png</a>
+                            <a class="mt-4">File type:  jpg, jpeg, png, gif</a>
                             <div class="d-flex justify-content-center align-items-center mt-3">
                                 <a asp-controller="Car" asp-action="ChangeCarDetailsByOwner" asp-route-CarId="@Model.CarId" type="button" class="btn btn-outline-secondary"
                                    style="padding: 0; text-decoration: underline; border: none;">
                                     Discard
                                 </a>
-                                <button type="submit" class="btn btn-primary ms-5">Save</button>
+                                <button type="submit" id="submitButton" class="btn btn-primary ms-5">Save</button>
                             </div>
 
                         </div>
@@ -556,11 +676,11 @@
                 <div id="menu2" class="row container tab-pane fade">
                     <br>
 
-                    <form asp-action="ChangeCarTermsByOwner" asp-controller="Car" method="post">
+                    <form asp-action="ChangeCarTermsByOwner" id="Form2" asp-controller="Car" method="post">
                         <input type="hidden" asp-for="CarId" value="@Model.CarId" />
                         <div class="">
                             <label asp-for="BasePrice" class=" col-2 fw-bold">Base price:</label>
-                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("N0"))" class="col-3" style="width:10%" />
+                            <input asp-for="BasePrice" value="@(ViewBag.car.BasePrice.ToString("N0"))" class="col-3 changekk" style="width:10%" />
                             <span class="fw-bold ms-2">VND/DAY</span>
                             <div>
                                 <span asp-validation-for="BasePrice" id="checkBP" class="fw-bold text-danger"></span>
@@ -569,8 +689,11 @@
 
                         <div class="mt-3">
                             <label asp-for="Deposit" class="col-2 fw-bold">Required deposit:</label>
-                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" class="col-3" required style=" width:10%" min="0" />
+                            <input asp-for="Deposit" value="@(ViewBag.car.Deposit.ToString("N0"))" class="col-3 changekk" required style=" width:10%" min="0" />
                             <span class="fw-bold ms-2">VND</span>
+                            <div>
+                                <span asp-validation-for="Deposit" id="" class="fw-bold text-danger"></span>
+                            </div>
                         </div>
 
                         <div class="mt-5">
@@ -599,7 +722,7 @@
 
                                 <div class="col-md-6 d-flex align-items-start mt-3">
                                     <div class="form-check" style="margin-left: -50%;">
-                                        <input class="ms-2" type="checkbox" id="check4" name="t4" value="Other" @(ViewBag.term.Specify != null ? "checked" : "") />
+                                        <input class="ms-2" type="checkbox" id="check4" name="t4" value="true" @(ViewBag.term.Specify != null ? "checked" : "") />
                                         <label class="ms-2" for="check4">Other</label>
                                     </div>
                                 </div>
@@ -612,7 +735,7 @@
                                 <div class="col-md-6 d-flex align-items-start mt-3">
                                     <div class="form-check @(ViewBag.term.Specify == null ? "d-none" : "")" id="otherTextField" style="margin-left: -50%;">
                                         <!-- Text field for Other -->
-                                        <textarea name="specify" style="height: 120px; width: 300px;" class="form-control mt-2">@ViewBag.term.Specify</textarea>
+                                        <textarea name="specify" style="height: 120px; width: 300px;" class="form-control mt-2" id="specText">@ViewBag.term.Specify</textarea>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center mt-3">
@@ -620,7 +743,7 @@
                                        style="padding: 0; text-decoration: underline; border: none;">
                                         Discard
                                     </a>
-                                    <button type="submit" class="btn btn-primary ms-5">Save</button>
+                                    <button type="submit" id="submitButton2" class="btn btn-primary ms-5">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -697,6 +820,10 @@
             </div>
         </div>
     </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
 
     <script>
         function setRating(rating) {
@@ -841,7 +968,11 @@
                 if (this.checked) {
                     otherTextField.classList.remove('d-none');
                 } else {
+                    document.getElementById("specText").value = "";
+
                     otherTextField.classList.add('d-none');
+
+
                 }
             });
         });
@@ -890,15 +1021,15 @@
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                swal({
-                    title: "Success!",
-                    text: "@TempData["SuccessMessage"]",
-                    icon: "success",
-                    button: "OK",
-                });
+                    swal({
+                        title: "Success!",
+                        text: "@TempData["SuccessMessage"]",
+                        icon: "success",
+                        button: "OK",
+                    });
             </text>
         }
-        });
+                });
 
     </script>
 
@@ -964,6 +1095,7 @@
             statusDropdown.addEventListener('change', updateOptionColors);
         });
     </script>
+
 
 </body>
 
