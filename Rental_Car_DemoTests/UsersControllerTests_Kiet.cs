@@ -361,7 +361,7 @@ namespace Rental_Car_Demo.Tests
             };
 
             // Act
-            var result = _controller.ResetPassword2(model) as ViewResult;
+            var result = _controller.ResetPassword2(model, "abc") as ViewResult;
 
             // Assert
             Assert.IsNotNull(result, "The result should not be null");
@@ -404,7 +404,7 @@ namespace Rental_Car_Demo.Tests
             };
 
             // Act
-            var result = _controller.ResetPassword2(model) as ViewResult;
+            var result = _controller.ResetPassword2(model, "abc") as ViewResult;
 
             // Assert
             Assert.IsNotNull(result, "The result should not be null");

@@ -16,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Rental_Car_Demo.Services;
+using NuGet.Common;
+using Castle.Core.Resource;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -232,10 +234,6 @@ namespace Rental_Car_Demo.Controllers
                 return View("Guest", model);
             }
 
-            // Kiểm tra tính hợp lệ của ModelState
-            //if (ModelState.IsValid)
-            //{
-            // Hash mật khẩu
             var hashedPassword = HashPassword(model.Register.Password);
             bool isCarOwner = model.Register.Role == "carOwner";
 
@@ -256,12 +254,6 @@ namespace Rental_Car_Demo.Controllers
                 TempData["SuccessMessage"] = "Account created successfully!";
                 TempData["ShowModal"] = "no";
                 return RedirectToAction("Guest", "Users");
-
-            //}
-
-            // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            //TempData["ShowModal"] = "Register";
-            return View("Guest", model);
         }
 
         public IActionResult ResetPassword()
@@ -304,8 +296,8 @@ namespace Rental_Car_Demo.Controllers
                 int? customerId = token.UserId;
 
                 string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
-                string subject = "Link Reset Password";
-                _emailService.SendEmail(model.Email, subject, resetLink);
+                string subject = "Rent-a-car Password Reset";
+                _emailService.SendEmail(model.Email, subject, "We have just received a password reset request for" + "<"+ email +">" +" .\r\nPlease click here to reset your password. \r\nFor your security, the link will expire in 24 hours or immediately after you reset your password. \r\n" + resetLink);
                 TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
             }
 
@@ -328,18 +320,18 @@ namespace Rental_Car_Demo.Controllers
                 CustomerId = customerId,
             };
 
-            token.IsLocked = true;
-            context.Update(token);
-            context.SaveChanges();
+            TempData["token"] = token.Token;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult ResetPassword2(ResetPassword2ViewModel model)
+        public IActionResult ResetPassword2(ResetPassword2ViewModel model, string tokenvalue)
         {
             if (ModelState.IsValid)
             {
+                var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenvalue && t.UserId == model.CustomerId);
+
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
 
                 var hashPass = HashPassword(model.Password);
@@ -348,6 +340,10 @@ namespace Rental_Car_Demo.Controllers
                 context.SaveChanges();
 
                 TempData["SuccessMessage"] = "Your password has been reset";
+
+                token.IsLocked = true;
+                context.Update(token);
+                context.SaveChanges();
 
                 return View("Guest");
             }

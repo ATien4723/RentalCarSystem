@@ -434,7 +434,20 @@
         {
             <a asp-controller="Users" asp-action="Guest" class="text">Home</a>
         }
-         <span>></span> <a asp-action="SearchCarForm" asp-controller="Home">Search Results</a> > <span>Car Details</span>
+
+        @if (ViewBag.PreviousPage.Contains("SearchCarForm"))
+        {
+            <span>></span> <a asp-action="SearchCarForm" asp-controller="Home">Search Results</a>
+
+            <span> > </span> <span>Car Details</span>
+        }
+        else
+        {
+            <span>></span> <a asp-action="ViewBookingList" asp-controller="Booking">View Booking</a>
+
+            <span> > </span> <span>Car Details</span>
+        }
+
     </div>
 
     <div class="container mt-4">

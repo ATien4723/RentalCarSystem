@@ -35,7 +35,7 @@ namespace Rental_Car_Demo.UnitTests
             _context = new RentCarDbContext(options);
             _session = new DummySession();
             _mockEmailService = new Mock<IEmailService>();
-            _controller = new BookingController(_context, _mockEmailService.Object)
+            _controller = new BookingController( _mockEmailService.Object, _context)
             {
                 ControllerContext = new ControllerContext
                 {

@@ -10,7 +10,7 @@ namespace Rental_Car_Demo.Services
     {
         public RentCarDbContext context = new RentCarDbContext();
 
-        public const int TokenExpirationHours = 1;
+        public const int TokenExpirationHours = 24;
         public string GenerateToken(int length)
         {
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

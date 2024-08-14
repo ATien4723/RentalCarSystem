@@ -26,6 +26,9 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.startDate = startDate;
             ViewBag.endDate = endDate;
 
+            string referer = HttpContext.Request.Headers["Referer"].ToString();
+
+            ViewBag.PreviousPage = referer;
 
             var userJson = HttpContext.Session.GetString("User");
             bool checkRent = false;

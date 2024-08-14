@@ -17,8 +17,28 @@ namespace Rental_Car_Demo.Services
 
         public void SendEmail(string email, string subject, string message)
         {
-            var mailMessage = new MailMessage("kietnvt2705@gmail.com", email, subject, message);
-            _smtpClient.Send(mailMessage);
+            var fromMailAddress = new MailAddress("kietnvt2705@gmail.com", "Rental Car Application");
+            var toMailAddress = new MailAddress(email);
+            var smtp = new SmtpClient
+            {
+                Host = smtpHost,
+                Port = smtpPort,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromMailAddress.Address, fromPassword)
+            };
+
+           
+            var mailMessage = new MailMessage(fromMailAddress, toMailAddress)
+            {
+                
+                    Subject = subject,
+                    Body = message
+                
+            };
+
+            smtp.Send(mailMessage);
         }
 
 
