@@ -890,6 +890,7 @@ namespace Rental_Car_Demo.Controllers
                     _db.SaveChanges();
                     return RedirectToAction("ViewBookingList", "Booking");
                 }
+                if(amount !=0) { 
                 user.Wallet += amount;
                 var transactionUser = new Wallet
                 {
@@ -913,6 +914,8 @@ namespace Rental_Car_Demo.Controllers
                 };
                 _db.Wallets.Add(transactionUser);
                 _db.Wallets.Add(transactionCarOwner);
+                _db.SaveChanges();
+                }
                 booking.Status = 5;
                 car.NoOfRide += 1;
                 _db.Update(car);
@@ -941,6 +944,7 @@ namespace Rental_Car_Demo.Controllers
                     _db.SaveChanges();
                     return RedirectToAction("EditBookingDetail", "Booking", new { startDate = booking.StartDate, endDate = booking.EndDate, carId = carId, bookingNo = booking.BookingNo });
                 }
+                if(amount !=0){
                 user.Wallet += amount;
                 var transactionUser = new Wallet
                 {
@@ -964,6 +968,8 @@ namespace Rental_Car_Demo.Controllers
                 };
                 _db.Wallets.Add(transactionUser);
                 _db.Wallets.Add(transactionCarOwner);
+                _db.SaveChanges();
+                }
                 booking.Status = 5;
                 car.NoOfRide += 1;
                 _db.Update(car);
