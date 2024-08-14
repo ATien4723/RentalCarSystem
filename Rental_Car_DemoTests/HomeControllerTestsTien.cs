@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
-    public class HomeControllerTests
+    public class HomeControllerTestsTien
     {
         private Mock<ICarRepository> _mockCarRepository;
         private RentCarDbContext _context;

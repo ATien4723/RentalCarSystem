@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
-    public class CarDAOTests
+    public class CarDAOTestsTien
     {
         private RentCarDbContext _context;
         private CarDAO _carDAO;

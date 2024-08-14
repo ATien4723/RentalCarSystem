@@ -395,7 +395,7 @@
             dropoffDateInput.value = dropoffDateTime.toISOString().split('T')[0];
 
             // Adjust dropoff time to be 1 hour before the current time
-            dropoffDateTime.setHours(dropoffDateTime.getHours() + 13);
+            dropoffDateTime.setHours(dropoffDateTime.getHours() + 24);
             dropoffTimeInput.value = dropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
 
             function validateDropoffDateTime() {
