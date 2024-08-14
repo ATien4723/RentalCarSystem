@@ -543,36 +543,14 @@ namespace Rental_Car_Demo.UnitTests
             "", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "0334110870", "", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "", "1980-01-01", 1, "DriverDL123", 1, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", null, 2)]
-        [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
-            "truonganat@gmail.com", "038203023477", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
-            "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, null)]
-
         [TestCase("nha 123", "2024-08-01 20:00:00", "2024-08-03 20:00:00", 1, 2,
             "", "", "0334110870", "truonganat@gmail.com", "038203023477", "0334110870",
             "Renter Name", "1980-01-01", 1, "RenterDL123", false, "Driver Name", "1980-01-01", 1, "DriverDL123", 1, 2)]

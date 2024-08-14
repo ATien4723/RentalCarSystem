@@ -320,11 +320,11 @@
             if (locationInput.length < 2) {
                 errorMessageDiv.innerText = "Please enter a valid location.";
                 errorMessageDiv.style.display = "block";
-                return false; // Ngăn không cho gửi form
+                return false;
             }
 
     errorMessageDiv.style.display = "none";
-    return true; // Cho phép gửi form
+    return true;
 }
 
 </script>
@@ -362,6 +362,26 @@
             const dropoffTimeInput = document.getElementById("dropoffTime");
             const submitButton = searchForm.querySelector('button[type="submit"]');
 
+            function autoFillDates() {
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+                const currentDay = String(currentDate.getDate()).padStart(2, '0');
+                const currentHour = String(currentDate.getHours()).padStart(2, '0');
+                const currentMinute = String(currentDate.getMinutes()).padStart(2, '0');
+
+                pickupDateInput.value = `${currentYear}-${currentMonth}-${currentDay}`;
+                pickupTimeInput.value = `${String(currentDate.getHours() + 1).padStart(2, '0')}:${currentMinute}`;
+
+                const dropoffDate = new Date(currentDate);
+                dropoffDate.setDate(dropoffDate.getDate() + 1);
+                const dropoffYear = dropoffDate.getFullYear();
+                const dropoffMonth = String(dropoffDate.getMonth() + 1).padStart(2, '0');
+                const dropoffDay = String(dropoffDate.getDate()).padStart(2, '0');
+                dropoffDateInput.value = `${dropoffYear}-${dropoffMonth}-${dropoffDay}`;
+                dropoffTimeInput.value = `${String(currentDate.getHours() + 1).padStart(2, '0')}:${currentMinute}`;
+            }
+
             function validateForm() {
                 const currentDate = new Date();
                 currentDate.setMinutes(currentDate.getMinutes() - 1);
@@ -375,7 +395,7 @@
                 }
 
                 if (pickupDate < currentDate) {
-                    alert("Pick-up date time must be greater current time");
+                    alert("Pick-up date time must be greater than current time");
                     return false;
                 }
 
@@ -385,11 +405,13 @@
                 }
 
                 if (dropoffDate <= pickupDate) {
-                    alert("Drop-off date time must be later and Pick-up date time, please try again.");
+                    alert("Drop-off date time must be later than Pick-up date time, please try again.");
                     return false;
                 }
                 return true;
             }
+
+            autoFillDates();
 
             submitButton.addEventListener("click", function (event) {
                 if (!validateForm()) {
@@ -398,6 +420,7 @@
             });
         });
     </script>
+
 
 </body>
 </html>

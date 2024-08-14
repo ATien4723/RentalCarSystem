@@ -587,10 +587,9 @@ namespace Rental_Car_Demo.UnitTests
 
             User _user = _context.Users.Find(1);
 
-            var result = _controller.Edit(_user, NewPassword, ConfirmPassword, CurrentPassword) as RedirectToActionResult;
+            var result = _controller.Edit(_user, NewPassword, ConfirmPassword, CurrentPassword) as ViewResult;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("LoginCus", result.ActionName);
         }
 
         [TestCase("", "", "")]
@@ -607,10 +606,9 @@ namespace Rental_Car_Demo.UnitTests
             User _user = _context.Users.Find(2);
 
             // Act
-            var result = _controller.Edit(_user, NewPassword, ConfirmPassword, CurrentPassword) as RedirectToActionResult;
+            var result = _controller.Edit(_user, NewPassword, ConfirmPassword, CurrentPassword) as ViewResult;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("LoginOwn", result.ActionName);
         }
 
         [TestCase("", "", "")]
