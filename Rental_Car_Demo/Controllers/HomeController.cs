@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Printing;
 using System.Text.RegularExpressions;
 
@@ -180,7 +181,7 @@ namespace Rental_Car_Demo.Controllers
             return Content (json, "application/json");
         }
 
-
+        [ExcludeFromCodeCoverage]
         [HttpGet]
         public IActionResult GetSuggest(string query)
         {

@@ -176,9 +176,38 @@ namespace Rental_Car_Demo.Controllers
             return RedirectToAction("Guest", "Users");
         }
 
+        //public IActionResult Guest()
+        //{
+
+        //    var viewModel = new RegisterAndLoginViewModel
+        //    {
+        //        Register = new RegisterViewModel(),
+        //        User = new User()
+        //    };
+
+        //    if (Request.Cookies.TryGetValue("UserEmail", out string encodedRememberMeValue))
+        //    {
+        //        string rememberMeValue = Encoding.UTF8.GetString(Convert.FromBase64String(encodedRememberMeValue));
+
+        //        var values = rememberMeValue.Split('|');
+
+        //        if (values.Length == 2)
+        //        {
+        //            viewModel.User = new User
+        //            {
+        //                Email = values[0],
+        //                Password = values[1],
+        //                RememberMe = true
+        //            };
+        //        }
+        //    }
+
+
+        //    return View(viewModel);
+        //}
+
         public IActionResult Guest()
         {
-
             var viewModel = new RegisterAndLoginViewModel
             {
                 Register = new RegisterViewModel(),
@@ -187,23 +216,47 @@ namespace Rental_Car_Demo.Controllers
 
             if (Request.Cookies.TryGetValue("UserEmail", out string encodedRememberMeValue))
             {
-                string rememberMeValue = Encoding.UTF8.GetString(Convert.FromBase64String(encodedRememberMeValue));
-
-                var values = rememberMeValue.Split('|');
-
-                if (values.Length == 2)
+                try
                 {
-                    viewModel.User = new User
+                    // Validate if the string is valid Base64
+                    if (IsBase64String(encodedRememberMeValue))
                     {
-                        Email = values[0],
-                        Password = values[1],
-                        RememberMe = true
-                    };
+                        string rememberMeValue = Encoding.UTF8.GetString(Convert.FromBase64String(encodedRememberMeValue));
+
+                        var values = rememberMeValue.Split('|');
+
+                        if (values.Length == 2)
+                        {
+                            viewModel.User = new User
+                            {
+                                Email = values[0],
+                                Password = values[1],
+                                RememberMe = true
+                            };
+                        }
+                    }
+                    else
+                    {
+                        // Handle invalid Base64 string here, log the error or take appropriate action
+                        // For example, you could set default values or clear the cookie
+                        // Response.Cookies.Delete("UserEmail");
+                    }
+                }
+                catch (FormatException)
+                {
+                    // Log the error and take appropriate action
+                    // Response.Cookies.Delete("UserEmail");
                 }
             }
 
-
             return View(viewModel);
+        }
+
+        private bool IsBase64String(string base64)
+        {
+            // Check if the string is a valid Base64 string
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out _);
         }
 
 

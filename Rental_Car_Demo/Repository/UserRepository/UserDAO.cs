@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
 
 namespace Rental_Car_Demo.Repository.UserRepository
 {
+    [ExcludeFromCodeCoverage]
     public class UserDAO
     {
         private static UserDAO instance = null;

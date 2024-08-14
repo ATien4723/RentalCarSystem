@@ -530,72 +530,56 @@ namespace Rental_Car_Demo.Controllers
                 }
 
 
-                if (sortOrder == "latest")
-                {
-                    ViewBag.Bookings = context.Bookings
+                var bookingsQuery = context.Bookings
                     .Include(b => b.Car)
                     .Where(b => b.UserId == userId)
-                    .ToList();
+                    .AsQueryable();
+
+                if (sortOrder == "latest")
+                {
                     ViewBag.SortOrder = "latest";
                 }
                 else if (sortOrder == "newest")
                 {
-                    ViewBag.Bookings = context.Bookings
-                    .Include(b => b.Car)
-                    .Where(b => b.UserId == userId)
-                    .OrderByDescending(b => b.BookingNo)
-                    .ToList();
+                    bookingsQuery = bookingsQuery.OrderByDescending(b => b.BookingNo);
                     ViewBag.SortOrder = "newest";
                 }
                 else if (sortOrder == "highest")
                 {
-                    ViewBag.Bookings = context.Bookings
-                    .Include(b => b.Car)
-                    .Where(b => b.UserId == userId)
-                    .Select(b => new
-                    {
-                        Booking = b,
-                        Car = b.Car,
-                        CarId = b.Car.CarId,
-                        StartDate = b.StartDate,
-                        EndDate = b.EndDate,
-                        BookingNo = b.BookingNo,
-                        Status = b.Status,
-                        Name = b.Car.Name,
-                        BasePrice = b.Car.BasePrice,
-
-                        TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
-                    })
-                    .OrderByDescending(b => b.TotalCost)
-                    .ToList();
+                    bookingsQuery = bookingsQuery
+                        .AsEnumerable()
+                        .Select(b => new
+                        {
+                            Booking = b,
+                            TotalCost = (b.EndDate - b.StartDate).Days * b.Car.BasePrice
+                        })
+                        .OrderByDescending(b => b.TotalCost)
+                        .Select(b => b.Booking)
+                        .AsQueryable();
                     ViewBag.SortOrder = "highest";
                 }
                 else if (sortOrder == "lowest")
                 {
-                    ViewBag.Bookings = context.Bookings
-                    .Include(b => b.Car)
-                    .Where(b => b.UserId == userId)
-                    .Select(b => new
-                    {
-                        Booking = b,
-                        Car = b.Car,
-                        CarId = b.Car.CarId,
-                        StartDate = b.StartDate,
-                        EndDate = b.EndDate,
-                        BookingNo = b.BookingNo,
-                        Status = b.Status,
-                        Name = b.Car.Name,
-                        BasePrice = b.Car.BasePrice,
-                        TotalCost = EF.Functions.DateDiffDay(b.StartDate, b.EndDate) * b.Car.BasePrice
-                    })
-                    .OrderBy(b => b.TotalCost)
-                    .ToList();
+                    bookingsQuery = bookingsQuery
+                        .AsEnumerable()
+                        .Select(b => new
+                        {
+                            Booking = b,
+                            TotalCost = (b.EndDate - b.StartDate).Days * b.Car.BasePrice
+                        })
+                        .OrderBy(b => b.TotalCost)
+                        .Select(b => b.Booking)
+                        .AsQueryable();
                     ViewBag.SortOrder = "lowest";
                 }
+
+                var bookings = bookingsQuery.ToList();
+
                 var bookingCount = context.Bookings
                     .Where(b => b.UserId == userId && b.Status != 0 && b.Status != 5)
                     .Count();
 
+                ViewBag.Bookings = bookings;
                 ViewBag.Count = bookingCount;
                 return View("ViewBookingList");
             }
@@ -611,7 +595,6 @@ namespace Rental_Car_Demo.Controllers
                 return NotFound("DateTime invalid!");
 
             }
-
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = endDate, carId = carId, bookingNo = bookingNo });
         }
 

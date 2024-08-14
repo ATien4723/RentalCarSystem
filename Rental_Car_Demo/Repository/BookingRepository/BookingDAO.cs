@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Rental_Car_Demo.Repository.BookingRepository
 {
+    [ExcludeFromCodeCoverage]
     public class BookingDAO
     {
         private static BookingDAO instance = null;

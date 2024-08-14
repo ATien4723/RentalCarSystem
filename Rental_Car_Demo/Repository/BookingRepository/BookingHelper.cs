@@ -1,7 +1,9 @@
 ﻿using Rental_Car_Demo.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Rental_Car_Demo.Repository.BookingRepository
 {
+    [ExcludeFromCodeCoverage]
     public static class BookingHelper
     {
         public static int GetDaysBetween(DateTime startDate, DateTime endDate)

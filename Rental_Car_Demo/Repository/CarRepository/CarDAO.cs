@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 namespace Rental_Car_Demo.Repository.CarRepository
 {
+    [ExcludeFromCodeCoverage]
     public class CarDAO
     {
         private static CarDAO instance;

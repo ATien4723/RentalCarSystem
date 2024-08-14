@@ -292,10 +292,18 @@ namespace Rental_Car_Demo.Tests
             _context.SaveChanges();
         }
 
-  
 
-        
 
+
+        [Test]
+        public void TermsAndConditions_Returns_ViewResult()
+        {
+            // Act
+            var result = _controller.TermsAndConditions();
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
 
         [Test]
         [TestCase(new string[] { "Brand A" }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { },  null)]
