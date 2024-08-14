@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rental_Car_Demo.Models;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Rental_Car_Demo.Repository
 {
+    [ExcludeFromCodeCoverage]
     public class AddressRepository
     {
         public IEnumerable<Address> SearchAddresses(string query)

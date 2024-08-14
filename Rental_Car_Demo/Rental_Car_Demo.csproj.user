@@ -13,6 +13,6 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_DbContextTypeFullName>Rental_Car_Demo.Models.RentCarDbContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_ControllerDialogWidth>650</WebStackScaffolding_ControllerDialogWidth>
-    <NameOfLastUsedPublishProfile>D:\rental-car\Rental_Car_Demo\Properties\PublishProfiles\rentcarv2 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>rentcarv2 - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

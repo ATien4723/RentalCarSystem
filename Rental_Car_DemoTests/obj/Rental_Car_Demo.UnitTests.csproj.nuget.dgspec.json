@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\OJT_FAcademy\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {}
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {}
   },
   "projects": {
-    "D:\\OJT_FAcademy\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
+        "projectUniqueName": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
         "projectName": "Rental_Car_Demo.UnitTests",
-        "projectPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_DemoTests\\obj\\",
+        "projectPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\Rental_Car_Demo.UnitTests.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_DemoTests\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,14 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
-                "projectPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj"
+              "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+                "projectPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj"
               }
             }
           }
@@ -38,15 +43,20 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "FluentAssertions": {
+            "Microsoft.AspNetCore.Mvc": {
               "target": "Package",
-              "version": "[6.12.0, )"
+              "version": "[2.2.0, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
@@ -54,7 +64,7 @@
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.8.0, )"
+              "version": "[17.0.0, )"
             },
             "Moq": {
               "target": "Package",
@@ -62,7 +72,7 @@
             },
             "NUnit": {
               "target": "Package",
-              "version": "[3.14.0, )"
+              "version": "[3.13.2, )"
             },
             "NUnit.Analyzers": {
               "target": "Package",
@@ -70,11 +80,17 @@
             },
             "NUnit3TestAdapter": {
               "target": "Package",
-              "version": "[4.5.0, )"
+              "version": "[4.0.0, )"
+            },
+            "ReportGenerator": {
+              "target": "Package",
+              "version": "[5.3.8, )"
             },
             "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[6.0.2, )"
             }
           },
           "imports": [
@@ -93,21 +109,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
+    "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "projectUniqueName": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
         "projectName": "Rental_Car_Demo",
-        "projectPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\OJT_FAcademy\\rental-car\\Rental_Car_Demo\\obj\\",
+        "projectPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\Rental_Car_Demo.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FSOFTASSignment\\Project_RentalCar\\rental-car\\Rental_Car_Demo\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -115,6 +135,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -127,12 +148,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.12.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.7.1.1, )"
@@ -140,6 +170,10 @@
             "Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.CodeCoverage": {
+              "target": "Package",
+              "version": "[17.10.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -168,6 +202,16 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.70, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -189,7 +233,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

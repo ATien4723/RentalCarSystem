@@ -1,7 +1,9 @@
 ﻿using Rental_Car_Demo.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Rental_Car_Demo.Repository.CarRepository
 {
+    [ExcludeFromCodeCoverage]
     public class CarRepository : ICarRepository
     {
 

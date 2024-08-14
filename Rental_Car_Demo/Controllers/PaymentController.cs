@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.ViewModel;
+using Moq;
 
 namespace Rental_Car_Demo.Controllers
 {
     public class PaymentController : Controller
     {
-        RentCarDbContext db = new RentCarDbContext();
+        private readonly RentCarDbContext db;
+        public PaymentController(RentCarDbContext context)
+        {
+            this.db = context;
+            TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+        }
 
         public IActionResult MyWallet(int userId, DateTime? from, DateTime? to)
         {
@@ -18,7 +25,7 @@ namespace Rental_Car_Demo.Controllers
             {
                 userLogged = JsonConvert.DeserializeObject<User>(userString);
             }
-            if (userLogged.UserId != userId)
+            if (userLogged == null || userLogged.UserId != userId)
             {
                 return View("ErrorAuthorization");
             }
@@ -42,7 +49,7 @@ namespace Rental_Car_Demo.Controllers
             var user = db.Users.SingleOrDefault(u => u.UserId == userId);
             if (user != null)
             {
-                if (user.Wallet >= amount)
+                if (user.Wallet >= amount && amount >= 0)
                 {
                     user.Wallet -= amount;
                     var transaction = new Wallet
@@ -73,20 +80,26 @@ namespace Rental_Car_Demo.Controllers
                 {
                     user.Wallet = 0;
                 }
-
-                user.Wallet += amount;
-
-                var transaction = new Wallet
+                if (amount >= 0)
                 {
-                    UserId = userId,
-                    Amount = amount.ToString("N2"),
-                    Type = "Top-Up",
-                    CreatedAt = DateTime.Now
-                };
-                db.Wallets.Add(transaction);
-                db.SaveChanges();
+                    user.Wallet += amount;
 
-                return Json(new { success = true });
+                    var transaction = new Wallet
+                    {
+                        UserId = userId,
+                        Amount = amount.ToString("N2"),
+                        Type = "Top-Up",
+                        CreatedAt = DateTime.Now
+                    };
+                    db.Wallets.Add(transaction);
+                    db.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, error = "Insufficient balance" });
+                }
             }
 
             return Json(new { success = false, error = "User not found" });
@@ -94,20 +107,23 @@ namespace Rental_Car_Demo.Controllers
         [HttpPost]
         public IActionResult SearchTransactions(int userId, DateTime? from, DateTime? to)
         {
-
             var user = db.Users.SingleOrDefault(u => u.UserId == userId);
             if (user != null)
             {
+                var toEndOfDay = to.HasValue ? to.Value.Date.AddDays(1).AddTicks(-1) : (DateTime?)null;
 
-                var toEndOfDay = to.Value.Date.AddDays(1).AddTicks(-1);
-                var wallets = db.Wallets.Where(w => w.UserId == userId && w.CreatedAt >= from && w.CreatedAt <= toEndOfDay).ToList();
-
+                var wallets = db.Wallets
+                    .Where(w => w.UserId == userId)
+                    .Where(w => !from.HasValue || w.CreatedAt >= from.Value)
+                    .Where(w => !toEndOfDay.HasValue || w.CreatedAt <= toEndOfDay.Value).OrderByDescending(w => w.CreatedAt)
+                    .ToList();
 
                 var viewModel = new UserWalletViewModel
                 {
                     User = user,
                     Wallets = wallets
                 };
+
                 ViewBag.From = from;
                 ViewBag.To = to;
                 return View("MyWallet", viewModel);

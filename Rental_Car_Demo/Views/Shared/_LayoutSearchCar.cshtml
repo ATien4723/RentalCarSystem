@@ -489,116 +489,103 @@
 
             function getCurrentDateTime() {
                 const now = new Date();
-                now.setDate(now.getDate() + 1); // Add 1 day to correct the -1 day issue
                 return {
                     date: now.toISOString().split('T')[0],
                     time: now.toTimeString().split(' ')[0].substring(0, 5)
                 };
             }
 
+            function parseDateTime(dateInput, timeInput) {
+                return new Date(`${dateInput.value}T${timeInput.value}`);
+            }
+
             function validatePickupDateTime() {
                 const currentDateTime = new Date();
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
 
                 if (pickupDateTime < currentDateTime) {
                     alert("Pickup date and time must be equal to or greater than the current date and time.");
-                    const currentDateTimeStr = getCurrentDateTime();
-                    pickupDateInput.value = currentDateTimeStr.date;
-                    pickupTimeInput.value = currentDateTimeStr.time;
                     return false;
                 }
                 return true;
             }
 
             function validateDropoffDateTime() {
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-                const dropDateTime = new Date(`${dropDateInput.value}T${dropTimeInput.value}`);
-                const halfDayInMilliseconds = 12 * 60 * 60 * 1000;
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
+                const dropDateTime = parseDateTime(dropDateInput, dropTimeInput);
 
-                if ((dropDateTime - pickupDateTime) < halfDayInMilliseconds) {
-                    alert("Drop-off date and time must be greater than the pickup date and time by at least half a day.");
-
-                    let adjustedDropoffDateTime = new Date(pickupDateTime.getTime() + halfDayInMilliseconds);
-
-                    if (adjustedDropoffDateTime.toDateString() === pickupDateTime.toDateString()) {
-
-                        adjustedDropoffDateTime.setDate(adjustedDropoffDateTime.getDate() + 1);
-                    }
-
-                    dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
-                    dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
-
+                if (pickupDateTime.toString() === 'Invalid Date' || dropDateTime.toString() === 'Invalid Date') {
+                    alert("Invalid date or time format. Please enter a valid date and time.");
                     return false;
+                }
+
+                if (dropDateInput.value === pickupDateInput.value) {
+                    if (dropDateTime <= pickupDateTime) {
+                        alert("Drop-off time must be greater than the pickup time on the same day.");
+                        let adjustedDropoffDateTime = new Date(pickupDateTime);
+                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1);
+                        dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+                        return false;
+                    }
+                } else {
+                    if (dropDateTime <= pickupDateTime) {
+                        alert("Drop-off date and time must be greater than the pickup date and time.");
+                        let adjustedDropoffDateTime = new Date(pickupDateTime);
+                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1);
+                        dropDateInput.value = adjustedDropoffDateTime.toISOString().split('T')[0];
+                        dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
+                        return false;
+                    }
                 }
                 return true;
             }
 
-            function updatePickupTime() {
-                const now = new Date();
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-
-                if (pickupDateTime <= now) {
-                    const currentTime = now.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
-                    pickupTimeInput.value = currentTime;
-                }
-            }
-
             function updateDropoffMin() {
-                const pickupDate = pickupDateInput.value;
-                const pickupTime = pickupTimeInput.value;
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
 
-                if (pickupDate && pickupTime) {
-                    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
-                    const halfDayLater = new Date(pickupDateTime.getTime() + 12 * 60 * 60 * 1000);
-                    const formattedHalfDayLaterDate = halfDayLater.toISOString().split('T')[0];
-                    const formattedHalfDayLaterTime = halfDayLater.toTimeString().split(' ')[0].substring(0, 5);
-
-                    dropDateInput.setAttribute('min', formattedHalfDayLaterDate);
-                    dropTimeInput.setAttribute('min', formattedHalfDayLaterTime);
+                if (!isNaN(pickupDateTime.getTime())) {
+                    dropDateInput.setAttribute('min', pickupDateTime.toISOString().split('T')[0]);
+                    dropTimeInput.setAttribute('min', pickupDateTime.toTimeString().split(' ')[0].substring(0, 5));
                 }
             }
 
             updateDropoffMin();
 
-            setInterval(function () {
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-                const now = new Date();
-                if (pickupDateTime <= now) {
-                    updatePickupTime();
-                }
-            }, 60000); 
-
-            pickupDateInput.addEventListener("change", function () {
-                if (!validatePickupDateTime()) {
+            pickupDateInput.addEventListener("blur", function () {
+                if (validatePickupDateTime()) {
+                    updateDropoffMin();
+                    validateDropoffDateTime();
+                } else {
                     const currentDateTimeStr = getCurrentDateTime();
                     pickupDateInput.value = currentDateTimeStr.date;
                     pickupTimeInput.value = currentDateTimeStr.time;
                 }
-                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
             });
 
-            pickupTimeInput.addEventListener("change", function () {
-                if (!validatePickupDateTime()) {
+            pickupTimeInput.addEventListener("blur", function () {
+                if (validatePickupDateTime()) {
+                    updateDropoffMin();
+                    validateDropoffDateTime();
+                } else {
                     const currentDateTimeStr = getCurrentDateTime();
                     pickupDateInput.value = currentDateTimeStr.date;
                     pickupTimeInput.value = currentDateTimeStr.time;
                 }
-                updateDropoffMin(); // Ensure dropoff min is updated based on new pickup values
             });
 
-            dropDateInput.addEventListener("change", function () {
-                if (!validateDropoffDateTime()) {
-                    // The values are already set inside validateDropoffDateTime
-                }
+            dropDateInput.addEventListener("blur", function () {
+                validateDropoffDateTime();
             });
 
-            dropTimeInput.addEventListener("change", function () {
-                if (!validateDropoffDateTime()) {
-                    // The values are already set inside validateDropoffDateTime
-                }
+            dropTimeInput.addEventListener("blur", function () {
+                validateDropoffDateTime();
             });
         });
     </script>
+
+
+
+
 
 
 

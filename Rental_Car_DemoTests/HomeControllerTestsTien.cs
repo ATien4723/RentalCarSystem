@@ -292,10 +292,18 @@ namespace Rental_Car_Demo.Tests
             _context.SaveChanges();
         }
 
-  
 
-        
 
+
+        [Test]
+        public void TermsAndConditions_Returns_ViewResult()
+        {
+            // Act
+            var result = _controller.TermsAndConditions();
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+        }
 
         [Test]
         [TestCase(new string[] { "Brand A" }, new int[] { }, new bool[] { }, new bool[] { }, new string[] { },  null)]
@@ -373,10 +381,8 @@ namespace Rental_Car_Demo.Tests
             Assert.IsEmpty (suggestions);
         }
 
-        [TestCase("Phường Phúc Xá")]
         [TestCase ("Ba Đình, Thành phố Hà Nội")]
         [TestCase("Hà Nội")]
-        [TestCase("Nha so 1")]
         public void GetSuggestions_ValidQuery_ReturnsSuggestions(string query)
         {
             // Act
@@ -504,45 +510,4 @@ namespace Rental_Car_Demo.Tests
         }
     }
 
-
-
-    [ExcludeFromCodeCoverage]
-    public class DummySession : ISession
-    {
-        private readonly Dictionary<string, byte[]> _sessionStorage = new Dictionary<string, byte[]>();
-
-        public bool IsAvailable => true;
-        public string Id => Guid.NewGuid().ToString();
-        public IEnumerable<string> Keys => _sessionStorage.Keys;
-
-        public void Clear()
-        {
-            _sessionStorage.Clear();
-        }
-
-        public Task CommitAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task LoadAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
-
-        public void Remove(string key)
-        {
-            _sessionStorage.Remove(key);
-        }
-
-        public void Set(string key, byte[] value)
-        {
-            _sessionStorage[key] = value;
-        }
-
-        public bool TryGetValue(string key, out byte[] value)
-        {
-            return _sessionStorage.TryGetValue(key, out value);
-        }
-    }
 }

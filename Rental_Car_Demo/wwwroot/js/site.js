@@ -1,9 +1,7 @@
 ﻿
-$(document).ready(function () {
-    if ('@showModal' === 'SignIn' || '@showModal' === 'Register') {
-        $('#authModal').modal('show');
-    }
-});
+
+
+
 
 
 //
