@@ -9,7 +9,7 @@ using System.Linq;
 namespace Rental_Car_Demo.Tests.Context
 {
     [TestFixture]
-    public class CustomerContextTests
+    public class CustomerContextTestsKiet
     {
         private Mock<RentCarDbContext> _mockContext;
         private CustomerContext _customerContext;

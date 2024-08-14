@@ -16,7 +16,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Rental_Car_Demo.Tests
 {
     [TestFixture]
-    public class CarControllerTests
+    public class CarControllerTestsKiet
     {
         private CarController _controller;
         private RentCarDbContext _context;

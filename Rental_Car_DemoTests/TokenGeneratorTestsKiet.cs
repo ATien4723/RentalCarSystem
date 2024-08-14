@@ -5,7 +5,7 @@ using Rental_Car_Demo.Services;
 namespace Rental_Car_Demo.Tests.Services
 {
     [TestFixture]
-    public class TokenGeneratorTests
+    public class TokenGeneratorTestsKiet
     {
         private TokenGenerator _tokenGenerator;
 

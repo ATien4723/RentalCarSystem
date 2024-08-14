@@ -360,6 +360,16 @@ namespace Rental_Car_Demo.Tests
 
             };
 
+            var token = new TokenInfor()
+            {
+                Token = "abc",
+                UserId = 1,
+                ExpirationTime = DateTime.MaxValue,
+                IsLocked = false
+            };
+            _context.AddRange(token);
+            _context.SaveChanges();
+
             // Act
             var result = _controller.ResetPassword2(model, "abc") as ViewResult;
 
