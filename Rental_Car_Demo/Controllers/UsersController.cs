@@ -16,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Rental_Car_Demo.Services;
+using NuGet.Common;
+using Castle.Core.Resource;
 
 
 namespace Rental_Car_Demo.Controllers
@@ -31,11 +33,13 @@ namespace Rental_Car_Demo.Controllers
 
         public UsersController(
             RentCarDbContext _context,
+            ICustomerContext customerContext,
+            ITokenGenerator tokenGenerator,
             IEmailService emailService)
         {
             context = _context;
-            //_customerContext = customerContext;
-            //_tokenGenerator = tokenGenerator;
+            _customerContext = customerContext;
+            _tokenGenerator = tokenGenerator;
             _emailService = emailService;
         }
 
@@ -61,6 +65,7 @@ namespace Rental_Car_Demo.Controllers
             if (Request.Cookies.TryGetValue("UserEmail", out string rememberMeValue))
             {
                 var values = rememberMeValue.Split('|');
+
                 if (values.Length == 2)
                 {
                     viewModel.User = new User
@@ -81,8 +86,7 @@ namespace Rental_Car_Demo.Controllers
             if (HttpContext.Session.GetString("User") == null)
             {
                 string hashedPassword = HashPassword(userLogin.User.Password);
-                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email)
-            && x.Password.Equals(hashedPassword)).FirstOrDefault();
+                var user = context.Users.Where(x => x.Email.Equals(userLogin.User.Email) && x.Password.Equals(hashedPassword)).FirstOrDefault();
 
                 if (user != null)
                 {
@@ -90,8 +94,11 @@ namespace Rental_Car_Demo.Controllers
 
                     if (userLogin.User.RememberMe)
                     {
-                        Response.Cookies.Append("UserEmail", $"{userLogin.User.Email}|{userLogin.User.Password}", new
-                            CookieOptions
+
+                        string rememberMeValue = $"{userLogin.User.Email}|{userLogin.User.Password}";
+                        string encodedRememberMeValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(rememberMeValue));
+
+                        Response.Cookies.Append("UserEmail", encodedRememberMeValue, new CookieOptions
                         {
                             Expires = DateTime.UtcNow.AddDays(30),
                             HttpOnly = true,
@@ -103,20 +110,21 @@ namespace Rental_Car_Demo.Controllers
                     {
                         Response.Cookies.Delete("UserEmail");
                     }
-
+                    TempData["ShowModal"] = "no";
                     return (bool)user.Role ? RedirectToAction("LoginOwn", "Users") : RedirectToAction("LoginCus", "Users");
                 }
 
                 if (user == null && !string.IsNullOrEmpty(userLogin.User.Email) && !string.IsNullOrEmpty(userLogin.User.Password))
                 {
                     ViewBag.Error = "Either email address or password is incorrect. Please try again";
-
                 }
             }
-            TempData["ShowModal"] = "SignIn"; // Set flag to show sign-in modal
-            return View("Guest", userLogin);
+
+            TempData["ShowModal"] = "yes";
+            return View("Guest");
         }
-        private string HashPassword(string password)
+
+        public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -170,7 +178,32 @@ namespace Rental_Car_Demo.Controllers
 
         public IActionResult Guest()
         {
-            return View();
+
+            var viewModel = new RegisterAndLoginViewModel
+            {
+                Register = new RegisterViewModel(),
+                User = new User()
+            };
+
+            if (Request.Cookies.TryGetValue("UserEmail", out string encodedRememberMeValue))
+            {
+                string rememberMeValue = Encoding.UTF8.GetString(Convert.FromBase64String(encodedRememberMeValue));
+
+                var values = rememberMeValue.Split('|');
+
+                if (values.Length == 2)
+                {
+                    viewModel.User = new User
+                    {
+                        Email = values[0],
+                        Password = values[1],
+                        RememberMe = true
+                    };
+                }
+            }
+
+
+            return View(viewModel);
         }
 
 
@@ -184,24 +217,23 @@ namespace Rental_Car_Demo.Controllers
         public IActionResult Register(RegisterAndLoginViewModel model)
         {
             var checkMail = IsEmailExist(model.Register.Email);
-
             // Kiểm tra email trùng lặp
             if (checkMail == true)
             {
                 ModelState.AddModelError("Register.Email", "Email already existed. Please try another email.");
+                TempData["ShowModal"] = "yes";
+                TempData["ShowPanel"] = "register";
                 return View("Guest", model);
             }
 
             if (model.Register.AgreeToTerms == false)
             {
                 ModelState.AddModelError("Register.AgreeToTerms", "Please agree to this!");
+                TempData["ShowModal"] = "yes";
+                TempData["ShowPanel"] = "register";
                 return View("Guest", model);
             }
 
-            // Kiểm tra tính hợp lệ của ModelState
-            //if (ModelState.IsValid)
-            //{
-            // Hash mật khẩu
             var hashedPassword = HashPassword(model.Register.Password);
             bool isCarOwner = model.Register.Role == "carOwner";
 
@@ -214,26 +246,14 @@ namespace Rental_Car_Demo.Controllers
                 Role = isCarOwner
             };
 
-            try
-            {
                 // Thêm customer vào context và lưu thay đổi
                 context.Add(customer);
                 context.SaveChanges();
 
                 // Hiển thị thông báo đăng ký thành công
                 TempData["SuccessMessage"] = "Account created successfully!";
+                TempData["ShowModal"] = "no";
                 return RedirectToAction("Guest", "Users");
-            }
-            catch (Exception ex)
-            {
-                // Ghi log lỗi nếu xảy ra
-                ModelState.AddModelError("", "An error occurred while creating the account: " + ex.Message);
-            }
-            //}
-
-            // Nếu có lỗi, hiển thị lại form đăng ký với thông báo lỗi
-            //TempData["ShowModal"] = "Register";
-            return View("Guest", model);
         }
 
         public IActionResult ResetPassword()
@@ -276,8 +296,8 @@ namespace Rental_Car_Demo.Controllers
                 int? customerId = token.UserId;
 
                 string resetLink = Url.Action("ResetPassword2", "Users", new { customerId = customerId, tokenValue = tokenValue }, Request.Scheme);
-                string subject = "Link Reset Password";
-                _emailService.SendEmail(model.Email, subject, resetLink);
+                string subject = "Rent-a-car Password Reset";
+                _emailService.SendEmail(model.Email, subject, "We have just received a password reset request for" + "<"+ email +">" +" .\r\nPlease click here to reset your password. \r\nFor your security, the link will expire in 24 hours or immediately after you reset your password. \r\n" + resetLink);
                 TempData["SuccessMessage"] = "We will send link to reset your password in the email!";
             }
 
@@ -300,18 +320,18 @@ namespace Rental_Car_Demo.Controllers
                 CustomerId = customerId,
             };
 
-            token.IsLocked = true;
-            context.Update(token);
-            context.SaveChanges();
+            TempData["token"] = token.Token;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult ResetPassword2(ResetPassword2ViewModel model)
+        public IActionResult ResetPassword2(ResetPassword2ViewModel model, string tokenvalue)
         {
             if (ModelState.IsValid)
             {
+                var token = context.TokenInfors.FirstOrDefault(t => t.Token == tokenvalue && t.UserId == model.CustomerId);
+
                 var customer = context.Users.FirstOrDefault(t => t.UserId == model.CustomerId);
 
                 var hashPass = HashPassword(model.Password);
@@ -321,7 +341,11 @@ namespace Rental_Car_Demo.Controllers
 
                 TempData["SuccessMessage"] = "Your password has been reset";
 
-                return View("Login");
+                token.IsLocked = true;
+                context.Update(token);
+                context.SaveChanges();
+
+                return View("Guest");
             }
             return View(model);
 

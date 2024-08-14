@@ -20,6 +20,12 @@ namespace Rental_Car_Demo.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public IActionResult TermsAndConditions()
+        {
+            return View (); 
+        }
+
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         //public IActionResult Error()
@@ -61,6 +67,10 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
         {
+            //if ( string.IsNullOrWhiteSpace (address) || address.Length < 2 ) {
+            //    ViewBag.ErrorMessage = "Please enter a valid location.";
+            //    return View (); // Return the view immediately with the error message
+            //}
 
             DateTime currentDateTime = DateTime.Now;
 
@@ -80,10 +90,38 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffTime = dropoffTime;
 
             // Fetch the cars based on the address
-            IEnumerable<Car> cars = _carRepository.GetAllCars (address);
-
+            IEnumerable<Car> cars = _carRepository.GetAllCars ();
             return View (cars);
         }
+
+
+
+        //[HttpGet]
+        //public IActionResult SearchCarFormGuest( DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        //{
+
+        //    DateTime currentDateTime = DateTime.Now;
+
+        //    pickupDate ??= DateOnly.FromDateTime(currentDateTime);
+
+        //    dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
+
+        //    pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
+        //    dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
+
+
+        //    // Pass values to ViewBag
+
+        //    ViewBag.pickupDate = pickupDate;
+        //    ViewBag.pickupTime = pickupTime;
+        //    ViewBag.dropoffDate = dropoffDate;
+        //    ViewBag.dropoffTime = dropoffTime;
+
+        //    // Fetch the cars based on the address
+        //    IEnumerable<Car> cars = _carRepository.GetAllCars();
+        //    return View("SearchCarForm", cars);
+        //}
+
 
         public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
         {
@@ -124,30 +162,32 @@ namespace Rental_Car_Demo.Controllers
                 return Content ("[]", "application/json");
             }
 
-            if ( Regex.IsMatch (query, @"[^a-zA-Z0-9\s,àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]") ) {
-                return Content ("[]", "application/json");
-            }
 
-            // Fetch matching addresses from the database
-            var addresses = _context.Cars
+            Console.WriteLine ($"Processed Query: {query}");
+
+
+
+            var terms = query.Split (',').Select (term => term.Trim ().ToLower ()).ToList ();
+
+            // Fetch all matching addresses from the database
+            var allAddresses = _context.Cars
                 .Include (car => car.Address)
                 .ThenInclude (address => address.City)
                 .Include (car => car.Address)
                 .ThenInclude (address => address.District)
                 .Include (car => car.Address)
                 .ThenInclude (address => address.Ward)
-                .Where (car => car.Status == 1 &&
-                               ( car.Address.District.DistrictName.Contains (query) ||
-                                 car.Address.Ward.WardName.Contains (query) ||
-                                 car.Address.City.CityProvince.Contains (query) ||
-                                 car.Address.HouseNumberStreet.Contains (query) ))
+                .Where (car => car.Status == 1)
                 .Select (car => new
                 {
                     Address = $"{car.Address.District.DistrictName}, {car.Address.City.CityProvince}"
                 })
+                .AsEnumerable () // Switch to in-memory processing
+                .Where (car => terms.Any (term => car.Address.ToLower ().Contains (term)))
                 .ToList ();
 
-            var json = System.Text.Json.JsonSerializer.Serialize (addresses.Select (a => a.Address).ToList ());
+
+            var json = System.Text.Json.JsonSerializer.Serialize (allAddresses.Select (a => a.Address).ToList ());
             return Content (json, "application/json");
         }
 
@@ -177,6 +217,7 @@ namespace Rental_Car_Demo.Controllers
             var feedbacks = _context.Feedbacks
                 .Include(f => f.BookingNoNavigation)
                 .ThenInclude(b => b.Car)
+                .ThenInclude (b => b.User)
                 .Where(f => f.BookingNoNavigation.UserId == userId)
                 .ToList();
 
@@ -186,26 +227,30 @@ namespace Rental_Car_Demo.Controllers
         [HttpGet]
         public IActionResult GetCarOwnerFeedbacks(int userId)
         {
-            //get user to block customer access this view
-            var userString = HttpContext.Session.GetString("User");
+            // Get user to block unauthorized access
+            var userString = HttpContext.Session.GetString ("User");
             User user = null;
-            if (!string.IsNullOrEmpty(userString))
-            {
-                user = JsonConvert.DeserializeObject<User>(userString);
+            if ( !string.IsNullOrEmpty (userString) ) {
+                user = JsonConvert.DeserializeObject<User> (userString);
             }
 
-            if (user.Role == false || user.UserId != userId) // neu user la customer thi khong duoc vao trang nay hoac co gang truy cap vao feedback nguoi khac
-            {
-                return View("ErrorAuthorization");
+            if ( user == null || user.Role == false || user.UserId != userId ) {
+                return View ("ErrorAuthorization");
             }
 
+            // Retrieve feedbacks and include related data
             var feedbacks = _context.Feedbacks
-                .Include(f => f.BookingNoNavigation)
-                .ThenInclude(b => b.Car)
-                .Where(f => f.BookingNoNavigation.Car.UserId == userId)
-                .ToList();
+                .Include (f => f.BookingNoNavigation)
+                .ThenInclude (b => b.Car)
+                .Include (f => f.BookingNoNavigation.User) // Ensure Booking's User (customer) is included
+                .Where (f => f.BookingNoNavigation.Car.UserId == userId)
+                .ToList ();
 
-            return View(feedbacks);
+            // Safely retrieve the first customer's name
+            var customerName = feedbacks.FirstOrDefault ()?.BookingNoNavigation?.User?.Name ?? "Unknown Customer";
+
+            ViewBag.CustomerName = customerName;
+            return View (feedbacks);
         }
     }
 }

@@ -16,38 +16,7 @@ using Rental_Car_Demo.Services;
 
 namespace Rental_Car_Demo.UnitTests
 {
-    public class DummySession : ISession
-    {
-        private readonly Dictionary<string, byte[]> _sessionStore = new Dictionary<string, byte[]>();
-
-        public DummySession()
-        {
-        }
-
-        // Phương thức này để lấy giá trị string từ session
-        public string? GetString(string key)
-        {
-            if (_sessionStore.TryGetValue(key, out var value))
-            {
-                return System.Text.Encoding.UTF8.GetString(value);
-            }
-            return null;
-        }
-
-        public void Clear() => _sessionStore.Clear();
-        public Task CommitAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public void Dispose() { }
-        public Task LoadAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public void Remove(string key) => _sessionStore.Remove(key);
-        public void Set(string key, byte[] value) => _sessionStore[key] = value;
-        public bool TryGetValue(string key, out byte[] value) => _sessionStore.TryGetValue(key, out value);
-        public IEnumerable<string> Keys => _sessionStore.Keys;
-
-        public bool IsAvailable => throw new NotImplementedException();
-
-        public string Id => throw new NotImplementedException();
-    }
-
+    
     [TestFixture]
     public class BookingControllerTestsAn
     {
@@ -66,7 +35,7 @@ namespace Rental_Car_Demo.UnitTests
             _context = new RentCarDbContext(options);
             _session = new DummySession();
             _mockEmailService = new Mock<IEmailService>();
-            _controller = new BookingController(_context, _mockEmailService.Object)
+            _controller = new BookingController( _mockEmailService.Object, _context)
             {
                 ControllerContext = new ControllerContext
                 {

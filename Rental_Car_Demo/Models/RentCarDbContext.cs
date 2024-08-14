@@ -59,6 +59,7 @@ public partial class RentCarDbContext : DbContext
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
+            
     }
 
 

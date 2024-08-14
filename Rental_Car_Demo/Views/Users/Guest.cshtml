@@ -168,7 +168,7 @@
                     <h2>Looking for a vehicle?</h2>
                     <p>You're at the right place.</p>
                     <p>Choose between 100's of private cars for rent at really low prices!</p>
-                    <a class="btn btn-custom" asp-action="SearchCarForm" asp-controller="Home">Find a Rental Car Near You</a>
+                    <a class="btn btn-custom" asp-action="SearchCarFormGuest" asp-controller="Home">Find a Rental Car Near You</a>
                 </div>
                 <div class="col-md-6 mb-4">
                     <h2>Are you a car owner?</h2>
@@ -370,6 +370,8 @@
 
     @{
         var showModal = TempData["ShowModal"] as string;
+        var showPanel = TempData["ShowPanel"] as string;
+
     }
 
 
@@ -436,7 +438,7 @@
                                     <div class="mb-3 d-flex">
                                         <input asp-for="Register.AgreeToTerms" class="" type="checkbox" id="terms" style="width: 16px;">
                                         <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
-                                            I have read and agree with the <a href="#" class="text-decoration-none ps-3">
+                                            I have read and agree with the <a href="@Url.Action("TermsAndConditions", "Home")" class="text-decoration-none ps-3">
                                                 <u>
                                                     Terms and
                                                     Conditions
@@ -453,50 +455,50 @@
                             <div class="form-container sign-in">
                                 @using (Html.BeginForm("Login", "Users", FormMethod.Post, new { id = "loginForm" }))
                                 {
-                                <h1>Sign In</h1>
-                                <div class="mb-3">
-                                    <label for="loginEmail" class="form-label">Your email address</label>
-                                    @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
-                                    <span class="text-danger" id="loginEmailError"></span>
-                                </div>
-                                <div class="position-relative">
-                                    <div class="abccc" style="position:relative;">
-                                        <label for="loginPassword" class="form-label">Password</label>
-                                        @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
-                                        <span class="text-danger" id="loginPasswordError"></span>
-                                        <i class="bx bx-low-vision toggle-password3" style="position:relative" id="toggleLoginPassword"></i>
+                                    <h1>Sign In</h1>
+                                    <div class="mb-3">
+                                        <label for="loginEmail" class="form-label">Your email address</label>
+                                        @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
+                                        <span class="text-danger" id="loginEmailError"></span>
                                     </div>
-                                </div>
-                                @if (!string.IsNullOrEmpty(ViewBag.Error))
-                                {
-                                <div class="text-danger" id="serverError">@ViewBag.Error</div>
-                                }
-                                <div class="mb-3 form-check" style="padding-left: 0.5em;">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input", id = "rememberMe" })
-                                        <label class="form-check-label" for="rememberMe">
-                                            @Html.DisplayNameFor(x => x.User.RememberMe)
-                                        </label>
+                                    <div class="position-relative">
+                                        <div class="abccc" style="position:relative;">
+                                            <label for="loginPassword" class="form-label">Password</label>
+                                            @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
+                                            <span class="text-danger" id="loginPasswordError"></span>
+                                            <i class="bx bx-low-vision toggle-password3" style="position:relative" id="toggleLoginPassword"></i>
+                                        </div>
                                     </div>
-                                </div>
+                                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                                    {
+                                        <div class="text-danger" id="serverError">@ViewBag.Error</div>
+                                    }
+                                    <div class="mb-3 form-check" style="padding-left: 0.5em;">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input", id = "rememberMe" })
+                                            <label class="form-check-label" for="rememberMe">
+                                                @Html.DisplayNameFor(x => x.User.RememberMe)
+                                            </label>
+                                        </div>
+                                    </div>
 
-                                <div class="mb-3 d-flex justify-content-center">
-                                    <a asp-controller="Users" asp-action="ResetPassword">Forgot your password?</a>
-                                </div>
+                                    <div class="mb-3 d-flex justify-content-center">
+                                        <a asp-controller="Users" asp-action="ResetPassword">Forgot your password?</a>
+                                    </div>
 
 
-                                <button type="submit">Sign In</button>
+                                    <button type="submit">Sign In</button>
                                 }
                             </div>
 
                             <div class="toggle-container">
                                 <div class="toggle">
-                                    <div class="toggle-panel toggle-left">
+                                    <div class="toggle-panel toggle-left" id="toggle-left">
                                         <h1>Welcome Back!</h1>
                                         <p>Enter your personal details to use all of the site's features</p>
                                         <button class="hidden" id="login">Sign In</button>
                                     </div>
-                                    <div class="toggle-panel toggle-right">
+                                    <div class="toggle-panel toggle-right" id="toggle-right">
                                         <h1>Hello, Friend!</h1>
                                         <p>Register with your personal details to use all of the site's features</p>
                                         <button class="hidden" id="register">Sign Up</button>
@@ -509,6 +511,32 @@
             </div>
         </div>
     </div>
+    
+  @*   <script>
+        // Function to show the desired panel
+        function showPanel(panelId) {
+            var panels = document.querySelectorAll('.toggle-panel');
+            panels.forEach(function (panel) {
+                panel.classList.add('hidden'); // Hide all panels
+            });
+
+            var panelToShow = document.getElementById(panelId);
+            if (panelToShow) {
+                panelToShow.classList.remove('hidden'); // Show the selected panel
+            }
+        }
+
+        // Example condition to choose which panel to show
+        document.addEventListener('DOMContentLoaded', function () {
+            var show = "@showPanel"; // Set to true to show "toggle-left", false to show "toggle-right"
+
+            if (show === "register") {
+                showPanel('toggle-right');
+            } else {
+                showPanel('toggle-left');
+            }
+        });
+    </script> *@
 
     <script>
         // Toggle password visibility
@@ -555,6 +583,24 @@
                 this.previousChecked = this.checked;
             });
         });
+    </script>
+    
+    
+    <script>
+        var show = "@showModal";
+
+        if (show === "yes") {
+            const myModal = bootstrap.Modal.getOrCreateInstance('#authModal');
+            window.addEventListener('DOMContentLoaded', () => {
+                myModal.show();
+            });
+        }
+        else {
+            document.querySelector('.nav-link').addEventListener('click', function () {
+                var myModal = new bootstrap.Modal(document.getElementById('authModal'));
+                myModal.show();
+            });
+        }
     </script>
 
 

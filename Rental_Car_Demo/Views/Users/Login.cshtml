@@ -100,7 +100,7 @@
                     <div class="mb-3">
                         <input asp-for="Register.AgreeToTerms" type="checkbox" id="terms" />
                         <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
-                            I have read and agree with the <a href="#" class="text-decoration-none ps-3"><u>Terms and Conditions</u></a>
+                            I have read and agree with the <a href="@Url.Action("TermsAndConditions", "Shared")" class="text-decoration-none ps-3"><u>Terms and Conditions</u></a>
                         </label>
                     </div>
                     <span asp-validation-for="Register.AgreeToTerms" class="text-danger"></span>

@@ -224,7 +224,8 @@
                     <div class="col-md-7">
                         <div class="card-time p-4">
                             <h4 class="">Find the ideal car rental for your trip</h4>
-                            <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="get">
+                        <form id="searchForm" asp-controller="Home" asp-action="SearchCarForm" method="get" onsubmit="return validateForm()">
+                            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
                                 <div class="form-group">
                                     <label for="pickupLocation">PICK-UP LOCATION</label>
                                     <input type="text" class="form-control" id="pickupLocation" name="address" placeholder="Location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
@@ -234,15 +235,15 @@
                                 <div class="form-group">
                                     <label for="pickupDate">PICK-UP DATE AND TIME</label>
                                     <div class="input-group">
-                                    <input type="date" class="form-control" id="pickupDate" name="pickupDate" placeholder="DD / MM / YYYY">
-                                    <input type="time" class="form-control" id="pickupTime" name="pickupTime" placeholder="HH:MM">
+                                        <input type="date" class="form-control" id="pickupDate" name="pickupDate" placeholder="DD / MM / YYYY">
+                                        <input type="time" class="form-control" id="pickupTime" name="pickupTime" placeholder="HH:MM">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="dropoffDate">DROP-OFF DATE AND TIME</label>
                                     <div class="input-group">
-                                    <input type="date" class="form-control" id="dropoffDate" name="dropoffDate" placeholder="DD / MM / YYYY">
-                                    <input type="time" class="form-control" id="dropoffTime" name="dropoffTime" placeholder="HH:MM">
+                                        <input type="date" class="form-control" id="dropoffDate" name="dropoffDate" placeholder="DD / MM / YYYY">
+                                        <input type="time" class="form-control" id="dropoffTime" name="dropoffTime" placeholder="HH:MM">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block">SEARCH</button>
@@ -310,6 +311,24 @@
             }
         </script>
         @await RenderSectionAsync("Scripts", required: false)
+
+        <script type="text/javascript">
+    function validateForm() {
+    const locationInput = document.getElementById("pickupLocation").value.trim();
+    const errorMessageDiv = document.getElementById("error-message");
+
+            if (locationInput.length < 2) {
+                errorMessageDiv.innerText = "Please enter a valid location.";
+                errorMessageDiv.style.display = "block";
+                return false; // Ngăn không cho gửi form
+            }
+
+    errorMessageDiv.style.display = "none";
+    return true; // Cho phép gửi form
+}
+
+</script>
+        
 
         <script>
             function fetchSuggestions(query, inputId) {
@@ -379,7 +398,6 @@
             });
         });
     </script>
-
 
 </body>
 </html>

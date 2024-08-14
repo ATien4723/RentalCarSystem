@@ -14,7 +14,7 @@ function previewImage(event, imgId) {
     const file = event.target.files[0];
     if (file) {
         const url = URL.createObjectURL(file);
-        const imgElement = document.getElementById(imgId);
+        const imgElement = document.getElementById("pre" + imgId);
         imgElement.src = url;
     }
 }

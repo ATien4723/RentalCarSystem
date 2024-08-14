@@ -16,4 +16,5 @@ public partial class Feedback
     public DateTime? Date { get; set; }
 
     public virtual Booking? BookingNoNavigation { get; set; }
+
 }

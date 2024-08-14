@@ -15,6 +15,8 @@ using Rental_Car_Demo.ViewModel;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Services;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Rental_Car_Demo.Context;
 
 namespace Rental_Car_Demo.UnitTests
 {
@@ -27,6 +29,9 @@ namespace Rental_Car_Demo.UnitTests
         private DummySession _session;
         private Mock<IFormFile> _mockFile;
         private string filePath;
+        private Mock<ITempDataDictionary> _mockTempData;
+        private Mock<ITokenGenerator> _mockTokenGenerator;
+        private Mock<ICustomerContext> _mockCustomerContext;
 
         [SetUp]
         public void SetUp()
@@ -45,7 +50,9 @@ namespace Rental_Car_Demo.UnitTests
             _session = new DummySession();
             _mockEmailService = new Mock<IEmailService>();
             _mockFile = new Mock<IFormFile>();
-            _controller = new UsersController(_context, _mockEmailService.Object)
+            _mockTokenGenerator = new Mock<ITokenGenerator>();
+            _mockCustomerContext = new Mock<ICustomerContext>();
+            _controller = new UsersController(_context, _mockCustomerContext.Object, _mockTokenGenerator.Object, _mockEmailService.Object)
             {
                 ControllerContext = new ControllerContext
                 {
