@@ -385,9 +385,11 @@
 
             const currentDateTime = getCurrentDateTime();
             pickupDateInput.value = currentDateTime.date;
+
             pickupTimeInput.value = currentDateTime.time;
 
-            // Adjust dropoff date to be 1 day before the current date
+            // Adjust dropoff date to be 1 day before the current date   tiendeptrai
+
             const dropoffDateTime = new Date(currentDateTime.date + "T" + currentDateTime.time);
             dropoffDateTime.setDate(dropoffDateTime.getDate() + 1);
             dropoffDateInput.value = dropoffDateTime.toISOString().split('T')[0];
