@@ -315,10 +315,10 @@ namespace Rental_Car_Demo.UnitTests
         }
 
         [Test]
-        public void Login_NullCookieValue_DoesNotSetUserDetails()
+        public void Login_EmptyCookieValue_DoesNotSetUserDetails()
         {
             // Arrange
-            _dummyCookies.Append("UserEmail", null);
+            _dummyCookies.Append("UserEmail", "");
 
             // Act
             var result = _controller.Login() as ViewResult;
@@ -361,10 +361,13 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = email, Password = password }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as ViewResult;
             Assert.IsNotNull(result);
-            Assert.AreEqual("Login", result.ViewName ?? "Login");
+            Assert.AreEqual("Guest", result.ViewName ?? "Guest");
 
         }
         [Test]
@@ -374,7 +377,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "kiet123@gmail.com", Password = "kiet123", RememberMe = false }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
             Assert.IsNotNull(result);
@@ -388,13 +394,16 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "invalid@example.com", Password = "wrongpassword" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as ViewResult;
 
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("Login", result.ViewName ?? "Login");
+            Assert.AreEqual("Guest", result.ViewName ?? "Guest");
         }
         [Test]
         public void Login_Post_WrongPassword_ErrorNotNull()
@@ -404,7 +413,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "invalid@example.com", Password = "wrongpassword" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as ViewResult;
 
@@ -420,8 +432,14 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "kiet123@example.com", Password = "wrongpassword" }
             };
-
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as ViewResult;
 
 
@@ -435,7 +453,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "notexist@gmail.com", Password = "123aad" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as ViewResult;
 
             Assert.IsNotNull(result);
@@ -448,7 +469,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "notexist@gmail.com", Password = "123aad" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as ViewResult;
 
             Assert.IsNotNull(result);
@@ -462,7 +486,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "hehe@gmail.com", Password = "hehe123" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -480,7 +507,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = email, Password = password }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -498,7 +528,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = email, Password = password }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -522,7 +555,10 @@ namespace Rental_Car_Demo.UnitTests
                 User = new User { Email = email, Password = password }
             };
 
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
             Assert.IsFalse(_dummySession.TryGetValue("User", out _));
@@ -536,7 +572,10 @@ namespace Rental_Car_Demo.UnitTests
                 User = new User { Email = "kiet123@gmail.com", Password = "kiet123" }
             };
 
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
 
@@ -552,7 +591,10 @@ namespace Rental_Car_Demo.UnitTests
                 User = new User { Email = "kiet123@gmail.com", Password = "kiet123" }
             };
 
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
 
@@ -570,7 +612,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "test@example.com", Password = "password" }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             // Act
             var result = _controller.Login(viewModel);
 
@@ -589,7 +634,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "test@example.com", Password = "password", RememberMe = true }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             // Act
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -611,7 +659,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "test@example.com", Password = "password", RememberMe = true }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             // Act
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -634,7 +685,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "test@example.com", Password = "password", RememberMe = false }
             };
-
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
             // Act
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -672,6 +726,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "hehe@gmail.com", Password = "hehe123" }
             };
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -691,6 +749,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "test@example.com", Password = password }
             };
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as RedirectToActionResult;
 
@@ -703,6 +765,10 @@ namespace Rental_Car_Demo.UnitTests
             {
                 User = new User { Email = "<script>alert('xss')</script>", Password = "password" }
             };
+            _controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
 
             var result = _controller.Login(viewModel) as ViewResult;
 
@@ -912,6 +978,61 @@ namespace Rental_Car_Demo.UnitTests
 
             Assert.IsInstanceOf<ViewResult>(result);
         }
+        [Test]
+        public void Guest_NoCookie_ReturnsViewWithEmptyUser()
+        {
+            
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+
+            
+            var result = _controller.Guest() as ViewResult;
+            var viewModel = result?.Model as RegisterAndLoginViewModel;
+
+            
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(viewModel);
+            Assert.IsNotNull(viewModel.User);
+            Assert.IsNull(viewModel.User.Email);
+            Assert.IsNull(viewModel.User.Password);
+            Assert.IsFalse(viewModel.User.RememberMe);
+        }
+        
+        [Test]
+        public void Guest_ValidCookie_ReturnsViewWithUserDetails()
+        {
+            // Arrange
+            string email = "test@example.com";
+            string password = "password123";
+            string rememberMeValue = $"{email}|{password}";
+            string encodedRememberMeValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(rememberMeValue));
+
+            var cookies = new Mock<IRequestCookieCollection>();
+            cookies.Setup(c => c.TryGetValue("UserEmail", out encodedRememberMeValue)).Returns(true);
+
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    Request = { Cookies = cookies.Object }
+                }
+            };
+
+            // Act
+            var result = _controller.Guest() as ViewResult;
+            var viewModel = result?.Model as RegisterAndLoginViewModel;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual(email, viewModel.User.Email);
+            Assert.AreEqual(password, viewModel.User.Password);
+            Assert.IsTrue(viewModel.User.RememberMe);
+        }
+
+
     }
 
     public class DummyCookies : IRequestCookieCollection, IResponseCookies
