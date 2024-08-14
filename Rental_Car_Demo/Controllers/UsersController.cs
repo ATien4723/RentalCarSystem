@@ -478,11 +478,11 @@ namespace Rental_Car_Demo.Controllers
             }
             if (currentUser.Role == false)
             {
-                return RedirectToAction("LoginCus", "Users");
+                return View(user);
             }
             else
             {
-                return RedirectToAction("LoginOwn", "Users");
+                return View(user);
             }
         }
 

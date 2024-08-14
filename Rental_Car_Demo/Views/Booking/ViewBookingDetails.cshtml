@@ -13,7 +13,7 @@
 
 @{
     ViewData["Title"] = "ViewBookingDetails";
-    Layout = "~/Views/Shared/_LayoutRentCar.cshtml";
+    Layout = "~/Views/Shared/_LayoutViewBookingDetails.cshtml";
 }
 
 <style>
@@ -205,7 +205,7 @@
     }
 
 <div class="mt-2 mb-2">
-    <a asp-controller="Users" asp-action="LoginCus">Home</a> ><a href="~/Booking/ViewBookingList">My Bookings</a> > <span class="fw-bold">Book Details</span>
+    <a asp-controller="Users" asp-action="LoginOwn">Home</a> ><a href="~/Car/ViewMyCars">My Cars</a> > <span class="fw-bold">Book Details</span>
 </div>
 
 <div class="container-fluid">
@@ -428,54 +428,63 @@
                         <input type="datetime" asp-for="StartDate" id="hiddenStartDate" class="form-control" value="@ViewBag.startDate" hidden/>
                         <input type="datetime" asp-for="EndDate" id="hiddenEndDate" class="form-control" value="@ViewBag.endDate" hidden/>
             
-                        <div class="row text-myfont mt-2 pt-2">
+                        <div class="row mt-2 col-md-6 pt-2">
                             <h4 class="mb-4">Renter's information</h4>
-                            <div class="col-md-6">
+                            <div class="">
                                 <div class="form-group col-md-8 mb-3">
-                                    <label asp-for="BookingInfo.RenterName" class="control-label">Full Name: <span style="color: red;">*</span></label>
-                                    <input asp-for="BookingInfo.RenterName" class="form-control" required/>
+                                    <label asp-for="BookingInfo.RenterName" class="text-myfont col-3 control-label">Full Name: </label>
+                                    <span class="col-3"">@Model.BookingInfo.RenterName</span>
+                                    @* <input asp-for="BookingInfo.RenterName" class="form-control" required/> *@
                                     <span asp-validation-for="BookingInfo.RenterName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-8 mb-3">
-                                    <label asp-for="BookingInfo.RenterPhone" class="control-label">
-                                        Phone number: <span style="color: red;">*</span>
+                                    <label asp-for="BookingInfo.RenterPhone" class="text-myfont col-3 control-label">
+                                        Phone number:
                                     </label>
-                                <input asp-for="BookingInfo.RenterPhone" type="number" class="form-control" required/>
+                                    <span class="col-3">@Model.BookingInfo.RenterPhone</span>
+                                @* <input asp-for="BookingInfo.RenterPhone" type="number" class="form-control" required/> *@
                                     <span asp-validation-for="BookingInfo.RenterPhone" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group col-md-8 mb-3">
-                                    <label asp-for="BookingInfo.RenterNationalId" class="control-label">
-                                        National ID No: <span style="color: red;">*</span>
+                                    <label asp-for="BookingInfo.RenterNationalId" class="text-myfont col-3 control-label">
+                                        National ID No:
                                     </label>
-                                <input asp-for="BookingInfo.RenterNationalId" class="form-control" required />
+                                    <span class="col-3">@Model.BookingInfo.RenterNationalId</span>
+
+                                @* <input asp-for="BookingInfo.RenterNationalId" class="form-control" required /> *@
                                     <span asp-validation-for="BookingInfo.RenterNationalId" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="">
                                 <div class="form-group col-md-8 mb-3">
-                                    <label asp-for="BookingInfo.RenterDob" class="control-label">Date of birth: <span style="color: red;">*</span></label>
-                                <input asp-for="BookingInfo.RenterDob" class="form-control" id="renterDob" type="date" required/>
+                                    <label asp-for="BookingInfo.RenterDob" class="text-myfont col-3 control-label">Date of birth: </label>
+                                    <span class="col-3">@Model.BookingInfo.RenterDob</span>
+                                @* <input asp-for="BookingInfo.RenterDob" class="form-control" id="renterDob" type="date" required/> *@
                                     <span asp-validation-for="BookingInfo.RenterDob" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-8 mb-3">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <label asp-for="BookingInfo.RenterEmail" class="control-label">
-                                        Email address: <span style="color: red;">*</span>
+                                    <label asp-for="BookingInfo.RenterEmail" class="text-myfont col-3 control-label">
+                                        Email address:
                                     </label>
-                                    <input asp-for="BookingInfo.RenterEmail" class="form-control" required/>
+                                    <span class="col-3">@Model.BookingInfo.RenterEmail</span>
+                                    @* <input asp-for="BookingInfo.RenterEmail" class="form-control" required/> *@
                                     <span asp-validation-for="BookingInfo.RenterEmail" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-8 mb-3">
-                                    <label asp-for="BookingInfo.RenterDrivingLicense" class="control-label">Driving license:</label>
-                                    <div class="input-group">
-                                        <input asp-for="BookingInfo.RenterDrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
-                                        <input asp-for="BookingInfo.RenterDrivingLicense" type="text" id="fileName" class="form-control" readonly />
-                                        <div class="input-group-append">
-                                            <button asp-for="BookingInfo.RenterDrivingLicense" type="button" id="chooseFileBtn" class="btn btn-outline-secondary">Upload</button>
-                                        </div>
-                                    </div>
+                                    <label asp-for="BookingInfo.RenterDrivingLicense" class="text-myfont col-3 control-label">Driving license:</label>
+                                    <input asp-for="BookingInfo.RenterDrivingLicense" type="file" id="fileInput" class="form-control" name="fileInput" style="display: none;" accept="image/*" />
+                                    <a id="fileName" class="col-3" >@Model.BookingInfo.RenterDrivingLicense"</a>
                                     <span asp-validation-for="BookingInfo.RenterDrivingLicense" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-8 mb-3">
+                                    <label class="text-myfont col-3 control-label">Address:</label>
+                                    <span class="col-3">
+                                        @ViewBag.address.HouseNumberStreet,
+                                        @ViewBag.ward.WardName, @ViewBag.district.DistrictName, @ViewBag.city.CityProvince
+                                    </span>
+                                    <span asp-validation-for="BookingInfo.RenterAddress.CityId" class="text-danger"></span>
                                 </div>
 
                                 <!-- Modal -->
@@ -497,31 +506,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group text-myfont col-md-6 mb-3">
-                            <label asp-for="BookingInfo.RenterAddress.CityId" class="control-label mb-1">Address:</label>
-                            <select asp-for="BookingInfo.RenterAddress.CityId" class="form-control form-select" asp-items="ViewBag.CitiesR">
-                                <option value="">-- Select City --</option>
-                            </select>
-                            <span asp-validation-for="BookingInfo.RenterAddress.CityId" class="text-danger"></span>
-                        </div>
-                        <div class="form-group text-myfont col-md-6 mb-3">
-                            <select asp-for="BookingInfo.RenterAddress.DistrictId" class="form-control form-select" asp-items="ViewBag.DistrictsR">
-                                <option value="">-- Select District --</option>
-                            </select>
-                            <span asp-validation-for="BookingInfo.RenterAddress.DistrictId" class="text-danger"></span>
-                        </div>
-                        <div class="form-group text-myfont col-md-6 mb-3">
-                            <select asp-for="BookingInfo.RenterAddress.WardId" class="form-control form-select" asp-items="ViewBag.WardsR">
-                                <option value="">-- Select Ward --</option>
-                            </select>
-                            <span asp-validation-for="BookingInfo.RenterAddress.WardId" class="text-danger"></span>
-                        </div>
-                        <div class="form-group text-myfont col-md-6 mb-3">
-                        <input asp-for="BookingInfo.RenterAddress.HouseNumberStreet" class="form-control" value="@ViewBag.houseNumberStreetR" placeholder="House number, Street" />
-                            <span asp-validation-for="BookingInfo.RenterAddress.HouseNumberStreet" class="text-danger"></span>
-                        </div>
-                
-
 
                             @* --------------------driver's info------------------------ *@
 
@@ -620,7 +604,7 @@
                                 <span asp-validation-for="BookingInfo.DriverAddress.WardId" class="text-danger"></span>
                             </div>
                             <div class="form-group text-myfont col-md-6 mb-3">
-                                <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, StreetD" />
+                                <input asp-for="BookingInfo.DriverAddress.HouseNumberStreet" class="form-control" placeholder="House number, Street" />
                                 <span asp-validation-for="BookingInfo.DriverAddress.HouseNumberStreet" class="text-danger"></span>
                             </div>
                             <div class="form-group text-myfont col-md-6 mb-3">
@@ -695,30 +679,16 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Registration paper</td>
-                                    @if (ViewBag.checkRent)
-                                    {
-                                        <td>
-                                            <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td>Verified</td>
-                                    }
+                                    <td>
+                                        <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Registration)', 'Registration_paper_@(ViewBag.car.Name)')">File1</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td>Certificate of Inspection</td>
-                                    @if (ViewBag.checkRent)
-                                    {
-                                        <td>
-                                            <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td>Verified</td>
-                                    }
+                                    <td>
+                                        <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Certificate)', 'Certificate_@(ViewBag.car.Name)')">File2</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
@@ -727,11 +697,7 @@
                                     {
                                         <td>Not available</td>
                                     }
-                                    else if (!ViewBag.checkRent)
-                                    {
-                                        <td>Verified</td>
-                                    }
-                                    else if (ViewBag.checkRent)
+                                    else
                                     {
                                         <td>
                                             <a href="javascript:void(0);" onclick="showImageAndDownload('@Url.Content("~/img/" + ViewBag.document.Insurance)', 'Insurance_@(ViewBag.car.Name)')">File3</a>
@@ -741,10 +707,6 @@
                             </tbody>
                         </table>
                     </div>
-                    @if (!ViewBag.checkRent)
-                    {
-                        <label class="text-danger">Note: Documents will be available for viewing after you've paid the deposit to rent.</label>
-                    }
                 </div>
 
                 <!-- Modal -->
@@ -780,22 +742,10 @@
                 </div>
                 <div class="row mt-3">
                     <label class="col-1 fw-bold">Address:</label>
-                    @if (ViewBag.checkRent)
-                    {
-                        <span class="col-10" style="margin-left:-2%">
-                            @ViewBag.address.HouseNumberStreet,
-                            @ViewBag.ward.WardName, @ViewBag.district.DistrictName, @ViewBag.city.CityProvince
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="col-10 fw-bold">
-                        </span>
-                    }
-                    @if (!ViewBag.checkRent)
-                    {
-                        <span class="text-danger">Note: Full address will be available after you've  paid the deposit to rent.</span>
-                    }
+                    <span class="col-10" style="margin-left:-2%">
+                        @ViewBag.address.HouseNumberStreet,
+                        @ViewBag.ward.WardName, @ViewBag.district.DistrictName, @ViewBag.city.CityProvince
+                    </span>
                 </div>
                 <div class="row mt-3">
                     <label class="col-1 fw-bold">Description:</label><br />
@@ -962,25 +912,16 @@
             </div>
             <div id="menu2" class="row container tab-pane fade">
                 <div class="form-group">
-                    @* <div style="margin-left: 20px; margin-top: 10px;">
-                        <p class="control-label"><strong>Please select your payment method</strong></p><br>
-                    </div> *@
+                    <p style="margin-left: 50px; margin-top: 5px;" class="control-label"><strong>Payment method for this booking</strong></p>
                     @if (@Model.PaymentMethod == 1) {
-                        <div style="margin-left: 70px; margin-top: 28px;">
+                        <div style="margin-left: 70px; margin-top: 20px;">
                         @{
                             var wallet = ViewBag.wallet ?? 0;
                             var deposit = ViewBag.Deposit ?? 0;
                         }
                         <label>
-                            <input id="pm1" type="radio" asp-for="@Model.PaymentMethod" value="1" checked/> My wallet<br>
-                            <p>Current balance: <span style="color: yellowgreen;">@String.Format("{0:#,##0}", wallet) VND&nbsp;&nbsp;&nbsp;&nbsp;
-                                    @if(wallet < deposit)
-                                    {
-                                        <span id="insufficient" style="color: yellowgreen;">insufficient</span>
-                                    }
-                                </span></p>
+                            <input id="pm1" type="radio" asp-for="@Model.PaymentMethod" value="1" checked/> Wallet<br>
                         </label>
-                        <p>Please make sure to have sufficient balance when you return the car.</p>
                         <p>Go to <a asp-controller="Payment" asp-action="MyWallet" asp-route-userid="@user.UserId">My wallet</a></p>
                         </div>
                     } else if (Model.PaymentMethod == 2)
@@ -1294,7 +1235,7 @@
     const modalImage = document.getElementById('modalImage');
     const defaultImage = '@Url.Content("~/img/" + Model?.BookingInfo?.RenterDrivingLicense)'; // Ensure correct path
 
-    chooseFileBtn.addEventListener('click', function () {
+    fileInput.addEventListener('click', function () {
         fileInput.click(); // Simulate click on file input
     });
 

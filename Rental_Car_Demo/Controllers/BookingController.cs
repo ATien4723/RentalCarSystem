@@ -694,6 +694,7 @@ namespace Rental_Car_Demo.Controllers
                 var districtR = _context.Districts.Where(d => d.CityId == addressR.CityId).ToList();
                 var wardR = _context.Wards.Where(d => d.DistrictId == addressR.DistrictId).ToList();
 
+                ViewBag.AddressR = addressR;
                 ViewBag.CitiesR = new SelectList(cityR, "CityId", "CityProvince", addressR.CityId);
                 ViewBag.DistrictsR = new SelectList(districtR, "DistrictId", "DistrictName", addressR.DistrictId);
                 ViewBag.WardsR = new SelectList(wardR, "WardId", "WardName", addressR.WardId);
@@ -712,6 +713,7 @@ namespace Rental_Car_Demo.Controllers
                 var districtD = _context.Districts.Where(d => d.CityId == addressD.CityId).ToList();
                 var wardD = _context.Wards.Where(d => d.DistrictId == addressD.DistrictId).ToList();
 
+                ViewBag.AddressD = addressD;
                 ViewBag.CitiesD = new SelectList(cityD, "CityId", "CityProvince", addressD.CityId);
                 ViewBag.DistrictsD = new SelectList(districtD, "DistrictId", "DistrictName", addressD.DistrictId);
                 ViewBag.WardsD = new SelectList(wardD, "WardId", "WardName", addressD.WardId);
@@ -878,6 +880,178 @@ namespace Rental_Car_Demo.Controllers
                 return RedirectToAction("ViewBookingList");
             }
             return RedirectToAction("EditBookingDetail", new { startDate = startDate, endDate = booking.EndDate, carId = booking.CarId, bookingNo = BookingNo });
+        }
+
+        public ActionResult ViewBookingDetails(int bookingNo)
+        {
+            var userString = HttpContext.Session.GetString("User");
+            User user = null;
+            if (!string.IsNullOrEmpty(userString))
+            {
+                user = JsonConvert.DeserializeObject<User>(userString);
+            }
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Users");
+            }
+
+            //get user to block customer access this view
+            var booking = _context.Bookings
+                .Include(b => b.BookingInfo)
+                    .ThenInclude(bi => bi.RenterAddress)
+                .Include(b => b.BookingInfo)
+                    .ThenInclude(bi => bi.DriverAddress)
+                .FirstOrDefault(b => b.BookingNo == bookingNo);
+
+            //using var context = new RentCarDbContext();
+            var car = _context.Cars.FirstOrDefault(x => x.CarId == booking.CarId);
+            if (user.Role == false || booking.Car.UserId != user.UserId)
+            {
+                return View("ErrorAuthorization");
+            }
+            //
+
+            Boolean checkFbExisted = false;
+            Feedback? feedback = _context.Feedbacks.FirstOrDefault(x => x.BookingNo == bookingNo);
+            if (feedback != null)
+            {
+                checkFbExisted = true;
+            }
+            ViewBag.checkFbExisted = checkFbExisted;
+
+            var bookingDetail = _context.Bookings
+                .Include(b => b.BookingInfo)
+                    .ThenInclude(bi => bi.RenterAddress)
+                .Include(b => b.BookingInfo)
+                    .ThenInclude(bi => bi.DriverAddress)
+                .FirstOrDefault(b => b.BookingNo == bookingNo);
+
+
+            ViewBag.RenterName = bookingDetail?.BookingInfo?.RenterName;
+
+            ViewBag.bookingNo = bookingNo;
+            //ViewBag.location = location;
+            ViewBag.startDate = bookingDetail.StartDate;
+            ViewBag.endDate = bookingDetail.EndDate;
+            ViewBag.carId = bookingDetail.CarId;
+
+            int numberOfDays = (int)Math.Ceiling((bookingDetail.EndDate - bookingDetail.StartDate).TotalDays);
+            var totalHours = (int)Math.Ceiling((bookingDetail.EndDate - bookingDetail.StartDate).TotalHours);
+            ViewBag.TotalHours = totalHours;
+
+            ViewBag.NumberOfDays = numberOfDays;
+            ViewBag.BasePrice = car.BasePrice;
+
+            if (totalHours < 12)
+            {
+                ViewBag.Total = (decimal)car.BasePrice * 0.5m;
+                ViewBag.Deposit = (decimal)car.Deposit * 0.5m;
+            }
+            else
+            {
+                ViewBag.Total = numberOfDays * car.BasePrice;
+                ViewBag.Deposit = numberOfDays * car.Deposit;
+            }
+
+            bool checkRent = false;
+            if (bookingDetail.Status == 2 || bookingDetail.Status == 3 || bookingDetail.Status == 4)
+            {
+                checkRent = true;
+            }
+
+            var lBooking = _context.Bookings.Where(x => x.CarId == booking.CarId).ToList();
+
+            var matchedFeedback = (from feedbackEdit in _context.Feedbacks.ToList()
+                                   join booking2 in lBooking on feedbackEdit.BookingNo equals booking.BookingNo
+                                   select feedbackEdit).ToList();
+
+            double rating = 0, nor = 0;
+            foreach (Feedback o in matchedFeedback)
+            {
+                if (o.Ratings < 0)
+                {
+                    continue;
+                }
+                rating += o.Ratings;
+                nor += 1;
+            }
+
+            if (nor > 0)
+            {
+                rating = rating / nor;
+                rating = (Math.Ceiling(rating * 2)) / 2.0;
+            }
+            else
+            {
+                rating = 0;
+            }
+            ViewBag.Rating = rating;
+
+            var brand = _context.CarBrands.FirstOrDefault(x => x.BrandId == car.BrandId);
+            var model = _context.CarModels.FirstOrDefault(x => x.ModelId == car.ModelId);
+            var document = _context.CarDocuments.FirstOrDefault(x => x.DocumentId == car.DocumentId);
+            var color = _context.CarColors.FirstOrDefault(x => x.ColorId == car.ColorId);
+            var address = _context.Addresses.FirstOrDefault(x => x.AddressId == car.AddressId);
+            var ward = _context.Wards.FirstOrDefault(x => x.WardId == address.WardId);
+            var district = _context.Districts.FirstOrDefault(x => x.DistrictId == address.DistrictId);
+            var city = _context.Cities.FirstOrDefault(x => x.CityId == address.CityId);
+            var term = _context.TermOfUses.FirstOrDefault(x => x.TermId == car.TermId);
+            var function = _context.AdditionalFunctions.FirstOrDefault(x => x.FucntionId == car.FucntionId);
+            ViewBag.car = car;
+            ViewBag.brand = brand;
+            ViewBag.model = model;
+            ViewBag.document = document;
+            ViewBag.color = color;
+            ViewBag.address = address;
+            ViewBag.ward = ward;
+            ViewBag.district = district;
+            ViewBag.city = city;
+            ViewBag.term = term;
+            ViewBag.function = function;
+            ViewBag.checkRent = checkRent;
+
+            ViewBag.user = user;
+            ViewBag.userId = user.UserId;
+            ViewBag.wallet = user.Wallet;
+            ViewBag.dob = user.Dob?.ToString("yyyy-MM-dd");
+            ViewBag.DrivingLience = user.DrivingLicense;
+            var addressR = bookingDetail?.BookingInfo?.RenterAddress;
+
+            if (addressR == null)
+            {
+                ViewBag.CitiesR = new SelectList(_context.Cities.ToList(), "CityId", "CityProvince");
+            }
+            else
+            {
+                var cityR = _context.Cities.ToList();
+                var districtR = _context.Districts.Where(d => d.CityId == addressR.CityId).ToList();
+                var wardR = _context.Wards.Where(d => d.DistrictId == addressR.DistrictId).ToList();
+
+                ViewBag.CitiesR = new SelectList(cityR, "CityId", "CityProvince", addressR.CityId);
+                ViewBag.DistrictsR = new SelectList(districtR, "DistrictId", "DistrictName", addressR.DistrictId);
+                ViewBag.WardsR = new SelectList(wardR, "WardId", "WardName", addressR.WardId);
+                ViewBag.houseNumberStreetR = addressR.HouseNumberStreet;
+            }
+
+            var addressD = bookingDetail?.BookingInfo?.DriverAddress;
+
+            if (addressD == null)
+            {
+                ViewBag.CitiesD = new SelectList(_context.Cities.ToList(), "CityId", "CityProvince");
+            }
+            else
+            {
+                var cityD = _context.Cities.ToList();
+                var districtD = _context.Districts.Where(d => d.CityId == addressD.CityId).ToList();
+                var wardD = _context.Wards.Where(d => d.DistrictId == addressD.DistrictId).ToList();
+
+                ViewBag.CitiesD = new SelectList(cityD, "CityId", "CityProvince", addressD.CityId);
+                ViewBag.DistrictsD = new SelectList(districtD, "DistrictId", "DistrictName", addressD.DistrictId);
+                ViewBag.WardsD = new SelectList(wardD, "WardId", "WardName", addressD.WardId);
+                ViewBag.houseNumberStreetD = addressD.HouseNumberStreet;
+            }
+            return View(bookingDetail);
         }
 
         // GET: BookingController/Delete/5

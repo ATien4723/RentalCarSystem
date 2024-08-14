@@ -1,0 +1,255 @@
+﻿@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@{
+    var userString = Context.Session.GetString("User");
+    User user = null;
+    if (!string.IsNullOrEmpty(userString))
+    {
+        user = JsonConvert.DeserializeObject<User>(userString);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RentCarSolution</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/RentCarSolution.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 232, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .carousel-item {
+            height: 350px;
+        }
+
+        .navbar-custom {
+            background-color: #4a4a4a;
+            color: white;
+            border-bottom: 2px solid #ccc;
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: white;
+            }
+
+            .navbar-custom .navbar-nav .nav-item {
+                position: relative;
+            }
+
+                .navbar-custom .navbar-nav .nav-item::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                    width: 1px;
+                    height: 20px;
+                    background-color: white;
+                }
+
+                .navbar-custom .navbar-nav .nav-item:last-child::after {
+                    display: none;
+                }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .step {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            color: #555;
+            background-color: #e6e6e6;
+            border-radius: 5px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+            .step.active {
+                background-color: #007bff;
+                color: white;
+                font-weight: bold;
+            }
+
+            .step::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: -20px;
+                width: 0;
+                height: 0;
+                border-top: 22px solid transparent;
+                border-bottom: 23px solid transparent;
+                border-left: 23px solid #e6e6e6;
+            }
+
+            .step.active::after {
+                border-left-color: #007bff;
+            }
+
+            .step:last-child {
+                margin-right: 0;
+            }
+
+                .step:last-child::after {
+                    display: none;
+                }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .footer-guest {
+            margin-top: auto;
+            background-color: #f5f5f5;
+            color: black;
+            padding: 10px 0;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <div class="container-fluid">
+                @if (user.Role == false)
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginCus", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand fs-2" href="@Url.Action("LoginOwn", "Users")" style="font-family: Arial, sans-serif !important;">
+                        <i class='bx bxs-car'></i> Rent a car today!
+                    </a>
+                }
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ABOUT US</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, @user?.Name
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserId">My Profile</a></li>
+                                <li><a class="dropdown-item" href="~/Car/ViewMyCars">My Cars</a></li>
+                                <li><a class="dropdown-item" asp-controller="Payment" asp-action="MyWallet" asp-route-userId="@user.UserId">My Wallet</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="GetCarOwnerFeedbacks" asp-route-userId="@user.UserId">My Report</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer-guest py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Rent Cars</h3>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">Search Cars and Rates</a>
+                </div>
+                <div class="col-md-3">
+                    <h3>Customer Access</h3>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">Manage My Booking</a>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">My Wallet</a>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">My Car</a>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">Log In</a>
+                </div>
+                <div class="col-md-3">
+                    <h3>Join Us</h3>
+                    <a style="text-decoration: none" href="#" class="text-black d-block">New User Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <form id="logoutForm" asp-controller="Users" asp-action="Logout" method="post" style="display: none;">
+        <input type="hidden" name="returnUrl" value="~/">
+    </form>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-center">
+                    <h5 class="modal-title" id="logoutModalLabel">Log Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-center">
+                    Are you sure you want to log out?
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <div class="vr mx-3"></div>
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.min.js" integrity="sha384-CjSoe/DFuXlOc/lr8QmshFRjbStFEp1yEqJh3UOpwQwZ/UYxeg6x2szeSUUdaO0" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function submitLogout() {
+            document.getElementById('logoutForm').submit();
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
