@@ -763,6 +763,7 @@ namespace Rental_Car_Demo.Controllers
                 var districtR = context.Districts.Where(d => d.CityId == addressR.CityId).ToList();
                 var wardR = context.Wards.Where(d => d.DistrictId == addressR.DistrictId).ToList();
 
+                ViewBag.AddressR = addressR;
                 ViewBag.CitiesR = new SelectList(cityR, "CityId", "CityProvince", addressR.CityId);
                 ViewBag.DistrictsR = new SelectList(districtR, "DistrictId", "DistrictName", addressR.DistrictId);
                 ViewBag.WardsR = new SelectList(wardR, "WardId", "WardName", addressR.WardId);
@@ -781,6 +782,7 @@ namespace Rental_Car_Demo.Controllers
                 var districtD = context.Districts.Where(d => d.CityId == addressD.CityId).ToList();
                 var wardD = context.Wards.Where(d => d.DistrictId == addressD.DistrictId).ToList();
 
+                ViewBag.AddressD = addressD;
                 ViewBag.CitiesD = new SelectList(cityD, "CityId", "CityProvince", addressD.CityId);
                 ViewBag.DistrictsD = new SelectList(districtD, "DistrictId", "DistrictName", addressD.DistrictId);
                 ViewBag.WardsD = new SelectList(wardD, "WardId", "WardName", addressD.WardId);

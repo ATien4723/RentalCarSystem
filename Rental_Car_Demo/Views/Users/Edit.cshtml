@@ -256,7 +256,7 @@
             $('#NewPasswordError').text("Password must contain at least one letter, one numeral, and be at least seven characters long.");
             return false;
         } else if (newPassword !== confirmPassword) {
-            $('#confirmPasswordError').text('Passwords do not match');
+            $('#confirmPasswordError').text('New password and Confirm password don’t match');
             return false; // Prevent form submission
         } else {
             return true; // Tất cả hợp lệ

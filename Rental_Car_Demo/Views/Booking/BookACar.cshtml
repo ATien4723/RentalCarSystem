@@ -142,7 +142,7 @@
 
 
 <div class="mt-2 mb-2">
-    <a asp-controller="Users" asp-action="LoginCus">Home</a> > <a asp-controller="Car" asp-action="ViewCarDetailsByCustomer">Car Details</a> > <span class="fw-bold">Book Car</span>
+    <a asp-controller="Users" asp-action="LoginCus">Home</a> > <a asp-controller="Car" asp-action="ViewCarDetailsByCustomer" asp-route-carId="@ViewBag.carId">Car Details</a> > <span class="fw-bold">Book Car</span>
 </div>
 
 
@@ -1236,88 +1236,7 @@ $(document).ready(function () {
                 alert("Your wallet balance is insufficient for this payment method. Please choose another payment method or add funds to your wallet.");
                 event.preventDefault(); // Ngăn chặn việc gửi biểu mẫu
             }
-
-            var newLocation = $('#modalPickupLocation').val();
-            var newStartDate = $('#modalStartDate').val();
-            var newEndDate = $('#modalEndDate').val();
-            var newCarId = $('#modalCarId').val();
-
-            // Validate start date and time is greater than current date and time
-            if (!isStartDateGreaterThanCurrentDate(newStartDate)) {
-                alert('Pick-up date and time must be greater than the current date and time.');
-                event.preventDefault();
-            }
-
-            // Validate end date and time is greater than start date and time
-            if (!isEndDateGreaterThanStartDate(newStartDate, newEndDate)) {
-                alert('Return date and time must be greater than start date and time.');
-                event.preventDefault();
-            }
-
-            // Validate end date and time is greater than start date and time and at least 1 day later
-            if (!isEndDateValid(newStartDate, newEndDate)) {
-                alert('Return date and time must be at least a hour greater than pick-up date and time.');
-                event.preventDefault();
-            }
-
-            // Format dates to desired format
-            var formattedStartDate = formatDate(newStartDate);
-            var formattedEndDate = formatDate(newEndDate);
-
-            // Update booking details display
-            $('#pickupLocationText').text(newLocation);
-            $('#startDateText').text(formattedStartDate);
-            $('#endDateText').text(formattedEndDate);
-            $('#CarIdText').text(newCarId);
-
-            // Optionally update hidden input values
-            $('#hiddenStartDate').val(newStartDate);
-            $('#hiddenEndDate').val(newEndDate);
-
         });
-        function formatDate(dateString) {
-            var date = new Date(dateString);
-            var formattedDate = date.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-
-            // Ensure "AM" or "PM" is in uppercase
-            formattedDate = formattedDate.replace(/\b([ap])m\b/g, function (match) {
-                return match.toUpperCase();
-            });
-
-            return formattedDate;
-        }
-
-        // Function to check if start date and time is greater than current date and time
-        function isStartDateGreaterThanCurrentDate(startDate) {
-            var startDateTime = new Date(startDate).getTime();
-            var currentDateTime = new Date().getTime() - (1 * 60 * 1000);
-
-            return startDateTime >= currentDateTime;
-        }
-
-        // Function to check if end date and time is greater than start date and time
-        function isEndDateGreaterThanStartDate(startDate, endDate) {
-            var startDateTime = new Date(startDate).getTime();
-            var endDateTime = new Date(endDate).getTime();
-
-            return endDateTime >= startDateTime;
-        }
-
-        // Function to check if end date and time is at least 1 hour greater than start date and time
-        function isEndDateValid(startDate, endDate) {
-            var startDateTime = new Date(startDate).getTime();
-            var endDateTime = new Date(endDate).getTime();
-            var oneDayInMillis = 1 * 60 * 60 * 1000; // One day in milliseconds
-
-            return endDateTime > startDateTime;
-        }
     });
 </script>
 }
