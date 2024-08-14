@@ -490,9 +490,13 @@
                 };
             }
 
+            function parseDateTime(dateInput, timeInput) {
+                return new Date(`${dateInput.value}T${timeInput.value}`);
+            }
+
             function validatePickupDateTime() {
                 const currentDateTime = new Date();
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
 
                 if (pickupDateTime < currentDateTime) {
                     alert("Pickup date and time must be equal to or greater than the current date and time.");
@@ -502,20 +506,23 @@
             }
 
             function validateDropoffDateTime() {
-                const pickupDateTime = new Date(`${pickupDateInput.value}T${pickupTimeInput.value}`);
-                const dropDateTime = new Date(`${dropDateInput.value}T${dropTimeInput.value}`);
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
+                const dropDateTime = parseDateTime(dropDateInput, dropTimeInput);
 
-                // Nếu pickup date và drop off date bằng nhau
+                if (pickupDateTime.toString() === 'Invalid Date' || dropDateTime.toString() === 'Invalid Date') {
+                    alert("Invalid date or time format. Please enter a valid date and time.");
+                    return false;
+                }
+
                 if (dropDateInput.value === pickupDateInput.value) {
                     if (dropDateTime <= pickupDateTime) {
                         alert("Drop-off time must be greater than the pickup time on the same day.");
                         let adjustedDropoffDateTime = new Date(pickupDateTime);
-                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1); 
+                        adjustedDropoffDateTime.setHours(adjustedDropoffDateTime.getHours() + 1);
                         dropTimeInput.value = adjustedDropoffDateTime.toTimeString().split(' ')[0].substring(0, 5);
                         return false;
                     }
                 } else {
-                    // Kiểm tra nếu drop off time nhỏ hơn pickup time
                     if (dropDateTime <= pickupDateTime) {
                         alert("Drop-off date and time must be greater than the pickup date and time.");
                         let adjustedDropoffDateTime = new Date(pickupDateTime);
@@ -529,11 +536,9 @@
             }
 
             function updateDropoffMin() {
-                const pickupDate = pickupDateInput.value;
-                const pickupTime = pickupTimeInput.value;
+                const pickupDateTime = parseDateTime(pickupDateInput, pickupTimeInput);
 
-                if (pickupDate && pickupTime) {
-                    const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+                if (!isNaN(pickupDateTime.getTime())) {
                     dropDateInput.setAttribute('min', pickupDateTime.toISOString().split('T')[0]);
                     dropTimeInput.setAttribute('min', pickupDateTime.toTimeString().split(' ')[0].substring(0, 5));
                 }
@@ -541,7 +546,7 @@
 
             updateDropoffMin();
 
-            pickupDateInput.addEventListener("change", function () {
+            pickupDateInput.addEventListener("blur", function () {
                 if (validatePickupDateTime()) {
                     updateDropoffMin();
                     validateDropoffDateTime();
@@ -552,7 +557,7 @@
                 }
             });
 
-            pickupTimeInput.addEventListener("change", function () {
+            pickupTimeInput.addEventListener("blur", function () {
                 if (validatePickupDateTime()) {
                     updateDropoffMin();
                     validateDropoffDateTime();
@@ -563,11 +568,11 @@
                 }
             });
 
-            dropDateInput.addEventListener("change", function () {
+            dropDateInput.addEventListener("blur", function () {
                 validateDropoffDateTime();
             });
 
-            dropTimeInput.addEventListener("change", function () {
+            dropTimeInput.addEventListener("blur", function () {
                 validateDropoffDateTime();
             });
         });
