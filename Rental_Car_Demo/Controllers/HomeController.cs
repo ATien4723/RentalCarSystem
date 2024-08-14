@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mono.TextTemplating;
 using Newtonsoft.Json;
 using Rental_Car_Demo.Models;
 using Rental_Car_Demo.Repository.CarRepository;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Text.RegularExpressions;
 
 namespace Rental_Car_Demo.Controllers
@@ -65,7 +67,7 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchCarForm(string? address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
+        public IActionResult SearchCarForm(string address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime, string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange)
         {
             //if ( string.IsNullOrWhiteSpace (address) || address.Length < 2 ) {
             //    ViewBag.ErrorMessage = "Please enter a valid location.";
@@ -90,40 +92,28 @@ namespace Rental_Car_Demo.Controllers
             ViewBag.dropoffTime = dropoffTime;
 
             // Fetch the cars based on the address
-            IEnumerable<Car> cars = _carRepository.GetAllCars ();
+            decimal? minPrice = null;
+            decimal? maxPrice = null;
+
+            if ( priceRange != null && priceRange.Length > 0 ) {
+                foreach ( var range in priceRange ) {
+                    var prices = range.Split ('-');
+                    if ( prices.Length == 2 ) {
+                        if ( decimal.TryParse (prices[0], out decimal min) && decimal.TryParse (prices[1], out decimal max) ) {
+                            if ( minPrice == null || min < minPrice ) minPrice = min;
+                            if ( maxPrice == null || max > maxPrice ) maxPrice = max;
+                        }
+                    }
+                }
+            }
+
+            // Fetch the cars based on the address and additional filters
+            IEnumerable<Car> cars = _carRepository.GetAllCars (address, brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice);
             return View (cars);
         }
 
 
-
-        //[HttpGet]
-        //public IActionResult SearchCarFormGuest( DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime)
-        //{
-
-        //    DateTime currentDateTime = DateTime.Now;
-
-        //    pickupDate ??= DateOnly.FromDateTime(currentDateTime);
-
-        //    dropoffDate ??= DateOnly.FromDateTime(currentDateTime.AddDays(1));
-
-        //    pickupTime ??= TimeOnly.FromDateTime(currentDateTime);
-        //    dropoffTime ??= TimeOnly.FromDateTime(currentDateTime);
-
-
-        //    // Pass values to ViewBag
-
-        //    ViewBag.pickupDate = pickupDate;
-        //    ViewBag.pickupTime = pickupTime;
-        //    ViewBag.dropoffDate = dropoffDate;
-        //    ViewBag.dropoffTime = dropoffTime;
-
-        //    // Fetch the cars based on the address
-        //    IEnumerable<Car> cars = _carRepository.GetAllCars();
-        //    return View("SearchCarForm", cars);
-        //}
-
-
-        public IActionResult SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
+        public async Task<IActionResult> SearchCar(string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange, string address)
         {
             decimal? minPrice = null;
             decimal? maxPrice = null;
@@ -144,13 +134,55 @@ namespace Rental_Car_Demo.Controllers
                 }
             }
 
-            IEnumerable<Car> cars = _carRepository.SearchCars(brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
-
+            IEnumerable<Car> cars = await _carRepository.SearchCars (brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice, address);
             return PartialView("_CarResultsPartial", cars);
         }
 
         [HttpGet]
         public IActionResult GetSuggestions(string query)
+        {
+            if ( string.IsNullOrEmpty (query) ) {
+                return Content ("[]", "application/json");
+            }
+
+            query = query.Trim ();
+
+            if ( query.Length < 2 || query.Length > 100 ) {
+                return Content ("[]", "application/json");
+            }
+
+
+            Console.WriteLine ($"Processed Query: {query}");
+
+
+
+            var terms = query.Split (',').Select (term => term.Trim ().ToLower ()).ToList ();
+
+            // Fetch all matching addresses from the database
+            var allAddresses = _context.Cars
+                .Include (car => car.Address)
+                .ThenInclude (address => address.City)
+                .Include (car => car.Address)
+                .ThenInclude (address => address.District)
+                .Include (car => car.Address)
+                .ThenInclude (address => address.Ward)
+                .Where (car => car.Status == 1)
+                .Select (car => new
+                {
+                    Address = $"{car.Address.City.CityProvince}"
+                })
+                .AsEnumerable () // Switch to in-memory processing
+                .Where (car => terms.Any (term => car.Address.ToLower ().Contains (term)))
+                .ToList ();
+
+
+            var json = System.Text.Json.JsonSerializer.Serialize (allAddresses.Select (a => a.Address).ToList ());
+            return Content (json, "application/json");
+        }
+
+
+        [HttpGet]
+        public IActionResult GetSuggest(string query)
         {
             if ( string.IsNullOrEmpty (query) ) {
                 return Content ("[]", "application/json");

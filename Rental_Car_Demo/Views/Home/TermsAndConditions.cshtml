@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Rental_Car_Demo.ViewModel.RegisterAndLoginViewModel;
+@{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -88,268 +89,388 @@
     <div class="image-section">
         <img src="~/img/banner.png" alt="Car Steering Wheel" class="img-fluid">
         <div class="image-text">
-            <h1 style="color: white;">Chính sách & Quy định</h1>
+            <h1 style="color: white;">Policies & Regulations
+            </h1>
         </div>
     </div>
 
     <!-- Notification Section -->
     <div class="container mt-4">
         <div class="alert alert-warning text-center">
-            <strong>Thông báo</strong><br>
-            Meta sẽ không thực hiện việc áp dụng Chính sách hiện hành đối với xe điện để đảm bảo tuân thủ các quy định
-            mới của Chính phủ Việt Nam...
+            <strong> Notification </strong><br>
+            Meta will not implement the applicable Electric Vehicle Policy to ensure regulatory compliance
+            new by the Government of Vietnam...
         </div>
     </div>
 
     <!-- Tabbed Content Section -->
     <div class="container mt-5">
-        <div class="row">
-            <!-- Sidebar Tabs -->
-            <div class="col-md-3">
-                <ul class="nav nav-tabs flex-column" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                           aria-controls="home" aria-selected="true">Chính sách & Quy định</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="principle-tab" data-toggle="tab" href="#principle" role="tab"
-                           aria-controls="principle" aria-selected="false">Nguyên tắc chung</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="privacy-tab" data-toggle="tab" href="#privacy" role="tab"
-                           aria-controls="privacy" aria-selected="false">Điều khoản bảo mật</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="dispute-tab" data-toggle="tab" href="#dispute" role="tab"
-                           aria-controls="dispute" aria-selected="false">Giải quyết khiếu nại</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="row">
+    <!-- Sidebar Tabs -->
+    <div class="col-md-3">
+        <ul class="nav nav-tabs flex-column" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="principle-tab" data-bs-toggle="tab" href="#principle" role="tab" aria-controls="principle" aria-selected="false">Principle</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="privacy-tab" data-bs-toggle="tab" href="#privacy" role="tab" aria-controls="privacy" aria-selected="false">Privacy</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="dispute-tab" data-bs-toggle="tab" href="#dispute" role="tab" aria-controls="dispute" aria-selected="false">Dispute</a>
+            </li>
+        </ul>
+    </div>
 
-            <!-- Tab Content -->
-            <div class="col-md-9">
-                <div class="tab-content" id="myTabContent">
-                    <!-- Tab 1 -->
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <h2>1. Trách nhiệm của khách thuê xe và chủ xe trong giao dịch cho thuê xe tự lái</h2>
-                        <p>
-                            Mục đích lâu dài của Mioto là hướng đến việc xây dựng cộng đồng chia sẻ xe ô tô văn minh và
-                            uy tín tại Việt Nam. Vì thế, để đảm bảo các giao dịch thuê xe trong cộng đồng được diễn ra
-                            một cách thuận lợi và thành công tốt đẹp thì việc quy định trách nhiệm của các bên trong
-                            tuân thủ các chính sách của Mioto và các điều khoản cam kết là rất quan trọng.
-                        </p>
-                        <h3>A. Trách nhiệm của chủ xe</h3>
-                        <ul>
-                            <li>
-                                Giao xe và toàn bộ giấy tờ liên quan đến xe đúng thời gian và trong tình trạng an toàn,
-                                vệ sinh sạch sẽ nhằm đảm bảo chất lượng dịch vụ.
-                            </li>
-                            <li>
-                                Các giấy tờ xe liên quan bao gồm: giấy đăng ký xe (bản photo công chứng), giấy kiểm
-                                định, giấy bảo hiểm xe (bản photo công chứng hoặc bản gốc).
-                            </li>
-                            <li>Chịu trách nhiệm pháp lý về nguồn gốc và quyền sở hữu của xe.</li>
-                        </ul>
+    <!-- Tab Content -->
+   <div class="col-md-9">
+  <div class="tab-content" id="myTabContent">
+    <!-- Tab 1 -->
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <h2>1. Responsibilities of Car Renters and Car Owners in Self-Driving Car Rental Transactions</h2>
+      <p>
+        Mioto's long-term goal is to build a civilized and reputable car-sharing community in Vietnam. To ensure that car rental transactions within the community occur smoothly and successfully, it is essential to define the responsibilities of both parties in adhering to Mioto's policies and commitments.
+      </p>
+      <h3>A. Responsibilities of Car Owners</h3>
+      <ul>
+        <li>
+          Provide the car and all related documents on time and in a safe, clean condition to ensure service quality.
+        </li>
+        <li>
+          Relevant car documents include: car registration (notarized copy), inspection certificate, insurance (notarized copy or original).
+        </li>
+        <li>Be legally responsible for the origin and ownership of the car.</li>
+      </ul>
 
-                        <h3>B. Trách nhiệm khách thuê xe</h3>
-                        <ul>
-                            <li>
-                                Kiểm tra kỹ xe trước khi nhận và trước khi hoàn trả xe. Xác nhận biên bản bàn giao về
-                                tình trạng xe khi nhận và khi hoàn trả.
-                            </li>
-                            <li>Thanh toán đầy đủ tiền thuê xe cho Chủ xe khi nhận xe.</li>
-                            <li>
-                                Tại thời điểm nhận xe khách hàng xuất trình đầy đủ các giấy tờ liên quan cho chủ xe:
-                                GPLX (chủ xe đối chiếu bản gốc với thông tin GPLX đã xác thực trên app Mioto & số điện
-                                thoại đăng ký), CCCD hoặc CMND (chủ xe đối chiếu bản gốc với thông tin đã nhận trên
-                                VNEDL & gửi lại) Hoặc Hộ chiếu (passport) bản gốc giữ lại. Đặt cọc tài sản thế chấp tiền
-                                mặt (15 triệu hoặc theo thỏa thuận với chủ xe) hoặc xe máy có giá trị tương đương 15
-                                triệu (trừ xe và xe điện) khi nhận xe.
-                                <ul>
-                                    <li>
-                                        <em>Đối với trường hợp chủ xe hỗ trợ chính sách miễn thế chấp:</em> Khách hàng
-                                        không cần để lại tài sản (xe máy hoặc 15 triệu tiền mặt) khi thuê xe của chủ xe.
-                                        Trường hợp phát sinh các chi phí khác (nếu có) trong quá trình thuê xe, khách
-                                        hàng vui lòng thanh toán trực tiếp cho chủ xe khi làm thủ tục trả xe.
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Tab 2 -->
-                    <div class="tab-pane fade" id="principle" role="tabpanel" aria-labelledby="principle-tab">
-                        <h1 class="mb-5">Nguyên tắc chung</h1>
-                        <h2>Trách nhiệm và trung thực</h2>
-                        <p>
-                            Mioto hướng đến việc xây dựng một cộng đồng thuê xe với mong muốn mang lại sự tiện ích cho
-                            khách thuê xe
-                            và chủ xe. Chính vì vậy, khách thuê xe cần có trách nhiệm giữ gìn xe thuê, và trân trọng như
-                            chính xe
-                            của bạn. Nếu có phát sinh vấn đề hay bất cứ sự cố nào đối với xe trên chuyến đi của bạn, hãy
-                            mạnh dạn
-                            giải quyết với chủ xe một cách TRUNG THỰC và CÓ TRÁCH NHIỆM.
-                        </p>
-                        <h2>Tạo sự tin tưởng </h2>
-                        <p>
-                            Các chủ xe hãy tạo hồ sơ của mình trên ứng dụng Mioto thật rõ ràng và minh bạch, bao gồm các
-                            hình ảnh cá nhân, tên, thông tin liên lạc của bạn, mô tả kĩ càng và đầu tư nhiều vào chất
-                            lượng hình ảnh để chiếc xe của bạn trông thật cuốn hút, điều này sẽ giúp khách thuê TIN
-                            TƯỞNG và tỉ lệ thuê xe của bạn sẽ cao hơn.
-                            Bạn có thể kiểm tra trực tuyến hồ sơ của Khách hàng trước khi quyết định cho thuê, điều này
-                            sẽ giúp bạn an tâm hơn trước khi giao chìa khóa xe cho những vị khách của mình.
-                        </p>
-                        <h2>Hãy giữ xe sạch sẽ </h2>
-                        <p>
-                            Mioto hướng đến việc xây dựng một cộng đồng văn minh, vì vậy hãy yêu quý và giữ vệ sinh
-                            những chiếc xe bạn thuê. Việc giao nhận và hoàn trả những chiếc xe SẠCH SẼ giúp cả hai bên
-                            kết thúc giao dịch một cách tốt đẹp và sẵn sàng cho những giao dịch tuyệt vời sau này.
-                        </p>
-                        <h2>Thông báo ngay khi có vấn đề phát sinh</h2>
-                        <p>
-                            Bất kì khi nào có phát sinh vấn đề trong quá trình thuê xe, chủ xe và khách thuê xe nên
-                            THÔNG BÁO ngay cho nhau, và sử dụng các điều khoản trong hợp đồng thuê xe hoặc các chính
-                            sách của Mioto được đăng trên website Mioto.vn để giải quyết nhanh chóng.
-                        </p>
-                        <h2>Tuân thủ pháp luật</h2>
-                        <p>
-                            Các chủ xe có trách nhiệm đảm bảo xe của bạn có đầy đủ giấy tờ pháp lý và trong tình trạng
-                            AN TOÀN trước khi giao xe cho khách.
-                            Khách thuê xe có trách nhiệm CHẤP HÀNH nghiêm chỉnh luật lệ giao thông và tuân thủ tất cả
-                            các điều luật hiện hành có liên quan trong thời gian thuê xe.
-                        </p>
-                        <h2>Cuối cùng...</h2>
-                        <p>
-                            Nếu giữa hai bên chủ xe và khách thuê xe không thể tự giải quyết các vấn đề tranh chấp phát
-                            sinh, hãy liên hệ với bộ phận Chăm sóc Khách hàng của Mioto. Chúng tôi luôn bên cạnh để hỗ
-                            trợ bạn dàn xếp các vấn đề một cách tốt đẹp nhất, tuân theo các điều khoản, chính sách và
-                            quy chế hoạt động cả hai bên đã cam kết với Mioto.
-                        </p>
-                    </div>
-                    <!-- Tab 3 -->
-                    <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
-                        <h1>Chính sách bảo mật </h1>
-                        <p>
-                            Car Rental là một sàn giao dịch thương mại điện tử (“Sàn TMĐT) đã được đăng ký với Bộ Công
-                            Thương.
-                            Người dùng trên sàn bao gồm người bán (chủ xe), người mua (khách thuê) và các bên khác sử
-                            dụng dịch vụ của chúng tôi.
-                            <br>
-                            "Dữ Liệu Cá Nhân" có nghĩa là dữ liệu, dù đúng hay không, về một cá nhân mà thông qua đó có
-                            thể xác định được danh tính, hoặc từ dữ liệu đó và thông tin khác mà một tổ chức có hoặc có
-                            khả năng tiếp cận. Các ví dụ thường gặp về dữ liệu cá nhân có thể gồm có tên, số chứng minh
-                            nhân dân/căn cước công dân, mã số thuế, giấy phép lái xe và thông tin liên hệ.
-                            <br>
-                            Chính sách bảo mật này ("Chính sách bảo mật" hay "Chính sách") được thiết kế để giúp bạn
-                            hiểu được cách thức chúng tôi thu thập, sử dụng, tiết lộ và/hoặc xử lý dữ liệu cá nhân mà
-                            bạn đã cung cấp cho chúng tôi và/hoặc lưu giữ về bạn, cho dù là hiện nay hoặc trong tương
-                            lai, cũng như để giúp bạn đưa ra quyết định sáng suốt trước khi cung cấp cho chúng tôi bất
-                            kỳ dữ liệu cá nhân nào của bạn.
-                            <br>
-                            Bằng việc sử dụng Các Dịch Vụ, đăng ký tài khoản với chúng tôi hoặc truy cập Nền tảng, bạn
-                            xác nhận và đồng ý rằng bạn chấp nhận các phương pháp, yêu cầu, và/hoặc chính sách được mô
-                            tả trong Chính sách bảo mật này, và theo đây bạn đồng ý cho phép chúng tôi thu thập, sử
-                            dụng, tiết lộ và/hoặc xử lý dữ liệu cá nhân của bạn như mô tả trong đây. Việc cho phép này
-                            sẽ có hiệu lực và bắt đầu từ thời điểm bạn đồng ý cho đến khi bạn quyết định rút lại sự đồng
-                            ý hoặc tự động kết thúc trong các trường hợp theo quy định của pháp luật.
-                            <br>
-                            Nếu bạn không đồng ý cho phép xử lý dữ liệu của bạn theo quy định này, vui lòng không sử
-                            dụng các dịch vụ của chúng tôi hoặc truy cập nền tảng của chúng tôi hoặc thông báo ngay cho
-                            chúng tôi về việc không đồng ý của bạn trong trương hợp bạn đã đồng ý trước đó.
-                            <br>
-                            Nếu có bất kỳ thay đổi nào về Chính sách bảo mật của mình, chúng tôi sẽ thông báo cho bạn
-                            bao gồm cả thông qua việc đăng tải những thay đổi đó hoặc Chính sách bảo mật sửa đổi trên
-                            Nền tảng của chúng tôi. Trong phạm vi pháp luật cho phép, việc tiếp tục sử dụng các Dịch Vụ
-                            hoặc Nền Tảng, bao gồm giao dịch của bạn, được xem là bạn đã công nhận và đồng ý với các
-                            thay đổi trong Chính Sách Bảo Mật này.
-                            <br>
-                            Chính sách này áp dụng cùng với các thông báo, điều khoản hợp đồng, điều khoản chấp thuận
-                            khác áp dụng liên quan đến việc chúng tôi thu thập, lưu trữ, sử dụng, tiết lộ và/hoặc xử lý
-                            dữ liệu cá nhân của bạn và không nhằm ghi đè những thông báo hoặc các điều khoản đó trừ khi
-                            chúng tôi có tuyên bố ràng khác.
-                            <br>
-                            Chính sách này được áp dụng cho tất cả người dùng đang sử dụng Dịch vụ/Nền tảng trừ khi có
-                            tuyên bố rõ ràng ngược lại.
-                        </p>
-                    </div>
-                    <!-- Tab 4 -->
-                    <div class="tab-pane fade" id="dispute" role="tabpanel" aria-labelledby="dispute-tab">
-                        <h1>Quy trình giải quyết khiếu nại</h1>
-                        <p>
-                            Công ty và Chủ xe có trách nhiệm tiếp nhận các khiếu nại và hỗ trợ Khách hàng liên quan đến
-                            các giao dịch được kết nối thông qua Sàn giao dịch. Các khiếu nại liên quan đến việc cung
-                            cấp, sử dụng dịch vụ thuê xe trên Sàn giao dịch do Công ty chịu trách nhiệm độc lập giải
-                            quyết trên cơ sở quy định của pháp luật, Điều khoản và Điều kiện sử dụng dịch vụ, các thông
-                            báo, quy chế đã công bố với Thành viên (Khách hàng và Chủ xe). Khi phát sinh tranh chấp,
-                            Công ty đề cao giải pháp thương lượng, hòa giải giữa các bên nhằm duy trì sự tin cậy của
-                            Thành viên vào chất lượng dịch vụ của Sàn giao dịch. Khách hàng có thể thực hiện theo các
-                            bước sau:
-                            <br>
-                            Bước 1: Khách hàng khiếu nại về dịch vụ qua số điện thoại 1900 9217 hoặc gửi mail cho Bộ
-                            phận Chăm sóc Khách hàng tại địa chỉ support@car.vn. Thời gian để Công ty tiếp nhận khiếu
-                            nại là 3 ngày kể từ ngày sử dụng dịch vụ hoặc từ ngày phát sinh sự việc.
-                            <br>
-                            Bước 2: Trong thời hạn (3) ngày làm việc kể từ khi tiếp nhận thông tin khiếu nại của Khách
-                            hàng, Bộ phận Chăm sóc Khách hàng xác nhận thông tin khiếu nại, tiến hành phân loại thông
-                            tin và thông báo cho Khách hàng:
-                            2a. Ghi nhận các yêu cầu và các khiếu nại có liên quan đến Công ty và trong thời hạn khiếu
-                            nại.
-                            2b. Từ chối các yêu cầu, các khiếu nại không có liên quan đến Công ty và hết thời hạn khiếu
-                            nại.
-                            <br>
-                            Bước 3: Giải quyết vấn đề
-                            Bộ phận Chăm sóc Khách hàng sẽ tiến hành xác minh, kiểm chứng và phân tích tính chất và mức
-                            độ của nội dung khiếu nại, phạm vi khiếu nại và trách nhiệm xử lý để phối hợp với Chủ xe và
-                            Bên cung cấp dịch vụ thứ 3 đưa ra biện pháp cụ thể để hỗ trợ Khách hàng giải quyết tranh
-                            chấp đó.
-                            3a. Chuyển các vấn đề có liên quan trực tiếp đến Công ty cho các Bộ phận có liên quan kiểm
-                            tra và đối chiếu.
-                            3b. Chuyển các vấn đề có liên quan cho Chủ xe giải quyết.
-                            Trong thời hạn ba (3) ngày làm việc kể từ khi tiếp nhận thông báo về khiếu nại, Chủ xe có
-                            trách nhiệm phối hợp với Mioto để giải quyết, xử lý khiếu nại. Chủ xe sẽ thông báo cho Khách
-                            hàng biện pháp xử lý hoặc ủy quyền thông báo cho Công ty.
-                            <br>
-                            Bước 4: Đóng khiếu nại
-                            4a. Khách hàng đồng ý với các phản hồi của Bộ phận Chăm sóc Khách hàng -> Kết thúc khiếu
-                            nại. Khách hàng không đồng ý -> Quay lại bước 3
-                            4b. Theo dõi các giải quyết khiếu nại của Chủ xe -> Kết thúc khiếu nại khi Khách hàng và Chủ
-                            xe đã thỏa thuận xong.
-                            Khi nhận được thông báo về biện pháp xử lý từ Chủ xe nhưng Khách hàng không đồng ý thì Công
-                            ty sẽ chủ trì việc thương lượng, hòa giải giữa Khách hàng và Chủ xe để đi đến kết quả giải
-                            quyết phù hợp với cả hai bên. Trong trường hợp Khách hàng và Chủ xe không đi đến thỏa thuận
-                            chung hoặc Khách hàng không đồng ý với những biện pháp giải quyết cuối cùng của Chủ xe
-                            và/hoặc nằm ngoài khả năng và thẩm quyền của Công ty thì Khách hàng hoặc C hủ xe có thể nhờ
-                            đến Cơ quan Nhà nước có thẩm quyền can thiệp và giải quyết theo Pháp luật nhằm đảm bảo lợi
-                            ích hợp pháp của các bên.
-                            <br>
-                            Công ty tôn trọng và nghiêm túc thực hiện các quy định của Pháp luật về Bảo vệ quyền lợi của
-                            người dùng. Công ty khuyến nghị Khách hàng và Chủ xe cung cấp chính xác, trung thực, chi
-                            tiết các thông tin cá nhân và nội dung đăng tin liên quan đến dịch vụ. Chúng tôi cũng đề
-                            nghị Chủ xe cần nghiêm túc tuân thủ các quy định của Pháp luật, cũng như có những hành vi
-                            phù hợp đối với Khách hàng. Mọi hành vi lừa đảo, gian lận trong kinh doanh, gây tổn hại đến
-                            người khác đều bị lên án và phải chịu hoàn toàn trách nhiệm trước Pháp luật. Các bên bao gồm
-                            Khách hàng và Chủ xe sẽ phải có trách nhiệm tích cực trong việc giải quyết khiếu nại. Chủ xe
-                            cần có trách nhiệm chủ động xử lý và cung cấp văn bản giấy tờ chứng thực thông tin liên quan
-                            đến sự việc đang có khiếu nại, tranh chấp với Khách hàng. Công ty chỉ đóng vai trò hỗ trợ,
-                            phối hợp việc thương lượng, hòa giải và giải quyết khiếu nại giữ Khách hàng và Chủ xe. Công
-                            ty cũng có trách nhiệm cung cấp những thông tin liên quan đến Khách hàng và Chủ xe nếu được
-                            Chủ xe hoặc Khách hàng hoặc Cơ quan Pháp luật có thẩm quyền yêu cầu.
-                            <br>
-                            Sau khi Khách hàng và Chủ xe đã giải quyết xong tranh chấp, cần có trách nhiệm báo lại cho
-                            Công ty để cập nhật tình hình. Trong trường hợp giao dịch phát sinh mâu thuẫn mà lỗi thuộc
-                            về Chủ xe: Công ty sẽ áp dụng các biện pháp xử lý vi phạm tương ứng bao gồm nhưng không giới
-                            hạn: cảnh cáo, khóa tài khoản hoặc chuyển cho Cơ quan Pháp luật có thẩm quyền tùy theo mức
-                            độ của sai phạm. Công ty sẽ chấm dứt và gỡ bỏ toàn bộ tin bài về sản phẩm, dịch vụ của Chủ
-                            xe đó trên Sàn giao dịch đồng thời yêu cầu Chủ xe bồi hoàn cho Khách hàng thỏa đáng trên cơ
-                            sở thỏa thuận với Khách hàng.
-                        </p>
+      <h3>B. Responsibilities of Car Renters</h3>
+      <ul>
+        <li>
+          Carefully inspect the car before receiving and before returning it. Confirm the handover report regarding the car's condition when receiving and returning it.
+        </li>
+        <li>Pay the full rental fee to the Car Owner upon receiving the car.</li>
+        <li>
+          At the time of receiving the car, the renter must present all relevant documents to the owner:
+          Driving License (owner verifies the original with the Driving License information validated on the Mioto app & registered phone number), ID Card or Passport (owner verifies the original with the information received on VNEDL & returns it), or Passport (original kept). Deposit in cash (15 million VND or as agreed with the car owner) or a motorcycle equivalent in value (15 million VND, excluding electric vehicles) when receiving the car.
+          <ul>
+            <li>
+              <em>For cases where the car owner supports a no-collateral policy:</em> Renters do not need to leave collateral (motorcycle or 15 million VND cash) when renting a car from the owner. If additional costs arise (if any) during the rental, the renter should pay directly to the owner when returning the car.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- Tab 2 -->
+    <div class="tab-pane fade" id="principle" role="tabpanel" aria-labelledby="principle-tab">
+      <h1 class="mb-5">General Principles</h1>
+      <h2>Responsibility and Honesty</h2>
+      <p>
+        Mioto aims to build a car rental community with the goal of providing convenience for renters and car owners. Therefore, renters should be responsible for maintaining the rental car and treating it as if it were their own. If any issues or incidents arise with the car during your trip, address them with the car owner honestly and responsibly.
+      </p>
+      <h2>Build Trust</h2>
+      <p>
+        Car owners should create a clear and transparent profile on the Mioto app, including personal images, name, contact information, and a detailed description with high-quality photos to make the car appealing. This will help renters trust you, increasing the likelihood of renting your car.
+        You can check the renter's profile online before deciding to rent, which will help you feel more secure before handing over the car keys to your guests.
+      </p>
+      <h2>Keep the Car Clean</h2>
+      <p>
+        Mioto aims to build a civilized community, so please value and maintain cleanliness of the cars you rent. Returning and receiving clean cars will help both parties conclude the transaction smoothly and be ready for future transactions.
+      </p>
+      <h2>Report Issues Immediately</h2>
+      <p>
+        Whenever an issue arises during the car rental process, both car owners and renters should inform each other immediately and use the terms of the rental agreement or Mioto's policies posted on the Mioto.vn website to resolve the issue quickly.
+      </p>
+      <h2>Comply with the Law</h2>
+      <p>
+        Car owners are responsible for ensuring that their car has all legal documents and is in a SAFE condition before handing it over to the renter.
+        Renters are responsible for adhering strictly to traffic laws and all current legal regulations during the rental period.
+      </p>
+      <h2>Finally...</h2>
+      <p>
+        If the car owner and renter cannot resolve disputes themselves, contact Mioto's Customer Service department. We are here to help you resolve issues in the best possible way, adhering to the terms, policies, and operational rules both parties have committed to with Mioto.
+      </p>
+    </div>
+    <!-- Tab 3 -->
+    <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+      <h1>Privacy Policy</h1>
+      <p>
+        Car Rental is an e-commerce trading platform ("E-Commerce Platform") registered with the Ministry of Industry and Trade.
+        Users on the platform include sellers (car owners), buyers (renters), and other parties using our services.
+        <br>
+        "Personal Data" means data, whether accurate or not, about an individual that can be used to identify that individual, or from which the data and other information an organization has or can access. Common examples of personal data may include name, ID number, tax code, driving license, and contact information.
+        <br>
+        This Privacy Policy ("Privacy Policy" or "Policy") is designed to help you understand how we collect, use, disclose, and/or process personal data that you have provided to us and/or that we hold about you, whether now or in the future, as well as to help you make an informed decision before providing us with any personal data.
+        <br>
+        By using our Services, registering an account with us, or accessing the Platform, you acknowledge and agree that you accept the practices, requirements, and/or policies described in this Privacy Policy, and hereby consent to our collection, use, disclosure, and/or processing of your personal data as described herein. This consent will be effective and commence from the time you consent until you decide to withdraw your consent or automatically terminate under the provisions of the law.
+        <br>
+        If you do not consent to the processing of your data as set forth, please do not use our services or access our platform, or notify us immediately if you have previously consented.
+        <br>
+        If there are any changes to our Privacy Policy, we will notify you, including by posting such changes or the revised Privacy Policy on our Platform. To the extent permitted by law, your continued use of the Services or Platform, including your transactions, constitutes your acceptance of and agreement to the changes in this Privacy Policy.
+        <br>
+        This policy applies in conjunction with any notices, contract terms, or other acceptance terms related to our collection, storage, use, disclosure, and/or processing of your personal data, and is not intended to override those notices or terms unless we explicitly state otherwise.
+        <br>
+        This policy applies to all users of the Services/Platform unless explicitly stated otherwise.
+      </p>
+    </div>
+    <!-- Tab 4 -->
+    <div class="tab-pane fade" id="dispute" role="tabpanel" aria-labelledby="dispute-tab">
+      <h1>Complaint Resolution Process</h1>
+      <p>
+        The company and Car Owners are responsible for receiving complaints and supporting Customers regarding transactions connected through the Platform. Complaints related to providing or using car rental services on the Platform are independently resolved by the company based on legal regulations, Terms and Conditions of service use, and announcements and regulations published to Members (Customers and Car Owners). When disputes arise, the company prioritizes negotiation and mediation between the parties to maintain members' trust in the quality of the Platform's services. Customers can follow these steps:
+        <br>
+        Step 1: Customers should file a complaint about the service via phone at 1900 9217 or email the Customer Service Department at support@car.vn. The company will accept complaints within 3 days from the date of service use or the occurrence of the event.
+        <br>
+        Step 2: Within (3) working days from receiving the customer's complaint information, the Customer Service Department will confirm the complaint information, classify the information, and notify the Customer:
+        2a. Record requests and complaints related to the company and within the complaint period.
+        2b. Reject requests and complaints not related to the company and outside the complaint period.
+        <br>
+        Step 3: Resolve the issue
+        The Customer Service Department will verify, check, and analyze the nature and extent of the complaint, the scope of the complaint, and the responsibility for handling it to coordinate with Car Owners and third-party service providers to come up with specific measures to assist the Customer in resolving the dispute.
+        3a. Transfer issues directly related to the company to relevant departments for inspection and verification.
+        3b. Transfer issues to Car Owners for resolution.
+        Within three (3) working days from receiving the complaint notification, Car Owners are responsible for cooperating with Mioto to resolve and address the complaint. Car Owners will inform the Customer of the resolution or authorize the company to notify the Customer.
+        <br>
+        Step 4: Close the complaint
+        4a. Customer agrees with the responses from the Customer Service Department -> End the complaint resolution process.
+        4b. Customer does not agree with the responses from the Customer Service Department -> The company will review and inform the Customer of the final response.
+        <br>
+        In the case of not resolving the complaint through the above process, the Customer has the right to ask the company to refer the dispute to a third party for mediation or arbitration as appropriate, under the law. The customer will be responsible for all related costs (if any).
+        <br>
+        The company reserves the right to terminate or suspend the complaint resolution process in cases where the Customer's complaint is not truthful or without basis.
+      </p>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+
+  
+    @{
+        var showModal = TempData["ShowModal"] as string;
+    }
+
+
+    <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="container-login" id="container">
+                        <div class="body-login">
+                            <div class="form-container sign-up">
+                                <form asp-controller="Users" asp-action="Register" method="post" asp-antiforgery="true" data-val="true">
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Name" class="form-label">Your name</label>
+                                        <input asp-for="Register.Name" type="text" class="form-control" id="signupName" placeholder="Your name">
+                                        <span asp-validation-for="Register.Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Email" class="form-label">Your email address</label>
+                                        <input asp-for="Register.Email" type="email" class="form-control" id="signupEmail" placeholder="Your email address">
+                                        <span asp-validation-for="Register.Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3 position-relative">
+                                        <label asp-for="Register.Password" class="form-label">Pick a password</label>
+                                        <input asp-for="Register.Password" type="password" class="form-control" autocomplete="off" id="signupPassword" placeholder="Pick a password">
+                                        <i class='bx bx-low-vision toggle-password2' id="toggleSignupPassword"></i>
+                                        <small class="form-text text-muted">
+                                            Use at least one letter, one number, and seven
+                                            characters.
+                                        </small>
+                                        <span asp-validation-for="Register.Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3 position-relative">
+                                        <label asp-for="Register.ConfirmPassword" class="form-label">Confirm password</label>
+                                        <input asp-for="Register.ConfirmPassword" type="password" class="form-control" id="signupConfirmPassword"
+                                               placeholder="Confirm password">
+                                        <i class='bx bx-low-vision toggle-password' id="toggleSignupConfirmPassword"></i>
+                                        <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Register.Phone" class="form-label">Your phone number</label>
+                                        <input asp-for="Register.Phone" class="form-control" id="signupPhone" placeholder="Your phone number">
+                                        <span asp-validation-for="Register.Phone" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check mb-3">
+                                            <input asp-for="Register.Role" class="form-check" type="radio" value="rentCar" id="rentCar" style="width: 16px;" checked>
+                                            <label class="form-check-label" for="rentCar">
+                                                I want to rent a car
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3 ps-5">
+                                            <input asp-for="Register.Role" class="form-check" type="radio" value="carOwner" id="carOwner" style="width: 16px;">
+                                            <label class="form-check-label" for="carOwner">
+                                                I am a car owner
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Register.Role" class="text-danger"></span>
+
+                                    <div class="mb-3 d-flex">
+                                        <input asp-for="Register.AgreeToTerms" class="" type="checkbox" id="terms" style="width: 16px;">
+                                        <label asp-for="Register.AgreeToTerms" class="form-check-label" for="terms">
+                                            I have read and agree with the <a href="@Url.Action("TermsAndConditions", "Home")" target="_blank" class="text-decoration-none ps-3">
+                                                <u>
+                                                    Terms and
+                                                    Conditions
+                                                </u>
+                                            </a>
+                                        </label>
+                                        <span asp-validation-for="Register.AgreeToTerms" class="text-danger"></span>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-custom w-100 far fa-user fa-plus"> SIGN UP</button>
+                                </form>
+                            </div>
+
+                            <div class="form-container sign-in">
+                                @using (Html.BeginForm("Login", "Users", FormMethod.Post, new { id = "loginForm" }))
+                                {
+                                    <h1>Sign In</h1>
+                                    <div class="mb-3">
+                                        <label for="loginEmail" class="form-label">Your email address</label>
+                                        @Html.TextBoxFor(x => x.User.Email, new { @class = "form-control", placeholder = "Your email address", id = "loginEmail" })
+                                        <span class="text-danger" id="loginEmailError"></span>
+                                    </div>
+                                    <div class="position-relative">
+                                        <div class="abccc" style="position:relative;">
+                                            <label for="loginPassword" class="form-label">Password</label>
+                                            @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control", type = "password", placeholder = "Password", id = "loginPassword" })
+                                            <span class="text-danger" id="loginPasswordError"></span>
+                                            <i class="bx bx-low-vision toggle-password3" style="position:relative" id="toggleLoginPassword"></i>
+                                        </div>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                                    {
+                                        <div class="text-danger" id="serverError">@ViewBag.Error</div>
+                                    }
+                                    <div class="mb-3 form-check" style="padding-left: 0.5em;">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(x => x.User.RememberMe, new { @class = "form-check-input", id = "rememberMe" })
+                                            <label class="form-check-label" for="rememberMe">
+                                                @Html.DisplayNameFor(x => x.User.RememberMe)
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 d-flex justify-content-center">
+                                        <a asp-controller="Users" asp-action="ResetPassword">Forgot your password?</a>
+                                    </div>
+
+
+                                    <button type="submit">Sign In</button>
+                                }
+                            </div>
+                        
+                            <div class="toggle-container">
+                                <div class="toggle">
+                                    <div class="toggle-panel toggle-left">
+                                        <h1>Welcome Back!</h1>
+                                        <p>Enter your personal details to use all of the site's features</p>
+                                        <button class="hidden" id="login">Sign In</button>
+                                    </div>
+                                    <div class="toggle-panel toggle-right">
+                                        <h1>Hello, Friend!</h1>
+                                        <p>Register with your personal details to use all of the site's features</p>
+                                        <button class="hidden" id="register">Sign Up</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+    $('#authModal').on('shown.bs.modal', function () {
+        console.log('Modal đã được hiển thị.');
+    });
+
+    $('#authModal').on('hide.bs.modal', function () {
+        console.log('Modal đã được đóng.');
+    });
+});
+
+   $('#loginForm').submit(function(event) {
+    if ($('#rememberMe').is(':checked')) {
+        localStorage.setItem('rememberEmail', $('#loginEmail').val());
+        localStorage.setItem('rememberPassword', $('#loginPassword').val());
+    } else {
+        localStorage.removeItem('rememberEmail');
+        localStorage.removeItem('rememberPassword');
+    }
+});
+
+$(document).ready(function() {
+    if (localStorage.getItem('rememberEmail')) {
+        $('#loginEmail').val(localStorage.getItem('rememberEmail'));
+    }
+    if (localStorage.getItem('rememberPassword')) {
+        $('#loginPassword').val(localStorage.getItem('rememberPassword'));
+    }
+});
+
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId, toggleId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(toggleId);
+
+            toggleIcon.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                if (type === 'text') {
+                    toggleIcon.classList.remove('bx-low-vision');
+                    toggleIcon.classList.add('bx-show');
+                } else {
+                    toggleIcon.classList.remove('bx-show');
+                    toggleIcon.classList.add('bx-low-vision');
+                }
+            });
+        }
+
+        togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
+        togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
+        togglePasswordVisibility('signupConfirmPassword', 'toggleSignupConfirmPassword');
+
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+
+        registerBtn.addEventListener('click', () => {
+            container.classList.add("active");
+        });
+
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove("active");
+        });
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('click', function () {
+                if (this.previousChecked) {
+                    this.checked = false;
+                }
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.previousChecked = false);
+                this.previousChecked = this.checked;
+            });
+        });
+    </script>
 </body>
 
 </html>
