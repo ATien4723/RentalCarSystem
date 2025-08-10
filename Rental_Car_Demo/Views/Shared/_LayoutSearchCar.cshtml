@@ -322,6 +322,17 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
+        function checkAndDisable(input) {
+            if (input.value.trim().length >= 15) {
+                input.disabled = true; // Disable the input field if it has 3 or more characters
+            }
+        }
+
+        function resetLocationInput(inputId) {
+            const inputElement = document.getElementById(inputId);
+            inputElement.value = '';        // Clear the input field
+            inputElement.disabled = false;  // Re-enable the input field
+        }
 
         $(document).ready(function () {
 
@@ -462,13 +473,14 @@
         }
 
         function resetAllFilters() {
-            // Redirect to the SearchCarForm action with empty or default parameters
+            const pickupTimeInput = document.getElementById("pickupTimeInput");
+            const dropTimeInput = document.getElementById("dropTimeInput");
             const params = new URLSearchParams({
                 address: '',
                 pickupDate: '',
-                pickupTime: '',
+                pickupTime: pickupTimeInput ? pickupTimeInput.value : '', // Keep the existing time
                 dropoffDate: '',
-                dropoffTime: ''
+                dropoffTime: dropTimeInput ? dropTimeInput.value : '' // Keep the existing time
             });
 
             // Redirect to the URL to reload the page

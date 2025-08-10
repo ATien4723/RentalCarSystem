@@ -156,7 +156,7 @@
                 <div class="mb-4">
                     <h5 class="mb-3 details-label">Pickup Details</h5>
                     <div class="d-flex mb-3 details-item">
-                        <input type="text" class="form-control me-2 details-input" id="pickupLocation" name="pickupLocation" placeholder="Location" value="@ViewBag.location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)">
+                        <input type="text" class="form-control me-2 details-input" id="pickupLocation" name="pickupLocation" placeholder="Location" value="@ViewBag.location" onkeyup="fetchSuggestions(this.value, 'pickupLocation')" list="pickupLocationSuggestions" onchange="handleSelection(event)" oninput="checkAndDisable(this)">
                         <datalist id="pickupLocationSuggestions"></datalist>
                         <input type="date" class="form-control me-2 details-input" id="pickupDateInput" name="pickupDate" value="@ViewBag.pickupDate.ToString("yyyy-MM-dd")">
                         <input type="time" class="form-control details-input" id="pickupTimeInput" name="pickupTime" value="@ViewBag.pickupTime.ToString("HH:mm")">

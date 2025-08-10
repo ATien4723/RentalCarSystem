@@ -36,7 +36,6 @@ builder.Services.AddDbContext<RentCarDbContext>(options
 builder.Services.AddSession();
 builder.Services.AddScoped<ICarRepository, CarRepository> ();
 builder.Services.AddScoped<AddressRepository> ();
-builder.Services.AddDbContext<RentCarDbContext>(ServiceLifetime.Transient);
 
 
 

@@ -68,7 +68,7 @@ namespace Rental_Car_Demo.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchCarForm(string address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime, string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange)
+        public async Task<IActionResult> SearchCarForm(string address, DateOnly? pickupDate, TimeOnly? pickupTime, DateOnly? dropoffDate, TimeOnly? dropoffTime, string[] brandNames, int[] seats, bool[] transmissionTypes, bool[] fuelTypes, string[] priceRange)
         {
             //if ( string.IsNullOrWhiteSpace (address) || address.Length < 2 ) {
             //    ViewBag.ErrorMessage = "Please enter a valid location.";
@@ -109,7 +109,7 @@ namespace Rental_Car_Demo.Controllers
             }
 
             // Fetch the cars based on the address and additional filters
-            IEnumerable<Car> cars = _carRepository.GetAllCars (address, brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice);
+            IEnumerable<Car> cars = await _carRepository.GetAllCars (address, brandNames, seats, transmissionTypes, fuelTypes, minPrice, maxPrice);
             return View (cars);
         }
 
@@ -174,10 +174,12 @@ namespace Rental_Car_Demo.Controllers
                 })
                 .AsEnumerable () // Switch to in-memory processing
                 .Where (car => terms.Any (term => car.Address.ToLower ().Contains (term)))
+                .Select (a => a.Address)
+                .Distinct ()
                 .ToList ();
 
 
-            var json = System.Text.Json.JsonSerializer.Serialize (allAddresses.Select (a => a.Address).ToList ());
+            var json = System.Text.Json.JsonSerializer.Serialize (allAddresses);
             return Content (json, "application/json");
         }
 
